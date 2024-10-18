@@ -1,0 +1,122 @@
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 80%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2em;
+    border: none;
+    margin-bottom: 20px;
+    background-color: #333;
+    color: #fff;
+    outline: none;
+}
+
+#apps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.app-card {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.app-card:hover {
+    background-color: #333;
+}
+
+.app-card img {
+    width: 100px;
+    height: 100px;
+}
+
+.app-card h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.app-card p {
+    font-size: 0.9em;
+    color: #bbb;
+}
+
+.dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-content {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+}
+
+p {
+    margin-top: 10px;
+}
+#back {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#back:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+}
+
+#back:active {
+    background-color: #111;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}

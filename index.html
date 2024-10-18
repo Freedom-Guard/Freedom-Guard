@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- #region Head -->
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#ff7900" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Freedom Guard (Kian  Version) 1.3.2 </title>
+    <link href="boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="ico.png" type="image/png">
+    <!-- #endregion Head -->
+</head>
+
+<body>
+    <!-- #region Loading -->
+    <div id="loading">
+        <div class="content">
+            <div class="text" style="margin-bottom: 10vh;" id="text-loading-1">LOADING...</div>
+            <div class="text" style="margin-bottom: 10vh;" id="text-loading-2">LOADING...</div>
+            <img src="./assets/iran.jpg" style="justify-self: flex-start;margin-top: auto;" height="25%" id="" alt="">
+            <p>به یاد حنانه کیا </p>
+            <div id="text-hashtag" dir="rtl" style="justify-content: flex-end;margin-right: 2vw;color:red;">
+                #زن_زندگی_آزادی</div>
+        </div>
+    </div>
+    <script>
+        function Loading(time = 2000, textloading = "LOADING ...") {
+            document.getElementById("loading").style.display = "flex";
+            document.getElementById("text-loading-1").innerHTML = textloading;
+            document.getElementById("text-loading-2").innerHTML = textloading;
+            setTimeout(() => {
+                document.getElementById("loading").style.display = "none";
+            }, time);
+        }
+        Loading(2500);
+    </script>
+    <!-- #endregion Loading -->
+    <!-- #region Freedom Warp => setting & main  -->
+    <h2 id="Status" title="false"></h2>
+    <button id="ChangeStatus" class="bx-spin-hover"><i class="bx bx-power-off"></i></button>
+    <button class="menu-show" id="menu-show"><i class="bx bx-menu-alt-left bx-flashing-hover"></i></button>
+    <button class="setting-show bx bx-tada-hover" id="setting-show"><i class=" bx bxs-cog"></i></button>
+    <div class="options">
+        <p>Gool</p>
+        <label class="switch">
+            <input type="checkbox" id="Gool" />
+            <span class="slider"></span>
+        </label>
+        <p>Scan</p>
+        <label class="switch">
+            <input type="checkbox" id="Scan" />
+            <span class="slider"></span>
+        </label>
+    </div>
+    <p id="ip-ping-warp">IP : x.x.x.x | Ping : ms</p>
+    <div class="box-select-country" id="box-select-country" style="transition: all 1.3s ease 0s;top: 100vh;">
+    </div>
+    <div class="options-select-cfon">
+        <!-- <p>Psiphon Country</p>
+        <i class="bx bxs-chevron-down bx-tada-hover"></i> -->
+        <div class="box-select-country-mini" id="box-select-country-mini">
+            <div id="flagOfCfon">
+                <img src="svgs/ir.svg" id="imgOfCfonCustom" width="50px">
+                <div id="textOfCfon">Auto Server</div>
+                <i class="bx bx-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    <div id="select-isp">
+        <div id="select-isp-mci">MCI همراه اول</div>
+        <div id="select-isp-irancell">IRANCELL ایرانسل</div>
+        <div id="select-isp-other">Other غیره،وای فای</div>
+        <p>بعدا میتوانید از تنظیمات تغییر دهید</p>
+    </div>
+    <div id="setting" style="position: absolute; display: flex; transition: all 0.9s ease 0s; right: -150vw;">
+        <nav id="nav-top" style="position: sticky;  top: 0%;
+  left: 0%;display: flex;align-items: center;background: linear-gradient(90deg,rgba(32, 117, 29, 0.7) 5%,rgb(12, 20, 128,0.7) 100%,rgba(128, 97, 12, 0.7) 100%);backdrop-filter: blur(25px);width: 100%;min-height: 7.5vh;z-index: 10;">
+            <button id="close-setting">
+                <i class='bx bx-arrow-back'></i>
+            </button>
+            <b style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;">Settings Freedom Guard</b>
+            <button id="about"><i class='bx bxs-info-circle'></i></button>
+        </nav>
+        <b>Config Freedom Guard for auto mode</b>
+        <div id="config-fg" class="form-control-c">
+            <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json" id="config-fg-text"
+                value="https://raw.githubusercontent.com/fwldom/Freedom-Guard/main/config/links.json">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b style="margin-top: 2vh;">Startup at</b>
+        <div id="start-up">
+            <select value="warp" id="start-up-at">
+                <option value="warp">Freedom Warp (main)</option>
+                <option value="vibe">Freedom Vibe</option>
+                <option value="browser">Freedom Browser</option>
+            </select>
+        </div>
+        <b>VPN Core</b>
+        <div id="core-guard" class="form-control-c">
+            <select value="auto" id="core-up-at">
+                <option value="auto">Automatic</option>
+                <option value="vibe">Freedom Vibe</option>
+                <option value="warp">Freedom Warp</option>
+            </select>
+        </div>
+        <b>Your ISP:</b>
+        <div id="isp-guard" class="form-control-c">
+            <select value="other" id="isp-text-guard">
+                <option value="other">All ISP</option>
+                <option value="MCI">MCI (HamrahAval)</option>
+                <option value="IRANCELL">Irancell</option>
+            </select>
+        </div>
+        <div style="background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);width: 96%;border-radius: 15px;padding: 5px;max-height: 0.2vh;margin: 0.7vw;">
+
+        </div>
+        <b style="margin-top: 0.5vh;">IP Version</b>
+        <div id="ip-version">
+            <select name="" id="selector-ip-version">
+                <option value="IPV4">IP Version 4</option>
+                <option value="IPV6">IP Version 6</option>
+            </select>
+        </div>
+        <b>Endpoint</b>
+        <div id="end-point" class="form-control-c">
+            <input placeholder="IP : 192.x.x.x" class="input input-alt" type="text" id="end-point-address">
+            <span class="input-border input-border-alt"></span>
+            <button class="btn btn-primary" id="find-best-endpoint">Find Best Endpoint</button>
+        </div>
+        <b>Bind Address</b>
+        <div id="bind-address" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Warp Key</b>
+        <div id="warp-key" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="key : xxxxxxxxxxxxx" id="warp-key-text">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b style="margin-top: 2vh;">VPN Type Warp</b>
+        <div id="vpn-type">
+            <select value="system" id="vpn-type-selected">
+                <option value="system">System Proxy</option>
+                <option value="tun">VPN Mode (Tun)</option>
+            </select>
+        </div>
+        <b>DNS</b>
+        <div id="dns-warp" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="dns : 8.8.8.8" id="dns-warp-text">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Scanner rtt limit</b>
+        <div id="scan-rtt" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-text">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Verbose</b>
+        <div id="verbose">
+            <label class="switch">
+                <input type="checkbox" id="verbose-status" />
+                <span class="slider"></span>
+            </label>
+        </div>
+        <b>Cache Directory</b>
+        <div id="cache" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="Directory : ./../" id="cache-dir">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Wireguard Config Directory</b>
+        <div id="wgconfig" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="Path file" id="wgconfig-dir">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Config Directory</b>
+        <div id="config" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="Path file Config" id="config-dir">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Reserved</b>
+        <div id="reserved">
+            <label class="switch">
+                <input type="checkbox" id="reserved-status" />
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div id="reset-setting-warp">
+            <button id="change-background-warp-btn" class="btn">Change background</button>
+            <button id="reset-setting-warp-btn" class="btn">Reset setting Warp</button>
+        </div>
+    </div>
+    <div id="menu" style="position: absolute; display: flex; transition: all 1.3s ease 0s; left: -110vw;">
+        <div id="menu-dns">Set DNS</div>
+        <div id="menu-freedom-browser">Freedom Browser</div>
+        <div id="menu-freedom-vibe">Freedom Vibe</div>
+        <div id="menu-freedom-plus">Freedom Plus</div>
+        <div id="menu-website">Website App</div>
+        <div id="menu-about">About App</div>
+        <div id="menu-exit">Exit Menu</div>
+        <div id="menu-exit-app">Exit Freedom Guard</div>
+    </div>
+    <!-- #endregion Warp -->
+    <!-- #region Freedom Vibe => main & setting-->
+    <div id="freedom-vibe">
+        <button class="setting-show-vibe" id="setting-show-vibe"><i class=" bx bxs-cog"></i></button>
+        <div id="logo-vibe">
+            <img width="105px" height="105px" src="freedom-vibe.png" alt="">
+        </div>
+        <div id="changeStatus-vibe">
+            <i class='bx bx-power-off'></i>
+        </div>
+        <p id="status-vibe-conn">Disconnected</p>
+        <p id="ip-ping-vibe">IP : x.x.x.x | Ping : ms</p>
+        <div id="vibe-profile">
+            <p id="status-vibe" style="width: 50vw;">Auto</p>
+            <i class="bx bx-chevron-right" style="margin-left: auto;font-size: 22px;padding: 0;"></i>
+        </div>
+        <div id="vibe-profile-manage">
+            <button id="close-vibe-profile"
+                style="margin-top: 5px;font-size: 22px;border: none;background-color: transparent;color:rgb(63, 65, 173);margin:0;width:35px;height:35px;align-self: flex-start;"><i
+                    class='bx bx-arrow-back' style="color:black;"></i></button>
+            <p id="status-vibe-sel" class="config-box-vibe-sel" style="width: 95vw;background:rgba(35, 63, 105, 0.712)">
+                Auto</p>
+            <div id="vibe-profile-list"></div>
+            <button id="add-config-vibe">Add Profile</button>
+        </div>
+        <div id="profile-add" style="display: none;">
+            <button id="close-vibe-profile-add"
+                style="margin:0;width:25px;height:25px;align-self: flex-start;">X</button>
+            <input type="text" id="add-config-vibe-name" placeholder="Name Config" class="input input-alt"
+                style="width: 95vw;">
+            <input type="text" id="add-config-vibe-link" placeholder="Link url" class="input input-alt"
+                style="width: 95vw;">
+            <button id="add-config-vibe-submit" class="add-config-vibe">Add</button>
+        </div>
+        <button id="close-vibe"><i class='bx bx-arrow-back'></i></button>
+        <div id="setting-vibe">
+            <nav id="nav-top" style="position: sticky;  top: 0%;
+  left: 0%;background-color: rgba(255, 255, 255, 0.3);width: 100%;min-height: 7.5vh;z-index: 10;">
+                <button id="close-setting-vibe" style="position: sticky;">
+                    <i class='bx bx-arrow-back'></i>
+                </button>
+            </nav>
+            <b>Config URL vless,vmess,url file,trojan ...</b>
+            <div id="config-vibe" class="form-control-c">
+                <input placeholder="config URL: https://|vless://" class="input input-alt" type="text"
+                    id="config-vibe-text">
+                <span class="input-border input-border-alt"></span>
+            </div>
+            <b>VPN Type Vibe</b>
+            <div id="vpn-type">
+                <select value="system" id="vpn-type-selected-vibe">
+                    <option value="system">System Proxy</option>
+                    <option value="tun">VPN Mode (Tun)</option>
+                </select>
+            </div>
+            <b>Fragment</b>
+            <div id="fragment-vibe">
+                <label class="switch">
+                    <input type="checkbox" id="fragment-status-vibe" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <b>Fragment Size</b>
+            <div id="fragment-vibe-size" class="form-control-c">
+                <input class="input input-alt" disabled placeholder="Size default: 2-4" type="text"
+                    id="fragment-vibe-size-text">
+                <span class="input-border input-border-alt"></span>
+            </div>
+            <b>Dns Direct</b>
+            <div id="dns-direct" class="form-control-c">
+                <input class="input input-alt" placeholder="Dns Direct : 1.x.x.1" type="text" id="dns-direct-address">
+                <span class="input-border input-border-alt"></span>
+            </div>
+            <b>Dns Remote</b>
+            <div id="dns-remote" class="form-control-c">
+                <input class="input input-alt" placeholder="Dns Remote : 1.x.x.1" type="text" id="dns-remote-address">
+                <span class="input-border input-border-alt"></span>
+            </div>
+        </div>
+    </div>
+    <!-- #endregion Freedom Vibe -->
+    <!-- #region Set DNS | Dns Chnager => main -->
+    <div id="dns-set">
+        <button id="close-dns"><i class='bx bx-exit-fullscreen'></i></button>
+        <input type="text" id="dns1-text" placeholder="IP DNS : 1.1.1.1">
+        <input type="text" id="dns2-text" placeholder="IP DNS : 8.8.8.8">
+        <button id="submit-dns"><i class='bx bxs-save'></i></button>
+    </div>
+    <!-- #endregion Set DNS-->
+    <!-- #region Other All -->
+    <div id="about-app">
+        <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
+        <p> Freedom Guard 1.3.2 (Kian  Version)</p>
+        <p> Developed By Fwldom 👩‍💻</p>
+        <p>👇 Acknowledgements 👇</p>
+        <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 2.3.0</a> from Hiddify</p>
+        <p> <a href="https://github.com/bepass-org/warp-plus">warp-plus 1.2.4</a> from bepass-org</p>
+        <p> <a href="https://github.com/fwldom/Freedom-Guard">Freedom Browser 1.3</a> from fwldom</p>
+        <p> <a href="https://github.com/Ptechgithub/warp">Scanner Endpoint 1.2</a> from Ptechgithub</p>
+        <p> email : <a href="mailto:fwldom@duck.com">fwldom@duck.com</a></p>
+    </div>
+    <div id="message">
+        <p id="messageText"></p>
+        <span id="message-border"
+            style="justify-content: flex-end;align-items: flex-end;margin-top: auto;border-radius: 15px;"></span>
+    </div>
+    <!-- #endregion Other All -->
+</body>
+<!-- #region Scripts -->
+<script src="./renderer.js"></script>
+<!-- #endregion Scripts -->
+</html>

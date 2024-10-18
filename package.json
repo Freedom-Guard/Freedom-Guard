@@ -1,0 +1,133 @@
+{    "name": "freedom-guard",
+    "productName": "Freedom Guard",
+    "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
+    "keywords": [],
+    "main": "./main.js",
+    "version": "1.3.2",
+    "author": "fwldom <fwldom@duck.com>",
+    "scripts": {
+        "start": "npx electron .",
+        "win": "npx electron-builder --win",
+        "linux": "npx electron-builder --linux",
+        "build": "npx electron-builder"
+    },
+    "build": {
+        "protocols": [
+            {
+                "name": "freedom-guard",
+                "schemes": [
+                    "vibe",
+                    "warp",
+                    "get"
+                ]
+            }
+        ],
+        "extraResources": [
+            {
+                "from": "./ico.png",
+                "to": "./ico.png"
+            },
+            {
+                "from": "assets/",
+                "to": "assets/",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "main/cores",
+                "to": "main/cores",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "plus/",
+                "to": "plus/",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "svgs/",
+                "to": "svgs/",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "./register-url-win.bat",
+                "to": "./"
+            }
+        ],
+        "productName": "Freedom Guard",
+        "appId": "guard.freedom.com",
+        "artifactName": "freedom-guard-${os}.${ext}",
+        "asar": true,
+        "directories": {
+            "output": "dist"
+        },
+        "win": {
+            "icon": "ico.png",
+            "target": "nsis",
+            "requestedExecutionLevel": "requireAdministrator",
+            "legalTrademarks": "(c) 2024 fwldom.github.io/Freedom",
+            "publisherName": "Freedom Guard (fwldom)"
+        },
+        "nsis": {
+            "allowToChangeInstallationDirectory": true,
+            "oneClick": false,
+            "license": "./license.html"
+        },
+        "linux": {
+            "icon": "ico.png",
+            "target": "deb",
+            "category": "VPN",
+            "publish": false
+        },
+        "publish": {
+            "provider": "github",
+            "publishAutoUpdate": false
+        },
+        "files": [
+            "assets/**/*",
+            "plus/**/*",
+            "!assets/bin/*",
+            "!dist/",
+            "node_modules/boxicons/css/boxicons.min.css",
+            "node_modules/**/*",
+            "package.json",
+            "main.js",
+            "rederer.js",
+            "preload.js",
+            "*.js",
+            "*.html",
+            "*.css",
+            "fonts/*.*",
+            "svgs/*.*",
+            "*.png",
+            "*.ico",
+            "!vibe.json",
+            "!warp.json",
+            "!one.one",
+            "*.bat"
+        ]
+    },
+    "dependencies": {
+        "@aptabase/electron": "^0.3.1",
+        "axios": "^1.7.2",
+        "bootstrap-icons": "^1.11.3",
+        "electron-google-analytics": "^1.0.2",
+        "geoip-lite": "^1.4.10",
+        "node-gyp": "^10.1.0",
+        "winreg": "^1.2.5"
+    },
+    "devDependencies": {
+        "electron": "^31.1.0",
+        "fs": "^0.0.1-security"
+    },
+    "bugs": {
+        "url": "https://github.com/fwldom/Freedom-Guard-Electron/issues",
+        "email": "fwldom@duck.com"
+    }
+}
