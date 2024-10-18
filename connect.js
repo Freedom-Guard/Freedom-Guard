@@ -63,6 +63,13 @@ async function Run(nameFile, args, runa, core) {
                 }
             }
         }
+        if (settingWarp["core"] == "auto" | settingWarp["core"] == "warp") {
+            if (data.toString().includes("bind: Only one usage of each socket address")) {
+                SetValueInput("bind-address-text","127.0.0.1:8089")
+                disconnectVPN();
+                Showmess("")
+            }
+        }
         else if (data.toString().includes("CORE STARTED:")) {
             if (await testProxy()) {
                 ConnectedVibe();

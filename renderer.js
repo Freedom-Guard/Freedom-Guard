@@ -74,35 +74,48 @@ document.addEventListener("DOMContentLoaded", () => {
         SetServiceWarp("ipver", document.getElementById("selector-ip-version").value.match(/\d+/g)).toString();
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp";
+        saveSetting();
+
     };
     document.getElementById("end-point-address").onchange = () => {
         SetServiceWarp("endpoint", document.getElementById("end-point-address").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
+        saveSetting();
+
     };
     document.getElementById("bind-address-text").onchange = () => {
         SetServiceWarp("proxy", document.getElementById("bind-address-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
+        saveSetting();
     };
     document.getElementById("warp-key-text").onchange = () => {
         SetServiceWarp("warpkey", document.getElementById("warp-key-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
+        saveSetting();
+
     };
     document.getElementById("dns-warp-text").onchange = () => {
         SetServiceWarp("dns", document.getElementById("dns-warp-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
+        saveSetting();
+
     };
     document.getElementById("scan-rtt-text").onchange = () => {
         SetServiceWarp("scanrtt", document.getElementById("scan-rtt-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
+        saveSetting();
+
     };
     document.getElementById("config-fg-text").onchange = () => {
         SetServiceWarp("configfg", document.getElementById("config-fg-text").value);
         settingWarp["core"] = "auto";
+        saveSetting();
+
     };
     document.getElementById("reset-setting-warp-btn").onclick = () => {
         console.log("Reseting setting Warp ....")
