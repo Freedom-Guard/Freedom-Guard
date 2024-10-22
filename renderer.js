@@ -514,11 +514,13 @@ document.getElementById("menu-exit").onclick = () => {
 document.getElementById("menu-exit-app").onclick = () => {
     ipc.send("exit-app", "")
 };
-//#endregion
+// #endregion
 // #region Section Freedom-Vibe
 
 var configsVibeName = [
     "Auto",
+    "VPN | FAIL",
+    "V2RAY | COLLECT",
     "TVC | MIX",
     "Free | Sub V2ray",
     "AzadNet | META IRAN",
@@ -526,9 +528,12 @@ var configsVibeName = [
     "TELEGRAM | V2RAY",
     "TVC | VLESS",
     "ALL | FREE",
+
 ];
 var configsVibeLink = [
     "auto",
+    "https://raw.githubusercontent.com/itsyebekhe/vpnfail/refs/heads/main/subscription/base64",
+    "https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity",
     "https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
     "https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",
     "https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",

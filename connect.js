@@ -29,6 +29,44 @@ function changeISP(newisp) {
     saveSetting();
     Onloading();
 };
+async function checkDataOut(data, core) {
+    if (core == "warp") {
+        if (data.toString().includes("serving proxy")) {
+            if (process.platform == "linux" && !settingWarp["tun"]) {
+                exec("bash " + path.join(__dirname, "assets", "bash", "set_proxy.sh") + ` ${settingWarp["proxy"].replace(":", " ")}`);
+                if (await testProxy()) {
+                    ConnectedWarp();
+                }
+            }
+            else if (process.platform == "win32" && !settingWarp["tun"]) {
+                console.log("set proxy");
+                setProxy(settingWarp["proxy"]);
+                if (await testProxy()) {
+                    ConnectedWarp();
+                }
+            }
+        }
+        if (data.toString().includes("bind: Only one usage of each socket address")) {
+            SetValueInput("bind-address-text", `127.0.0.1:${Math.floor(Math.random() * 6000)}`)
+            disconnectVPN();
+            setTimeout(() => {
+                connect(core)
+            }, 5000);
+            Showmess("")
+        }
+    }
+    else if (core == "vibe") {
+        if (data.toString().includes("CORE STARTED:")) {
+            if (await testProxy()) {
+                ConnectedVibe();
+                setTimeout(() => {
+                    testProxy();
+                }, 5000);
+            }
+        }
+    }
+
+}
 async function Run(nameFile, args, runa, core) {
     console.log("Runing New Process...");
     KillProcess(core = core);
@@ -47,62 +85,17 @@ async function Run(nameFile, args, runa, core) {
         } else childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
     }
     childProcess.stdout.on('data', async (data) => {
-        console.log(`stdout: ${data}`);
-        if (data.toString().includes("serving proxy")) {
-            if (process.platform == "linux" && !settingWarp["tun"]) {
-                exec("bash " + path.join(__dirname, "assets", "bash", "set_proxy.sh") + ` ${settingWarp["proxy"].replace(":", " ")}`);
-                if (await testProxy()) {
-                    ConnectedWarp();
-                }
-            }
-            else if (process.platform == "win32" && !settingWarp["tun"]) {
-                console.log("set proxy");
-                setProxy(settingWarp["proxy"]);
-                if (await testProxy()) {
-                    ConnectedWarp();
-                }
-            }
-        }
-        if (settingWarp["core"] == "auto" | settingWarp["core"] == "warp") {
-            if (data.toString().includes("bind: Only one usage of each socket address")) {
-                SetValueInput("bind-address-text","127.0.0.1:8089")
-                disconnectVPN();
-                Showmess("")
-            }
-        }
-        else if (data.toString().includes("CORE STARTED:")) {
-            if (await testProxy()) {
-                ConnectedVibe();
-            }
-        }
+        checkDataOut(data.toString(), core);
     });
     childProcess.stderr.on('data', async (data) => {
         if (data instanceof Buffer) {
             data = data.toString(); // Convert Buffer to string
         }
-        console.error(`stderr: ${data}`);
-        if (data.toString().includes("serving proxy")) {
-            if (process.platform == "linux" && !settingWarp["tun"]) {
-                exec("bash " + path.join(__dirname, "assets", "bash", "set_proxy.sh") + ` ${settingWarp["proxy"].replace(":", " ")}`);
-                if (await testProxy()) {
-                    ConnectedWarp();
-                }
-            }
-            else if (process.platform == "win32" && !settingWarp["tun"]) {
-                console.log("set proxy");
-                setProxy(settingWarp["proxy"]);
-                if (await testProxy()) {
-                    ConnectedWarp();
-                }
-            }
-        }
-        else if (data.toString().includes("CORE STARTED:")) {
-            ConnectedVibe();
-        }
+        checkDataOut(data, core);
     });
     childProcess.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
-        if ((StatusGuard || settingVibe["status"]) & settingWarp["core"] == "auto") {
+        if ((StatusGuard || settingVibe["status"]) & (settingWarp["core"] == "auto" || settingWarp["core"] == "warp")) {
             sect == "main" ? connectAuto(number + 1) : disconnectVPN("");
         }
         else if (settingVibe["config"] != "auto") {
@@ -299,7 +292,7 @@ function disconnectVPN() {
         sect == "main" ? SetAnim("ChangeStatus", "") : ("");
     }, 3500);
 }
-async function connect(core = 'warp', config = 'auto', os = process.platform, num) {
+async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0) {
     if (core == "warp") await connectWarp(num);
     else if (core == "vibe") await connectVibe(num);
     else if (core == "auto") await connectAuto(num);
@@ -319,45 +312,23 @@ function RefreshLinks() {
     reqRefreshLinks.send();
 }
 async function connectAuto(num = 0) {
-    number = num;
+    number = num; // Number of try: connect
     RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
-    if (settingWarp["isp"] == "MCI") {
-        if (links["MCI"].lenght <= num) { disconnectVPN(); return true };
-        const configType = links["MCI"][num].split(",")[0];
-        if (configType == "warp") {
-            settingWarp[links["MCI"][num].split(",")[1]] = links["MCI"][num].split(",")[2] == "true" ? true : links["MCI"][num].split(",")[2];
-        } else if (configType == "vibe") {
-            settingVibe["config"] = links["MCI"][num].split(",")[1];
-        }
-        ResetArgsVibe();
-        ResetArgsWarp();
-        await connect(configType, num = num);
+    const configType = links[settingWarp["isp"]][num].split(",")[0];
+
+
+    if (links[settingWarp["isp"]].length <= num) { disconnectVPN(); return true };
+    if (configType == "warp") {
+        settingWarp[links[settingWarp["isp"]][num].split(",")[1]] = links[settingWarp["isp"]][num].split(",")[2] == "true" ? true : links[settingWarp["isp"]][num].split(",")[2];
+    } else if (configType == "vibe") {
+        settingVibe["config"] = links[settingWarp["isp"]][num].split(",")[1];
     }
-    else if (settingWarp["isp"] == ("IRANCELL")) {
-        if (links["IRANCELL"].lenght <= num) { disconnectVPN(); return true };
-        const configType = links["IRANCELL"][num].split(",")[0];
-        if (configType == "warp") {
-            settingWarp[links["IRANCELL"][num].split(",")[1]] = links["IRANCELL"][num].split(",")[2] == "true" ? true : links["IRANCELL"][num].split(",")[2];
-        } else if (configType == "vibe") {
-            settingVibe["config"] = links["IRANCELL"][num].split(",")[1];
-        }
-        ResetArgsVibe();
-        ResetArgsWarp();
-        await connect(configType, num = num);
-    }
-    else {
-        if (links["other"].lenght <= num) { disconnectVPN(); return true };
-        const configType = links["other"][num].split(",")[0];
-        if (configType == "warp") {
-            settingWarp[links["other"][num].split(",")[1]] = links["other"][num].split(",")[2] == "true" ? true : links["other"][num].split(",")[2];
-        } else if (configType == "vibe") {
-            settingVibe["config"] = links["other"][num].split(",")[1];
-        }
-        ResetArgsVibe();
-        ResetArgsWarp();
-        await connect(configType, num = num);
-    }
+    
+    ResetArgsVibe();
+    ResetArgsWarp();
+    await connect(configType, num = num);
+
 }
 async function connectVibe(num = number) {
     console.log("Start Vibe Server");
@@ -635,7 +606,7 @@ var links = {
         3: "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
         4: "vibe,https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/mix",
         5: "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/base64/vless",
-        lenght: 6
+        length: 6
     },
     IRANCELL: {
         0: "warp,auto,true",
@@ -646,7 +617,7 @@ var links = {
         5: "warp,scan,true",
         6: "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
         7: "warp,reserved,true",
-        lenght: 8
+        length: 8
     },
     other: {
         0: "warp,auto",
@@ -656,7 +627,7 @@ var links = {
         4: "warp,reserved,true",
         5: "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
         6: "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
-        lenght: 7
+        length: 7
     }
 }
 //#endregion
