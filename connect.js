@@ -65,7 +65,7 @@ async function checkDataOut(data, core) {
             }
         }
     }
-
+    console.log(data)
 }
 async function Run(nameFile, args, runa, core) {
     console.log("Runing New Process...");
@@ -95,7 +95,7 @@ async function Run(nameFile, args, runa, core) {
     });
     childProcess.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
-        if ((StatusGuard || settingVibe["status"]) & (settingWarp["core"] == "auto" || settingWarp["core"] == "warp")) {
+        if ((StatusGuard || settingVibe["status"]) & (settingWarp["core"] == "auto")) {
             sect == "main" ? connectAuto(number + 1) : disconnectVPN("");
         }
         else if (settingVibe["config"] != "auto") {
@@ -292,9 +292,9 @@ function disconnectVPN() {
         sect == "main" ? SetAnim("ChangeStatus", "") : ("");
     }, 3500);
 }
-async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0) {
-    if (core == "warp") await connectWarp(num);
-    else if (core == "vibe") await connectVibe(num);
+async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
+    if (core == "warp") await connectWarp(num, mode = mode);
+    else if (core == "vibe") await connectVibe(num,mode);
     else if (core == "auto") await connectAuto(num);
 }
 var number = 0
@@ -307,11 +307,14 @@ function RefreshLinks() {
             console.log("Links Refreshed");
         } else {
             console.log("Error Refreshing Links");
+            Showmess("Error Refreshing Links")
         }
     }
     reqRefreshLinks.send();
 }
-async function connectAuto(num = 0) {
+var modeConn = "normal";
+async function connectAuto(num = 0, mode = 'normal') {
+    modeConn = mode;
     number = num; // Number of try: connect
     RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
@@ -324,14 +327,19 @@ async function connectAuto(num = 0) {
     } else if (configType == "vibe") {
         settingVibe["config"] = links[settingWarp["isp"]][num].split(",")[1];
     }
-    
+
     ResetArgsVibe();
     ResetArgsWarp();
-    await connect(configType, num = num);
+    await connect(configType, num = num, mode = modeConn);
 
 }
-async function connectVibe(num = number) {
+async function connectVibe(num = number,mode='normal') {
     console.log("Start Vibe Server");
+    if (sect == "main") {
+        if (mode=="try") {
+            settingVibe["status"] = false;
+        }
+    }
     // this is For Connect To Freedom-Vibe
     if (settingVibe["status"] == false) {
         KillProcess("vibe");
@@ -392,7 +400,7 @@ async function connectVibe(num = number) {
                 else {
                     Showmess(5000, "Next Config...");
                     if (settingWarp["core"] == "auto") {
-                        connectAuto(num + 1);
+                        await connectAuto(num + 1);
                     }
                 }
             }
@@ -404,56 +412,78 @@ async function connectVibe(num = number) {
         disconnectVPN();
     }
 };
-async function connectWarp(num) {
-    // Function Connect To Warp
+async function timeout(promise, ms) {
+    const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => reject(new Error('Timeout exceeded')), ms);
+    });
+
+    return Promise.race([promise, timeoutPromise]);
+};
+async function connectWarp(num = 0, mode = 'normal') {
     console.log("Start Warp Server");
-    if (StatusGuard == false) {
-        sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
+    if (sect === "main") {
+        if (modeConn == "try") {
+            console.log("trying mode...")
+            StatusGuard = false;
+        }
+    }
+    if (!StatusGuard) {
+        if (sect === "main") {
+            SetAnim("ChangeStatus", "Connect 7s infinite");
+        }
+
         // Start warp plus
-        Run("warp-plus.exe", argsWarp, (settingWarp["tun"]) ? "admin" : "user", "warp");
-        // Set System Proxy
-        testProxy();
+        Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
         StatusGuard = true;
-        await sleep(10000);
-        if (await testProxy() == true) {
+        await testProxy();
+        console.log("Start Testing Warp...");
+        await testProxy();
+        await testProxy();
+        if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");
-            sect == "main" ? SetAnim("ChangeStatus", "Load") : ("");
-            sect == "main" ? SetBorderColor("ChangeStatus", "#15ff00") : ("");
-        }
-        else {
-            console.log("try again");
-            if (StatusGuard == true) {
-                Onloading();
-                if (settingWarp["core"] == "auto") {
-                    connectAuto(number + 1);
-                } else {
-                    FindBestEndpointWarp("conn");
-                    Showmess(5000, "Finding Endpoint Warp ...")
-                }
+            if (sect === "main") {
+                SetAnim("ChangeStatus", "Load");
+                SetBorderColor("ChangeStatus", "#15ff00");
             }
-            else {
-                console.log("failed");
-                disconnectVPN()
+        } else {
+            console.log("Connection failed, trying again...");
+            if (settingWarp["core"] === "auto") {
+                connectAuto(num + 1, mode = 'try'); // Increment the connection attempt number
+            } else {
+                FindBestEndpointWarp("conn");
+                Showmess(5000, "Finding Endpoint Warp ...");
             }
+
         }
+
     } else {
-        sect == "main" ? SetAnim("ChangeStatus", "Connect 7s ease-in-out") : ("");
-        sect == "main" ? SetAttr("ChangeStatus", "style", "border-color:;") : ("");
-        if (process.platform == "linux") {
-            exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
+        if (sect === "main") {
+            SetAnim("ChangeStatus", "Connect 7s ease-in-out");
+            SetAttr("ChangeStatus", "style", "border-color:;");
         }
-        else {
+
+        if (process.platform === "linux") {
+            exec(`bash ${path.join(__dirname, "assets", "bash", "reset_proxy.sh")}`);
+        } else {
             offProxy(settingWarp["proxy"]);
-        };
-        sect == "main" ? SetAnim("ChangeStatus", "Connect 5s") : ("");
+        }
+
+        if (sect === "main") {
+            SetAnim("ChangeStatus", "Connect 5s");
+        }
+
         setTimeout(() => {
-            sect == "main" ? SetAnim("ChangeStatus", "") : ("");
-            StatusGuard = false;
+            if (sect === "main") {
+                SetAnim("ChangeStatus", "");
+            }
         }, 3500);
-        disconnectVPN()
+        StatusGuard = false;
+
+        disconnectVPN();
     }
-};
+}
+
 // #endregion
 // #region Reset Args
 function ResetArgsVibe(config = "auto") {
@@ -582,7 +612,7 @@ var settingWarp = {
     startup: "warp",
     isp: "other",
     core: "auto",
-    "configfg": "https://raw.githubusercontent.com/fwldom/Freedom-Guard/main/config/links.json"
+    "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
 };
 var argsWarp = [""];
 var argsVibe = [""];
