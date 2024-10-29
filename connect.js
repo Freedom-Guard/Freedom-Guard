@@ -12,7 +12,7 @@ const Winreg = require('winreg');
 // #endregion
 // #region Functions
 var childProcess = null;
-function KillProcess(core = "warp") {
+async function KillProcess(core = "warp") {
     if (childProcess != null) {
         if (process.platform === 'win32') {
             exec('taskkill /IM ' + (core == "warp" ? "warp-plus.exe" : "HiddifyCli.exe") + ' /F /T'); // Windows
@@ -22,6 +22,7 @@ function KillProcess(core = "warp") {
         childProcess.kill();
         childProcess = null;
     }
+    console.log("Killed process...")
 };
 function changeISP(newisp) {
     console.log("NEW ISP IS: " + newisp)
@@ -46,7 +47,7 @@ async function checkDataOut(data, core) {
                 }
             }
         }
-        if (data.toString().includes("bind: Only one usage of each socket address")) {
+        if (data.includes("bind: Only one usage of each socket address")) {
             SetValueInput("bind-address-text", `127.0.0.1:${Math.floor(Math.random() * 6000)}`)
             disconnectVPN();
             setTimeout(() => {
@@ -67,9 +68,9 @@ async function checkDataOut(data, core) {
     }
     console.log(data)
 }
-async function Run(nameFile, args, runa, core) {
+async function Run(nameFile, args, runa = 'user', core) {
     console.log("Runing New Process...");
-    KillProcess(core = core);
+    //  await KillProcess(core = core);
     console.log(path.join(__dirname, "main", "cores", core, nameFile) + " " + args);
     var exePath = `"${path.join(__dirname, "main", "cores", core, nameFile)}"`; // Adjust the path to your .exe file
     if (process.platform == "linux") {
@@ -93,12 +94,12 @@ async function Run(nameFile, args, runa, core) {
         }
         checkDataOut(data, core);
     });
-    childProcess.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
+    childProcess.title = core;
+    childProcess.on('close', (code, name) => {
+        console.log(`child process exited with code ${code + " | " + core}`);
         if ((StatusGuard || settingVibe["status"]) & (settingWarp["core"] == "auto")) {
-            sect == "main" ? connectAuto(number + 1) : disconnectVPN("");
         }
-        else if (settingVibe["config"] != "auto") {
+        else if (settingWarp["core"] != "auto") {
             sect == "main" ? disconnectVPN(mode = "try") : disconnectVPN();
         }
     });
@@ -265,12 +266,6 @@ function disconnectVPN() {
     console.log("Disconnecting VPN");
     KillProcess(core = "warp");
     KillProcess(core = "vibe");
-    if (process.platform == "linux") {
-        exec("pkill HiddifyCli");
-    }
-    else {
-        exec("taskkill /IM " + "HiddifyCli.exe" + " /F");
-    }
     //Disable the proxy settings
     offProxy(settingWarp["proxy"]);
     //Remove the box shadow and animation from the vibe status element
@@ -294,10 +289,9 @@ function disconnectVPN() {
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
     if (core == "warp") await connectWarp(num, mode = mode);
-    else if (core == "vibe") await connectVibe(num,mode);
-    else if (core == "auto") await connectAuto(num);
+    else if (core == "vibe") await connectVibe(num, mode);
+    else if (core == "auto") connectAuto(num);
 }
-var number = 0
 function RefreshLinks() {
     reqRefreshLinks = new XMLHttpRequest();
     reqRefreshLinks.open('GET', settingWarp["configfg"], true);
@@ -313,7 +307,8 @@ function RefreshLinks() {
     reqRefreshLinks.send();
 }
 var modeConn = "normal";
-async function connectAuto(num = 0, mode = 'normal') {
+var number = 0;
+function connectAuto(num = 0, mode = 'normal') {
     modeConn = mode;
     number = num; // Number of try: connect
     RefreshLinks();
@@ -321,7 +316,7 @@ async function connectAuto(num = 0, mode = 'normal') {
     const configType = links[settingWarp["isp"]][num].split(",")[0];
 
 
-    if (links[settingWarp["isp"]].length <= num) { disconnectVPN(); return true };
+    if (links[settingWarp["isp"]].length < num) { disconnectVPN(); return true };
     if (configType == "warp") {
         settingWarp[links[settingWarp["isp"]][num].split(",")[1]] = links[settingWarp["isp"]][num].split(",")[2] == "true" ? true : links[settingWarp["isp"]][num].split(",")[2];
     } else if (configType == "vibe") {
@@ -330,19 +325,54 @@ async function connectAuto(num = 0, mode = 'normal') {
 
     ResetArgsVibe();
     ResetArgsWarp();
-    await connect(configType, num = num, mode = modeConn);
+    connect(configType, num = num, mode = modeConn);
 
 }
-async function connectVibe(num = number,mode='normal') {
-    console.log("Start Vibe Server");
+async function connectVibe(num = number, mode = 'normal') {
     if (sect == "main") {
-        if (mode=="try") {
+        if (mode == "try") {
             settingVibe["status"] = false;
+        }
+    }
+    if (settingVibe["status"] == false && settingWarp["core"] == "auto") {
+        if (process.platform == "linux") {
+            exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
+        }
+        else {
+            offProxy(settingWarp["proxy"]);
+        };
+        sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
+        Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
+        settingVibe["status"] = true;
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        console.log("Testing vibe...")
+        if (await testProxy()) {
+            Showmess(5000, "⚡Connected Vibe⚡");
+            trackEvent("connected-vibe-auto");
+            if (sect === "main") {
+                SetAnim("ChangeStatus", "Load");
+                SetBorderColor("ChangeStatus", "#15ff00");
+                ConnectedVibe();
+            }
+            else {
+                console.log("trying vibe...");
+                StatusGuard = false;
+                settingVibe["status"] = false
+                connectAuto(number + 1, mode = 'try'); // Increment the connection attempt number
+            }
         }
     }
     // this is For Connect To Freedom-Vibe
     if (settingVibe["status"] == false) {
-        KillProcess("vibe");
         if (process.platform == "linux") {
             exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
         }
@@ -389,10 +419,21 @@ async function connectVibe(num = number,mode='normal') {
         for (var config of configs) {
             ResetArgsVibe(config);
             Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
-            await sleep(25000);
             settingVibe["status"] = true;
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
+            await testProxy();
             if (settingVibe["status"] == true) {
-                await sleep(5000);
                 if (await testProxy()) {
                     ConnectedVibe();
                     break;
@@ -400,7 +441,7 @@ async function connectVibe(num = number,mode='normal') {
                 else {
                     Showmess(5000, "Next Config...");
                     if (settingWarp["core"] == "auto") {
-                        await connectAuto(num + 1);
+                        connectAuto(number + 1, mode = 'try');
                     }
                 }
             }
@@ -420,14 +461,41 @@ async function timeout(promise, ms) {
     return Promise.race([promise, timeoutPromise]);
 };
 async function connectWarp(num = 0, mode = 'normal') {
-    console.log("Start Warp Server");
-    if (sect === "main") {
-        if (modeConn == "try") {
-            console.log("trying mode...")
-            StatusGuard = false;
+    if (settingWarp["core"] == "auto" & !StatusGuard) {
+        console.log("Starting warp server on Auto mode...")
+        StatusGuard = true;
+        if (sect === "main") {
+            SetAnim("ChangeStatus", "Connect 7s infinite");
         }
+        Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        await testProxy();
+        console.log("Testing warp...")
+        if (await testProxy() & StatusGuard == true) {
+            Showmess(5000, "Connected Warp");
+            trackEvent("connected-warp");
+            if (sect === "main") {
+                SetAnim("ChangeStatus", "Load");
+                SetBorderColor("ChangeStatus", "#15ff00");
+                ConnectedWarp();
+            }
+        }
+        else {
+            console.log("trying warp...");
+            StatusGuard = false;
+            settingVibe["status"] = false
+            connectAuto(number + 1, mode = 'try'); // Increment the connection attempt number
+        }
+
     }
-    if (!StatusGuard) {
+    else if (!StatusGuard & settingWarp["core"] == "warp") {
+        console.log("Stating warp server on warp mode...")
         if (sect === "main") {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
@@ -439,6 +507,11 @@ async function connectWarp(num = 0, mode = 'normal') {
         console.log("Start Testing Warp...");
         await testProxy();
         await testProxy();
+        await testProxy();
+        await testProxy(); await testProxy();
+        await testProxy(); await testProxy();
+        await testProxy();
+        await sleep(5000);
         if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");
@@ -449,7 +522,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         } else {
             console.log("Connection failed, trying again...");
             if (settingWarp["core"] === "auto") {
-                connectAuto(num + 1, mode = 'try'); // Increment the connection attempt number
+                connectAuto(number + 1, mode = 'try'); // Increment the connection attempt number
             } else {
                 FindBestEndpointWarp("conn");
                 Showmess(5000, "Finding Endpoint Warp ...");
@@ -528,10 +601,6 @@ write_file = function (path, output) {
 }
 function ResetArgsWarp() {
     argsWarp = [];
-    if (settingWarp["proxy"] != "127.0.0.1:8086" & settingWarp["proxy"] != "") {
-        argsWarp.push("--bind");
-        argsWarp.push(settingWarp["proxy"]);
-    }
     if (settingWarp["gool"]) {
         argsWarp.push("--gool");
     }
@@ -584,6 +653,10 @@ function ResetArgsWarp() {
     if (settingWarp["tun"]) {
         argsWarp.push("--tun-experimental");
     };
+    if (settingWarp["proxy"] != "127.0.0.1:8086" & settingWarp["proxy"] != "") {
+        argsWarp.push("--bind");
+        argsWarp.push(settingWarp["proxy"]);
+    }
 };
 // #endregion
 // #region vars
@@ -685,6 +758,7 @@ module.exports = {
     FindBestEndpointWarp,
     setProxy,
     offProxy,
-    Onloading
+    Onloading,
+    links
 };
 // End Code

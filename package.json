@@ -1,4 +1,5 @@
-{    "name": "freedom-guard",
+{
+    "name": "freedom-guard",
     "productName": "Freedom Guard",
     "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
     "keywords": [],
@@ -14,12 +15,8 @@
     "build": {
         "protocols": [
             {
-                "name": "freedom-guard",
-                "schemes": [
-                    "vibe",
-                    "warp",
-                    "get"
-                ]
+                "name": "freedom guard",
+                "schemes": ["freedom-guard"]
             }
         ],
         "extraResources": [

@@ -94,7 +94,7 @@ if (!gotTheLock) {
       if (mainWindow.isMinimized()) mainWindow.restore()
       mainWindow.focus()
     }
-    mainWindow.webContents.send('start-link', commandLine.pop() + "s");
+    mainWindow.webContents.send('start-link', commandLine.pop());
   })
 }
 let tray

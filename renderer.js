@@ -19,13 +19,13 @@ const versionapp = "1.3.1";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
-var { Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('./connect.js');
+var { settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('./connect.js');
 // #endregion
 // #region Global Var
 __dirname = __dirname.replace("app.asar", "")
 var Psicountry = ["IR", "AT", "BE", "BG", "BR", "CA", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "HU", "HR", "IE", "IN", "IT", "JP", "LV", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SG", "SK", "UA", "US"];
 var PsicountryFullname = ["Auto Server", "Austria", "Belgium", "Bulgaria", "Brazil", "Canada", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia", "Spain", "Finland", "France", "United Kingdom", "Hungary", "Croatia", "Ireland", "India", "Italy", "Japan", "Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Serbia", "Sweden", "Singapore", "Slovakia", "Ukraine", "United States"];
-var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg","13.jpg","14.jpg","15.jpg","16.jpg"];
+var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg"];
 // #endregion
 // #region all Listener
 document.addEventListener("DOMContentLoaded", () => {
@@ -256,7 +256,7 @@ function Onload() {
             }, 1500);
         }
     };
-  
+
 };
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * backgroundList.length);
@@ -714,8 +714,45 @@ ipcRenderer.on('set-warp-true', (event, key) => {
     ResetArgsWarp();
     SetSettingWarp();
 });
+function getQueryParams(url) {
+    const params = {};
+    const arrayUrl = url.split("&")
+    arrayUrl.forEach(para => {
+        var divPara = para.split("=");
+        params[divPara[0]] = divPara[1];
+    });
+    return params;
+}
+var queryParams = getQueryParams(window.location.href);
 ipcRenderer.on('start-link', (event, link) => {
-    alert(link);
+    link = link.replaceAll("/", "").replace("freedom-guard:", "").replace("?", "");
+    queryParams = getQueryParams(link);
+    if (queryParams["core"] == "vibe") {
+        Object.entries(queryParams).forEach(para => {
+            settingVibe[para[0]] = para[1];
+        });
+        ResetArgsVibe();
+        if (queryParams["type"] == "connect") {
+            settingWarp["core"] = queryParams["core"];
+            ResetArgsWarp();
+            SetSettingWarp();
+            saveSetting();
+            connectAuto();
+        }
+    }
+    else {
+        Object.entries(queryParams).forEach(para => {
+            settingWarp[para[0]] = para[1];
+        })
+        if (queryParams["type"] == "connect") {
+            settingWarp["core"] = queryParams["core"];
+            ResetArgsWarp();
+            SetSettingWarp();
+            saveSetting();
+            connectAuto();
+        }
+    }
+
 });
 // #endregion
 // #region Interval Timers and Loads
