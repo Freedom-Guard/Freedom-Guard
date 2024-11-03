@@ -1,5 +1,50 @@
 
 // Start Code
+// #region vars
+var childProcess = null;
+var isp = "other";
+var StatusGuard = false;
+var AssetsPath = path.join(__dirname, "assets");
+var settingWarp = {
+    proxy: "127.0.0.1:8086",
+    gool: false,
+    scan: false,
+    endpoint: "",
+    cfon: false,
+    cfonc: "IR",
+    ipver: 4,
+    warpver: "",
+    warpkey: "",
+    scanrtt: "",
+    verbose: false,
+    cache: "",
+    wgconf: "",
+    config: "",
+    reserved: "",
+    dns: "",
+    tun: false,
+    startup: "warp",
+    isp: "other",
+    core: "auto",
+    "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
+};
+var argsWarp = [""];
+var argsVibe = [""];
+var settingVibe = {
+    "status": false,
+    "config": "auto",
+    "fragment": false,
+    "fragment-size": "",
+    "dns-direct": "",
+    "dns-remote": "",
+    "tun": false
+};
+var testproxystat = false;
+var countryIP = "";
+var filterBypassStat = false;
+var links = [];
+
+//#endregion
 // #region Libraries
 __dirname = __dirname.replace("app.asar", "")
 const geoip = require('geoip-lite');
@@ -288,18 +333,23 @@ function disconnectVPN() {
     }, 3500);
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
-    if (core == "warp") await connectWarp(num, mode = mode);
-    else if (core == "vibe") await connectVibe(num, mode);
+    if (core == "warp") connectWarp(num, mode = mode);
+    else if (core == "vibe") connectVibe(num, mode);
     else if (core == "auto") connectAuto(num);
 }
-function RefreshLinks() {
+async function RefreshLinks() {
     reqRefreshLinks = new XMLHttpRequest();
     reqRefreshLinks.open('GET', settingWarp["configfg"], true);
     reqRefreshLinks.onload = function () {
         if (reqRefreshLinks.status >= 200 && reqRefreshLinks.status < 400) {
             links = JSON.parse(reqRefreshLinks.responseText);
             console.log("Links Refreshed");
+            console.log(links);
+            write_file("links.json", JSON.stringify(reqRefreshLinks.responseText));
         } else {
+            try { links = JSON.parse(read_file("links.json")); } catch {
+                write_file("links.json", JSON.stringify(links));
+            }
             console.log("Error Refreshing Links");
             Showmess("Error Refreshing Links")
         }
@@ -308,10 +358,10 @@ function RefreshLinks() {
 }
 var modeConn = "normal";
 var number = 0;
-function connectAuto(num = 0, mode = 'normal') {
+async function connectAuto(num = 0, mode = 'normal') {
     modeConn = mode;
     number = num; // Number of try: connect
-    RefreshLinks();
+    await RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
     const configType = links[settingWarp["isp"]][num].split(",")[0];
 
@@ -659,82 +709,6 @@ function ResetArgsWarp() {
     }
 };
 // #endregion
-// #region vars
-var childProcess = null;
-var isp = "other";
-var StatusGuard = false;
-var AssetsPath = path.join(__dirname, "assets");
-var settingWarp = {
-    proxy: "127.0.0.1:8086",
-    gool: false,
-    scan: false,
-    endpoint: "",
-    cfon: false,
-    cfonc: "IR",
-    ipver: 4,
-    warpver: "",
-    warpkey: "",
-    scanrtt: "",
-    verbose: false,
-    cache: "",
-    wgconf: "",
-    config: "",
-    reserved: "",
-    dns: "",
-    tun: false,
-    startup: "warp",
-    isp: "other",
-    core: "auto",
-    "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
-};
-var argsWarp = [""];
-var argsVibe = [""];
-var settingVibe = {
-    "status": false,
-    "config": "auto",
-    "fragment": false,
-    "fragment-size": "",
-    "dns-direct": "",
-    "dns-remote": "",
-    "tun": false
-};
-var testproxystat = false;
-var countryIP = "";
-var filterBypassStat = false;
-var links = {
-    MCI: {
-        0: "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
-        1: "vibe,https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",
-        2: "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
-        3: "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
-        4: "vibe,https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/mix",
-        5: "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/base64/vless",
-        length: 6
-    },
-    IRANCELL: {
-        0: "warp,auto,true",
-        1: "warp,gool,true",
-        2: "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
-        3: "warp,endpoint,engage.cloudflareclient.com:2408",
-        4: "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
-        5: "warp,scan,true",
-        6: "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
-        7: "warp,reserved,true",
-        length: 8
-    },
-    other: {
-        0: "warp,auto",
-        1: "warp,endpoint,engage.cloudflareclient.com:2408",
-        2: "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
-        3: "warp,gool,true",
-        4: "warp,reserved,true",
-        5: "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
-        6: "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
-        length: 7
-    }
-}
-//#endregion
-Onloading();
 module.exports = {
     connectVibe,
     connectWarp,
@@ -759,6 +733,10 @@ module.exports = {
     setProxy,
     offProxy,
     Onloading,
-    links
+    links,
+    RefreshLinks
 };
+// Onloading
+Onloading();
+RefreshLinks();
 // End Code

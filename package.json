@@ -107,7 +107,8 @@
             "!vibe.json",
             "!warp.json",
             "!one.one",
-            "*.bat"
+            "*.bat",
+            "!links.json"
         ]
     },
     "dependencies": {

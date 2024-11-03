@@ -19,7 +19,7 @@ const versionapp = "1.3.1";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
-var { settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('./connect.js');
+var { RefreshLinks,settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp }  = require('./connect.js');
 // #endregion
 // #region Global Var
 __dirname = __dirname.replace("app.asar", "")
@@ -149,6 +149,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const randomImage = getRandomImage();
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundImage = `url(${randomImage}), linear-gradient(180deg, #252C37 0%, rgba(35, 31, 88, 0.5) 35%, rgba(0, 212, 255, 0.4) 100%)`;
+    }
+    document.getElementById("refresh-link-btn").onclick = () => {
+        RefreshLinks();
+        Showmess(5000, "Refreshed links", "success");
     }
 });
 // #endregion
