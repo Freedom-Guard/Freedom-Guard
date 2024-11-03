@@ -1,6 +1,6 @@
 {
     "MCI": {
-        "0": "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
+        "0": "vibe,https://raw.githubusercontent.com/imyebekhe/vpn-fail/refs/heads/main/sub-link",
         "1": "vibe,https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",
         "2": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
         "3": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
@@ -23,7 +23,7 @@
         "0": "warp,scan,true",
         "1": "warp,gool,true",
         "2": "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
-        "3": "vibe,https://raw.githubusercontent.com/itsyebekhe/vpnfail/refs/heads/main/subscription/base64",
+        "3": "vibe,https://raw.githubusercontent.com/imyebekhe/vpn-fail/refs/heads/main/sub-link",
         "4": "warp,reserved,true",
         "5": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
         "6": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
