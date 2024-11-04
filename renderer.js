@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
             startup: "warp",
             isp: "other",
             core: "auto",
-            "configfg": "https://raw.githubusercontent.com/fwldom/Freedom-Guard/main/config/links.json"
+            "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
         };
         saveSetting();
         SetSettingWarp();
@@ -536,7 +536,7 @@ var configsVibeName = [
 ];
 var configsVibeLink = [
     "auto",
-    "https://raw.githubusercontent.com/itsyebekhe/vpnfail/refs/heads/main/subscription/base64",
+    "https://raw.githubusercontent.com/imyebekhe/vpn-fail/refs/heads/main/sub-link",
     "https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity",
     "https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
     "https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",

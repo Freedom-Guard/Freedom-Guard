@@ -115,7 +115,9 @@ async function checkDataOut(data, core) {
 }
 async function Run(nameFile, args, runa = 'user', core) {
     console.log("Runing New Process...");
-    //  await KillProcess(core = core);
+    await KillProcess(core = core);
+    await testProxy();
+    await testProxy();
     console.log(path.join(__dirname, "main", "cores", core, nameFile) + " " + args);
     var exePath = `"${path.join(__dirname, "main", "cores", core, nameFile)}"`; // Adjust the path to your .exe file
     if (process.platform == "linux") {
@@ -709,6 +711,7 @@ function ResetArgsWarp() {
     }
 };
 // #endregion
+
 module.exports = {
     connectVibe,
     connectWarp,
