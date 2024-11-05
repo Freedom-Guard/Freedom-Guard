@@ -115,7 +115,7 @@ async function checkDataOut(data, core) {
 }
 async function Run(nameFile, args, runa = 'user', core) {
     console.log("Runing New Process...");
-    await KillProcess(core = core);
+    KillProcess(core = core);
     await testProxy();
     await testProxy();
     console.log(path.join(__dirname, "main", "cores", core, nameFile) + " " + args);

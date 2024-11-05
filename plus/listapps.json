@@ -11,19 +11,19 @@
         "license": "MIT",
         "files": ["https://raw.githubusercontent.com/fwldom/Calculator_Web.github.io/main/index.js", "https://raw.githubusercontent.com/fwldom/Calculator_Web.github.io/main/index.html", "https://raw.githubusercontent.com/fwldom/Calculator_Web.github.io/main/style.css", "https://raw.githubusercontent.com/fwldom/Calculator_Web.github.io/main/icon.png"]
     },
-    "Freedom_Player": {
+    "Freedom Player": {
         "name": "Freedom Player",
         "icon": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom_Player/Freedom_Player.png",
-        "directory": "./apps/Freedom_Player",
+        "directory": "./apps/Freedom Player",
         "type": "app",
         "description": "A Player for music",
         "version": "1.0.0",
         "author": "Freedom-Guard",
         "website": "https://github.com/Freedom-Guard/Freedom-Guard",
         "license": "MIT",
-        "files": ["https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom_Player/index.js",
-        "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom_Player/index.html",
-        "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom_Player/style.css",
-        "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom_Player/Freedom_Player.png"]
+        "files": ["https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom Player/index.js",
+        "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom Player/index.html",
+        "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom Player/style.css",
+        "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom Player/Freedom_Player.png"]
     }
 }

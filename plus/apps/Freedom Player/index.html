@@ -1,6 +1,7 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +9,20 @@
   <link rel="icon" href="./Freedom_Player.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div class="player">
+  <button id="back">Back To Plus</button>
+  <header>
     <h1>Freedom Player</h1>
+    <label for="fileInput"></label>
     <input type="file" id="fileInput" accept="audio/*">
-    <div class="controls">
-      <button id="playButton">Play</button>
-      <button id="pauseButton">Pause</button>
-    </div>
-    <audio id="audioPlayer"></audio>
+  </header>
+  <div class="controls">
+    <button id="playButton">Play</button>
+    <button id="pauseButton">Pause</button>
   </div>
+  <audio id="audioPlayer"></audio>
   <script src="index.js"></script>
 </body>
+
 </html>

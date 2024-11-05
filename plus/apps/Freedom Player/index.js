@@ -22,3 +22,13 @@ window.addEventListener('DOMContentLoaded', () => {
     audioPlayer.pause();
   });
 });
+function CloseToPlus() {
+  try {
+    const ipc = require('electron').ipcRenderer;
+    ipc.send("load-file", "./plus/index.html");
+  }
+  catch { }
+}
+document.getElementById("back").addEventListener("click", function () {
+  CloseToPlus();
+})

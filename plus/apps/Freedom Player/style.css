@@ -1,0 +1,58 @@
+/* style.css */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+
+
+#fileInput {
+  margin: 20px;
+}
+
+.controls button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+header {
+  text-align: center;
+  margin-bottom: auto;
+  display: flex;
+}
+#back {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-family: 'Courier New', monospace;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#back:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+}
+
+#back:active {
+  background-color: #111;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
