@@ -23,7 +23,7 @@
             <td>Windows</td>
             <td>
               <!--  <a href=""><img src="https://img.shields.io/badge/OfficialSetup{Disabled}-x64-0078d7.svg?logo=windows"></a><br>-->
-                <a href="https://github.com/fwldom/Freedom-Guard-Electron/releases/latest/download/freedom-guard-win.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
+                <a href="https://github.com/fwldom/Freedom-Guard/releases/latest/download/freedom-guard-win.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
                <!--<a href=""><img src="https://img.shields.io/badge/Portable{Disabled}-x64-67b7d1.svg?logo=windows"></a>-->
             </td>
         </tr>
