@@ -191,6 +191,7 @@ app.whenReady().then(() => {
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Freedom Guard')
   tray.setTitle('VPN (Warp, Vibe , Psiphon)')
+  
 })
 app.on('ready', createWindow);
 app.on('activate', () => {

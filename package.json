@@ -4,7 +4,7 @@
     "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
     "keywords": [],
     "main": "./main.js",
-    "version": "1.3.2",
+    "version": "1.3.5",
     "author": "fwldom <fwldom@duck.com>",
     "scripts": {
         "start": "npx electron .",
@@ -68,8 +68,8 @@
             "icon": "ico.png",
             "target": "nsis",
             "requestedExecutionLevel": "requireAdministrator",
-            "legalTrademarks": "(c) 2024 fwldom.github.io/Freedom",
-            "publisherName": "Freedom Guard (fwldom)"
+            "legalTrademarks": "(c) 2024 freedom-guard.github.io/Freedom",
+            "publisherName": "Freedom Guard"
         },
         "nsis": {
             "allowToChangeInstallationDirectory": true,

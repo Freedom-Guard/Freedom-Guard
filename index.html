@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freedom Guard (Kian  Version) 1.3.2 </title>
+    <title>Freedom Guard (Yalda Version) 1.3.5</title>
     <link href="boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="ico.png" type="image/png">
@@ -22,8 +22,8 @@
         <div class="content">
             <div class="text" style="margin-bottom: 10vh;" id="text-loading-1">LOADING...</div>
             <div class="text" style="margin-bottom: 10vh;" id="text-loading-2">LOADING...</div>
-            <img src="./assets/iran.jpg" style="justify-self: flex-start;margin-top: auto;" height="25%" id="" alt="">
-            <p>به یاد کیان پیرفلک </p>
+            <img src="./assets/iran.png" style="justify-self: flex-start;margin-top: auto;" height="25%" id="" alt="">
+            <p>به یاد یلدا آقافضلی </p>
             <div id="text-hashtag" dir="rtl" style="justify-content: flex-end;margin-right: 2vw;color:red;">
                 #زن_زندگی_آزادی</div>
         </div>
@@ -78,17 +78,21 @@
         <p>بعدا میتوانید از تنظیمات تغییر دهید</p>
     </div>
     <div id="setting" style="position: absolute; display: flex; transition: all 0.9s ease 0s; right: -150vw;">
-        <nav id="nav-top" style="position: sticky;  top: 0%;
+        <nav id="nav-top"
+            style="position: sticky;  top: 0%;
   left: 0%;display: flex;align-items: center;background: linear-gradient(90deg,rgba(32, 117, 29, 0.7) 5%,rgb(12, 20, 128,0.7) 100%,rgba(128, 97, 12, 0.7) 100%);backdrop-filter: blur(25px);width: 100%;min-height: 7.5vh;z-index: 10;">
             <button id="close-setting">
                 <i class='bx bx-arrow-back'></i>
             </button>
-            <b style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;">Settings Freedom Guard</b>
+            <b
+                style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;">Settings
+                Freedom Guard</b>
             <button id="about"><i class='bx bxs-info-circle'></i></button>
         </nav>
         <b>Config Freedom Guard for auto mode</b>
         <div id="config-fg" class="form-control-c">
-            <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json" id="config-fg-text"
+            <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
+                id="config-fg-text"
                 value="https://raw.githubusercontent.com/fwldom/Freedom-Guard/main/config/links.json">
             <span class="input-border input-border-alt"></span>
         </div>
@@ -116,7 +120,8 @@
                 <option value="IRANCELL">Irancell</option>
             </select>
         </div>
-        <div style="background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);width: 96%;border-radius: 15px;padding: 5px;max-height: 0.2vh;margin: 0.7vw;">
+        <div
+            style="background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);width: 96%;border-radius: 15px;padding: 5px;max-height: 0.2vh;margin: 0.7vw;">
 
         </div>
         <b style="margin-top: 0.5vh;">IP Version</b>
@@ -287,16 +292,76 @@
     <!-- #endregion Freedom Vibe -->
     <!-- #region Set DNS | Dns Chnager => main -->
     <div id="dns-set">
+        <style>
+            #selector-dns {
+                width: 100%;
+                height: 100%;
+                border: none;
+                background-color: transparent;
+                color: white;
+                font-size: 1.5rem;
+                text-align: center;
+                font-weight: 500;
+                cursor: pointer;
+                outline: none;
+            }
+
+            #selector-dns option {
+                background-color: #4769ff;
+                backdrop-filter: blur(5px);
+                color: white;
+            }
+
+            #selector-dns option:hover {
+                background-color: #4769ff;
+                backdrop-filter: blur(5px);
+                color: white;
+            }
+
+            #dns1-text,
+            #dns2-text {
+                width: 80%;
+                height: 80%;
+                border: none;
+                background-color: #6947ffbd;
+                color: white;
+                font-size: 1.5rem;
+                text-align: center;
+                border-radius: 5px;
+                outline: none;
+            }
+
+            #dns1-text::placeholder,
+            #dns2-text::placeholder {
+                color: white;
+            }
+        </style>
+        <select id="selector-dns">
+            <option value="1.1.1.1,1.0.0.1">Cloudflare DNS</option>
+            <option value="8.8.8.8,8.8.4.4">Google</option>
+            <option value="76.76.2.0,76.76.10.0">Control D</option>
+            <option value="9.9.9.9,149.112.112.112">Quad9</option>
+            <option value="208.67.222.222,208.67.220.220">OpenDNS Home</option>
+            <option value="94.140.14.14,94.140.15.15">AdGuard DNS</option>
+            <option value="185.228.168.9,185.228.169.9">CleanBrowsing</option>
+            <option value="76.76.19.19,76.223.122.150">Alternate DNS</option>
+        </select>
         <button id="close-dns"><i class='bx bx-exit-fullscreen'></i></button>
         <input type="text" id="dns1-text" placeholder="IP DNS : 1.1.1.1">
         <input type="text" id="dns2-text" placeholder="IP DNS : 8.8.8.8">
         <button id="submit-dns"><i class='bx bxs-save'></i></button>
+        <script>
+            document.getElementById("selector-dns").onclick = function () {
+                document.getElementById("dns1-text").value = document.getElementById("selector-dns").value.split(",")[0];
+                document.getElementById("dns2-text").value = document.getElementById("selector-dns").value.split(",")[1];
+            }
+        </script>
     </div>
     <!-- #endregion Set DNS-->
     <!-- #region Other All -->
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
-        <p> Freedom Guard 1.3.2 (Kian  Version)</p>
+        <p> Freedom Guard 1.3.5 (Yalda Version)</p>
         <p> Developed By Fwldom 👩‍💻</p>
         <p>👇 Acknowledgements 👇</p>
         <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 2.3.0</a> from Hiddify</p>
@@ -315,4 +380,5 @@
 <!-- #region Scripts -->
 <script src="./renderer.js"></script>
 <!-- #endregion Scripts -->
+
 </html>
