@@ -48,12 +48,14 @@ var links = [];
 // #region Libraries
 __dirname = __dirname.replace("app.asar", "")
 const geoip = require('geoip-lite');
-const versionapp = "1.3.0";
+const versionapp = "1.3.5";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 const { spawn, exec } = require("child_process");
 const { config } = require('process');
 const Winreg = require('winreg');
+const notifier = require('node-notifier');
+
 // #endregion
 // #region Functions
 var childProcess = null;
@@ -286,6 +288,7 @@ function ConnectedVibe(stat = "normal") {
     if (stat == "normal") {
         sect == "main" ? Showmess(5000, "🚀!Connected To Vibe!🚀") : ("");
         trackEvent("connected-vibe");
+        NotifApp("🚀!Connected To Vibe!🚀");
     }
     settingVibe["status"] = true;
     StatusGuard = true;
@@ -302,8 +305,10 @@ function ConnectedWarp(stat = "normal") {
     if (stat == "normal") {
         sect == "main" ? Showmess(5000, "🚀!Connected To Warp!🚀") : ("");
         trackEvent("connected-warp");
+        NotifApp("🚀!Connected To Warp!🚀");
     }
     StatusGuard = true;
+    NotifApp("Disconnected Freedom Guard");
 }
 function disconnectVPN() {
     // function runed when the proxy is disconnected
@@ -333,6 +338,7 @@ function disconnectVPN() {
     setTimeout(() => {
         sect == "main" ? SetAnim("ChangeStatus", "") : ("");
     }, 3500);
+    NotifApp("Disconnected Freedom Guard");
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
     if (core == "warp") connectWarp(num, mode = mode);
@@ -367,7 +373,6 @@ async function connectAuto(num = 0, mode = 'normal') {
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
     const configType = links[settingWarp["isp"]][num].split(",")[0];
 
-
     if (links[settingWarp["isp"]].length < num) { disconnectVPN(); return true };
     if (configType == "warp") {
         settingWarp[links[settingWarp["isp"]][num].split(",")[1]] = links[settingWarp["isp"]][num].split(",")[2] == "true" ? true : links[settingWarp["isp"]][num].split(",")[2];
@@ -379,6 +384,23 @@ async function connectAuto(num = 0, mode = 'normal') {
     ResetArgsWarp();
     connect(configType, num = num, mode = modeConn);
 
+}
+async function NotifApp(body, title = "Freedom Guard", icon = './ico.png') {
+    notifier.notify(
+        {
+            title: title,
+            message: body,
+            icon: path.join(__dirname, './ico.png'),
+            appID: " ",
+            sound: true,
+            wait: true,
+            appIcon: path.join(__dirname, './ico.png'),
+            reply:true
+        },
+        function (err, response, metadata) { }
+    );
+    notifier.on('click', function (notifierObject, options, event) { });
+    notifier.on('timeout', function (notifierObject, options) { });
 }
 async function connectVibe(num = number, mode = 'normal') {
     if (sect == "main") {
@@ -567,6 +589,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");
+            ConnectedWarp();
             if (sect === "main") {
                 SetAnim("ChangeStatus", "Load");
                 SetBorderColor("ChangeStatus", "#15ff00");
@@ -737,7 +760,8 @@ module.exports = {
     offProxy,
     Onloading,
     links,
-    RefreshLinks
+    RefreshLinks,
+    NotifApp
 };
 // Onloading
 Onloading();

@@ -191,7 +191,7 @@ app.whenReady().then(() => {
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Freedom Guard')
   tray.setTitle('VPN (Warp, Vibe , Psiphon)')
-  
+
 })
 app.on('ready', createWindow);
 app.on('activate', () => {
@@ -252,6 +252,16 @@ ipc.on('load-file', (event, Pathfile) => {
 ipc.on('load-file-plus', (event, Pathfile) => {
   mainWindow.loadFile(path.join(Pathfile));
 });
+ipcMain.on('show-notification', (event, title="Freedom Guard", body, icon="./icon.png") => {
+  const notification = new Notification({
+    title: title,
+    body: body,
+    icon: icon 
+  });
+
+  notification.show();
+});
+
 // #endregion
 // #region Quit
 app.on('before-quit', () => {

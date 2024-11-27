@@ -16,7 +16,9 @@
         "protocols": [
             {
                 "name": "freedom guard",
-                "schemes": ["freedom-guard"]
+                "schemes": [
+                    "freedom-guard"
+                ]
             }
         ],
         "extraResources": [
@@ -118,6 +120,7 @@
         "electron-google-analytics": "^1.0.2",
         "geoip-lite": "^1.4.10",
         "node-gyp": "^10.1.0",
+        "node-notifier": "^10.0.1",
         "winreg": "^1.2.5"
     },
     "devDependencies": {

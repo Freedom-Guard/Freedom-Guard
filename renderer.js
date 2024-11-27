@@ -7,9 +7,9 @@ const { dirname } = require("path");
 const child_process = require("child_process");
 const path = require("path");
 const shell = require("electron");
+const shellEl = require('electron').shell;
 const { execPath } = require("process");
 const { execFile, spawn, exec } = require("child_process");
-const { remote } = require('electron');
 var fs = require("fs");
 const { readFile } = require("fs/promises");
 const axios = require('axios'); // Import axios
@@ -19,7 +19,7 @@ const versionapp = "1.3.5";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
-var { RefreshLinks,settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp }  = require('./connect.js');
+var { NotifApp, RefreshLinks, settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('./connect.js');
 // #endregion
 // #region Global Var
 __dirname = __dirname.replace("app.asar", "")
@@ -30,20 +30,20 @@ var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.j
 // #region all Listener
 document.addEventListener("DOMContentLoaded", () => {
     // Onclick Button and Onchange inputs
-    ChangeStatusbtn = document.getElementById("ChangeStatus");
+    ChangeStatusbtn = selectorId("ChangeStatus");
     ChangeStatusbtn.onclick = () => {
         saveSetting();
         Onloading();
         connect(core = document.getElementById("core-up-at").value);
     };
-    document.getElementById("Gool").onclick = () => {
+    selectorId("Gool").onclick = () => {
         if (document.getElementById("Gool").checked) { SetServiceWarp("gool", true); settingWarp["core"] = "warp" }
         else SetServiceWarp("gool", false);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp";
         saveSetting();
     };
-    document.getElementById("Scan").onclick = () => {
+    selectorId("Scan").onclick = () => {
         if (document.getElementById("Scan").checked) SetServiceWarp("scan", true);
         else SetServiceWarp("scan", false);
         SetCfon("IR");
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         settingWarp["core"] = "warp";
         saveSetting();
     };
-    document.getElementById("box-select-country-mini").addEventListener("click", () => {
+    selectorId("box-select-country-mini").addEventListener("click", () => {
         if (document.getElementById("box-select-country").style.top != "100vh") {
             document.getElementById("box-select-country").style.height = "0%";
             document.getElementById("box-select-country").style.top = "100vh";
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         saveSetting();
     });
-    document.getElementById("close-setting").onclick = () => {
+    selectorId("close-setting").onclick = () => {
         document.getElementById("setting").style.position = "absolute"
         document.getElementById("setting").style.right = "-150vw";
         document.getElementById("setting").style.visibility = "0.3";
@@ -70,54 +70,54 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("setting").style.display = "";
         }, 1300);
     };
-    document.getElementById("selector-ip-version").onchange = () => {
+    selectorId("selector-ip-version").onchange = () => {
         SetServiceWarp("ipver", document.getElementById("selector-ip-version").value.match(/\d+/g)).toString();
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp";
         saveSetting();
 
     };
-    document.getElementById("end-point-address").onchange = () => {
+    selectorId("end-point-address").onchange = () => {
         SetServiceWarp("endpoint", document.getElementById("end-point-address").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
         saveSetting();
 
     };
-    document.getElementById("bind-address-text").onchange = () => {
+    selectorId("bind-address-text").onchange = () => {
         SetServiceWarp("proxy", document.getElementById("bind-address-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
         saveSetting();
     };
-    document.getElementById("warp-key-text").onchange = () => {
+    selectorId("warp-key-text").onchange = () => {
         SetServiceWarp("warpkey", document.getElementById("warp-key-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
         saveSetting();
 
     };
-    document.getElementById("dns-warp-text").onchange = () => {
+    selectorId("dns-warp-text").onchange = () => {
         SetServiceWarp("dns", document.getElementById("dns-warp-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
         saveSetting();
 
     };
-    document.getElementById("scan-rtt-text").onchange = () => {
+    selectorId("scan-rtt-text").onchange = () => {
         SetServiceWarp("scanrtt", document.getElementById("scan-rtt-text").value);
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
         saveSetting();
 
     };
-    document.getElementById("config-fg-text").onchange = () => {
+    selectorId("config-fg-text").onchange = () => {
         SetServiceWarp("configfg", document.getElementById("config-fg-text").value);
         settingWarp["core"] = "auto";
         saveSetting();
 
     };
-    document.getElementById("reset-setting-warp-btn").onclick = () => {
+    selectorId("reset-setting-warp-btn").onclick = () => {
         console.log("Reseting setting Warp ....")
         settingWarp = {
             proxy: "127.0.0.1:8086",
@@ -145,19 +145,20 @@ document.addEventListener("DOMContentLoaded", () => {
         saveSetting();
         SetSettingWarp();
     };
-    document.getElementById("change-background-warp-btn").onclick = () => {
+    selectorId("change-background-warp-btn").onclick = () => {
         const randomImage = getRandomImage();
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundImage = `url(${randomImage}), linear-gradient(180deg, #252C37 0%, rgba(35, 31, 88, 0.5) 35%, rgba(0, 212, 255, 0.4) 100%)`;
     }
-    document.getElementById("refresh-link-btn").onclick = () => {
+    selectorId("refresh-link-btn").onclick = () => {
         RefreshLinks();
         Showmess(5000, "Refreshed links", "success");
-    }
+    };
+    selectorId("x-contact").onclick = () => openLink("https://x.com/Freedom_Guard_N")
+    selectorId("telegram-contact").onclick = () => openLink("https://t.me/freedom_guard_net")
+    selectorId("mail-contact").onclick = () => openLink("mailto:fwldom@duck.com?subject=Help me")
+    selectorId("repo-contact").onclick = () => openLink("https://github.com/Freedom-Guard/Freedom-Guard")
 });
-// #endregion
-// #region For Connections Warp
-
 // #endregion
 // #region Functions For Load
 function Onload() {
@@ -241,7 +242,7 @@ function Onload() {
     catch {
         try {
             if (process.platform == "win32") {
-                exec("start https://fwldom.github.io/Freedom");
+                openLink("https://freedom-guard.github.io/Freedom");
             }
             document.getElementById("select-isp").style.display = "flex";
             write_file("one.one", "ok");
@@ -266,8 +267,17 @@ function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * backgroundList.length);
     return "assets/background/" + backgroundList[randomIndex];
 };
+function selectorId(id) {
+    return document.getElementById(id);
+}
 // #endregion
 // #region Functions other
+function openLink(url) {
+    try {
+        shellEl.openExternal(url);
+    }
+    catch { }
+}
 function SetAnim(id, anim) {
     document.getElementById(id).style.animation = anim;
 }
@@ -473,15 +483,7 @@ document.getElementById("setting-show-vibe").addEventListener("click", () => {
     }
 });
 document.getElementById("menu-website").addEventListener("click", () => {
-    if (process.platform == "win32") {
-        exec("start https://fwldom.github.io/Freedom")
-    }
-    else if (process.platform == "linux") {
-        exec("xdg-open https://fwldom.github.io/Freedom");
-    }
-    else if (process.platform == "darwin") {
-        exec("open https://fwldom.github.io/Freedom")
-    }
+    openLink("https://freedom-guard.github.io/Freedom/")
 })
 document.getElementById("menu-about").addEventListener("click", () => { document.getElementById("about-app").style.display = "flex" })
 document.getElementById("about").addEventListener("click", () => { document.getElementById("about-app").style.display = "flex" })

@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(145deg, #1b0033, #0d001a, #2c003e,#05295e,#0974f1);
+    background: linear-gradient(145deg, #1b0033, #0d001a, #2c003e, #05295e, #0974f1);
     background-size: 200% 200%;
     font-family: 'Arial', sans-serif;
     overflow: hidden;
@@ -30,8 +30,8 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 0, 127, 0.15), transparent 50%), 
-                radial-gradient(circle at 70% 70%, rgba(140, 32, 170, 0.15), transparent 50%);
+    background: radial-gradient(circle at 30% 30%, rgba(255, 0, 127, 0.15), transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(140, 32, 170, 0.15), transparent 50%);
     mix-blend-mode: screen;
     pointer-events: none;
 }
@@ -94,7 +94,7 @@ h2 {
     transition: 0.8s;
     backdrop-filter: blur(5px);
     background: transparent;
-    border-color:#1100ff;
+    border-color: #1100ff;
     box-shadow: 0 0 50px rgba(255, 0, 128, 0.432), 0 0 20px rgba(44, 0, 62, 0.5);
 }
 
@@ -120,9 +120,11 @@ h2 {
     0% {
         box-shadow: 0 0 10px rgba(255, 0, 127, 0.3), 0 0 5px rgba(44, 0, 62, 0.3);
     }
+
     50% {
         box-shadow: 0 0 380px rgba(255, 0, 127, 0.3), 0 0 55px rgba(44, 0, 62, 0.5);
     }
+
     100% {
         box-shadow: 0 0 50px rgba(255, 0, 127, 0.3), 0 0 5px rgba(44, 0, 62, 0.3);
     }
@@ -411,7 +413,9 @@ h2 {
     padding: 10px;
     display: flex;
     align-items: center;
-    gap: 5%;
+    gap: 2%;
+    row-gap: 1vh;
+    flex-wrap: wrap;
 }
 
 #setting>b,
@@ -1016,14 +1020,27 @@ h2 {
 }
 
 select {
-    background-color: transparent;
+    background-color: #0c0414;
+    backdrop-filter: blur(5px);
     color: white;
-    font-size: 25px;
+    padding: 12px;
+    width: 250px;
     border: none;
+    font-size: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    -webkit-appearance: button;
+    appearance: button;
+    outline: none;
+}
+
+select::-ms-expand {
+    display: none;
 }
 
 select option {
-    color: black;
+    color: white;
+    background-color: transparent;
+    padding: 10px;
 }
 
 #HelpMess {
