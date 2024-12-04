@@ -8,18 +8,34 @@
   <title>Freedom Player</title>
   <link rel="icon" href="./Freedom_Player.png" type="image/png">
   <link rel="stylesheet" href="style.css">
+  <link href="../../../boxicons.min.css" rel="stylesheet" />
 </head>
 
 <body>
-  <button id="back">Back To Plus</button>
   <header>
-    <h1>Freedom Player</h1>
-    <label for="fileInput"></label>
-    <input type="file" id="fileInput" accept="audio/*">
+    <button id="back"><i class='bx bx-arrow-back'></i></button>
+    <h1 style="margin: auto;">Freedom Player</h1>
+    <label for="add-music-file"><i class='bx bx-plus-medical'></i></label>
+    <input type="file" id="add-music-file" accept="audio/*" style="display: none;">
   </header>
+  <div class="previous-songs">
+    <button id="clearList" class="btn" style="font-size: 100%;width: 35%;margin-right: auto;text-align: left;"><i class='bx bx-trash'></i></button>
+    <h2 style="width: 45%;margin-left: auto;text-align: right;">آهنگ‌های قبلی</h2>
+    <ul id="previousSongsList"></ul>
+  </div>
   <div class="controls">
-    <button id="playButton">Play</button>
-    <button id="pauseButton">Pause</button>
+    <img src="" alt="" id="album-art">
+    <p id="song-title"></p>
+    <p id="artist-name"></p>
+    <button id="playButton" class="btn"><i class="bx bx-play"></i></button>
+    <div style="width: 100%;text-align: center;">
+      <span id="currentTime">00:00</span>
+      <input type="range" id="progressBar" min="0" max="100" value="0">
+      <span id="totalTime">00:00</span>
+    </div>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5"
+      style="margin-left: auto;margin-right: 1vw;">
+    <span id="volumeLabel">50%</span>
   </div>
   <audio id="audioPlayer"></audio>
   <script src="index.js"></script>

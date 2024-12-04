@@ -1,58 +1,273 @@
-/* style.css */
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #1e1e1e;
-  color: #fff;
-}
-
-
-
-#fileInput {
-  margin: 20px;
-}
-
-.controls button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-}
-body {
+  background-color: #1c1c1c;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  padding: 10px;
 }
+
+/* Header styling */
 header {
-  text-align: center;
-  margin-bottom: auto;
   display: flex;
-}
-#back {
-  position: absolute;
-  left: 10px;
-  top: 10px;
+  align-items: center;
+  width: 100%;
+  background-color: #272727;
   padding: 10px 20px;
-  font-size: 1.2em;
-  font-family: 'Courier New', monospace;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+  font-size: 20px;
   color: #fff;
-  background-color: #333;
+}
+
+header button {
+  background: none;
   border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+header label {
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+header label:hover,
+header button:hover {
+  color: #007bff;
+}
+
+/* Player controls */
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2d2d2d;
+  width: 100%;
+  margin-top: auto;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.controls img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #444;
+  margin-bottom: 10px;
+}
+
+.controls p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+#song-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+#artist-name {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2em;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.btn:hover {
+  color: #007bff;
+}
+
+/* Progress bar */
+.controls input[type="range"] {
+  width: 80%;
+  margin: 10px 0;
+  background-color: #444;
+  cursor: pointer;
+  accent-color: #007bff;
+}
+
+#progressBar {
+  height: 5px;
+  border-radius: 5px;
+  background: #444;
+  outline: none;
+  overflow: hidden;
+}
+
+#progressBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+}
+
+#progressBar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+}
+
+.controls span {
+  font-size: 14px;
+}
+
+/* Volume control */
+#volumeControl {
+  appearance: none;
+  width: 100%;
+  max-width: 200px;
+  height: 5px;
+  border-radius: 5px;
+  background: #444;
+  outline: none;
+  margin-top: 10px;
+}
+
+#volumeControl::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+}
+
+#volumeControl::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+}
+
+#volumeLabel {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 16px;
+  }
+
+  .controls img {
+    width: 100px;
+    height: 100px;
+  }
+
+  #song-title {
+    font-size: 16px;
+  }
+
+  #artist-name {
+    font-size: 12px;
+  }
+
+  .controls .btn {
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  #volumeControl {
+    max-width: 150px;
+  }
+}
+
+#previousSongsList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 3vw;
+
+}
+
+.previous-songs {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 1vw;
+  width: 100%;
+  overflow-y: auto;
+  box-shadow: #007bff54 0 0 10px;
+  border-radius: 5px;
+}
+
+.previous-song {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2d2d2d;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.previous-song:hover {
+  background-color: #444;
+  transition: 0.3s;
+}
+
+.previous-song img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 15px;
+}
+
+.previous-song p {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #ccc;
+  margin-right: 2vw;
+}
+
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#back:hover {
-  background-color: #555;
-  transform: translateY(-2px);
-}
-
-#back:active {
-  background-color: #111;
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+.delete-button:hover {
+  background-color: #ff0000;
 }

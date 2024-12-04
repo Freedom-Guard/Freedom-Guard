@@ -1111,6 +1111,24 @@ select option {
     transform: scale(1.1);
 }
 
+.box-notif {
+    display: none;
+    background-color: #007bff;
+    border: 2px solid #0400ff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 50%;
+    position: absolute;
+    left: 25%;
+    top: 10%;
+    height: 50%;
+    flex-wrap: wrap;
+}
+.btn:hover {
+    background-color: #008cff;
+}
 /* #endregion */
 /* #region Public*/
 .btn {

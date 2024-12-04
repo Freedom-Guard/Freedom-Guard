@@ -13,7 +13,7 @@
     },
     "Freedom Player": {
         "name": "Freedom Player",
-        "icon": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom_Player/Freedom_Player.png",
+        "icon": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/plus/apps/Freedom Player/Freedom_Player.png",
         "directory": "./apps/Freedom Player",
         "type": "app",
         "description": "A Player for music",

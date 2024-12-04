@@ -1,1 +1,32 @@
-dHJvamFuOi8vdGVsZWdyYW0taWQtcHJpdmF0ZXZwbnNANTEuNDQuMzYuMjAxOjIyMjIyP3NlY3VyaXR5PXRscyZhbHBuPWh0dHAvMS4xJmhlYWRlclR5cGU9bm9uZSZ0eXBlPXRjcCZzbmk9dHJvamFuLmJ1cmdlcmlwLmNvLnVrIyhTMTA2KfCfh6jwn4e1dC5tZS9Qcml2YXRlVlBOcw==
+{
+    "MCI": {
+        "0": "vibe,https://raw.githubusercontent.com/imyebekhe/vpn-fail/refs/heads/main/sub-link",
+        "1": "vibe,https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",
+        "2": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
+        "3": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
+        "4": "vibe,https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/mix",
+        "5": "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/base64/vless",
+        "length": 6
+    },
+    "IRANCELL": {
+        "0": "warp,scan,true",
+        "1": "warp,gool,true",
+        "2": "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
+        "3": "warp,endpoint,engage.cloudflareclient.com:2408",
+        "4": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
+        "5": "warp,scan,true",
+        "6": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
+        "7": "warp,reserved,true",
+        "length": 8
+    },
+    "other": {
+        "0": "warp,scan,true",
+        "1": "warp,gool,true",
+        "2": "vibe,https://raw.githubusercontent.com/imyebekhe/vpn-fail/refs/heads/main/sub-link",
+        "3": "vibe,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
+        "4": "warp,reserved,true",
+        "5": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
+        "6": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
+        "length": 7
+    }
+}

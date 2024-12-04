@@ -287,7 +287,6 @@ function ConnectedVibe(stat = "normal") {
     sect == "main" ? SetBorderColor("ChangeStatus", "#15ff00") : ("");
     if (stat == "normal") {
         sect == "main" ? Showmess(5000, "🚀!Connected To Vibe!🚀") : ("");
-        trackEvent("connected-vibe");
         NotifApp("🚀!Connected To Vibe!🚀");
     }
     settingVibe["status"] = true;
@@ -304,7 +303,6 @@ function ConnectedWarp(stat = "normal") {
     sect == "main" ? SetBorderColor("ChangeStatus", "#15ff00") : ("");
     if (stat == "normal") {
         sect == "main" ? Showmess(5000, "🚀!Connected To Warp!🚀") : ("");
-        trackEvent("connected-warp");
         NotifApp("🚀!Connected To Warp!🚀");
     }
     StatusGuard = true;
@@ -395,7 +393,7 @@ async function NotifApp(body, title = "Freedom Guard", icon = './ico.png') {
             sound: true,
             wait: true,
             appIcon: path.join(__dirname, './ico.png'),
-            reply:true
+            reply: true
         },
         function (err, response, metadata) { }
     );
@@ -553,7 +551,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         console.log("Testing warp...")
         if (await testProxy() & StatusGuard == true) {
             Showmess(5000, "Connected Warp");
-            trackEvent("connected-warp");
+            trackEvent("connected-warp-auto");
             if (sect === "main") {
                 SetAnim("ChangeStatus", "Load");
                 SetBorderColor("ChangeStatus", "#15ff00");

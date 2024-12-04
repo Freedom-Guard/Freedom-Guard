@@ -92,6 +92,10 @@
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
                 id="config-fg-text"
                 value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json">
+            <button id="selector-file" class="btn">
+                <label for="selector-file-config"><i class='bx bx-folder-open'></i></label>
+                <input type="file" id="selector-file-config" style="display: none;">
+            </button>
             <span class="input-border input-border-alt"></span>
         </div>
         <b style="margin-top: 2vh;">Startup at</b>
@@ -377,6 +381,32 @@
         <span id="message-border"
             style="justify-content: flex-end;align-items: flex-end;margin-top: auto;border-radius: 15px;"></span>
     </div>
+    <div class="box-notif">
+        <p id="text-box-notif" style="width: 100%;flex: 1 0 100%;"></p>
+        <a href="" role="button" id="href-box-notif" class="btn btn-primary btn-sm"
+            style="margin-right: 3vw;width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">بازش کن</a>
+        <button href="" role="button" id="close-box-notif" class="btn btn-primary btn-sm"
+            style="width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">الان حالش نیست</a>
+    </div>
+    <script>
+        function boxNotif(message, href) {
+            document.getElementById("href-box-notif").href = href;
+            document.getElementById("text-box-notif").innerHTML = message;
+            document.querySelector(".box-notif").style.display = "flex";
+            setTimeout(() => {
+                document.querySelector(".box-notif").style.display = "none";
+            }, 5000);
+        }
+        document.getElementById("href-box-notif").onclick = function () {
+            event.preventDefault();
+            openLink(this.href);
+        }
+        document.getElementById("close-box-notif").onclick = function () {
+            document.querySelector(".box-notif").style.display = "none";
+        }
+    </script>
+    <!-- #endregion Other All -->
+    </script>
     <!-- #endregion Other All -->
 </body>
 <!-- #region Scripts -->

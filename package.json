@@ -119,6 +119,8 @@
         "bootstrap-icons": "^1.11.3",
         "electron-google-analytics": "^1.0.2",
         "geoip-lite": "^1.4.10",
+        "music-metadata": "^10.6.2",
+        "music-metadata-browser": "^2.5.11",
         "node-gyp": "^10.1.0",
         "node-notifier": "^10.0.1",
         "winreg": "^1.2.5"
