@@ -51,7 +51,8 @@ const geoip = require('geoip-lite');
 const versionapp = "1.3.5";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
-const { spawn, exec } = require("child_process");
+const { spawn, exec, execSync } = require("child_process");
+const { setTimeout } = require("timers/promises");
 const { config } = require('process');
 const Winreg = require('winreg');
 const notifier = require('node-notifier');
@@ -184,9 +185,6 @@ function FindBestEndpointWarp(type = 'find') {
         }
     });
 };
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-};
 async function testProxy() {
     console.log("Testing Proxy...");
     var startTime = Date.now();
@@ -306,7 +304,6 @@ function ConnectedWarp(stat = "normal") {
         NotifApp("🚀!Connected To Warp!🚀");
     }
     StatusGuard = true;
-    NotifApp("Disconnected Freedom Guard");
 }
 function disconnectVPN() {
     // function runed when the proxy is disconnected
@@ -339,9 +336,9 @@ function disconnectVPN() {
     NotifApp("Disconnected Freedom Guard");
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
-    if (core == "warp") connectWarp(num, mode = mode);
-    else if (core == "vibe") connectVibe(num, mode);
-    else if (core == "auto") connectAuto(num);
+    if (core == "warp") await connectWarp(num, mode = mode);
+    else if (core == "vibe") await connectVibe(num, mode);
+    else if (core == "auto") await connectAuto(num);
 }
 async function RefreshLinks() {
     reqRefreshLinks = new XMLHttpRequest();
@@ -416,16 +413,7 @@ async function connectVibe(num = number, mode = 'normal') {
         sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
         Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
         settingVibe["status"] = true;
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
+        await setTimeout(20000);
         console.log("Testing vibe...")
         if (await testProxy()) {
             Showmess(5000, "⚡Connected Vibe⚡");
@@ -492,18 +480,7 @@ async function connectVibe(num = number, mode = 'normal') {
             ResetArgsVibe(config);
             Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
             settingVibe["status"] = true;
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
-            await testProxy();
+            await setTimeout(25000);
             await testProxy();
             if (settingVibe["status"] == true) {
                 if (await testProxy()) {
@@ -540,14 +517,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
         Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy();
+        await setTimeout(10000);
         console.log("Testing warp...")
         if (await testProxy() & StatusGuard == true) {
             Showmess(5000, "Connected Warp");
@@ -577,13 +547,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         StatusGuard = true;
         await testProxy();
         console.log("Start Testing Warp...");
-        await testProxy();
-        await testProxy();
-        await testProxy();
-        await testProxy(); await testProxy();
-        await testProxy(); await testProxy();
-        await testProxy();
-        await sleep(5000);
+        await setTimeout(10000);
         if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");

@@ -48,6 +48,13 @@
                 ]
             },
             {
+                "from": "langs/",
+                "to": "langs/",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
                 "from": "svgs/",
                 "to": "svgs/",
                 "filter": [
