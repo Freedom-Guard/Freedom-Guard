@@ -189,6 +189,7 @@ function FindBestEndpointWarp(type = 'find') {
             sect == "main" ? Showmess(3000, "Finded Best Endpoint. Reconnecting") : ("");
         }
     });
+    return;
 };
 async function testProxy() {
     console.log("Testing Proxy...");
