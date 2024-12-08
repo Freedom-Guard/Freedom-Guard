@@ -48,7 +48,7 @@ var links = [];
 // #region Libraries
 __dirname = __dirname.replace("app.asar", "")
 const geoip = require('geoip-lite');
-const versionapp = "1.3.5";
+const versionapp = "1.3.6";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 const { spawn, exec, execSync } = require("child_process");
@@ -61,16 +61,21 @@ const notifier = require('node-notifier');
 // #region Functions
 var childProcess = null;
 async function KillProcess(core = "warp") {
-    if (childProcess != null) {
-        if (process.platform === 'win32') {
-            exec('taskkill /IM ' + (core == "warp" ? "warp-plus.exe" : "HiddifyCli.exe") + ' /F /T'); // Windows
-        } else {
-            childProcess.kill('SIGTERM'); // POSIX systems
-        };
-        childProcess.kill();
-        childProcess = null;
+    try {
+        if (childProcess != null) {
+            if (process.platform === 'win32') {
+                exec('taskkill /IM ' + (core == "warp" ? "warp-plus.exe" : "HiddifyCli.exe") + ' /F /T'); // Windows
+            } else {
+                childProcess.kill('SIGTERM'); // POSIX systems
+            };
+            childProcess.kill();
+            childProcess = null;
+        }
+        console.log("Killed process...")
     }
-    console.log("Killed process...")
+    catch {
+        console.error("error -> kill process")
+    }
 };
 function changeISP(newisp) {
     console.log("NEW ISP IS: " + newisp)
@@ -116,15 +121,15 @@ async function checkDataOut(data, core) {
     }
     console.log(data)
 }
-async function Run(nameFile, args, runa = 'user', core) {
+async function Run(nameFile, args, runa = 'user', exeCore="warp") {
     console.log("Runing New Process...");
-    KillProcess(core = core);
+    KillProcess("warp");
+    KillProcess("vibe");
     await testProxy();
-    await testProxy();
-    console.log(path.join(__dirname, "main", "cores", core, nameFile) + " " + args);
-    var exePath = `"${path.join(__dirname, "main", "cores", core, nameFile)}"`; // Adjust the path to your .exe file
+    console.log(path.join(__dirname, "main", "cores", exeCore, nameFile) + " " + args);
+    var exePath = `"${path.join(__dirname, "main", "cores", exeCore, nameFile)}"`; // Adjust the path to your .exe file
     if (process.platform == "linux") {
-        exePath = `"${path.join(__dirname, "main", "cores", core, nameFile.replace(".exe", ""))}"`; // Adjust the path to your .exe file
+        exePath = `"${path.join(__dirname, "main", "cores", exeCore, nameFile.replace(".exe", ""))}"`; // Adjust the path to your .exe file
         exec("chmod +x " + exePath);
         if (runa == "admin") {
             childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
@@ -136,17 +141,17 @@ async function Run(nameFile, args, runa = 'user', core) {
         } else childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
     }
     childProcess.stdout.on('data', async (data) => {
-        checkDataOut(data.toString(), core);
+        checkDataOut(data.toString(), exeCore);
     });
     childProcess.stderr.on('data', async (data) => {
         if (data instanceof Buffer) {
             data = data.toString(); // Convert Buffer to string
         }
-        checkDataOut(data, core);
+        checkDataOut(data, exeCore);
     });
-    childProcess.title = core;
+    childProcess.title = exeCore;
     childProcess.on('close', (code, name) => {
-        console.log(`child process exited with code ${code + " | " + core}`);
+        console.log(`child process exited with code ${code + " | " + exeCore}`);
         if ((StatusGuard || settingVibe["status"]) & (settingWarp["core"] == "auto")) {
         }
         else if (settingWarp["core"] != "auto") {
@@ -210,7 +215,7 @@ async function testProxy() {
         sect == "main" ? SetHTML("ip-ping-warp", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
         testproxystat = true;
         try {
-            var testBypass = await axios.get('https://x.com', {
+            var testBypass = await axios.get('https://1.1.1.1', {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
@@ -332,8 +337,9 @@ function disconnectVPN() {
     sect == "main" ? SetAnim("ChangeStatus", "Connect 5s") : ("");
     setTimeout(() => {
         sect == "main" ? SetAnim("ChangeStatus", "") : ("");
-    }, 3500);
+    }, 600);
     NotifApp("Disconnected Freedom Guard");
+    saveSetting();
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
     if (core == "warp") await connectWarp(num, mode = mode);
@@ -517,9 +523,9 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
         Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
-        await setTimeout(10000);
+        await setTimeout(15000);
         console.log("Testing warp...")
-        if (await testProxy() & StatusGuard == true) {
+        if (await testProxy() && StatusGuard == true) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp-auto");
             if (sect === "main") {
@@ -536,7 +542,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         }
 
     }
-    else if (!StatusGuard & settingWarp["core"] == "warp") {
+    else if (!StatusGuard && settingWarp["core"] == "warp") {
         console.log("Stating warp server on warp mode...")
         if (sect === "main") {
             SetAnim("ChangeStatus", "Connect 7s infinite");
@@ -587,7 +593,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             if (sect === "main") {
                 SetAnim("ChangeStatus", "");
             }
-        }, 3500);
+        }, 600);
         StatusGuard = false;
 
         disconnectVPN();

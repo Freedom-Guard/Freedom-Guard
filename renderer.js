@@ -15,7 +15,7 @@ const { readFile } = require("fs/promises");
 const axios = require('axios'); // Import axios
 const { type, platform } = require("os");
 const geoip = require('geoip-lite');
-const versionapp = "1.3.5";
+const versionapp = "1.3.6";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 
@@ -278,18 +278,21 @@ function getRandomImage() {
     return "assets/background/" + backgroundList[randomIndex];
 };
 function checkUpdate() {
-    fetch(`https://api.github.com/repos/Freedom-Guard/Freedom-Guard/releases/latest`)
-        .then(response => response.json())
-        .then(data => {
-            const latestVersion = data.tag_name.replace("v", "");
-            const currentVersion = versionapp;
-            if (latestVersion > currentVersion) {
-                console.log(latestVersion,versionapp)
-                boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید. <br> ورژن فعلی: "+currentVersion+" <br> ورژن جدید: "+latestVersion+" <br> "
-                    ,"https://github.com/Freedom-Guard/Freedom-Guard/releases/latest");
-            } else { } // used latest version
-        })
-        .catch(error => console.error("خطا در دریافت نسخه: ", error));
+    try {
+        fetch(`https://api.github.com/repos/Freedom-Guard/Freedom-Guard/releases/latest`)
+            .then(response => response.json())
+            .then(data => {
+                const latestVersion = data.tag_name.replace("v", "");
+                const currentVersion = versionapp;
+                if (latestVersion > currentVersion) {
+                    console.log(latestVersion, versionapp)
+                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید. <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
+                        , "https://github.com/Freedom-Guard/Freedom-Guard/releases/latest");
+                } else { } // used latest version
+            })
+            .catch(error => console.error("خطا در دریافت نسخه: ", error));
+    }
+    catch { }
 }
 // #endregion
 // #region Functions other

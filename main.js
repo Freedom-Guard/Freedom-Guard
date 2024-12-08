@@ -16,7 +16,7 @@ const { fileURLToPath } = require('url');
 ;
 // #endregion
 // #region Vars
-initialize("A-EU-5072151346");
+initialize("A-EU-");
 var currentURL = "";
 var mainWindow = null
 var ViewBrowser = null;
