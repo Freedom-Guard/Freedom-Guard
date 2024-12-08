@@ -27,7 +27,16 @@ __dirname = __dirname.replace("app.asar", "")
 var Psicountry = ["IR", "AT", "BE", "BG", "BR", "CA", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "HU", "HR", "IE", "IN", "IT", "JP", "LV", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SG", "SK", "UA", "US"];
 var PsicountryFullname = ["Auto Server", "Austria", "Belgium", "Bulgaria", "Brazil", "Canada", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia", "Spain", "Finland", "France", "United Kingdom", "Hungary", "Croatia", "Ireland", "India", "Italy", "Japan", "Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Serbia", "Sweden", "Singapore", "Slovakia", "Ukraine", "United States"];
 var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg"];
-var WarpServer = ["gool,scan","gool","scan","reserved",""]
+var WarpServer = [
+    "core,auto;Auto Server",
+    "gool,true|scan,true;Gool + Scan",
+    "gool,true;Warp + Gool",
+    "scan,true;Warp + Scan",
+    "reserved,true;Warp + Reserved",
+    "endpoint,188.114.97.159:942;Warp + Endpoint 188.114.97.159:942",
+    "endpoint,162.159.192.175:891;Warp + Endpoint 162.159.192.175:891",
+    "endpoint,162.159.192.36:908;Warp + Endpoint 162.159.192.36:908"
+];
 // #endregion
 // #region all Listener
 document.addEventListener("DOMContentLoaded", () => {
@@ -177,33 +186,41 @@ function Onload() {
     ResetArgsWarp();
     process.platform == "win32" ? exec(path.join(__dirname, "register-url-win.bat")) : ("");
     // Start Add Element Countries to box select country psiphon
+    var container = document.getElementById("box-select-country");
     var configBox = document.createElement("div");
     configBox.innerHTML = "Freedom Warp Server";
     configBox.style = "border:none;font-size:1em";
     container.appendChild(configBox);
-    configsVibeName.forEach((config, index) => {
-        var configBox = document.createElement("div");
-        configBox.id = "config-box-vibe-sel" + index;
-        configBox.classList.add("config-box-vibe-sel" + index);
+    WarpServer.forEach((config, index) => {
+        configBox = document.createElement("div");
+        configBox.id = "config-box-warp-sel" + index;
+        configBox.classList.add("config-box-warp-sel" + index);
         configBox.title = config;
         let img = document.createElement("img");
         img.src = path.join(__dirname, "svgs", "glob" + ".svg");
-        img.id = "imgOfCfon";
         let p = document.createElement("p");
-        p.id = "textOfCfonS";
-        p.textContent = configsVibeName[index];
+        p.textContent = WarpServer[index].split(";")[1];
         configBox.appendChild(img);
         configBox.appendChild(p);
         configBox.addEventListener("click", () => {
-            settingVibe["config"] = configsVibeLink[index];
+            (document.getElementById("Gool").checked) ? document.getElementById("Scan").click() : ("");
             (document.getElementById("Scan").checked) ? document.getElementById("Scan").click() : ("");
             document.getElementById("box-select-country").style.display = "none";
             document.getElementById("config-box-vibe-sel" + index).style.color = "#ff31d1f";
-            settingWarp["core"] = "vibe";
-            document.getElementById("textOfCfon").innerHTML = configsVibeName[index];
+            WarpServer[index].split(";")[0].split("|").forEach(opt => {
+                settingWarp[opt.split(",")[0]] = opt.split(",")[1];
+            });
+            if (settingWarp["core"] == "auto") {
+                settingWarp["gool"] = "false";
+                settingWarp["scan"] = "false";
+                settingWarp["endpoint"] = "";
+                settingWarp["reserved"] = "";
+                settingWarp["gool"] = "false";
+            }
+            SetSettingWarp();
+            document.getElementById("textOfCfon").innerHTML = WarpServer[index].split(";")[1];
             saveSetting();
             document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "svgs", "glob" + ".svg");
-            SetSettingWarp();
         });
         document.getElementById("box-select-country").appendChild(configBox);
     });
@@ -237,11 +254,9 @@ function Onload() {
         });
         document.getElementById("box-select-country").appendChild(configBox);
     });
-    var container = document.getElementById("box-select-country");
     var configBox = document.createElement("div");
     configBox.innerHTML = "Freedom Warp Psiphon"
     configBox.style = "border:none;font-size:1em"
-    container.innerHTML = ""
     container.appendChild(configBox);
     Psicountry.forEach((country, index) => {
         country = country.toLowerCase()
@@ -460,6 +475,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 function Showmess(time = 2500, text = "message text", type = "info") {
+    if (text = "message text") {
+        return;
+    }
     document.getElementById("message").style.display = "flex";
     document.getElementById("message").style.width = "";
     document.getElementById("message").style.transition = time / 5 + "ms";

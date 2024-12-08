@@ -290,7 +290,6 @@ function ConnectedVibe(stat = "normal") {
     sect == "main" ? SetAnim("ChangeStatus", "Load") : ("");
     sect == "main" ? SetBorderColor("ChangeStatus", "#15ff00") : ("");
     if (stat == "normal") {
-        sect == "main" ? Showmess(5000, "🚀!Connected To Vibe!🚀") : ("");
         NotifApp("🚀!Connected To Vibe!🚀");
     }
     settingVibe["status"] = true;

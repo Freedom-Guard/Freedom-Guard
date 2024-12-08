@@ -117,7 +117,8 @@
             "!warp.json",
             "!one.one",
             "*.bat",
-            "!links.json"
+            "!links.json",
+            "!data/**/*"
         ]
     },
     "dependencies": {

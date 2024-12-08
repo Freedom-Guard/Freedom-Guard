@@ -271,6 +271,7 @@ h2 {
     background-color: rgba(93, 53, 251, 0.268);
     color: beige;
     z-index: 5;
+    backdrop-filter: blur(10px);
 }
 
 .box-select-country::-webkit-scrollbar-button {
@@ -355,11 +356,13 @@ h2 {
 }
 
 .box-select-country-mini {
-    background-color: #252C37;
+    background-color: #516b7a28;
+    backdrop-filter: blur(10px);
     border-radius: 5px;
     width: 90vw;
     height: 50%;
     margin-top: 3vh;
+    padding-right: 1vw;
     font-size: 25px;
 }
 
@@ -1126,9 +1129,11 @@ select option {
     height: 50%;
     flex-wrap: wrap;
 }
+
 .btn:hover {
     background-color: #008cff;
 }
+
 /* #endregion */
 /* #region Public*/
 .btn {
