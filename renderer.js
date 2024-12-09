@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveSetting();
         SetSettingWarp();
     });
+    document.getElementById("ip-ping-warp").onclick = () => testProxy();
 });
 // #endregion
 // #region Functions For Load
@@ -840,7 +841,6 @@ setInterval(() => {
 }, 5000);
 Onload();
 setInterval(() => {
-    testProxy();
     saveSetting();
 }, 7500);
 

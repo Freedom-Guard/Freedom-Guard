@@ -64,8 +64,25 @@ h2 {
 
 #ip-ping-warp {
     margin-bottom: 23vh;
+    height: fit-content;
+    background-color: #f7f9fc0c;
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    border-radius: 10px;
+}
+#ip-ping-warp img {
+    margin: 0 5px !important;
+}
+#ip-ping-warp:hover {
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+    background: #f7f9fc2c;
 }
 
+
+#ip-ping-vibe img {
+    margin: 0 5px !important;
+}
 #ip-ping-warp b,
 #ip-ping-vibe b {
     margin-left: 1vw;
@@ -271,7 +288,7 @@ h2 {
     background-color: rgba(93, 53, 251, 0.268);
     color: beige;
     z-index: 5;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
 }
 
 .box-select-country::-webkit-scrollbar-button {

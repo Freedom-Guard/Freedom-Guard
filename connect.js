@@ -523,8 +523,8 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
         Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
-        await setTimeout(15000);
-        console.log("Testing warp...")
+        await setTimeout(25000);
+        console.log("Start Testing warp...")
         if (await testProxy() && StatusGuard == true) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp-auto");
@@ -553,7 +553,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         StatusGuard = true;
         await testProxy();
         console.log("Start Testing Warp...");
-        await setTimeout(10000);
+        await setTimeout(40000);
         if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");
@@ -564,7 +564,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             }
         } else {
             console.log("Connection failed, trying again...");
-            if (settingWarp["core"] === "auto") {
+            if (settingWarp["core"] == "auto") {
                 connectAuto(number + 1, mode = 'try'); // Increment the connection attempt number
             } else {
                 FindBestEndpointWarp("conn");
