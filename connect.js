@@ -121,7 +121,7 @@ async function checkDataOut(data, core) {
     }
     console.log(data)
 }
-async function Run(nameFile, args, runa = 'user', exeCore="warp") {
+async function Run(nameFile, args, runa = 'user', exeCore = "warp") {
     console.log("Runing New Process...");
     KillProcess("warp");
     KillProcess("vibe");
@@ -347,23 +347,26 @@ async function connect(core = 'warp', config = 'auto', os = process.platform, nu
     else if (core == "auto") await connectAuto(num);
 }
 async function RefreshLinks() {
-    reqRefreshLinks = new XMLHttpRequest();
-    reqRefreshLinks.open('GET', settingWarp["configfg"], true);
-    reqRefreshLinks.onload = function () {
-        if (reqRefreshLinks.status >= 200 && reqRefreshLinks.status < 400) {
-            links = JSON.parse(reqRefreshLinks.responseText);
-            console.log("Links Refreshed");
-            console.log(links);
-            write_file("links.json", JSON.stringify(reqRefreshLinks.responseText));
-        } else {
-            try { links = JSON.parse(read_file("links.json")); } catch {
-                write_file("links.json", JSON.stringify(links));
+    try {
+        reqRefreshLinks = new XMLHttpRequest();
+        reqRefreshLinks.open('GET', settingWarp["configfg"], true);
+        reqRefreshLinks.onload = function () {
+            if (reqRefreshLinks.status >= 200 && reqRefreshLinks.status < 400) {
+                links = JSON.parse(reqRefreshLinks.responseText);
+                console.log("Links Refreshed");
+                console.log(links);
+                write_file("links.json", JSON.stringify(reqRefreshLinks.responseText));
+            } else {
+                try { links = JSON.parse(read_file("links.json")); } catch {
+                    write_file("links.json", JSON.stringify(links));
+                }
+                console.log("Error Refreshing Links");
+                Showmess("Error Refreshing Links")
             }
-            console.log("Error Refreshing Links");
-            Showmess("Error Refreshing Links")
         }
+        reqRefreshLinks.send();
     }
-    reqRefreshLinks.send();
+    catch { }
 }
 var modeConn = "normal";
 var number = 0;

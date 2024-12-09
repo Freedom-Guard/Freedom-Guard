@@ -78,7 +78,9 @@ h2 {
     backdrop-filter: blur(5px);
     background: #f7f9fc2c;
 }
-
+img {
+    border-radius: 8px;
+}
 
 #ip-ping-vibe img {
     margin: 0 5px !important;
