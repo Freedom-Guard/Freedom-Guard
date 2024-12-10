@@ -216,7 +216,7 @@ async function testProxy() {
         sect == "main" ? SetHTML("ip-ping-warp", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
         testproxystat = true;
         try {
-            var testBypass = await axios.get('https://1.1.1.1', {
+            var testBypass = await axios.get('https://x.com', {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
