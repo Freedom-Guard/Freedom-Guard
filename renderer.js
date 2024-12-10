@@ -157,6 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         SetSettingWarp();
     });
     document.getElementById("ip-ping-warp").onclick = () => testProxy();
+    document.getElementById("ip-ping-vibe").onclick = () => testProxy();
 });
 // #endregion
 // #region Functions For Load
