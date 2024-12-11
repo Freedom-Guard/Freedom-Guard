@@ -236,7 +236,8 @@
             <button id="close-vibe-profile"
                 style="margin-top: 5px;font-size: 22px;border: none;background-color: transparent;color:rgb(63, 65, 173);margin:0;width:35px;height:35px;align-self: flex-start;margin: 8px;"><i
                     class='bx bx-arrow-back'></i></button>
-            <p id="status-vibe-sel" class="config-box-vibe-sel" style="width: 95vw;background:rgba(35, 63, 105, 0.712);margin-bottom: auto;">
+            <p id="status-vibe-sel" class="config-box-vibe-sel"
+                style="width: 95vw;background:rgba(35, 63, 105, 0.712);margin-bottom: auto;">
                 Auto</p>
             <div id="vibe-profile-list"></div>
             <button id="add-config-vibe"><i class='bx bx-plus'></i></button>
@@ -369,7 +370,7 @@
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
         <p> Freedom Guard 1.3.6 (Yalda stable)</p>
-        <p> Developed By Fwldom 👩‍💻</p>
+        <p> Developed By Freedom Guard Team 👩‍💻</p>
         <p>👇 Acknowledgements 👇</p>
         <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>
         <p> <a href="https://github.com/bepass-org/warp-plus">warp-plus 1.2.4</a> from bepass-org</p>
@@ -385,9 +386,11 @@
     <div class="box-notif">
         <p id="text-box-notif" style="width: 100%;flex: 1 0 100%;"></p>
         <a href="" role="button" id="href-box-notif" class="btn btn-primary btn-sm"
-            style="margin-right: 3vw;width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">بازش کن</a>
+            style="margin-right: 3vw;width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">بازش
+            کن</a>
         <button href="" role="button" id="close-box-notif" class="btn btn-primary btn-sm"
-            style="width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">الان حالش نیست</a>
+            style="width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">الان حالش
+            نیست</a>
     </div>
     <script>
         function boxNotif(message, href) {
@@ -405,8 +408,6 @@
         document.getElementById("close-box-notif").onclick = function () {
             document.querySelector(".box-notif").style.display = "none";
         }
-    </script>
-    <!-- #endregion Other All -->
     </script>
     <!-- #endregion Other All -->
 </body>
