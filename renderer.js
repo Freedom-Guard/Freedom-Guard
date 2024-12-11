@@ -191,11 +191,7 @@ function Onload() {
                 settingWarp[opt.split(",")[0]] = opt.split(",")[1];
             });
             if (settingWarp["core"] == "auto") {
-                settingWarp["gool"] = "false";
-                settingWarp["scan"] = "false";
-                settingWarp["endpoint"] = "";
-                settingWarp["reserved"] = "";
-                settingWarp["gool"] = "false";
+                resetSettingWarp(settingWarp["configfg"]);
             }
             SetSettingWarp();
             document.getElementById("textOfCfon").innerHTML = WarpServer[index].split(";")[1];

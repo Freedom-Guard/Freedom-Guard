@@ -163,7 +163,7 @@ function isValidURL(url) {
     const regex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$/;
     return regex.test(url);
 };
-function FindBestEndpointWarp(type = 'find') {
+async function FindBestEndpointWarp(type = 'find') {
     console.log("Finding Best Endpoint For Warp ....");
     if (process.platform == "linux") {
         sect == "main" ? Loading(100, "Searching Endpoint ...") : ("");
@@ -174,9 +174,11 @@ function FindBestEndpointWarp(type = 'find') {
     Run("win_scanner.bat", ["-" + settingWarp["ipver"]], "admin", "scanner");
     if (type != "conn") {
         sect == "main" ? Showmess(15000, "Searching Endpoint ...") : ("");
-    }
-    childProcess.on('exit', () => {
-        sect == "main" ? SetValueInput("end-point-address", read_file(path.join(__dirname, "main", "cores", "scanner", "bestendpoint.txt"))).trim() : ("");
+    };
+    await setTimeout(3500);
+    childProcess.on('close', () => {
+        console.log("Scanner End -> Set endpoint")
+        sect == "main" ? SetValueInput("end-point-address", read_file(path.join(__dirname, "main", "cores", "scanner", "bestendpoint.txt"))) : ("");
         OnEvent("end-point-address", "change");
         if (type == "conn" && StatusGuard == true) {
             StatusGuard = false;
