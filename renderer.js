@@ -789,9 +789,12 @@ ipcRenderer.on('start-warp', (event, ev) => {
     ResetArgsWarp();
     connectWarp();
 });
-ipcRenderer.on('start-get', (event, key, value) => {
-
+ipcRenderer.on('start-fg', (event, key, value) => {
+    saveSetting();
+    Onloading();
+    connect(core = document.getElementById("core-up-at").value);
 });
+
 ipcRenderer.on('set-warp-true', (event, key) => {
     settingWarp[`${key}`] = true;
     ResetArgsWarp();

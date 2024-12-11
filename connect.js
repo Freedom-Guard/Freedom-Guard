@@ -281,6 +281,12 @@ function Onloading() {
         settingVibe["config"] = "auto";
     }
 }
+function setSystemTrayON() {
+    ipc.send("set-on-fg");
+}
+function setSystemTrayOFF() {
+    ipc.send("set-off-fg");
+}
 // #endregion
 // #region Connection
 function ConnectedVibe(stat = "normal") {
@@ -297,6 +303,7 @@ function ConnectedVibe(stat = "normal") {
     settingVibe["status"] = true;
     StatusGuard = true;
     RefreshLinks();
+    setSystemTrayON();
 }
 function ConnectedWarp(stat = "normal") {
     console.log("Connected Warp");
@@ -311,10 +318,11 @@ function ConnectedWarp(stat = "normal") {
         NotifApp("🚀!Connected To Warp!🚀");
     }
     StatusGuard = true;
+    setSystemTrayON();
 }
 function disconnectVPN() {
     // function runed when the proxy is disconnected
-    //Kill the HiddifyCli.exe process
+    // Kill the HiddifyCli.exe process
     StatusGuard = false;
     settingVibe["status"] = false;
     console.log("Disconnecting VPN");
@@ -342,6 +350,7 @@ function disconnectVPN() {
     }, 600);
     NotifApp("Disconnected Freedom Guard");
     saveSetting();
+    setSystemTrayOFF();
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
     if (core == "warp") await connectWarp(num, mode = mode);

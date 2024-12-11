@@ -98,27 +98,20 @@ if (!gotTheLock) {
   })
 }
 let tray
-app.whenReady().then(() => {
-  var icon = nativeImage.createFromPath(path.join(__dirname, "assets", 'ico.png'))
-  tray = new Tray(icon)
+function setSystemTray(status = "off") {
+  if (tray) {
+    tray.destroy();
+    tray = null;
+  }
+  icon = nativeImage.createFromPath(path.join(__dirname, "assets", 'ico.png'))
+  tray = new Tray(icon);
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Connect to Freedom Vibe',
+      label: (status == "off" ? 'Connect to Freedom Guard' : 'Disconnect Freedom Guard'),
       type: 'normal',
       click: () => {
-        mainWindow.loadFile("index.html");
         mainWindow.removeBrowserView(ViewBrowser);
-        mainWindow.webContents.send('start-vibe', '');
-        mainWindow.focus()
-      }
-    },
-    {
-      label: 'Connect to Freedom Warp',
-      type: 'normal',
-      click: () => {
-        mainWindow.loadFile("index.html");
-        mainWindow.removeBrowserView(ViewBrowser);
-        mainWindow.webContents.send('start-warp', '');
+        mainWindow.webContents.send('start-fg', '');
         mainWindow.focus()
       }
     },
@@ -191,7 +184,9 @@ app.whenReady().then(() => {
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Freedom Guard')
   tray.setTitle('VPN (Warp, Vibe , Psiphon)')
-
+}
+app.whenReady().then(() => {
+  setSystemTray("off");
 })
 app.on('ready', createWindow);
 app.on('activate', () => {
@@ -252,16 +247,21 @@ ipc.on('load-file', (event, Pathfile) => {
 ipc.on('load-file-plus', (event, Pathfile) => {
   mainWindow.loadFile(path.join(Pathfile));
 });
-ipcMain.on('show-notification', (event, title="Freedom Guard", body, icon="./icon.png") => {
+ipcMain.on('show-notification', (event, title = "Freedom Guard", body, icon = "./icon.png") => {
   const notification = new Notification({
     title: title,
     body: body,
-    icon: icon 
+    icon: icon
   });
 
   notification.show();
 });
-
+ipc.on("set-on-fg", (event) => {
+  setSystemTray("on");
+});
+ipc.on("set-off-fg", (event) => {
+  setSystemTray("off");
+});
 // #endregion
 // #region Quit
 app.on('before-quit', () => {
