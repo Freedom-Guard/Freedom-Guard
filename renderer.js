@@ -29,13 +29,13 @@ var PsicountryFullname = ["Auto Server", "Austria", "Belgium", "Bulgaria", "Braz
 var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg"];
 var WarpServer = [
     "core,auto;Auto Server",
-    "gool,true|scan,true;Gool + Scan",
-    "gool,true;Warp + Gool",
-    "scan,true;Warp + Scan",
-    "reserved,true;Warp + Reserved",
-    "endpoint,188.114.97.159:942;Warp + Endpoint 188.114.97.159:942",
-    "endpoint,162.159.192.175:891;Warp + Endpoint 162.159.192.175:891",
-    "endpoint,162.159.192.36:908;Warp + Endpoint 162.159.192.36:908"
+    "gool,true|scan,true|core,warp;Gool + Scan",
+    "gool,true|core,warp;Warp + Gool",
+    "scan,true|core,warp;Warp + Scan",
+    "reserved,true|core,warp;Warp + Reserved",
+    "endpoint,188.114.97.159:942|core,warp;Warp + Endpoint 188.114.97.159:942",
+    "endpoint,162.159.192.175:891|core,warp;Warp + Endpoint 162.159.192.175:891",
+    "endpoint,162.159.192.36:908|core,warp;Warp + Endpoint 162.159.192.36:908"
 ];
 // #endregion
 // #region all Listener
@@ -192,7 +192,7 @@ function Onload() {
             });
             if (settingWarp["core"] == "auto") {
                 resetSettingWarp(settingWarp["configfg"]);
-            }
+            };
             SetSettingWarp();
             document.getElementById("textOfCfon").innerHTML = WarpServer[index].split(";")[1];
             saveSetting();
