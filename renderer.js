@@ -18,7 +18,6 @@ const geoip = require('geoip-lite');
 const versionapp = "1.3.6";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
-
 var sect = "main";
 var { NotifApp, RefreshLinks, settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('./connect.js');
 // #endregion
