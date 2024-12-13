@@ -12,7 +12,7 @@ const { execPath } = require("process");
 const { execFile, spawn, exec } = require("child_process");
 var fs = require("fs");
 const { readFile } = require("fs/promises");
-const axios = require('axios'); // Import axios
+const axios = require('axios');
 const { type, platform } = require("os");
 const geoip = require('geoip-lite');
 const versionapp = "1.3.6";
@@ -581,7 +581,7 @@ document.getElementById("menu-freedom-browser").onclick = () => {
     ipc.send("load-browser", "")
 };
 document.getElementById("menu-freedom-plus").onclick = () => {
-    ipc.send("load-file", "./plus/index.html")
+    ipc.send("load-file", "./src/plus/index.html")
 };
 document.getElementById("menu-dns").onclick = () => { document.getElementById("dns-set").style.display = "flex" };
 document.getElementById("menu-exit").onclick = () => {

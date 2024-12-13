@@ -1,5 +1,4 @@
-{
-    "name": "freedom-guard",
+{    "name": "freedom-guard",
     "productName": "Freedom Guard",
     "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
     "keywords": [],
@@ -67,14 +66,13 @@
             "publishAutoUpdate": false
         },
         "files": [
-            "assets/**/*",
+            "!assets/**/*",
             "src/**/*",
+            "!src/main/cores",
             "!dist/",
-            "node_modules/boxicons/css/boxicons.min.css",
             "node_modules/**/*",
             "package.json",
             "main.js",
-            "preload.js",
             "*.js",
             "*.html",
             "*.css",
@@ -92,7 +90,7 @@
     },
     "dependencies": {
         "@aptabase/electron": "^0.3.1",
-        "axios": "^1.7.2",
+        "axios": "^1.7.9",
         "bootstrap-icons": "^1.11.3",
         "electron-google-analytics": "^1.0.2",
         "geoip-lite": "^1.4.10",

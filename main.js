@@ -24,13 +24,14 @@ var pageTitle = "";
 const gotTheLock = app.requestSingleInstanceLock()
 // #endregion
 // #region functions
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, 'ico.ico'),
+    icon: path.join(__dirname, "src", "assets", "icon", 'ico.ico'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "src", 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false
     },
@@ -38,7 +39,7 @@ function createWindow() {
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  mainWindow.loadFile("./src/main/index.html");
+  mainWindow.loadFile(path.join("src", "main/index.html"));
   mainWindow.on('resize', function () {
     try {
       ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 6, width: mainWindow.getBounds().width / 1.3, height: mainWindow.getBounds().height / 1.3 });
@@ -103,7 +104,7 @@ function setSystemTray(status = "off") {
     tray.destroy();
     tray = null;
   }
-  icon = nativeImage.createFromPath(path.join(__dirname, "assets", 'ico.png'))
+  icon = nativeImage.createFromPath(path.join(__dirname, "src", "assets", "icon", 'ico.png'))
   tray = new Tray(icon);
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -120,7 +121,7 @@ function setSystemTray(status = "off") {
       type: 'normal',
       click: () => {
         CreateViewBrowser("https://fwldom.github.io/freedom-site-browser/index.html");
-        mainWindow.loadFile("browser.html");
+        mainWindow.loadFile(path.join("src", "browser/browser.html"));
         ViewBrowser.webContents.on("did-finish-load", (event) => {
           currentURL = ViewBrowser.webContents.getURL();
           pageTitle = ViewBrowser.webContents.getTitle();
@@ -207,7 +208,7 @@ app.setUserTasks([
 // #endregion
 // #region IPC
 ipc.on("load-main-app", (event) => {
-  mainWindow.loadFile("index.html");
+  mainWindow.loadFile(path.join("src", "main/index.html"));
   mainWindow.removeBrowserView(ViewBrowser);
 });
 ipc.on('hide-browser', (event, url) => {
@@ -218,7 +219,7 @@ ipc.on('show-browser', (event, url) => {
 });
 ipc.on('load-browser', (event) => {
   CreateViewBrowser("https://fwldom.github.io/freedom-site-browser/index.html");
-  mainWindow.loadFile("browser.html");
+  mainWindow.loadFile(path.join("src", "browser/browser.html"));
   ViewBrowser.webContents.on("did-finish-load", (event) => {
     currentURL = ViewBrowser.webContents.getURL();
     pageTitle = ViewBrowser.webContents.getTitle();
