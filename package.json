@@ -23,8 +23,11 @@
         ],
         "extraResources": [
             {
-                "from": "./ico.png",
-                "to": "./ico.png"
+                "from": "src/",
+                "to": "src/",
+                "filter": [
+                    "**/*"
+                ]
             },
             {
                 "from": "assets/",
@@ -32,38 +35,6 @@
                 "filter": [
                     "**/*"
                 ]
-            },
-            {
-                "from": "main/cores",
-                "to": "main/cores",
-                "filter": [
-                    "**/*"
-                ]
-            },
-            {
-                "from": "plus/",
-                "to": "plus/",
-                "filter": [
-                    "**/*"
-                ]
-            },
-            {
-                "from": "langs/",
-                "to": "langs/",
-                "filter": [
-                    "**/*"
-                ]
-            },
-            {
-                "from": "svgs/",
-                "to": "svgs/",
-                "filter": [
-                    "**/*"
-                ]
-            },
-            {
-                "from": "./register-url-win.bat",
-                "to": "./"
             }
         ],
         "productName": "Freedom Guard",
@@ -74,7 +45,7 @@
             "output": "dist"
         },
         "win": {
-            "icon": "ico.png",
+            "icon": "src/assets/icon/ico.png",
             "target": "nsis",
             "requestedExecutionLevel": "requireAdministrator",
             "legalTrademarks": "(c) 2024 freedom-guard.github.io/Freedom",
@@ -86,7 +57,7 @@
             "license": "./license.html"
         },
         "linux": {
-            "icon": "ico.png",
+            "icon": "src/assets/icon/ico.png",
             "target": "deb",
             "category": "VPN",
             "publish": false
@@ -97,14 +68,12 @@
         },
         "files": [
             "assets/**/*",
-            "plus/**/*",
-            "!assets/bin/*",
+            "src/**/*",
             "!dist/",
             "node_modules/boxicons/css/boxicons.min.css",
             "node_modules/**/*",
             "package.json",
             "main.js",
-            "rederer.js",
             "preload.js",
             "*.js",
             "*.html",

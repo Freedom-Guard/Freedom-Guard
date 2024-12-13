@@ -38,7 +38,7 @@ function createWindow() {
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  mainWindow.loadFile("./index.html");
+  mainWindow.loadFile("./src/main/index.html");
   mainWindow.on('resize', function () {
     try {
       ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 6, width: mainWindow.getBounds().width / 1.3, height: mainWindow.getBounds().height / 1.3 });
@@ -247,7 +247,7 @@ ipc.on('load-file', (event, Pathfile) => {
 ipc.on('load-file-plus', (event, Pathfile) => {
   mainWindow.loadFile(path.join(Pathfile));
 });
-ipcMain.on('show-notification', (event, title = "Freedom Guard", body, icon = "./icon.png") => {
+ipcMain.on('show-notification', (event, title = "Freedom Guard", body, icon = "./src/assets/icon/icon.png") => {
   const notification = new Notification({
     title: title,
     body: body,

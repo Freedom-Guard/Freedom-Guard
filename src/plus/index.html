@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freedom Plus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <button id="back">Back To Warp</button>
+    <div class="container">
+        <h1>لیست برنامه‌ها</h1>
+        <input type="text" id="search" dir="rtl" placeholder="برنامه را جستجو کنید...">
+        <div id="apps-list"></div>
+    </div>
+    <div id="download-dialog" class="dialog" dir="rtl">
+        <div class="dialog-content">
+            <h2>دانلود فایل‌ها</h2>
+            <progress id="download-progress" value="0" max="100"></progress>
+            <p id="download-status">در حال دانلود...</p>
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+
+</html>
