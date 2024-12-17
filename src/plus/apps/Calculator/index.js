@@ -9,10 +9,10 @@ function append(text) {
 }
 function CloseToPlus() {
     try {
-    const ipc = require('electron').ipcRenderer;
-        ipc.send("load-file","./plus/index.html");
+        const ipc = require('electron').ipcRenderer;
+        ipc.send("load-file", path.join("src", "plus/index.html"));
     }
-    catch {}
+    catch { }
 }
 function calculate() {
     try {
