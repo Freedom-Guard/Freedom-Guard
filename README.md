@@ -68,7 +68,8 @@
 
 > Freedom Guard (Warp)
 
-![image](https://github.com/user-attachments/assets/b244c047-a8e5-4dd2-bf6b-16c450ebee7e)
+![image](https://github.com/user-attachments/assets/c0c8aac0-188a-4d0a-9bca-a36fff86af58)
+
 ### Contact 
 email : fwldom@duck.com
 ## 👇 Acknowledgements 👇
