@@ -76,7 +76,6 @@ email : fwldom@duck.com
 
 > hiddify-core from Hiddify<br>
 > warp-plus from bepass-org <br>
-> Dns Jumper from sordum <br>
 > Scanner IP Endpoint (Warp) from Ptechgithub <br>
 ### Visitors 
 ![Visitor Count](https://profile-counter.glitch.me/Freedom-Guard-Electron/count.svg)
