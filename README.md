@@ -49,13 +49,13 @@
 </div>
 
 ### features
-- Freedom Guard (with Warp Plus , Main)
+- Freedom Guard (with Warp Plus, Main)
 - Freedom Vibe (With Hiddify Core)
 - Freedom Browser (Private & With Vpn & fast)
-- Dns Changer (With Dns Jumper)
+- Dns Changer 
 - Settings For Warp Plus (endpoint, bind address,...)
-- Auto Config Freedom Vibe
-- Psiphon Countries List
+- Auto Mode for auto servers
+- Servers -> warp, vibe, auto
 - IP Version Warp Plus (4,6)
 - Scanner IP Endpoint 
 ### Screenshot
