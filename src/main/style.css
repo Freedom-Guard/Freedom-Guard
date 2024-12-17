@@ -1083,6 +1083,7 @@ select option {
     align-items: center;
     background-color: #f1e9f2;
     position: absolute;
+    color:black;
     border-radius: 15px;
 }
 

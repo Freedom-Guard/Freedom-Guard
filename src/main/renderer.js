@@ -22,7 +22,7 @@ var sect = "main";
 var { NotifApp, RefreshLinks, settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('../components/connect.js');
 // #endregion
 // #region Global Var
-__dirname = path.join(__dirname.replace("app.asar", ""),"../../");
+__dirname = path.join(__dirname.replace("app.asar", ""), "../../");
 var Psicountry = ["IR", "AT", "BE", "BG", "BR", "CA", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "HU", "HR", "IE", "IN", "IT", "JP", "LV", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SG", "SK", "UA", "US"];
 var PsicountryFullname = ["Auto Server", "Austria", "Belgium", "Bulgaria", "Brazil", "Canada", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia", "Spain", "Finland", "France", "United Kingdom", "Hungary", "Croatia", "Ireland", "India", "Italy", "Japan", "Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Serbia", "Sweden", "Singapore", "Slovakia", "Ukraine", "United States"];
 var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg"];
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("change-background-warp-btn").onclick = () => {
         const randomImage = getRandomImage();
         document.body.style.backgroundSize = "cover";
-        document.body.style.backgroundImage = `url(${randomImage}), linear-gradient(180deg, #252C37 0%, rgba(35, 31, 88, 0.5) 35%, rgba(0, 212, 255, 0.4) 100%)`;
+        document.body.style.backgroundImage = `url(../../${randomImage}), linear-gradient(180deg, #252C37 0%, rgba(35, 31, 88, 0.5) 35%, rgba(0, 212, 255, 0.4) 100%)`;
     }
     document.getElementById("refresh-link-btn").onclick = () => {
         RefreshLinks();
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function Onload() {
     trackEvent("start-app");
     ResetArgsWarp();
-    process.platform == "win32" ? exec(path.join(__dirname,"src","scripts", "register-url-win.bat")) : ("");
+    process.platform == "win32" ? exec(path.join(__dirname, "src", "scripts", "register-url-win.bat")) : ("");
     // Start Add Element Countries to box select country psiphon
     var container = document.getElementById("box-select-country");
     var configBox = document.createElement("div");
@@ -195,7 +195,7 @@ function Onload() {
             SetSettingWarp();
             document.getElementById("textOfCfon").innerHTML = WarpServer[index].split(";")[1];
             saveSetting();
-            document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src","svgs", "glob" + ".svg");
+            document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
         });
         document.getElementById("box-select-country").appendChild(configBox);
     });
@@ -209,7 +209,7 @@ function Onload() {
         configBox.classList.add("config-box-vibe-sel" + index);
         configBox.title = config;
         let img = document.createElement("img");
-        img.src = path.join(__dirname,"src", "svgs", "glob" + ".svg");
+        img.src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
         img.id = "imgOfCfon";
         let p = document.createElement("p");
         p.id = "textOfCfonS";
@@ -224,7 +224,7 @@ function Onload() {
             settingWarp["core"] = "vibe";
             document.getElementById("textOfCfon").innerHTML = configsVibeName[index];
             saveSetting();
-            document.getElementById("imgOfCfonCustom").src = path.join(__dirname,"src", "svgs", "glob" + ".svg");
+            document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
             SetSettingWarp();
         });
         document.getElementById("box-select-country").appendChild(configBox);
@@ -240,7 +240,7 @@ function Onload() {
         countryDiv.id = `cfonCountry${country}`;
         countryDiv.title = country;
         let img = document.createElement("img");
-        img.src = path.join(__dirname,"src", "svgs", country + ".svg");
+        img.src = path.join(__dirname, "src", "svgs", country + ".svg");
         img.id = "imgOfCfon";
         let p = document.createElement("p");
         p.id = "textOfCfonS";
@@ -421,7 +421,7 @@ function SetCfon(country) {
     settingWarp["cfon"] = true;
     settingWarp["cfonc"] = country;
     document.getElementById("textOfCfon").innerHTML = PsicountryFullname[Psicountry.indexOf(country.toString().toUpperCase())];
-    document.getElementById("imgOfCfonCustom").src = path.join(__dirname,"src", "svgs", country.toString().toLowerCase() + ".svg");
+    document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", country.toString().toLowerCase() + ".svg");
     ResetArgsWarp();
     saveSetting();
     // Set Psiphon Country 
@@ -463,7 +463,7 @@ function SetSettingWarp() {
     SetValueInput("core-up-at", settingWarp["core"])
     SetValueInput("config-fg-text", settingWarp["configfg"])
     SetHTML("textOfCfon", settingWarp["core"] == "warp" ? PsicountryFullname[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())] : configsVibeName[configsVibeLink.indexOf(settingVibe["config"])]);
-    settingWarp["core"] == "vibe" ? document.getElementById("imgOfCfonCustom").src = path.join(__dirname,"src", "svgs", "glob" + ".svg") : SetCfon(Psicountry[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())]);
+    settingWarp["core"] == "vibe" ? document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg") : SetCfon(Psicountry[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())]);
 }
 function SetValueInput(id, Value) {
     // Set Value In Input
@@ -769,9 +769,73 @@ document.getElementById("close-vibe-profile-add").addEventListener("click", () =
 document.getElementById("close-dns").onclick = () => (document.getElementById("dns-set").style.display = "");
 document.getElementById("submit-dns").onclick = () => SetDNS(document.getElementById("dns1-text").value, document.getElementById("dns2-text").value);
 function SetDNS(dns1, dns2) {
-    // Run Dns Jumper With DNS address as parameter for Apply DNS
-    (dns1 != "" & dns2 != "") ? (process.platform == "linux") ? spawn(`"${path.join(__dirname, "assets", "bash", "set_dns.sh")}"`, [dns1, dns2]) : ("") : ("");
-    if (dns1 != "" & dns2 != "") Run("DnsJumper.exe", [dns1 + "," + dns2]);
+    const { exec } = require("child_process");
+    const path = require("path");
+
+
+    if (!(dns1 !== "" && dns2 !== "")) {
+        console.error("Please provide valid DNS addresses.");
+        alert("Please enter valid Primary and Secondary DNS!");
+        return;
+    }
+
+    // بررسی پلتفرم و اجرای فایل مناسب
+    if (process.platform === "linux") {
+        exec(
+            `"${path.join(
+                __dirname,
+                "src",
+                "main",
+                "cores",
+                "dns",
+                "set_dns-gn.sh"
+            )}" ${dns1} ${dns2}`,
+            (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Error: ${error.message}`);
+                    alert("Failed to change DNS: " + error.message);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`Stderr: ${stderr}`);
+                    alert("Failed to change DNS: " + stderr);
+                    return;
+                }
+                console.log(stdout);
+                alert("DNS successfully changed!");
+            }
+        );
+    } else if (process.platform === "win32") {
+        exec(
+            `"${path.join(
+                __dirname,
+                "src",
+                "main",
+                "cores",
+                "dns",
+                "set_dns-ms.bat"
+            )}" ${dns1} ${dns2}`,
+            (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Error: ${error.message}`);
+                    alert("Failed to change DNS: " + error.message);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`Stderr: ${stderr}`);
+                    alert("Failed to change DNS: " + stderr);
+                    return;
+                }
+                console.log(stdout);
+                alert("DNS successfully changed!");
+            }
+        );
+    } else {
+        console.error("Unsupported platform");
+        alert("This platform is not supported.");
+    }
+
+
 }
 //#endregion
 // #region deep links 

@@ -190,7 +190,7 @@ function formatTime(seconds) {
 document.getElementById("back").addEventListener("click", () => {
   try {
     const ipc = require('electron').ipcRenderer;
-    ipc.send("load-file", "./plus/index.html");
+    ipc.send("load-file", path.join("src", "plus/index.html"));
   }
   catch { }
 })
