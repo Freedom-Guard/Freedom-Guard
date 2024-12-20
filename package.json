@@ -3,7 +3,7 @@
     "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
     "keywords": [],
     "main": "./main.js",
-    "version": "1.3.6",
+    "version": "1.3.7",
     "author": "fwldom <fwldom@duck.com>",
     "scripts": {
         "start": "npx electron .",
