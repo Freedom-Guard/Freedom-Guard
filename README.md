@@ -4,7 +4,7 @@
 > Woman Life Freedom
 # نرم افزار گارد آزادی
  وارپ + سایفون + گول + اسکن + مرورگر آزادی + Freedom Vibe + Freedom Plus
-> نرم افزار گارد آزادی یک نرم افزار برای دور زدن سانسور اینترنت است. 
+> نرم افزار گارد آزادی یک نرم افزار برای دور زدن سانسور اینترنت است. <br>
 > زن زندگی آزادی
 
 ### <div align="center"> Download the latest version | دانلود آخرین نسخه </div>
@@ -23,7 +23,7 @@
             <td>Windows</td>
             <td>
               <!--  <a href=""><img src="https://img.shields.io/badge/OfficialSetup{Disabled}-x64-0078d7.svg?logo=windows"></a><br>-->
-                <a href="https://github.com/fwldom/Freedom-Guard/releases/latest/download/freedom-guard-win.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-win.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
                <!--<a href=""><img src="https://img.shields.io/badge/Portable{Disabled}-x64-67b7d1.svg?logo=windows"></a>-->
             </td>
         </tr>
@@ -39,7 +39,7 @@
         <tr>
             <td>Linux</td>
             <td>
-                <a href="https://github.com/fwldom/Freedom-Guard/releases/latest/download/freedom-guard-linux.deb"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=linux"> </a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.deb"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=linux"> </a><br>
             </td>
         </tr>
     </tbody>
@@ -49,13 +49,13 @@
 </div>
 
 ### features
-- Freedom Guard (with Warp Plus , Main)
+- Freedom Guard (with Warp Plus, Main)
 - Freedom Vibe (With Hiddify Core)
 - Freedom Browser (Private & With Vpn & fast)
-- Dns Changer (With Dns Jumper)
+- Dns Changer 
 - Settings For Warp Plus (endpoint, bind address,...)
-- Auto Config Freedom Vibe
-- Psiphon Countries List
+- Auto Mode for auto servers
+- Servers -> warp, vibe, auto
 - IP Version Warp Plus (4,6)
 - Scanner IP Endpoint 
 ### Screenshot
@@ -68,14 +68,14 @@
 
 > Freedom Guard (Warp)
 
-![image](https://github.com/user-attachments/assets/b244c047-a8e5-4dd2-bf6b-16c450ebee7e)
+![image](https://github.com/user-attachments/assets/c0c8aac0-188a-4d0a-9bca-a36fff86af58)
+
 ### Contact 
 email : fwldom@duck.com
 ## 👇 Acknowledgements 👇
 
 > hiddify-core from Hiddify<br>
 > warp-plus from bepass-org <br>
-> Dns Jumper from sordum <br>
 > Scanner IP Endpoint (Warp) from Ptechgithub <br>
 ### Visitors 
 ![Visitor Count](https://profile-counter.glitch.me/Freedom-Guard-Electron/count.svg)
