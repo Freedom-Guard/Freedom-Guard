@@ -55,7 +55,7 @@ const { setTimeout } = require("timers/promises");
 const { config } = require('process');
 const Winreg = require('winreg');
 const notifier = require('node-notifier');
-__dirname = path.join(__dirname.replace("app.asar", ""),"../../");
+__dirname = path.join(__dirname.replace("app.asar", ""), "../../");
 
 // #endregion
 // #region Functions
@@ -84,6 +84,12 @@ function changeISP(newisp) {
     Onloading();
 };
 async function checkDataOut(data, core) {
+    /* for check Data Out --> process
+    @param {string|Buffer} data - Data received from the core process (can be a string or buffer).
+    @param {string} core - name of core
+    @returns {void}
+    * 
+    */
     if (core == "warp") {
         if (data.toString().includes("serving proxy")) {
             if (process.platform == "linux" && !settingWarp["tun"]) {
@@ -122,6 +128,16 @@ async function checkDataOut(data, core) {
     console.log(data)
 }
 async function Run(nameFile, args, runa = 'user', exeCore = "warp") {
+    /* for Running Process warp, scanner, vibe
+    @param {string} nameFile - name of file
+    @param {array} args - arguments for process
+    @param {string} runa - run as admin or user
+    @param {string} exeCore - warp or vibe or scanner
+    @returns {void}
+    * Kill old process
+    * Run new process for linux or windows - Linux(Replace .exe)
+    * define Events for Close, Data process
+    */
     console.log("Runing New Process...");
     KillProcess("warp");
     KillProcess("vibe");
@@ -164,36 +180,53 @@ function isValidURL(url) {
     return regex.test(url);
 };
 async function FindBestEndpointWarp(type = 'find') {
-    console.log("Finding Best Endpoint For Warp ....");
-    if (process.platform == "linux") {
-        sect == "main" ? Loading(100, "Searching Endpoint ...") : ("");
-        alert("Scanner IP Endpoint not support in linux");
-        return;
-    }
-    if (settingWarp["ipver"] == "") settingWarp["ipver"] = 4;
-    Run("win_scanner.bat", ["-" + settingWarp["ipver"]], "admin", "scanner");
-    if (type != "conn") {
-        sect == "main" ? Showmess(15000, "Searching Endpoint ...") : ("");
-    };
-    await setTimeout(3500);
-    childProcess.on('close', () => {
-        console.log("Scanner End -> Set endpoint")
-        sect == "main" ? SetValueInput("end-point-address", read_file(path.join(__dirname, "src", "main", "cores", "scanner", "bestendpoint.txt"))) : ("");
-        OnEvent("end-point-address", "change");
-        if (type == "conn" && StatusGuard == true) {
-            StatusGuard = false;
-            connectWarp();
+    /* for Find best endpoint for warp and set it
+    @param {string} type - type of searching
+    @returns {void}
+    * Run scanner
+    * await 3.5s
+    * if fg==on ? set best endpoint : return
+    */
+    try {
+        console.log("Finding Best Endpoint For Warp ....");
+        if (process.platform == "linux") {
+            sect == "main" ? Loading(100, "Searching Endpoint ...") : ("");
+            alert("Scanner IP Endpoint not support in linux");
+            return;
         }
+        if (settingWarp["ipver"] == "") settingWarp["ipver"] = 4;
+        Run("win_scanner.bat", ["-" + settingWarp["ipver"]], "admin", "scanner");
         if (type != "conn") {
-            Showmess(2000, "Finded Best Endpoint");
-        }
-        else {
-            sect == "main" ? Showmess(3000, "Finded Best Endpoint. Reconnecting") : ("");
-        }
-    });
-    return;
+            sect == "main" ? Showmess(15000, "Searching Endpoint ...") : ("");
+        };
+        await setTimeout(3500);
+        childProcess.on('close', () => {
+            console.log("Scanner End -> Set endpoint")
+            sect == "main" ? SetValueInput("end-point-address", read_file(path.join(__dirname, "src", "main", "cores", "scanner", "bestendpoint.txt"))) : ("");
+            OnEvent("end-point-address", "change");
+            if (type == "conn" && StatusGuard == true) {
+                StatusGuard = false;
+                connectWarp();
+            }
+            if (type != "conn") {
+                Showmess(2000, "Finded Best Endpoint");
+            }
+            else {
+                sect == "main" ? Showmess(3000, "Finded Best Endpoint. Reconnecting") : ("");
+            }
+        });
+        return;
+    } catch { };
 };
 async function testProxy() {
+    /* for test SystemProxy, set ip, country and ping in pingbox
+    if bypass and fg==on -> set on vpn
+    @param {null} 
+    @returns {void}
+    * get ip and ping and country -> set for pingBox
+    * test Bypass -> if bypass == on -> set on vpn
+    * if bypass == on -> return true
+    */
     console.log("Testing Proxy...");
     var startTime = Date.now();
     try {
@@ -208,7 +241,7 @@ async function testProxy() {
             var geo = geoip.lookup(ip);
             if (geo) {
                 countryIP = geo.country;
-                return `<img src="${path.join(__dirname,"src", "svgs", countryIP.toLowerCase() + ".svg")}" width="40rem" style='margin:1rem'>`
+                return `<img src="${path.join(__dirname, "src", "svgs", countryIP.toLowerCase() + ".svg")}" width="40rem" style='margin:1rem'>`
             } else {
                 return '❓';
             }
@@ -239,6 +272,11 @@ async function testProxy() {
     }
 };
 const setProxy = async (proxy) => {
+    /* for set Proxy only for windows
+    @param {string} proxy - 127.0.0.1:8080 
+    @returns {void}
+    * set Proxy in registery windows
+    */
     console.log("Set proxy...")
     const proxyKey = new Winreg({
         hive: Winreg.HKCU,
@@ -252,6 +290,11 @@ const setProxy = async (proxy) => {
     });
 };
 const offProxy = async (proxy) => {
+    /* for unset Proxy only for windows
+    @param {string} proxy - 127.0.0.1:8080 
+    @returns {void}
+    * unset Proxy in registery windows
+    */
     console.log("Reset Proxy...");
     const proxyKey = new Winreg({
         hive: Winreg.HKCU,
@@ -262,6 +305,11 @@ const offProxy = async (proxy) => {
     });
 };
 function Onloading() {
+    /* for Onloading reload setting, configs Vibe
+    @param {null}
+    @returns {void}
+    * reload settings from file
+    */
     try {
         // Restore var settingWarp  from json
         settingWarp = JSON.parse(read_file("warp.json"));
@@ -405,11 +453,11 @@ async function NotifApp(body, title = "Freedom Guard", icon = './ico.png') {
         {
             title: title,
             message: body,
-            icon: path.join(__dirname, "src","assets","icon",'./ico.png'),
+            icon: path.join(__dirname, "src", "assets", "icon", './ico.png'),
             appID: " ",
             sound: true,
             wait: true,
-            appIcon: path.join(__dirname, "src","assets","icon",'./ico.png'),
+            appIcon: path.join(__dirname, "src", "assets", "icon", './ico.png'),
             reply: true
         },
         function (err, response, metadata) { }
