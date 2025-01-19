@@ -874,7 +874,7 @@ function getQueryParams(url) {
 }
 var queryParams = getQueryParams(window.location.href);
 ipcRenderer.on('start-link', (event, link) => {
-    link = link.replaceAll("/", "").replace("freedom-guard:", "").replace("?", "");
+    link = link.replace("freedom-guard:", "").replace("?", "");
     queryParams = getQueryParams(link);
     if (queryParams["core"] == "vibe") {
         Object.entries(queryParams).forEach(para => {
@@ -886,7 +886,6 @@ ipcRenderer.on('start-link', (event, link) => {
             ResetArgsWarp();
             SetSettingWarp();
             saveSetting();
-            connectAuto();
         }
     }
     else {
@@ -897,11 +896,18 @@ ipcRenderer.on('start-link', (event, link) => {
             settingWarp["core"] = queryParams["core"];
             ResetArgsWarp();
             SetSettingWarp();
-            saveSetting();
-            connectAuto();
+            saveSetting()
         }
     }
-
+    if (settingWarp["core"] == "vibe") {
+        connectVibe();
+    }
+    else if (settingWarp["core"] == "warp"){
+        connectWarp();
+    }
+    else {
+        connect(core = queryParams["core"]);
+    }
 });
 // #endregion
 // #region Interval Timers and Loads

@@ -230,7 +230,7 @@ async function testProxy() {
     console.log("Testing Proxy...");
     var startTime = Date.now();
     try {
-        const testConnection = await axios.get('https://api.ipify.org?format=json', {
+        const testConnection = await axios.get('http://api.ipify.org?format=json', {
             timeout: 5000,
         });
         console.log('IP :', testConnection.data.ip);
