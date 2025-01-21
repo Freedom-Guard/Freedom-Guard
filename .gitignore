@@ -7,9 +7,9 @@ dist
 warp.json
 vibe.json
 assets/result.csv
+freedom-guard.json
 assets/bestendpoint.txt
 assets/bash/py.py
-assets/bin/bestendpoint.txt
 clash.db
 .swp
 current-config.json
@@ -20,3 +20,5 @@ configsVibeName.json
 one.one
 links.json
 data/
+src/main/cores/scanner/bestendpoint.txt
+src/main/cores/scanner/result.csv

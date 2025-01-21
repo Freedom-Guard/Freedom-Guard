@@ -1,28 +1,37 @@
-@echo off & setlocal enabledelayedexpansion
-cd "%~dp0"
+@echo off
+chcp 936 >nul
+setlocal enabledelayedexpansion
+cd /d "%~dp0"
 
-if not exist "warp.exe" echo Missing warp.exe program&pause&exit
-echo.
-echo.:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-echo.::                        Finder Warp Endpoint                     ::
-echo.:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-echo.
-goto main
+:start
+if not exist warp.exe (
+    echo warp.exe not found. Downloading...
+    Powershell -Command "Invoke-WebRequest -Uri 'https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp.exe' -OutFile 'warp.exe'"
+)
+if not exist warp.exe (
+    echo warp.exe program is missing. Exiting...
+    pause
+    exit
+)
+for %%i in (v4 v6) do (
+    if not exist ips-%%i.txt Powershell wget -Uri "https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/ips-%%i.txt" -OutFile "ips-%%i.txt"
+    if not exist ips-%%i.txt echo 缺少 IP%%i 数据 ips-%%i.txt & pause & exit
+)
 
 :main
-title Scanner Warp IP
-IF "%~1"=="-4" set /a menu=1
-IF "%~1"=="-6" set /a menu=2
-IF "%~1"=="" set /a menu=1
-echo 1. Preferred IPV4 &echo 2. Preferred IPV6&echo 0. Exit&echo.
-if %menu%==0 exit
-if %menu%==1 title CF Preferred WARP IP&set ipv4=162.159.192.0/24 162.159.193.0/24 162.159.195.0/24 188.114.96.0/24 188.114.97.0/24 188.114.98.0/24 188.114.99.0/24&goto getv4
-if %menu%==2 title CF Preferred WARP IP&set ipv6=2606:4700:d0::/48 2606:4700:d1::/48&goto getv6
 cls
-goto main
+title WARP Endpoint IP 一键优选脚本
+
+IF "%~1"=="-4" set ver=v4
+IF "%~1"=="-6" set  ver=v6
+IF "%~1"=="" set ver=v4
+title WARP IP%ver% Endpoint IP 优选
+set filename=ips-%ver%.txt
+goto get%ver%
+
 
 :getv4
-for %%i in (%ipv4%) do (
+for /f "delims=" %%i in (%filename%) do (
 set !random!_%%i=randomsort
 )
 for /f "tokens=2,3,4 delims=_.=" %%i in ('set ^| findstr =randomsort ^| sort /m 10240') do (
@@ -37,7 +46,7 @@ set /a cidr=%random%%%256
 goto :eof
 
 :getv6
-for %%i in (%ipv6%) do (
+for /f "delims=" %%i in (%filename%) do (
 set !random!_%%i=randomsort
 )
 for /f "tokens=2,3,4 delims=_:=" %%i in ('set ^| findstr =randomsort ^| sort /m 10240') do (
@@ -73,6 +82,14 @@ set /a r=%random%%%16
 set cidr=!cidr!!str:~%r%,1!
 set /a r=%random%%%16
 set cidr=!cidr!!str:~%r%,1!
+set /a r=%random%%%16
+set cidr=!cidr!:!str:~%r%,1!
+set /a r=%random%%%16
+set cidr=!cidr!!str:~%r%,1!
+set /a r=%random%%%16
+set cidr=!cidr!!str:~%r%,1!
+set /a r=%random%%%16
+set cidr=!cidr!!str:~%r%,1!
 goto :eof
 
 :getip
@@ -86,23 +103,14 @@ echo %%i>>ip.txt
 for /f "tokens=1 delims==" %%i in ('set ^| findstr =anycastip') do (
 set %%i=
 )
+
 warp
+del ip.txt > nul 2>&1
 for /f "skip=1 tokens=1,2,3 delims=," %%i in (result.csv) do (
 set endpoint=%%i
 set loss=%%j
 set delay=%%k
-goto show
 )
-
-:show
-del result.csv
-del ip.txt> nul 2>&1
-echo.:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-echo.::                                                                 ::
-echo.                      Best IP:Port %endpoint%
-echo.		    Packet loss %loss% Average delay %delay%                
-echo.::                                                                 ::
-echo.:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-echo.
 echo %endpoint% > bestendpoint.txt
+pause > nul
 exit

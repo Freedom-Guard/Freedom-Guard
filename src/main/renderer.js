@@ -19,7 +19,7 @@ const versionapp = "1.3.6";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
-var { NotifApp, RefreshLinks, settingVibe, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('../components/connect.js');
+var { NotifApp, RefreshLinks, settingVibe, getWarpKey, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('../components/connect.js');
 // #endregion
 // #region Global Var
 __dirname = path.join(__dirname.replace("app.asar", ""), "../../");
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("setting").style.position = "absolute"
         document.getElementById("setting").style.right = "-150vw";
         document.getElementById("setting").style.visibility = "0.3";
-        setTimeout(() => {
+        global.setTimeout(() => {
             document.getElementById("setting").style.display = "";
         }, 1300);
     };
@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function Onload() {
     trackEvent("start-app");
     ResetArgsWarp();
+    Loading(3500);
     process.platform == "win32" ? exec(path.join(__dirname, "src", "scripts", "register-url-win.bat")) : ("");
     // Start Add Element Countries to box select country psiphon
     var container = document.getElementById("box-select-country");
@@ -259,8 +260,9 @@ function Onload() {
     });
     // End Added All Elements
     try {
-        // Restore var settingWarp  from json
-        settingWarp = JSON.parse(read_file("warp.json"));
+        // Restore settings from json
+        settingWarp = JSON.parse(read_file("freedom-guard.json"))["warp"];
+        settingVibe = JSON.parse(read_file("freedom-guard.json"))["vibe"];
         SetSettingWarp()
     }
     catch {
@@ -287,7 +289,7 @@ function Onload() {
             LoadVibe();
         }
         else if (settingWarp["startup"] == "browser") {
-            setTimeout(() => {
+            global.setTimeout(() => {
                 ipc.send("load-browser", "");
             }, 1500);
         }
@@ -317,6 +319,23 @@ function checkUpdate() {
 }
 // #endregion
 // #region Functions other
+function Loading(time = 5000, textloading = "") {
+    let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg"];
+    let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده"];
+    let random = Math.floor(Math.random() * loaderImages.length);
+    let loaderImage = "../assets/" + loaderImages[random];
+    let loaderTxt = loaderText[random];
+    document.getElementById("loader-text").innerHTML = loaderTxt;
+    document.getElementById('loader-image').src = loaderImage;
+    document.getElementById("loading-text").innerHTML = textloading;
+    document.getElementById("loading").style.display = "flex";
+    process.nextTick(() => {
+        global.setTimeout(() => {
+            document.getElementById("loading").style.display = "none";
+        }, time);
+    });
+
+};
 function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json") {
     console.log("Reseting setting Warp ....")
     settingWarp = {
@@ -350,6 +369,20 @@ function openLink(url) {
         shellEl.openExternal(url);
     }
     catch { }
+}
+async function importConfigFile() {
+
+    const result = await ipcRenderer.invoke("import-config");
+
+    if (result.success) {
+        settingWarp = result.data["warp"];
+        settingVibe = result.data["vibe"];
+        saveSetting();
+        SetSettingWarp();
+        alert("Configuration imported successfully:", config);
+    } else {
+        alert(`Error: ${result.error}`);
+    }
 }
 function SetAnim(id, anim) {
     document.getElementById(id).style.animation = anim;
@@ -486,10 +519,10 @@ function Showmess(time = 2500, text = "message text", type = "info") {
     document.getElementById("message").style.transition = time / 5 + "ms";
     document.getElementById("message-border").style.width = "100%";
     document.getElementById("messageText").innerText = text;
-    setTimeout(() => {
+    global.setTimeout(() => {
         document.getElementById("message-border").style.width = "0%";
         document.getElementById("message").style.width = "0%";
-        setTimeout(() => {
+        global.setTimeout(() => {
             document.getElementById("message").style.display = "none";
         }, 1000);
     }, time);
@@ -562,7 +595,11 @@ document.getElementById("menu-website").addEventListener("click", () => {
     openLink("https://freedom-guard.github.io/Freedom/")
 })
 document.getElementById("menu-about").addEventListener("click", () => { document.getElementById("about-app").style.display = "flex" })
+document.getElementById("more-options").addEventListener("click", () => { document.getElementById("more-options-content").classList.toggle("active") })
 document.getElementById("about").addEventListener("click", () => { document.getElementById("about-app").style.display = "flex" })
+document.getElementById("get-key-warp").addEventListener("click", () => { getWarpKey(); })
+document.getElementById("export-config").addEventListener("click", () => { ipcRenderer.send("export-settings", { "vibe": settingVibe, "warp": settingWarp }) })
+document.getElementById("import-config-file").addEventListener("click", () => { importConfigFile() })
 document.getElementById("close-about").addEventListener("click", () => { document.getElementById("about-app").style.display = "" })
 //#endregion
 // #region Section Menu
@@ -574,7 +611,7 @@ document.getElementById("menu-show").onclick = () => {
     document.getElementById("menu").style.visibility = "1";
 };
 document.getElementById("menu-freedom-vibe").onclick = () => {
-    Loading("");
+    Loading();
     LoadVibe();
 };
 document.getElementById("menu-freedom-browser").onclick = () => {
@@ -589,7 +626,7 @@ document.getElementById("menu-exit").onclick = () => {
     document.getElementById("menu").style.position = "absolute"
     document.getElementById("menu").style.left = "-110vw";
     document.getElementById("menu").style.visibility = "0.3";
-    setTimeout(() => {
+    global.setTimeout(() => {
         document.getElementById("menu").style.display = "";
     }, 1300);
 };
@@ -627,9 +664,8 @@ var configsVibeLink = [
 function LoadVibe() {
     document.getElementById("freedom-vibe").style.display = "flex";
     try {
-        settingVibe = JSON.parse(read_file("vibe.json")); // Load Setting From File.json 
-        configsVibeName = JSON.parse(read_file("configsVibeName.json")); // Load Setting From File.json 
-        configsVibeLink = JSON.parse(read_file("configsVibeLink.json")); // Load Setting From File.json 
+        configsVibeName = JSON.parse(read_file("freedom-guard.json"))["configsVibeName"]; // Load Setting From File.json 
+        configsVibeLink = JSON.parse(read_file("freedom-guard.json"))["configsVibeLink"]; // Load Setting From File.json 
     }
     catch {
         saveSetting();
@@ -647,10 +683,14 @@ function LoadVibe() {
     document.getElementById("fragment-vibe-size-text").value = settingVibe["fragment-size"];
 }
 async function saveSetting() {
-    // Save setting vibe & setting warp In vibe.json & warp.json
-    write_file("vibe.json", JSON.stringify(settingVibe));
-    write_file("warp.json", JSON.stringify(settingWarp));
-    ResetArgsVibe();
+    // Save all settings and config in freedom-guard.json
+    write_file("freedom-guard.json", JSON.stringify({
+        "vibe": settingVibe,
+        "warp": settingWarp,
+        "links": links,
+        "configsVibeLink": configsVibeLink,
+        "configsVibeName": configsVibeName
+    })); ResetArgsVibe();
     ResetArgsWarp();
 }
 // function Read File and Write  
@@ -692,8 +732,7 @@ function LoadVibeProfileManager() {
     });
 }
 function SaveConfigsVibe() {
-    write_file("configsVibeName.json", JSON.stringify(configsVibeName));
-    write_file("configsVibeLink.json", JSON.stringify(configsVibeLink));
+    saveSetting();
 }
 document.getElementById("changeStatus-vibe").onclick = () => connectVibe();
 document.getElementById("close-vibe").onclick = () => document.getElementById("freedom-vibe").style.display = "none";
@@ -902,7 +941,7 @@ ipcRenderer.on('start-link', (event, link) => {
     if (settingWarp["core"] == "vibe") {
         connectVibe();
     }
-    else if (settingWarp["core"] == "warp"){
+    else if (settingWarp["core"] == "warp") {
         connectWarp();
     }
     else {
@@ -911,9 +950,6 @@ ipcRenderer.on('start-link', (event, link) => {
 });
 // #endregion
 // #region Interval Timers and Loads
-setInterval(() => {
-    document.getElementById("loading").style.display = "none";
-}, 5000);
 Onload();
 setInterval(() => {
     saveSetting();

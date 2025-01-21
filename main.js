@@ -2,9 +2,7 @@
 // Start Code
 // #region Libraries
 ;
-const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } = require('electron');
-const { net, protocol, session, BrowserView } = require('electron')
-const { dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, net, protocol, session, BrowserView } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require("child_process");
@@ -262,6 +260,51 @@ ipc.on("set-on-fg", (event) => {
 });
 ipc.on("set-off-fg", (event) => {
   setSystemTray("off");
+});
+ipcMain.on("export-settings", (event, settings) => {
+  const options = {
+    title: "Save Settings",
+    defaultPath: "freedom-guard-config.json",
+    filters: [{ name: "JSON Files", extensions: ["json"] }],
+  };
+  dialog.showSaveDialog(options).then((file) => {
+    if (!file.canceled) {
+      fs.writeFile(file.filePath, JSON.stringify(settings, null, 2), (err) => {
+        if (err) {
+          dialog.showMessageBox(mainWindow, ("Error saving settings:" + err));
+          event.reply("save-status", "error");
+        } else {
+          dialog.showMessageBox(mainWindow, "Settings exported successfully!");
+          event.reply("save-status", "success");
+        }
+      });
+    } else {
+      event.reply("save-status", "cancelled");
+    }
+  });
+});
+ipcMain.handle("import-config", async () => {
+  const options = {
+    title: "Select Configuration File",
+    filters: [{ name: "JSON Files", extensions: ["json"] }],
+    properties: ["openFile"],
+  };
+
+  const file = await dialog.showOpenDialog(options);
+
+  if (!file.canceled && file.filePaths.length > 0) {
+    const filePath = file.filePaths[0];
+    try {
+      const data = fs.readFileSync(filePath, "utf8");
+      const jsonData = JSON.parse(data);
+      return { success: true, data: jsonData };
+    } catch (error) {
+      console.error("Error reading configuration file:", error);
+      return { success: false, error: "Failed to read the file." };
+    }
+  } else {
+    return { success: false, error: "No file selected." };
+  }
 });
 // #endregion
 // #region Quit

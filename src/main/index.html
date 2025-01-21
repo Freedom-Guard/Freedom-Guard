@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freedom Guard (Yalda stable) 1.3.6</title>
+    <title>Freedom Guard 1.4.0 (stable)</title>
     <link href="../assets/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="../assets/icon/ico.png" type="image/png">
@@ -20,25 +20,14 @@
     <!-- #region Loading -->
     <div id="loading">
         <div class="content">
-            <div class="text" style="margin-bottom: 10vh;" id="text-loading-1">LOADING...</div>
-            <div class="text" style="margin-bottom: 10vh;" id="text-loading-2">LOADING...</div>
-            <img src="../assets/iran.png" style="justify-self: flex-start;margin-top: auto;" height="25%" id="" alt="">
-            <p>به یاد یلدا آقافضلی </p>
+            <div class="loader"></div>
+            <img src="" style="justify-self: flex-start;margin-top: auto;" height="25%" id="loader-image">
+            <p id="loader-text"></p>
+            <p id="loading-text"></p>
             <div id="text-hashtag" dir="rtl" style="justify-content: flex-end;margin-right: 2vw;color:red;">
                 #زن_زندگی_آزادی</div>
         </div>
     </div>
-    <script>
-        function Loading(time = 2000, textloading = "LOADING ...") {
-            document.getElementById("loading").style.display = "flex";
-            document.getElementById("text-loading-1").innerHTML = textloading;
-            document.getElementById("text-loading-2").innerHTML = textloading;
-            setTimeout(() => {
-                document.getElementById("loading").style.display = "none";
-            }, time);
-        }
-        Loading(2500);
-    </script>
     <!-- #endregion Loading -->
     <!-- #region Freedom Warp => setting & main  -->
     <h2 id="Status" title="false"></h2>
@@ -85,7 +74,16 @@
             <b
                 style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;">Settings
                 Freedom Guard</b>
-            <button id="about"><i class='bx bxs-info-circle'></i></button>
+            <div class="dropdown" id="more-options" style="margin-left: auto;">
+                <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;"></i>
+                <div class="dropdown-content" id="more-options-content">
+                    <a id="import-config-file"><i class="bx bx-upload" style="font-size: 1.5em;"></i>Import config</a>
+                    <a id="export-config"><i class="bx bx-download" style="font-size: 1.5em;"></i>Export config</a>
+                    <a id="reset-setting-warp-btn"><i class="bx bx-reset" style="font-size: 1.5em;"></i>Reset setting
+                        Warp</a>
+                    <a id="about"><i class="bx bx-info-circle" style="font-size: 1.5em;"></i>About app</a>
+                </div>
+            </div>
         </nav>
         <b>Config Freedom Guard for auto mode</b>
         <div id="config-fg" class="form-control-c">
@@ -148,6 +146,7 @@
         <div id="warp-key" class="form-control-c">
             <input type="text" class="input input-alt" placeholder="key : xxxxxxxxxxxxx" id="warp-key-text">
             <span class="input-border input-border-alt"></span>
+            <button class="btn btn-primary" id="get-key-warp">Get Key</button>
         </div>
         <b style="margin-top: 2vh;">VPN Type Warp</b>
         <div id="vpn-type">
@@ -198,7 +197,6 @@
         <div id="options-setting-warp">
             <button id="change-background-warp-btn" class="btn">Change background</button>
             <button id="turn-on-auto-mode" class="btn">Turn on Auto mode</button>
-            <button id="reset-setting-warp-btn" class="btn">Reset setting Warp</button>
             <button id="refresh-link-btn" class="btn">Refresh links</button>
             <button id="x-contact" class="btn">X Freedom Guard</button>
             <button id="mail-contact" class="btn">Email Freedom Guard</button>
@@ -369,14 +367,14 @@
     <!-- #region Other All -->
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
-        <p> Freedom Guard 1.3.6 (Yalda stable)</p>
+        <p> Freedom Guard 1.4.0 (stable)</p>
         <p> Developed By Freedom Guard Team 👩‍💻</p>
         <p>👇 Acknowledgements 👇</p>
         <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>
         <p> <a href="https://github.com/bepass-org/warp-plus">warp-plus 1.2.4</a> from bepass-org</p>
-        <p> <a href="https://github.com/Freedom-Guard/Freedom-Guard">Freedom Browser 1.3.5</a> from fwldom</p>
+        <p> <a href="https://github.com/ircfspace/warpkey/">WARP+ Keys Collector</a> from IRCF</p>
         <p> <a href="https://github.com/Ptechgithub/warp">Scanner Endpoint 1.3</a> from Ptechgithub</p>
-        <p> email : <a href="mailto:fwldom@duck.com">fwldom@duck.com</a></p>
+        <p> email: <a href="mailto:fwldom@duck.com">fwldom@duck.com</a></p>
     </div>
     <div id="message">
         <p id="messageText"></p>

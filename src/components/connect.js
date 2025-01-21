@@ -109,7 +109,7 @@ async function checkDataOut(data, core) {
         if (data.includes("bind: Only one usage of each socket address")) {
             SetValueInput("bind-address-text", `127.0.0.1:${Math.floor(Math.random() * 6000)}`)
             disconnectVPN();
-            setTimeout(() => {
+            global.setTimeout(() => {
                 connect(core)
             }, 5000);
             Showmess("")
@@ -119,7 +119,7 @@ async function checkDataOut(data, core) {
         if (data.toString().includes("CORE STARTED:")) {
             if (await testProxy()) {
                 ConnectedVibe();
-                setTimeout(() => {
+                global.setTimeout(() => {
                     testProxy();
                 }, 5000);
             }
@@ -179,6 +179,15 @@ function isValidURL(url) {
     const regex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$/;
     return regex.test(url);
 };
+async function getWarpKey() {
+    const response = await fetch("https://raw.githubusercontent.com/ircfspace/warpkey/main/plus/full");
+    let responseText = await response.text();
+    let keys = responseText.split("\n");
+    let key = keys[Math.floor(Math.random() * keys.length)];
+    SetValueInput("warp-key-text", key);
+    settingWarp["warpkey"] = key;
+    saveSetting();
+}
 async function FindBestEndpointWarp(type = 'find') {
     /* for Find best endpoint for warp and set it
     @param {string} type - type of searching
@@ -188,33 +197,32 @@ async function FindBestEndpointWarp(type = 'find') {
     * if fg==on ? set best endpoint : return
     */
     try {
+        process.nextTick(() => {
+            type != "conn" ? Loading(18000, "Searching Endpoint...") : ("");
+        });
         console.log("Finding Best Endpoint For Warp ....");
         if (process.platform == "linux") {
-            sect == "main" ? Loading(100, "Searching Endpoint ...") : ("");
             alert("Scanner IP Endpoint not support in linux");
             return;
         }
         if (settingWarp["ipver"] == "") settingWarp["ipver"] = 4;
         Run("win_scanner.bat", ["-" + settingWarp["ipver"]], "admin", "scanner");
+        await setTimeout(18000);
+        console.log("Scanner End -> Set endpoint");
+        Loading(0);
+        SetServiceWarp("endpoint", read_file(path.join(__dirname, "src", "main", "cores", "scanner", "bestendpoint.txt")).replace(" ", ""));
+        saveSetting();
+        sect == "main" ? SetSettingWarp() : "";
+        if (type == "conn" && StatusGuard == true) {
+            StatusGuard = false;
+            connectWarp();
+        }
         if (type != "conn") {
-            sect == "main" ? Showmess(15000, "Searching Endpoint ...") : ("");
-        };
-        await setTimeout(3500);
-        childProcess.on('close', () => {
-            console.log("Scanner End -> Set endpoint")
-            sect == "main" ? SetValueInput("end-point-address", read_file(path.join(__dirname, "src", "main", "cores", "scanner", "bestendpoint.txt"))) : ("");
-            OnEvent("end-point-address", "change");
-            if (type == "conn" && StatusGuard == true) {
-                StatusGuard = false;
-                connectWarp();
-            }
-            if (type != "conn") {
-                Showmess(2000, "Finded Best Endpoint");
-            }
-            else {
-                sect == "main" ? Showmess(3000, "Finded Best Endpoint. Reconnecting") : ("");
-            }
-        });
+            Showmess(2000, "Finded Best Endpoint");
+        }
+        else {
+            sect == "main" ? Showmess(3000, "Finded Best Endpoint. Reconnecting") : ("");
+        }
         return;
     } catch { };
 };
@@ -312,15 +320,15 @@ function Onloading() {
     */
     try {
         // Restore var settingWarp  from json
-        settingWarp = JSON.parse(read_file("warp.json"));
+        settingWarp = JSON.parse(read_file("freedom-guard.json"))["warp"];
     }
     catch {
         saveSetting()
     }
     try {
-        settingVibe = JSON.parse(read_file("vibe.json")); // Load Setting From File.json 
-        configsVibeName = JSON.parse(read_file("configsVibeName.json")); // Load Setting From File.json 
-        configsVibeLink = JSON.parse(read_file("configsVibeLink.json")); // Load Setting From File.json 
+        settingVibe = JSON.parse(read_file("freedom-guard.json"))["vibe"]; // Load Setting From File.json 
+        configsVibeName = JSON.parse(read_file("freedom-guard.json"))["configsVibeName"]; // Load Setting From File.json 
+        configsVibeLink = JSON.parse(read_file("freedom-guard.json"))["configsVibeLink"]; // Load Setting From File.json 
     }
     catch {
         saveSetting();
@@ -416,8 +424,8 @@ async function RefreshLinks() {
                 console.log(links);
                 write_file("links.json", JSON.stringify(reqRefreshLinks.responseText));
             } else {
-                try { links = JSON.parse(read_file("links.json")); } catch {
-                    write_file("links.json", JSON.stringify(links));
+                try { links = JSON.parse(read_file("freedom-guard.json"))["links"]; } catch {
+                    saveSetting();
                 }
                 console.log("Error Refreshing Links");
                 Showmess("Error Refreshing Links")
@@ -651,7 +659,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 5s");
         }
 
-        setTimeout(() => {
+        global.setTimeout(() => {
             if (sect === "main") {
                 SetAnim("ChangeStatus", "");
             }
@@ -689,10 +697,15 @@ setInterval(() => {
     Onloading();
 }, 500);
 async function saveSetting() {
-    // Save setting vibe & setting warp In vibe.json & warp.json
+    // Save setting vibe & setting warp In freedom-guard.json
     try {
-        write_file("vibe.json", JSON.stringify(settingVibe));
-        write_file("warp.json", JSON.stringify(settingWarp));
+        write_file("freedom-guard.json", JSON.stringify({
+            "vibe": settingVibe,
+            "warp": settingWarp,
+            "links": links,
+            "configsVibeLink": configsVibeLink,
+            "configsVibeName": configsVibeName
+        }));
     }
     catch { };
     ResetArgsVibe();
@@ -791,7 +804,8 @@ module.exports = {
     Onloading,
     links,
     RefreshLinks,
-    NotifApp
+    NotifApp,
+    getWarpKey
 };
 // Onloading
 Onloading();
