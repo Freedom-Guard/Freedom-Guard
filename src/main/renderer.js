@@ -74,11 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.getElementById("close-setting").onclick = () => {
         document.getElementById("setting").style.position = "absolute"
-        document.getElementById("setting").style.right = "-150vw";
-        document.getElementById("setting").style.visibility = "0.3";
-        global.setTimeout(() => {
-            document.getElementById("setting").style.display = "";
-        }, 1300);
+        document.getElementById("setting").style.right = "-100vw";
     };
     document.getElementById("selector-ip-version").onchange = () => {
         SetServiceWarp("ipver", document.getElementById("selector-ip-version").value.match(/\d+/g)).toString();
@@ -320,8 +316,8 @@ function checkUpdate() {
 // #endregion
 // #region Functions other
 function Loading(time = 5000, textloading = "") {
-    let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg"];
-    let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده"];
+    let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg", "kian.jpg", "mehrshad.jpg", "hadis.jpg", "hananeh.jpg", "hamidreza.jpg", "AylarH.jpg"];
+    let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده", "به یاد کیان پیرفلک", "به یاد مهرشاد شهیدی", "به یاد حدیث نجفی", "به یاد حنانه کیا", "به یاد حمید رضا روحی", "به یاد آیلار حقی"];
     let random = Math.floor(Math.random() * loaderImages.length);
     let loaderImage = "../assets/" + loaderImages[random];
     let loaderTxt = loaderText[random];
@@ -580,8 +576,7 @@ document.getElementById("reserved-status").addEventListener("change", () => {
 document.getElementById("setting-show").addEventListener("click", () => {
     document.getElementById("setting").style.display = "flex";
     document.getElementById("setting").style.position = "absolute";
-    document.getElementById("setting").style.right = "";
-    document.getElementById("setting").style.visibility = "1";
+    document.getElementById("setting").style.right = "0";
 });
 document.getElementById("setting-show-vibe").addEventListener("click", () => {
     if (document.getElementById("setting-vibe").style.display == "") {
@@ -626,9 +621,6 @@ document.getElementById("menu-exit").onclick = () => {
     document.getElementById("menu").style.position = "absolute"
     document.getElementById("menu").style.left = "-110vw";
     document.getElementById("menu").style.visibility = "0.3";
-    global.setTimeout(() => {
-        document.getElementById("menu").style.display = "";
-    }, 1300);
 };
 document.getElementById("menu-exit-app").onclick = () => {
     ipc.send("exit-app", "")
@@ -690,7 +682,8 @@ async function saveSetting() {
         "links": links,
         "configsVibeLink": configsVibeLink,
         "configsVibeName": configsVibeName
-    })); ResetArgsVibe();
+    })); 
+    ResetArgsVibe();
     ResetArgsWarp();
 }
 // function Read File and Write  

@@ -193,7 +193,7 @@ async function FindBestEndpointWarp(type = 'find') {
     @param {string} type - type of searching
     @returns {void}
     * Run scanner
-    * await 3.5s
+    * await 18s
     * if fg==on ? set best endpoint : return
     */
     try {
@@ -202,6 +202,7 @@ async function FindBestEndpointWarp(type = 'find') {
         });
         console.log("Finding Best Endpoint For Warp ....");
         if (process.platform == "linux") {
+            Loading(0);
             alert("Scanner IP Endpoint not support in linux");
             return;
         }
@@ -623,7 +624,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         StatusGuard = true;
         await testProxy();
         console.log("Start Testing Warp...");
-        await setTimeout(40000);
+        await setTimeout(60000);
         if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");

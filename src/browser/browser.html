@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freedom Browser | مرورگر گارد آزادی</title>
+    <title>Freedom Browser</title>
     <link href="../assets/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="browser.css">
-</head> 
+</head>
 
 <body>
     <div class="header">
@@ -26,10 +26,11 @@
             <input type="url" id="url-input" class="url-input" placeholder="https://">
             <i class='bx bx-refresh' id="refresh-btn-header"></i>
             <i class='bx bx-key' id="vpn-btn-header"></i>
-            <i class='bx bx-menu' id="menu-btn-header"></i>
+            <i class='bx bx-menu' id="menu-btn-header" style="display: none;"></i>
         </div>
     </div>
-    <div id="menu">
+    <div style="z-index: 0;height: 100%;width: 100%;background-color: #000;position: fixed;left: 0;"></div>
+    <div id="menu" style="display: none;">
         <div id="menu-items">
             <div class="menu-item" style="display: none;" id="menu-item-bookmark">
                 <i class='bx bx-bookmark'></i>
@@ -56,6 +57,10 @@
                 <input type="text" id="bind-warp">
                 <b>Endpoint Warp</b>
                 <input type="text" id="endpoint-warp">
+            </div>
+            <div id="defaults">
+                <input type="text" id="default-home-page"
+                    value="https://fwldom.github.io/freedom-site-browser/index.html">
             </div>
             <div id="content-menu-bookmark">
 

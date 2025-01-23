@@ -2,7 +2,6 @@ body {
     background-color: #1A1A22 !important;
     overflow: hidden;
 }
-
 .tab.active {
     background-color: #2a2a4d !important;
 }
@@ -34,7 +33,7 @@ body {
 
 .header {
     width: 99vw;
-    height: 13vh;
+    height: fit-content;
     position: sticky;
     color: white;
     display: flex;

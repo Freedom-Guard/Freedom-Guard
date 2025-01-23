@@ -435,6 +435,7 @@ img {
     position: fixed;
     right: 0%;
     top: 0%;
+    transition: all 0.7s ease-out !important;
     width: 80%;
     height: 100%;
     flex-direction: column;

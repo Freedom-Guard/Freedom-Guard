@@ -44,9 +44,15 @@ function TabClose(idtab) {
 
 function isValidURL(url) {
     const regex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$/;
-    return regex.test(url) || /^https?:\/\/[^\s]+$/.test(url);
+    return regex.test(url) || /^https?:\/\/[^\s]+$/.test(url) || /^file?:\/\/[^\s]+$/.test(url) || /^http?:\/\/[^\s]+$/.test(url);
 };
-
+function addHttpsIfNecessary(urlInput) {
+    // 检查 URL 是否包含 .com 或其他 TLDs
+    if (!/^https?:\/\//.test(urlInput) && /\.(com|org|net|edu|gov|mil|biz|info|name|museum|aero|asia|cat|coop|int|jobs|mobi|museum|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw)$/.test(urlInput)) {
+        urlInput = "https://" + urlInput;
+    }
+    return urlInput.replace(" ", "%20");
+}
 function TabSelect(idtab) {
     if (idtab < 0 || idtab >= tabs.length) return; // Prevents selection of non-existing tabs
     document.getElementById("url-input").value = tabURLs[idtab];
@@ -123,6 +129,7 @@ function Showmess(time, mess) {
 // #region Event Listeners
 document.getElementById("menu-btn-header").addEventListener("click", function () {
     ipc.send("hide-browser");
+    document.getElementById("menu").style.display = "";
     this.title = (this.title === "menushow") ? "menuhide" : "menushow";
     HideAllContentMenu();
 });
@@ -135,7 +142,7 @@ document.getElementById("url-input").addEventListener('keydown', (event) => {
 });
 
 document.getElementById("home-btn-header").addEventListener('click', () => {
-    document.getElementById("url-input").value = "https://fwldom.github.io/freedom-site-browser/index.html";
+    document.getElementById("url-input").value = document.getElementById("default-home-page").value;
     document.getElementById("search-btn-header").click();
 });
 
@@ -149,13 +156,15 @@ document.getElementById("add-tab").addEventListener("click", function () {
     <div class='tab-icon' id='tab-icon-${idTab}'></div>
     <div class='tab-close' id='tab-close-${idTab}' onclick='TabClose(${idTab})'><i class="bi bi-x"></i></div>`;
     HistoryTabs.push([]);
-    tabURLs[idTab] = "https://fwldom.github.io/freedom-site-browser/";
+    tabURLs[idTab] = document.getElementById("default-home-page").value;
     TabSelect(idTab);
+    ipc.send("show-browser");
 });
 
 document.getElementById("search-btn-header").addEventListener("click", function () {
     const inputUrl = document.getElementById("url-input").value;
-    urlInput = isValidURL(inputUrl) ? `https://${inputUrl.replace("https://", "").replace("http://", "")}` : `https://google.com/search?q=${inputUrl}`;
+    urlInput = isValidURL(inputUrl) ? `${inputUrl}` : `https://google.com/search?q=${inputUrl}`;
+    urlInput = addHttpsIfNecessary(urlInput);
     document.getElementById("refresh-btn-header").style.animation = "spin 1s linear infinite";
     ipc.send("load-url-browser", urlInput);
 });
@@ -166,15 +175,25 @@ document.getElementById("vpn-btn-header").addEventListener("click", function () 
 
 document.getElementById("refresh-btn-header").addEventListener("click", function () {
     const inputUrl = document.getElementById("url-input").value;
-    urlInput = `https://${inputUrl.replace("https://", "").replace("http://", "")}`;
+    urlInput = `${inputUrl}`;
     document.getElementById("refresh-btn-header").style.animation = "spin 1s linear infinite";
     ipc.send("load-url-browser", urlInput);
 });
 
 document.getElementById("close-browser").addEventListener("click", function () {
-    settingWarp = JSON.parse(read_file("warp.json"));
+    settingWarp = JSON.parse(read_file("freedom-guard.json"))["warp"];
+    settingVibe = JSON.parse(read_file("freedom-guard.json"))["vibe"];
+    links = JSON.parse(read_file("freedom-guard.json"))["links"];
+    configsVibeName = JSON.parse(read_file("freedom-guard.json"))["configsVibeName"];
+    configsVibeLink = JSON.parse(read_file("freedom-guard.json"))["configsVibeLink"];
     settingWarp["startup"] = "warp";
-    write_file("warp.json", JSON.stringify(settingWarp));
+    write_file("freedom-guard.json", JSON.stringify({
+        "vibe": settingVibe,
+        "warp": settingWarp,
+        "links": links,
+        "configsVibeLink": configsVibeLink,
+        "configsVibeName": configsVibeName
+    }));
     ipc.send("load-main-app");
 });
 
