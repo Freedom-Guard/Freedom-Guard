@@ -265,7 +265,6 @@ async function testProxy() {
             });
             console.log("Fliternet Bypassed");
             filterBypassStat = true;
-            ConnectedVibe("warp");
             return true;
         }
         catch {
@@ -443,7 +442,7 @@ async function connectAuto(num = 0, mode = 'normal') {
     number = num; // Number of try: connect
     await RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
-    const configType = links[settingWarp["isp"]][num].split(",")[0];
+    let configType = links[settingWarp["isp"]][num].split(",")[0];
     if (links[settingWarp["isp"]] == undefined) settingWarp["isp"] = "other";
     if (links[settingWarp["isp"]].length < num) { disconnectVPN(); return true };
     if (configType == "warp") {
@@ -452,16 +451,22 @@ async function connectAuto(num = 0, mode = 'normal') {
         settingVibe["config"] = links[settingWarp["isp"]][num].split(",")[1];
     }
     else if (configType == "auto") {
-        links.split(",")[1].split("|").forEach(element => {
+        links[settingWarp["isp"]][num].split(",")[1].split("|").forEach(element => {
             settingWarp[element.split("=")[0]] = element.split("=")[1] == "true" ? true : element.split("=")[1];
         });
-        settingWarp["core"] = links[settingWarp["isp"]][num].split(",")[1];
+        if (settingWarp["core"] == "warp") {
+            settingWarp["core"] = "auto";
+            configType = "warp";
+        }
+        else if (settingWarp["core"] == "vibe") {
+            settingWarp["core"] = "auto";
+            configType = "vibe";
+        }
     }
 
     ResetArgsVibe();
     ResetArgsWarp();
     connect(configType, num = num, mode = modeConn);
-
 }
 async function NotifApp(body, title = "Freedom Guard", icon = './ico.png') {
     notifier.notify(
@@ -600,7 +605,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
         Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
-        await setTimeout(25000);
+        await setTimeout(35000);
         console.log("Start Testing warp...")
         if (await testProxy() && StatusGuard == true) {
             Showmess(5000, "Connected Warp");

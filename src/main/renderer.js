@@ -126,6 +126,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("reset-setting-warp-btn").onclick = () => {
         resetSettingWarp();
     };
+    document.getElementById("kill-all-cores").onclick = () => {
+        offProxy();
+        if (process.platform == "win32") {
+            exec("taskkill /F /IM warp-plus.exe");
+            exec("taskkill /F /IM HiddifyCli.exe");
+        }
+        else {
+            exec("pkill -f warp-plus");
+            exec("pkill -f Hiddify-Cli");
+        }
+        testProxy();
+    };
     document.getElementById("turn-on-auto-mode").onclick = () => {
         resetSettingWarp(settingWarp["configfg"]);
     };
@@ -682,7 +694,7 @@ async function saveSetting() {
         "links": links,
         "configsVibeLink": configsVibeLink,
         "configsVibeName": configsVibeName
-    })); 
+    }));
     ResetArgsVibe();
     ResetArgsWarp();
 }
