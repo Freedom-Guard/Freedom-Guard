@@ -74,11 +74,11 @@
             <b
                 style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;">Settings
                 Freedom Guard</b>
-            <div class="dropdown" id="more-options" style="margin-left: auto;">
+            <div class="dropdown" id="more-options" style="margin-left: auto;padding: 10px;">
                 <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;"></i>
                 <div class="dropdown-content" id="more-options-content">
-                    <a id="import-config-file"><i class="bx bx-upload" style="font-size: 1.5em;"></i>Import config</a>
-                    <a id="export-config"><i class="bx bx-download" style="font-size: 1.5em;"></i>Export config</a>
+                    <a id="import-config-file"><i class="bx bx-import" style="font-size: 1.5em;"></i>Import config</a>
+                    <a id="export-config"><i class="bx bx-export" style="font-size: 1.5em;"></i>Export config</a>
                     <a id="reset-setting-warp-btn"><i class="bx bx-reset" style="font-size: 1.5em;"></i>Reset setting
                         Warp</a>
                     <a id="about"><i class="bx bx-info-circle" style="font-size: 1.5em;"></i>About app</a>
@@ -91,12 +91,15 @@
                 id="config-fg-text"
                 value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json">
             <button id="selector-file" class="btn">
-                <label for="selector-file-config"><i class='bx bx-folder-open'></i></label>
+                <label for="selector-file-config" style="display: flex; align-items: center;"><i
+                        class='bx bx-folder-open' style="font-size:150%;"></i></label>
                 <input type="file" id="selector-file-config" style="display: none;">
             </button>
             <span class="input-border input-border-alt"></span>
         </div>
-        <b style="margin-top: 2vh;">Startup at</b>
+
+        <h3>VPN Settings</h3>
+        <b>Startup at</b>
         <div id="start-up">
             <select value="warp" id="start-up-at">
                 <option value="warp">Freedom Warp (main)</option>
@@ -112,30 +115,12 @@
                 <option value="warp">Freedom Warp</option>
             </select>
         </div>
-        <b>Your ISP:</b>
-        <div id="isp-guard" class="form-control-c">
-            <select value="other" id="isp-text-guard">
-                <option value="other">All ISP</option>
-                <option value="MCI">MCI (HamrahAval)</option>
-                <option value="IRANCELL">Irancell</option>
+        <b>VPN Type Warp</b>
+        <div id="vpn-type">
+            <select value="system" id="vpn-type-selected">
+                <option value="system">System Proxy</option>
+                <option value="tun">VPN Mode (Tun)</option>
             </select>
-        </div>
-        <div
-            style="background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);width: 96%;border-radius: 15px;padding: 5px;max-height: 0.2vh;margin: 0.7vw;">
-
-        </div>
-        <b style="margin-top: 0.5vh;">IP Version</b>
-        <div id="ip-version">
-            <select name="" id="selector-ip-version">
-                <option value="IPV4">IP Version 4</option>
-                <option value="IPV6">IP Version 6</option>
-            </select>
-        </div>
-        <b>Endpoint</b>
-        <div id="end-point" class="form-control-c">
-            <input placeholder="IP : 192.x.x.x" class="input input-alt" type="text" id="end-point-address">
-            <span class="input-border input-border-alt"></span>
-            <button class="btn btn-primary" id="find-best-endpoint">Find Best Endpoint</button>
         </div>
         <b>Bind Address</b>
         <div id="bind-address" class="form-control-c">
@@ -148,44 +133,48 @@
             <span class="input-border input-border-alt"></span>
             <button class="btn btn-primary" id="get-key-warp">Get Key</button>
         </div>
-        <b style="margin-top: 2vh;">VPN Type Warp</b>
-        <div id="vpn-type">
-            <select value="system" id="vpn-type-selected">
-                <option value="system">System Proxy</option>
-                <option value="tun">VPN Mode (Tun)</option>
-            </select>
-        </div>
         <b>DNS</b>
         <div id="dns-warp" class="form-control-c">
             <input type="text" class="input input-alt" placeholder="dns : 8.8.8.8" id="dns-warp-text">
             <span class="input-border input-border-alt"></span>
         </div>
-        <b>Scanner rtt limit</b>
+
+        <h3>Network Settings</h3>
+        <b>IP Version</b>
+        <div id="ip-version">
+            <select name="" id="selector-ip-version">
+                <option value="IPV4">IP Version 4</option>
+                <option value="IPV6">IP Version 6</option>
+            </select>
+        </div>
+        <b>Endpoint</b>
+        <div id="end-point" class="form-control-c">
+            <input placeholder="IP : 192.x.x.x" class="input input-alt" type="text" id="end-point-address">
+            <span class="input-border input-border-alt"></span>
+            <button class="btn btn-primary" id="find-best-endpoint">Find Best Endpoint</button>
+        </div>
+        <b>Your ISP</b>
+        <div id="isp-guard" class="form-control-c">
+            <select value="other" id="isp-text-guard">
+                <option value="other">All ISP</option>
+                <option value="MCI">MCI (HamrahAval)</option>
+                <option value="IRANCELL">Irancell</option>
+                <option value="PISHGAMAN">Pishgaman</option>
+            </select>
+        </div>
+        <b>Scanner RTT Limit</b>
         <div id="scan-rtt" class="form-control-c">
             <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-text">
             <span class="input-border input-border-alt"></span>
         </div>
+
+        <h3>Advanced Settings</h3>
         <b>Verbose</b>
         <div id="verbose">
             <label class="switch">
                 <input type="checkbox" id="verbose-status" />
                 <span class="slider"></span>
             </label>
-        </div>
-        <b>Cache Directory</b>
-        <div id="cache" class="form-control-c">
-            <input type="text" class="input input-alt" placeholder="Directory : ./../" id="cache-dir">
-            <span class="input-border input-border-alt"></span>
-        </div>
-        <b>Wireguard Config Directory</b>
-        <div id="wgconfig" class="form-control-c">
-            <input type="text" class="input input-alt" placeholder="Path file" id="wgconfig-dir">
-            <span class="input-border input-border-alt"></span>
-        </div>
-        <b>Config Directory</b>
-        <div id="config" class="form-control-c">
-            <input type="text" class="input input-alt" placeholder="Path file config" id="config-dir">
-            <span class="input-border input-border-alt"></span>
         </div>
         <b>Reserved</b>
         <div id="reserved">
@@ -194,10 +183,26 @@
                 <span class="slider"></span>
             </label>
         </div>
+        <b>Config Directory</b>
+        <div id="config" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="Path file config" id="config-dir">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Wireguard Config Directory</b>
+        <div id="wgconfig" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="Path file" id="wgconfig-dir">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <b>Cache Directory</b>
+        <div id="cache" class="form-control-c">
+            <input type="text" class="input input-alt" placeholder="Directory : ./../" id="cache-dir">
+            <span class="input-border input-border-alt"></span>
+        </div>
+        <h3>Options</h3>
         <div id="options-setting-warp">
-            <button id="change-background-warp-btn" class="btn">Change background</button>
-            <button id="turn-on-auto-mode" class="btn">Turn on Auto mode</button>
-            <button id="refresh-link-btn" class="btn">Refresh links</button>
+            <button id="change-background-warp-btn" class="btn">Change Background</button>
+            <button id="turn-on-auto-mode" class="btn">Turn on Auto Mode</button>
+            <button id="refresh-link-btn" class="btn">Refresh Links</button>
             <button id="x-contact" class="btn">X Freedom Guard</button>
             <button id="mail-contact" class="btn">Email Freedom Guard</button>
             <button id="repo-contact" class="btn">Repository Freedom Guard on Github</button>
@@ -214,6 +219,7 @@
         <div id="menu-exit">Exit Menu</div>
         <div id="menu-exit-app">Exit Freedom Guard</div>
     </div>
+
     <!-- #endregion Warp -->
     <!-- #region Freedom Vibe => main & setting-->
     <div id="freedom-vibe">
@@ -298,50 +304,6 @@
     <!-- #endregion Freedom Vibe -->
     <!-- #region Set DNS | Dns Chnager => main -->
     <div id="dns-set">
-        <style>
-            #selector-dns {
-                width: 100%;
-                height: 100%;
-                border: none;
-                background-color: transparent;
-                color: white;
-                font-size: 1.5rem;
-                text-align: center;
-                font-weight: 500;
-                cursor: pointer;
-                outline: none;
-            }
-
-            #selector-dns option {
-                background-color: #4769ff;
-                backdrop-filter: blur(5px);
-                color: white;
-            }
-
-            #selector-dns option:hover {
-                background-color: #4769ff;
-                backdrop-filter: blur(5px);
-                color: white;
-            }
-
-            #dns1-text,
-            #dns2-text {
-                width: 80%;
-                height: 80%;
-                border: none;
-                background-color: #6947ffbd;
-                color: white;
-                font-size: 1.5rem;
-                text-align: center;
-                border-radius: 5px;
-                outline: none;
-            }
-
-            #dns1-text::placeholder,
-            #dns2-text::placeholder {
-                color: white;
-            }
-        </style>
         <select id="selector-dns">
             <option value="1.1.1.1,1.0.0.1">Cloudflare DNS</option>
             <option value="8.8.8.8,8.8.4.4">Google</option>
@@ -352,10 +314,10 @@
             <option value="185.228.168.9,185.228.169.9">CleanBrowsing</option>
             <option value="76.76.19.19,76.223.122.150">Alternate DNS</option>
         </select>
-        <button id="close-dns"><i class='bx bx-exit-fullscreen'></i></button>
-        <input type="text" id="dns1-text" placeholder="IP DNS : 1.1.1.1">
-        <input type="text" id="dns2-text" placeholder="IP DNS : 8.8.8.8">
-        <button id="submit-dns"><i class='bx bxs-save'></i></button>
+        <button id="close-dns"><i class='bx bx-x-circle' style='color:#ff0000;font-size: 1.5em;'></i></button>
+        <input type="text" id="dns1-text" placeholder=" IP DNS : 1.1.1.1">
+        <input type="text" id="dns2-text" placeholder=" IP DNS : 8.8.8.8">
+        <button id="submit-dns"><i class="bx bx-check" style="font-size: 1.5em;"></i></button>
         <script>
             document.getElementById("selector-dns").onclick = function () {
                 document.getElementById("dns1-text").value = document.getElementById("selector-dns").value.split(",")[0];
@@ -373,7 +335,7 @@
         <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>
         <p> <a href="https://github.com/bepass-org/warp-plus">warp-plus 1.2.4</a> from bepass-org</p>
         <p> <a href="https://github.com/ircfspace/warpkey/">WARP+ Keys Collector</a> from IRCF</p>
-        <p> <a href="https://github.com/Ptechgithub/warp">Scanner Endpoint 1.3</a> from Ptechgithub</p>
+        <p> <a href="https://gitlab.com/Misaka-blog/warp-script/">Scanner Endpoint </a> from Misaka blog</p>
         <p> email: <a href="mailto:fwldom@duck.com">fwldom@duck.com</a></p>
     </div>
     <div id="message">

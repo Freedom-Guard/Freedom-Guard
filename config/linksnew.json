@@ -1,5 +1,4 @@
-{
-    "MCI": {
+{    "MCI": {
         "0": "vibe,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_1.txt",
         "1": "vibe,https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",
         "2": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
@@ -18,6 +17,13 @@
         "6": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
         "7": "warp,reserved,true",
         "length": 8
+    },
+    "PISHGAMAN": {
+        "0": "auto,core=warp|scan=true|gool=true",
+        "1": "vibe,https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt",
+        "2": "vibe,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
+        "3": "vibe,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
+        "length": 4
     },
     "other": {
         "0": "warp,scan,true",

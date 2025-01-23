@@ -445,6 +445,22 @@ img {
     z-index: 5;
 }
 
+#setting h3 {
+    margin: 0.2em 0.7em;
+    border-bottom: #000000 5px solid;
+    font-size: 1.5em;
+}
+
+#setting h3::after {
+    display: block;
+    content: "";
+    background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);
+    width: 100%;
+    border-radius: 15px;
+    padding: 5px;
+    max-height: 0.2vh;
+}
+
 #setting>div,
 #setting-vibe>div {
     width: 100%;
@@ -475,6 +491,10 @@ img {
     background-color: transparent;
     border: none;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
 }
 
 #setting input[type="text"],
@@ -572,7 +592,7 @@ img {
     cursor: pointer;
     transition: transform 0.55s ease, box-shadow 0.25s ease;
     background-image: linear-gradient(145deg, #1b2a42, #101622);
-    box-shadow: 0px 5px 15px rgba(6, 28, 128, 0.7);
+    box-shadow: 0px 5px 15px rgba(1, 65, 73, 0.3);
 }
 
 #menu>div:hover {
@@ -897,6 +917,7 @@ img {
     top: 0%;
     left: 0%;
     margin: 5px;
+    padding: 0;
     font-size: 25px;
     color: white;
     border: none;
@@ -909,6 +930,52 @@ img {
     color: white;
     border: none;
     background-color: transparent;
+}
+
+#selector-dns {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 1.5rem;
+    border-radius: 10px 10px 0px 0px;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+}
+
+#selector-dns option {
+    background-color: #4769ff;
+    backdrop-filter: blur(5px);
+    color: white;
+}
+
+#selector-dns option:hover {
+    background-color: #4769ff;
+    backdrop-filter: blur(5px);
+    color: white;
+}
+
+#dns1-text,
+#dns2-text {
+    width: 80%;
+    padding: 0.3em;
+    height: 80%;
+    border: none;
+    background-color: #6947ffbd;
+    color: white;
+    font-size: 1.5rem;
+    text-align: left;
+    border-radius: 5px;
+    outline: none;
+}
+
+#dns1-text::placeholder,
+#dns2-text::placeholder {
+    color: white;
 }
 
 /*#endregion*/

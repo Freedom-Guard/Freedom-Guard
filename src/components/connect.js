@@ -211,7 +211,7 @@ async function FindBestEndpointWarp(type = 'find') {
         await setTimeout(18000);
         console.log("Scanner End -> Set endpoint");
         Loading(0);
-        SetServiceWarp("endpoint", read_file(path.join(__dirname, "src", "main", "cores", "scanner", "bestendpoint.txt")).replace(" ", ""));
+        SetServiceWarp("endpoint", read_file(path.join(__dirname, "src", "main", "cores", "scanner", "bestendpoint.txt")).replace(" ", "").replace("\n", "").replace("\r", ""));
         saveSetting();
         sect == "main" ? SetSettingWarp() : "";
         if (type == "conn" && StatusGuard == true) {
@@ -444,12 +444,18 @@ async function connectAuto(num = 0, mode = 'normal') {
     await RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
     const configType = links[settingWarp["isp"]][num].split(",")[0];
-
+    if (links[settingWarp["isp"]] == undefined) settingWarp["isp"] = "other";
     if (links[settingWarp["isp"]].length < num) { disconnectVPN(); return true };
     if (configType == "warp") {
         settingWarp[links[settingWarp["isp"]][num].split(",")[1]] = links[settingWarp["isp"]][num].split(",")[2] == "true" ? true : links[settingWarp["isp"]][num].split(",")[2];
     } else if (configType == "vibe") {
         settingVibe["config"] = links[settingWarp["isp"]][num].split(",")[1];
+    }
+    else if (configType == "auto") {
+        links.split(",")[1].split("|").forEach(element => {
+            settingWarp[element.split("=")[0]] = element.split("=")[1] == "true" ? true : element.split("=")[1];
+        });
+        settingWarp["core"] = links[settingWarp["isp"]][num].split(",")[1];
     }
 
     ResetArgsVibe();
