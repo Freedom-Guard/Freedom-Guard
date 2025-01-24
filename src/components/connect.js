@@ -62,6 +62,9 @@ __dirname = path.join(__dirname.replace("app.asar", ""), "../../");
 // #region Functions
 var childProcess = null;
 async function KillProcess(core = "warp") {
+    exec('taskkill /IM ' + (core == "warp" ? "warp-plus.exe" : "HiddifyCli.exe") + ' /F /T'); // Windows
+    exec("pkill -f warp-plus"); // Linux
+    exec("pkill -f HiddifyCli"); // Linux
     try {
         if (childProcess != null) {
             if (process.platform === 'win32') {
@@ -111,7 +114,7 @@ async function checkDataOut(data, core) {
             SetValueInput("bind-address-text", `127.0.0.1:${Math.floor(Math.random() * 6000)}`)
             disconnectVPN();
             global.setTimeout(() => {
-                connect(core)
+                connect("warp")
             }, 5000);
             Showmess("")
         }
@@ -141,6 +144,8 @@ async function Run(nameFile, args, runa = 'user', exeCore = "warp") {
     */
     console.log("Runing New Process...");
     KillProcess("warp");
+    KillProcess("warp");
+    KillProcess("vibe");
     KillProcess("vibe");
     await testProxy();
     console.log(path.join(__dirname, "src", "main", "cores", exeCore, nameFile) + " " + args);
@@ -169,9 +174,7 @@ async function Run(nameFile, args, runa = 'user', exeCore = "warp") {
     childProcess.title = exeCore;
     childProcess.on('close', (code, name) => {
         console.log(`child process exited with code ${code + " | " + exeCore}`);
-        if ((StatusGuard || settingVibe["status"]) & (settingWarp["core"] == "auto")) {
-        }
-        else if (settingWarp["core"] != "auto") {
+        if ((StatusGuard || settingVibe["status"]) && (settingWarp["core"] == "auto")) {
             sect == "main" ? disconnectVPN(mode = "try") : disconnectVPN();
         }
     });
@@ -378,6 +381,8 @@ function ConnectedWarp(stat = "normal") {
         NotifApp("🚀!Connected To Warp!🚀");
     }
     StatusGuard = true;
+    settingVibe["status"] = true;
+
     setSystemTrayON();
 }
 function disconnectVPN() {
@@ -413,6 +418,21 @@ function disconnectVPN() {
     setSystemTrayOFF();
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
+    if (document.getElementById("ChangeStatus").style.borderColor == "#15ff00") {
+        offProxy();
+        if (process.platform == "win32") {
+            exec("taskkill /F /IM warp-plus.exe");
+            exec("taskkill /F /IM HiddifyCli.exe");
+        }
+        else {
+            exec("pkill -f warp-plus");
+            exec("pkill -f Hiddify-Cli");
+        }
+        disconnectVPN();
+        testProxy();
+        SetBorderColor("ChangeStatus", "");
+        return;
+    }
     if (core == "warp") await connectWarp(num, mode = mode);
     else if (core == "vibe") await connectVibe(num, mode);
     else if (core == "auto") await connectAuto(num);
@@ -495,6 +515,20 @@ async function connectVibe(num = number, mode = 'normal') {
             settingVibe["status"] = false;
         }
     }
+    if (document.getElementById("ChangeStatus").style.borderColor == "#15ff00") {
+        offProxy();
+        if (process.platform == "win32") {
+            exec("taskkill /F /IM warp-plus.exe");
+            exec("taskkill /F /IM HiddifyCli.exe");
+        }
+        else {
+            exec("pkill -f warp-plus");
+            exec("pkill -f Hiddify-Cli");
+        }
+        testProxy();
+        SetBorderColor("ChangeStatus", "");
+        return;
+    }
     if (settingVibe["status"] == false && settingWarp["core"] == "auto") {
         if (process.platform == "linux") {
             exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
@@ -505,7 +539,7 @@ async function connectVibe(num = number, mode = 'normal') {
         sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
         Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
         settingVibe["status"] = true;
-        await setTimeout(30000);
+        await setTimeout(40000);
         console.log("Testing vibe...")
         if (await testProxy()) {
             Showmess(5000, "⚡Connected Vibe⚡");
@@ -518,13 +552,16 @@ async function connectVibe(num = number, mode = 'normal') {
             else {
                 console.log("trying vibe...");
                 StatusGuard = false;
-                settingVibe["status"] = false
+                settingVibe["status"] = false;
                 connectAuto(number + 1, mode = 'try'); // Increment the connection attempt number
             }
         }
     }
     // this is For Connect To Freedom-Vibe
-    if (settingVibe["status"] == false) {
+    else if (settingVibe["status"] == false && settingWarp["core"] == "vibe" && StatusGuard == false) {
+        console.log("Connecting to vibe custom mode...");
+        settingVibe["status"] = true;
+        StatusGuard = true;
         if (process.platform == "linux") {
             exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
         }
@@ -572,10 +609,12 @@ async function connectVibe(num = number, mode = 'normal') {
             ResetArgsVibe(config);
             Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
             settingVibe["status"] = true;
-            await setTimeout(25000);
+            StatusGuard = true;
+            await setTimeout(45000);
             await testProxy();
             if (settingVibe["status"] == true) {
                 if (await testProxy()) {
+                    trackEvent("connected-vibe");
                     ConnectedVibe();
                     break;
                 }
@@ -591,7 +630,10 @@ async function connectVibe(num = number, mode = 'normal') {
     }
     else {
         settingVibe["status"] = false;
+        StatusGuard = false;
+        console.log("Diconnecting Vibe...")
         disconnectVPN();
+        saveSetting();
     }
 };
 async function timeout(promise, ms) {
@@ -602,6 +644,21 @@ async function timeout(promise, ms) {
     return Promise.race([promise, timeoutPromise]);
 };
 async function connectWarp(num = 0, mode = 'normal') {
+    if (document.getElementById("ChangeStatus").style.borderColor == "#15ff00") {
+        offProxy();
+        if (process.platform == "win32") {
+            exec("taskkill /F /IM warp-plus.exe");
+            exec("taskkill /F /IM HiddifyCli.exe");
+        }
+        else {
+            exec("pkill -f warp-plus");
+            exec("pkill -f Hiddify-Cli");
+        }
+        disconnectVPN();
+        testProxy();
+        SetBorderColor("ChangeStatus", "");
+        return;
+    }
     if (settingWarp["core"] == "auto" & !StatusGuard) {
         console.log("Starting warp server on Auto mode...")
         StatusGuard = true;
@@ -609,7 +666,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
         Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
-        await setTimeout(35000);
+        await setTimeout(45000);
         console.log("Start Testing warp...")
         if (await testProxy() && StatusGuard == true) {
             Showmess(5000, "Connected Warp");
@@ -617,7 +674,6 @@ async function connectWarp(num = 0, mode = 'normal') {
             if (sect === "main") {
                 SetAnim("ChangeStatus", "Load");
                 SetBorderColor("ChangeStatus", "#15ff00");
-                ConnectedWarp();
             }
         }
         else {

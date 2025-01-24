@@ -19,7 +19,7 @@ const versionapp = "1.4.0";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
-var { NotifApp, RefreshLinks, settingVibe, getWarpKey, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp, disconnectVPN } = require('../components/connect.js');
+var { NotifApp, RefreshLinks, settingVibe, getWarpKey, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp, disconnectVPN, StatusGuard } = require('../components/connect.js');
 // #endregion
 // #region Global Var
 __dirname = path.join(__dirname.replace("app.asar", ""), "../../");
@@ -126,6 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("reset-setting-warp-btn").onclick = () => {
         resetSettingWarp();
     };
+    document.getElementById("set-on").onclick = () => {
+    StatusGuard = true;
+        settingVibe["status"] = true;
+        saveSetting();
+        ConnectedVibe(settingWarp["core"]);
+        testProxy();
+    };
     document.getElementById("kill-all-cores").onclick = () => {
         offProxy();
         if (process.platform == "win32") {
@@ -136,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
             exec("pkill -f warp-plus");
             exec("pkill -f Hiddify-Cli");
         }
-        disconnect();
+        disconnectVPN();
         testProxy();
     };
     document.getElementById("turn-on-auto-mode").onclick = () => {
@@ -987,10 +994,10 @@ ipcRenderer.on('start-link', (event, link) => {
         }
     }
     if (settingWarp["core"] == "vibe") {
-        connectVibe();
+        connect(core="vibe");
     }
     else if (settingWarp["core"] == "warp") {
-        connectWarp();
+        connect(core="warp");
     }
     else {
         connect(core = queryParams["core"]);

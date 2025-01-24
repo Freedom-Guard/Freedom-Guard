@@ -1195,9 +1195,9 @@ select option {
 /* #endregion */
 /* #region Public*/
 .btn {
-    width: auto;
+    width: fit-content;
     padding: 10px;
-    height: auto;
+    min-height: fit-content;
     font-size: medium;
     background-color: #0974f1;
     color: white;
