@@ -15,11 +15,11 @@ const { readFile } = require("fs/promises");
 const axios = require('axios');
 const { type, platform } = require("os");
 const geoip = require('geoip-lite');
-const versionapp = "1.3.6";
+const versionapp = "1.4.0";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
-var { NotifApp, RefreshLinks, settingVibe, getWarpKey, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp } = require('../components/connect.js');
+var { NotifApp, RefreshLinks, settingVibe, getWarpKey, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp, disconnectVPN } = require('../components/connect.js');
 // #endregion
 // #region Global Var
 __dirname = path.join(__dirname.replace("app.asar", ""), "../../");
@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
             exec("pkill -f warp-plus");
             exec("pkill -f Hiddify-Cli");
         }
+        disconnect();
         testProxy();
     };
     document.getElementById("turn-on-auto-mode").onclick = () => {
@@ -163,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveSetting();
         SetSettingWarp();
     });
+    document.getElementById("submit-config").addEventListener("click", () => importConfig(document.getElementById("config-text").value));
     document.getElementById("ip-ping-warp").onclick = () => testProxy();
     document.getElementById("ip-ping-vibe").onclick = () => testProxy();
 });
@@ -344,6 +346,45 @@ function Loading(time = 5000, textloading = "") {
     });
 
 };
+function importConfig(config = "") {
+    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic")) {
+        settingWarp["core"] = "vibe";
+        settingVibe["config"] = config;
+    }
+    else if (config.startsWith("vibe")) {
+        config.replace("vibe://").split("&").forEach((item) => {
+            settingVibe[item.split("=")[0]] = item.split("=")[1];
+        });
+    }
+    else if (config.startsWith("freedom-guard")) {
+        settingWarp["core"] = config.replace("freedom-guard://").split("&")[0].split("=")[1];
+        config.replace("freedom-guard://").split("&").forEach((item) => {
+            if (settingWarp["core"] == "vibe") {
+                settingVibe[item.split("=")[0]] = item.split("=")[1];
+            }
+            else if (settingWarp["core"] == "warp") {
+                settingWarp[item.split("=")[0]] = item.split("=")[1];
+            }
+            else if (settingWarp["core"] == "auto") {
+                settingWarp[item.split("=")[0]] = item.split("=")[1];
+            }
+        });
+    }
+    else if (config.startsWith("warp")) {
+        config.replace("warp://").split("&").forEach((item) => {
+            settingWarp[item.split("=")[0]] = item.split("=")[1];
+        });
+    }
+    else if (config.startsWith("http")) {
+        settingWarp["core"] = "vibe";
+        settingVibe["config"] = config;
+    }
+    settingWarp["configAuto"] = config;
+    saveSetting();
+    ResetArgsVibe();
+    ResetArgsWarp();
+    SetSettingWarp();
+}
 function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json") {
     console.log("Reseting setting Warp ....")
     settingWarp = {
@@ -361,6 +402,7 @@ function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-
         cache: "",
         wgconf: "",
         config: "",
+        configAuto: "",
         reserved: "",
         dns: "",
         tun: false,
@@ -503,7 +545,8 @@ function SetSettingWarp() {
     SetValueInput("isp-text-guard", settingWarp["isp"])
     SetValueInput("core-up-at", settingWarp["core"])
     SetValueInput("config-fg-text", settingWarp["configfg"])
-    SetHTML("textOfCfon", settingWarp["core"] == "warp" ? PsicountryFullname[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())] : configsVibeName[configsVibeLink.indexOf(settingVibe["config"])]);
+    SetValueInput("config-text", settingWarp["configAuto"])
+    SetHTML("textOfCfon", settingWarp["core"] == "warp" ? PsicountryFullname[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())] : (configsVibeName[configsVibeLink.indexOf(settingVibe["config"])] == undefined ? (settingWarp["configAuto"].includes("#") ? settingWarp["configAuto"].split("#")[1] : "Vibe Server") : configsVibeName[configsVibeLink.indexOf(settingVibe["config"])]));
     settingWarp["core"] == "vibe" ? document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg") : SetCfon(Psicountry[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())]);
 }
 function SetValueInput(id, Value) {

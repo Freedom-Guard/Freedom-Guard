@@ -22,3 +22,4 @@ links.json
 data/
 src/main/cores/scanner/bestendpoint.txt
 src/main/cores/scanner/result.csv
+config/config.txt

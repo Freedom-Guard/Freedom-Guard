@@ -187,30 +187,27 @@ img {
 
 
 
-.menu-show {
-    padding: 7px;
+.header {
+    position: fixed;
+    top: 0;
+    left: 0%;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    z-index: 1;
 }
 
-.menu-show,
-.setting-show {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 50px;
-    height: 50px;
-    border: none;
-    margin-left: auto;
+.header button {
     border-radius: 50%;
     background-color: transparent;
     color: #ffffff;
     cursor: pointer;
     font-size: 45px;
-}
-
-.setting-show {
-    right: 2px;
-    margin-right: 7px;
-    margin-top: 7px;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .options {

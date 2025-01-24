@@ -20,6 +20,7 @@ var settingWarp = {
     cache: "",
     wgconf: "",
     config: "",
+    configAuto: "",
     reserved: "",
     dns: "",
     tun: false,
@@ -47,7 +48,7 @@ var links = [];
 //#endregion
 // #region Libraries
 const geoip = require('geoip-lite');
-const versionapp = "1.3.6";
+const versionapp = "1.4.0";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 const { spawn, exec, execSync } = require("child_process");
@@ -264,6 +265,9 @@ async function testProxy() {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
+            if (StatusGuard || settingVibe["status"]) {
+                ConnectedVibe(StatusGuard ? "warp" : "vibe");
+            }
             filterBypassStat = true;
             return true;
         }
@@ -501,7 +505,7 @@ async function connectVibe(num = number, mode = 'normal') {
         sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
         Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
         settingVibe["status"] = true;
-        await setTimeout(20000);
+        await setTimeout(30000);
         console.log("Testing vibe...")
         if (await testProxy()) {
             Showmess(5000, "⚡Connected Vibe⚡");
@@ -817,7 +821,8 @@ module.exports = {
     links,
     RefreshLinks,
     NotifApp,
-    getWarpKey
+    getWarpKey,
+    disconnectVPN
 };
 // Onloading
 Onloading();

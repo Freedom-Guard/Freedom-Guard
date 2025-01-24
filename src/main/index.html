@@ -32,8 +32,12 @@
     <!-- #region Freedom Warp => setting & main  -->
     <h2 id="Status" title="false"></h2>
     <button id="ChangeStatus" class="bx-spin-hover"><i class="bx bx-power-off"></i></button>
-    <button class="menu-show" id="menu-show"><i class="bx bx-menu-alt-left bx-flashing-hover"></i></button>
-    <button class="setting-show bx bx-tada-hover" id="setting-show"><i class=" bx bxs-cog"></i></button>
+    <div class="header">
+        <button class="menu-show bx-flashing-hover" id="menu-show" style="margin-right: auto;padding: 2px 7px;"><i
+                class="bx bx-menu-alt-left"></i></button>
+        <button class="setting-show bx bx-tada-hover" id="setting-show" style="margin-left: auto;padding: 7px;"><i
+                class="bx bxs-cog" style="font-size: 43px;"></i></button>
+    </div>
     <div class="options">
         <p>Gool</p>
         <label class="switch">
@@ -85,6 +89,13 @@
                 </div>
             </div>
         </nav>
+        <b>Config Freedom Guard</b>
+        <div id="config" class="form-control-c">
+            <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
+                id="config-text">
+            <button id="submit-config" class="btn">Import</button>
+            <span class="input-border input-border-alt"></span>
+        </div>
         <b>Config Freedom Guard for auto mode</b>
         <div id="config-fg" class="form-control-c">
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
@@ -184,7 +195,7 @@
             </label>
         </div>
         <b>Config Directory</b>
-        <div id="config" class="form-control-c">
+        <div id="config-dir-warp" class="form-control-c">
             <input type="text" class="input input-alt" placeholder="Path file config" id="config-dir">
             <span class="input-border input-border-alt"></span>
         </div>
