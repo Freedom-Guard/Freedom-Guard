@@ -97,13 +97,15 @@ async function checkDataOut(data, core) {
     if (core == "warp") {
         if (data.toString().includes("serving proxy")) {
             if (process.platform == "linux" && !settingWarp["tun"]) {
-                exec("bash " + path.join(__dirname, "assets", "bash", "set_proxy.sh") + ` ${settingWarp["proxy"].replace(":", " ")}`);
-                if (await testProxy()) {
+                exec("bash " + path.join(__dirname, "assets", "bash", "set_proxy-gn.sh") + ` ${settingWarp["proxy"].replace(":", " ")}`);
+                if (await testProxy() || !(settingWarp["core"] == "auto")) {
+                    ConnectedWarp();
+                    alert("Proxy is working on: "+settingWarp["proxy"]);
                     ConnectedWarp();
                 }
             }
             else if (process.platform == "win32" && !settingWarp["tun"]) {
-                console.log("set proxy");
+                console.log("Set proxy");
                 setProxy(settingWarp["proxy"]);
                 if (await testProxy()) {
                     ConnectedWarp();
@@ -148,7 +150,6 @@ async function Run(nameFile, args, runa = 'user', exeCore = "warp") {
     KillProcess("vibe");
     KillProcess("vibe");
     await testProxy();
-    console.log(path.join(__dirname, "src", "main", "cores", exeCore, nameFile) + " " + args);
     var exePath = `"${path.join(__dirname, "src", "main", "cores", exeCore, nameFile)}"`; // Adjust the path to your .exe file
     if (process.platform == "linux") {
         exePath = `"${path.join(__dirname, "src", "main", "cores", exeCore, nameFile.replace(".exe", ""))}"`; // Adjust the path to your .exe file
@@ -156,11 +157,13 @@ async function Run(nameFile, args, runa = 'user', exeCore = "warp") {
         if (runa == "admin") {
             childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
         } else childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
+        console.log(exePath + " " + args);
     }
     else {
         if (runa == "admin") {
             childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
         } else childProcess = spawn(exePath, args, { shell: true, runAsAdmin: true });
+        console.log(exePath + " " + args);
     }
     childProcess.stdout.on('data', async (data) => {
         checkDataOut(data.toString(), exeCore);
@@ -264,7 +267,7 @@ async function testProxy() {
         sect == "main" ? SetHTML("ip-ping-warp", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
         testproxystat = true;
         try {
-            var testBypass = await axios.get('https://x.com', {
+            var testBypass = await axios.get('https://fb.com', {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
@@ -376,12 +379,15 @@ function ConnectedWarp(stat = "normal") {
     sect == "main" ? SetHTML("status-vibe-conn", "🚀 Connected") : ('');
     sect == "main" ? SetAnim("ChangeStatus", "null !important") : ("");
     sect == "main" ? SetBorderColor("ChangeStatus", "#15ff00") : ("");
+    SetAnim("ChangeStatus", "Load");
+    SetBorderColor("ChangeStatus", "#15ff00");
     if (stat == "normal") {
         sect == "main" ? Showmess(5000, "🚀!Connected To Warp!🚀") : ("");
         NotifApp("🚀!Connected To Warp!🚀");
     }
     StatusGuard = true;
     settingVibe["status"] = true;
+    saveSetting();
 
     setSystemTrayON();
 }
@@ -404,7 +410,7 @@ function disconnectVPN() {
     sect == "main" ? SetAnim("ChangeStatus", "Connect 7s ease-in-out") : ("");
     sect == "main" ? SetAttr("ChangeStatus", "style", "border-color:;") : ("");
     if (process.platform == "linux") {
-        exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
+        exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy-gn.sh"));
     }
     else {
         offProxy(settingWarp["proxy"]);
@@ -531,7 +537,7 @@ async function connectVibe(num = number, mode = 'normal') {
     }
     if (settingVibe["status"] == false && settingWarp["core"] == "auto") {
         if (process.platform == "linux") {
-            exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
+            exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy-gn.sh"));
         }
         else {
             offProxy(settingWarp["proxy"]);
@@ -563,7 +569,7 @@ async function connectVibe(num = number, mode = 'normal') {
         settingVibe["status"] = true;
         StatusGuard = true;
         if (process.platform == "linux") {
-            exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy.sh"));
+            exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy-gn.sh"));
         }
         else {
             offProxy(settingWarp["proxy"]);
@@ -722,7 +728,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         }
 
         if (process.platform === "linux") {
-            exec(`bash ${path.join(__dirname, "assets", "bash", "reset_proxy.sh")}`);
+            exec(`bash ${path.join(__dirname, "assets", "bash", "reset_proxy-gn.sh")}`);
         } else {
             offProxy(settingWarp["proxy"]);
         }
