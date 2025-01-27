@@ -322,14 +322,14 @@ function getRandomImage() {
 };
 function checkUpdate() {
     try {
-        fetch(`https://api.github.com/repos/Freedom-Guard/Freedom-Guard/releases/latest`)
+        fetch(`https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/refs/heads/main/config/latest.json`)
             .then(response => response.json())
             .then(data => {
-                const latestVersion = data.tag_name.replace("v", "");
+                const latestVersion = data.version;
                 const currentVersion = versionapp;
                 if (latestVersion > currentVersion) {
                     console.log(latestVersion, versionapp)
-                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید. <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
+                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید. <br>"+data.messText+" <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
                         , "https://github.com/Freedom-Guard/Freedom-Guard/releases/latest");
                 } else { } // used latest version
             })
