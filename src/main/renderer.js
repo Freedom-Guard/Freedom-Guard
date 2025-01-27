@@ -329,7 +329,7 @@ function checkUpdate() {
                 const currentVersion = versionapp;
                 if (latestVersion > currentVersion) {
                     console.log(latestVersion, versionapp)
-                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید. <br>"+data.messText+" <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
+                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید: <br>"+data.messText+" <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
                         , "https://github.com/Freedom-Guard/Freedom-Guard/releases/latest");
                 } else { } // used latest version
             })
