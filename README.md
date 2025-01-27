@@ -1,13 +1,18 @@
 # Freedom Guard | گارد آزادی
- Warp + Psiphon + Gool + Scan + Freedom Vibe + Freedom Browser + Freedom Plus
-> Freedom Guard is tool for bypass censorship of internet.<br>
-> Woman Life Freedom
-# نرم افزار گارد آزادی
- وارپ + سایفون + گول + اسکن + مرورگر آزادی + Freedom Vibe + Freedom Plus
-> نرم افزار گارد آزادی یک نرم افزار برای دور زدن سانسور اینترنت است. <br>
-> زن زندگی آزادی
 
-### <div align="center"> Download the latest version | دانلود آخرین نسخه </div>
+> Freedom Guard is a tool for bypassing internet censorship.<br>
+> Woman Life Freedom
+
+---
+
+## نرم افزار گارد آزادی
+
+> نرم افزار گارد آزادی یک نرم‌افزار برای دور زدن سانسور اینترنت است که بهترین روش‌های اتصال به اینترنت آزاد را ارائه می‌دهد.<br>
+> زن، زندگی، آزادی
+
+---
+
+## <div align="center">Download the latest version | دانلود آخرین نسخه</div>
 
 <div align=center>
 <table>
@@ -18,23 +23,11 @@
         </tr>
     </thead>
     <tbody align=left>
-        </tr>
         <tr>
             <td>Windows</td>
             <td>
-              <!--  <a href=""><img src="https://img.shields.io/badge/OfficialSetup{Disabled}-x64-0078d7.svg?logo=windows"></a><br>-->
                 <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-win.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
-               <!--<a href=""><img src="https://img.shields.io/badge/Portable{Disabled}-x64-67b7d1.svg?logo=windows"></a>-->
             </td>
-        </tr>
-        <td></td>
-         <!--
-            <td>macOS</td>
-            <td>
-                <a href=""><img src="https://img.shields.io/badge/DMG-Universal{Disabled}-ea005e.svg?logo=apple|Disable"></a><br>
-                <a href=""><img src="https://img.shields.io/badge/PKG-Universal{Disabled}-bc544b.svg?logo=apple|Disable" /></a>
-            </td>
-           -->
         </tr>
         <tr>
             <td>Linux</td>
@@ -44,38 +37,78 @@
         </tr>
     </tbody>
 </table>
+</div>
 
+---
+
+## متمایزترین قابلیت‌های نرم‌افزار گارد آزادی:
+
+ **💶 کاملاً رایگان:** دسترسی آزاد برای همه کاربران.
+ 
+ **😶‍🌫️ متن باز:** تضمین شفافیت و امنیت.
+ 
+ **✔️ پشتیبانی از تمامی کانفیگ‌ها:** شامل Trojan, SSH, Vmess, Vless, WireGuard, Warp-Plus و...
+ 
+ **🚀 کانفیگ خودکار:** دسترسی آسان به اینترنت آزاد با تنظیمات خودکار.
+ 
+ **👩‍💻 تست کانفیگ بر اساس ISP:** امکان آزمایش چندین کانفیگ برای پیدا کردن بهترین عملکرد.
+ 
+ **👌 مرورگر آزادی:** سریع، ایمن و خصوصی.
+ 
+ **🤖 آپدیت منظم:** به‌روزرسانی خودکار کانفیگ‌ها برای تضمین پایداری.
+ 
+ ## بخش های گارد آزادی
+<div dir="rtl" align="right">
+
+<p dir="rtl">
+  <span>📡 DNS Changer:</span> ابزاری برای تغییر سریع و آسان DNS به منظور بهبود امنیت و افزایش سرعت اتصال.
+</p>
+
+<p dir="rtl">
+  <span>🌐 Freedom Vibe:</span> ابزاری پیشرفته برای پنهان‌سازی ترافیک با استفاده از Hiddify Core، مناسب برای دور زدن سانسور.
+</p>
+
+<p dir="rtl">
+  <span>🚀 Freedom Warp:</span> ابزاری برای اتصال به اینترنت آزاد با استفاده از Warp Plus و سایر پروتکل‌ها، همراه با قابلیت تنظیمات پیشرفته.
+</p>
+
+<p dir="rtl">
+  <span>🔒 Freedom Browser:</span> مرورگری ایمن، سریع و خصوصی که با VPN داخلی ارائه می‌شود و امکان مرور اینترنت بدون محدودیت را فراهم می‌کند.
+</p>
+
+<p dir="rtl">
+  <span>🔍 Freedom Plus:</span> پلتفرمی انعطاف‌پذیر برای افزودن و مدیریت ابزارها و افزونه‌های مکمل برنامه، جهت افزایش کارایی و گسترش قابلیت‌ها.
+</p>
 
 </div>
 
-### features
-- Freedom Guard (with Warp Plus, Main)
-- Freedom Vibe (With Hiddify Core)
-- Freedom Browser (Private & With Vpn & fast)
-- Dns Changer 
-- Settings For Warp Plus (endpoint, bind address,...)
-- Auto Mode for auto servers
-- Servers -> warp, vibe, auto
-- IP Version Warp Plus (4,6)
-- Scanner IP Endpoint 
-### Screenshot
-> Freedom Vibe
 
-![image](https://github.com/fwldom/Freedom-Guard-Electron/assets/111840687/b4bfd007-6ff3-4720-8ee9-48e0520b26ca)
-> Freedom Browser
-![image](https://github.com/user-attachments/assets/a6c01de3-f214-45be-8dfc-c78ed43f0d40)
+## Screenshots
 
+### Freedom Vibe
+![Freedom Vibe](https://github.com/fwldom/Freedom-Guard-Electron/assets/111840687/b4bfd007-6ff3-4720-8ee9-48e0520b26ca)
 
-> Freedom Guard (Warp)
+### Freedom Browser
+![Freedom Browser](https://github.com/user-attachments/assets/a6c01de3-f214-45be-8dfc-c78ed43f0d40)
 
-![image](https://github.com/user-attachments/assets/c0c8aac0-188a-4d0a-9bca-a36fff86af58)
+### Freedom Guard (Warp)
+![Freedom Guard](https://github.com/user-attachments/assets/c0c8aac0-188a-4d0a-9bca-a36fff86af58)
 
-### Contact 
-email : fwldom@duck.com
+---
+
+## Contact
+
+Email: [fwldom@duck.com](mailto:fwldom@duck.com)
+
+---
+
 ## 👇 Acknowledgements 👇
 
-> hiddify-core from Hiddify<br>
-> warp-plus from bepass-org <br>
-> Scanner IP Endpoint (Warp) from Ptechgithub <br>
-### Visitors 
+- **Hiddify-Core** from Hiddify<br>
+- **Warp-Plus** from bepass-org<br>
+
+---
+
+## Visitors
+
 ![Visitor Count](https://profile-counter.glitch.me/Freedom-Guard-Electron/count.svg)
