@@ -27,6 +27,7 @@ var settingWarp = {
     startup: "warp",
     isp: "other",
     core: "auto",
+    testUrl: "https://fb.com",
     "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
 };
 var argsWarp = [""];
@@ -267,7 +268,7 @@ async function testProxy() {
         sect == "main" ? SetHTML("ip-ping-warp", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
         testproxystat = true;
         try {
-            var testBypass = await axios.get('https://fb.com', {
+            var testBypass = await axios.get(settingWarp["testUrl"] ?? "https://fb.com", {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
@@ -714,11 +715,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             console.log("Connection failed, trying again...");
             if (settingWarp["core"] == "auto") {
                 connectAuto(number + 1, mode = 'try'); // Increment the connection attempt number
-            } else {
-                FindBestEndpointWarp("conn");
-                Showmess(5000, "Finding Endpoint Warp ...");
             }
-
         }
 
     } else {

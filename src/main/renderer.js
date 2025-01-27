@@ -115,7 +115,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("core-up-at").value = "warp";
         settingWarp["core"] = "warp"
         saveSetting();
-
+    };
+    document.getElementById("conn-test-text").onchange = () => {
+        SetServiceWarp("testUrl", document.getElementById("conn-test-text").value);
+        saveSetting();
     };
     document.getElementById("config-fg-text").onchange = () => {
         SetServiceWarp("configfg", document.getElementById("config-fg-text").value);
@@ -127,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resetSettingWarp();
     };
     document.getElementById("set-on").onclick = () => {
-    StatusGuard = true;
+        StatusGuard = true;
         settingVibe["status"] = true;
         saveSetting();
         ConnectedVibe(settingWarp["core"]);
@@ -416,6 +419,7 @@ function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-
         startup: "warp",
         isp: "other",
         core: "auto",
+        testUrl: "https://fb.com",
         configfg: configFG
     };
     saveSetting();
@@ -542,6 +546,7 @@ function SetSettingWarp() {
     SetValueInput("warp-key-text", settingWarp["warpkey"]);
     SetValueInput("dns-warp-text", settingWarp["dns"]);
     SetValueInput("scan-rtt-text", settingWarp["scanrtt"]);
+    SetValueInput("conn-test-text", settingWarp["testUrl"] ?? "https://fb.com");
     document.getElementById("verbose-status").checked = settingWarp["verbose"];
     SetValueInput("cache-dir", settingWarp["cache"]);
     SetValueInput("wgconfig-dir", settingWarp["wgconf"]);
@@ -994,10 +999,10 @@ ipcRenderer.on('start-link', (event, link) => {
         }
     }
     if (settingWarp["core"] == "vibe") {
-        connect(core="vibe");
+        connect(core = "vibe");
     }
     else if (settingWarp["core"] == "warp") {
-        connect(core="warp");
+        connect(core = "warp");
     }
     else {
         connect(core = queryParams["core"]);
