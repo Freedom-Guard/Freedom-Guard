@@ -20,8 +20,6 @@ configsVibeName.json
 one.one
 links.json
 data/
-src/plus/apps/
 src/main/cores/scanner/bestendpoint.txt
 src/main/cores/scanner/result.csv
 config/config.txt
-src/plus/apps/**/

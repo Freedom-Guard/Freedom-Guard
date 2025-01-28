@@ -28,6 +28,10 @@ var settingWarp = {
     isp: "other",
     core: "auto",
     testUrl: "https://fb.com",
+    timeOutWarpAuto: 30000,
+    timeOutVibeAuto: 45000,
+    timeOutWarp: 60000,
+    timeOutVibe: 60000,
     "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
 };
 var argsWarp = [""];
@@ -546,7 +550,7 @@ async function connectVibe(num = number, mode = 'normal') {
         sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
         Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
         settingVibe["status"] = true;
-        await setTimeout(40000);
+        await setTimeout(settingWarp["timeOutVibeAuto"] ?? 40000);
         console.log("Testing vibe...")
         if (await testProxy()) {
             Showmess(5000, "⚡Connected Vibe⚡");
@@ -617,7 +621,7 @@ async function connectVibe(num = number, mode = 'normal') {
             Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
             settingVibe["status"] = true;
             StatusGuard = true;
-            await setTimeout(45000);
+            await setTimeout(settingWarp["timeOutVibe"] ?? 60000);
             await testProxy();
             if (settingVibe["status"] == true) {
                 if (await testProxy()) {
@@ -673,7 +677,7 @@ async function connectWarp(num = 0, mode = 'normal') {
             SetAnim("ChangeStatus", "Connect 7s infinite");
         }
         Run("warp-plus.exe", argsWarp, settingWarp["tun"] ? "admin" : "user", "warp");
-        await setTimeout(45000);
+        await setTimeout(settingWarp["timeOutWarpAuto"] ?? 45000);
         console.log("Start Testing warp...")
         if (await testProxy() && StatusGuard == true) {
             Showmess(5000, "Connected Warp");
@@ -702,7 +706,7 @@ async function connectWarp(num = 0, mode = 'normal') {
         StatusGuard = true;
         await testProxy();
         console.log("Start Testing Warp...");
-        await setTimeout(60000);
+        await setTimeout(settingWarp["timeOutWarp"] ?? 60000);
         if (await testProxy()) {
             Showmess(5000, "Connected Warp");
             trackEvent("connected-warp");
@@ -740,7 +744,6 @@ async function connectWarp(num = 0, mode = 'normal') {
             }
         }, 600);
         StatusGuard = false;
-
         disconnectVPN();
     }
 }

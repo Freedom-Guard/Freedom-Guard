@@ -69,6 +69,7 @@
             "!assets/**/*",
             "src/**/*",
             "!src/main/cores",
+            "!src/plus/apps",
             "!dist/",
             "node_modules/**/*",
             "package.json",
@@ -80,11 +81,9 @@
             "svgs/*.*",
             "*.png",
             "*.ico",
-            "!vibe.json",
-            "!warp.json",
             "!one.one",
             "*.bat",
-            "!links.json",
+            "!freedom-guard.json",
             "!data/**/*"
         ]
     },
@@ -105,7 +104,7 @@
         "fs": "^0.0.1-security"
     },
     "bugs": {
-        "url": "https://github.com/fwldom/Freedom-Guard-Electron/issues",
+        "url": "https://github.com/Freedom-Guard/Freedom-Guard/issues",
         "email": "fwldom@duck.com"
     }
 }

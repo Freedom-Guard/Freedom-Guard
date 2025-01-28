@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("telegram-contact").onclick = () => openLink("https://t.me/freedom_guard_net")
     document.getElementById("mail-contact").onclick = () => openLink("mailto:fwldom@duck.com?subject=Help me")
     document.getElementById("repo-contact").onclick = () => openLink("https://github.com/Freedom-Guard/Freedom-Guard")
+    document.getElementById("set-setting-warp").onclick = () => { settingWarp[document.getElementById("set-setting-warp-key").value] = document.getElementById("set-setting-warp-value").value; saveSetting(); SetSettingWarp(); };
     document.getElementById("selector-file-config").addEventListener("change", async (event) => {
         const file = event.target.files[0];
         const arrayBuffer = await file.arrayBuffer();
@@ -329,7 +330,7 @@ function checkUpdate() {
                 const currentVersion = versionapp;
                 if (latestVersion > currentVersion) {
                     console.log(latestVersion, versionapp)
-                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید: <br>"+data.messText+" <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
+                    boxNotif("نسخه جدیدی از نرم افزار موجود است. لطفا از لینک زیر دانلود کنید: <br>" + data.messText + " <br> ورژن فعلی: " + currentVersion + " <br> ورژن جدید: " + latestVersion + " <br> "
                         , "https://github.com/Freedom-Guard/Freedom-Guard/releases/latest");
                 } else { } // used latest version
             })
@@ -420,6 +421,10 @@ function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-
         isp: "other",
         core: "auto",
         testUrl: "https://fb.com",
+        timeOutWarpAuto: 30000,
+        timeOutVibeAuto: 45000,
+        timeOutWarp: 60000,
+        timeOutVibe: 60000,
         configfg: configFG
     };
     saveSetting();
