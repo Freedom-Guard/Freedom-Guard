@@ -9,7 +9,9 @@
         "start": "npx electron .",
         "win": "npx electron-builder --win",
         "linux": "npx electron-builder --linux",
-        "build": "npx electron-builder"
+        "build": "npx electron-builder",
+        "build:win": "electron-builder --win",
+        "build:linux": "electron-builder --linux deb"
     },
     "build": {
         "protocols": [
@@ -67,6 +69,7 @@
         },
         "files": [
             "!assets/**/*",
+            "node_modules/music-metadata-browser/**/*",
             "src/**/*",
             "!src/main/cores",
             "!src/plus/apps",

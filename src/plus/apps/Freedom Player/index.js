@@ -187,11 +187,16 @@ function formatTime(seconds) {
   const secs = Math.floor(seconds % 60);
   return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 }
-document.getElementById("back").addEventListener("click", () => {
+function closeToPlus() {
   try {
-    const ipc = require('electron').ipcRenderer;
-    const path = require('path');
-    ipc.send("load-file", path.join("src", "plus/index.html"));
+      const { ipcRenderer } = require('electron');
+      const path = require('path');
+      ipcRenderer.send("load-file", path.join("src", "plus/index.html"));
+  } catch (error) {
+      console.error("Error loading plus/index.html:", error);
   }
-  catch { }
+}
+
+document.getElementById("back").addEventListener("click", () => {
+  closeToPlus();
 })
