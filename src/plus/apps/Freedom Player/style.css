@@ -7,7 +7,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #1c1c1c;
+  background-color: #2a003f;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -22,10 +22,10 @@ header {
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: #272727;
+  background-color: #3b004f;
   padding: 10px 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 header h1 {
@@ -49,7 +49,7 @@ header label {
 
 header label:hover,
 header button:hover {
-  color: #007bff;
+  color: #cda6f3;
 }
 
 /* Player controls */
@@ -59,20 +59,20 @@ header button:hover {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  background-color: #2d2d2d;
+  background-color: #4b0063;
   width: 100%;
   margin-top: auto;
   max-width: 500px;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .controls img {
   width: 50px;
   height: 50px;
   border-radius: 10px;
-  background-color: #444;
+  background-color: #5a0075;
   margin-bottom: 10px;
 }
 
@@ -87,7 +87,7 @@ header button:hover {
 }
 
 #artist-name {
-  color: #aaa;
+  color: #d4aedb;
   font-size: 14px;
 }
 
@@ -101,22 +101,22 @@ header button:hover {
 }
 
 .btn:hover {
-  color: #007bff;
+  color: #cda6f3;
 }
 
 /* Progress bar */
 .controls input[type="range"] {
   width: 80%;
   margin: 10px 0;
-  background-color: #444;
+  background-color: #5a0075;
   cursor: pointer;
-  accent-color: #007bff;
+  accent-color: #cda6f3;
 }
 
 #progressBar {
   height: 5px;
   border-radius: 5px;
-  background: #444;
+  background: #5a0075;
   outline: none;
   overflow: hidden;
 }
@@ -126,7 +126,7 @@ header button:hover {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #007bff;
+  background: #cda6f3;
   cursor: pointer;
 }
 
@@ -134,7 +134,7 @@ header button:hover {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #007bff;
+  background: #cda6f3;
   cursor: pointer;
 }
 
@@ -149,7 +149,7 @@ header button:hover {
   max-width: 200px;
   height: 5px;
   border-radius: 5px;
-  background: #444;
+  background: #5a0075;
   outline: none;
   margin-top: 10px;
 }
@@ -159,7 +159,7 @@ header button:hover {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #007bff;
+  background: #cda6f3;
   cursor: pointer;
 }
 
@@ -167,14 +167,14 @@ header button:hover {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #007bff;
+  background: #cda6f3;
   cursor: pointer;
 }
 
 #volumeLabel {
   margin-top: 5px;
   font-size: 14px;
-  color: #aaa;
+  color: #d4aedb;
 }
 
 /* Responsive */
@@ -212,7 +212,6 @@ header button:hover {
   flex-wrap: wrap;
   margin-top: 20px;
   gap: 3vw;
-
 }
 
 .previous-songs {
@@ -224,7 +223,7 @@ header button:hover {
   gap: 1vw;
   width: 100%;
   overflow-y: auto;
-  box-shadow: #007bff54 0 0 10px;
+  box-shadow: #cda6f3 0 0 10px;
   border-radius: 5px;
 }
 
@@ -232,15 +231,15 @@ header button:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #2d2d2d;
+  background-color: #4b0063;
   padding: 10px;
   margin: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .previous-song:hover {
-  background-color: #444;
+  background-color: #5a0075;
   transition: 0.3s;
 }
 
@@ -254,12 +253,12 @@ header button:hover {
 .previous-song p {
   flex-grow: 1;
   font-size: 14px;
-  color: #ccc;
+  color: #e0c5ea;
   margin-right: 2vw;
 }
 
 .delete-button {
-  background-color: #ff4d4d;
+  background-color: #8c1e8c;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -269,5 +268,5 @@ header button:hover {
 }
 
 .delete-button:hover {
-  background-color: #ff0000;
+  background-color: #cda6f3;
 }

@@ -1,9 +1,9 @@
 const fs = require('fs');
 const axios = require('axios');
 const path = require('path');
+const https = require("https");
 const ipc = require('electron').ipcRenderer;
-__dirname = path.join(__dirname.replace("app.asar",""));
-
+__dirname = path.join(__dirname.replace("app.asar", ""));
 fetch('listapps.json')
     .then(response => response.json())
     .then(data => {
@@ -51,7 +51,7 @@ fetch('listapps.json')
             }
             console.log(Files);
             downloadFiles(Files, app = app)
-    }
+        }
     })
     .catch(error => console.error('Error loading apps:', error));
 
@@ -69,28 +69,34 @@ function hideDownloadDialog() {
 }
 
 async function checkAndDownloadFile(fileUrl, savePath) {
-    if (fs.existsSync(savePath)) {
-        console.log(`File already exists at ${savePath}`);
-        return;
-    }
+    return new Promise((resolve, reject) => {
+        try {
+            const file = fs.createWriteStream(savePath);
+            https.get(fileUrl, (response) => {
+                if (response.statusCode !== 200) {
+                    reject(new Error(`Failed to download file. Status code: ${response.statusCode}`));
+                    return;
+                }
+                response.pipe(file);
 
-    try {
-        var Xhr = new XMLHttpRequest();
-        Xhr.open("GET", fileUrl, true);
-        Xhr.send();
-        Xhr.onreadystatechange = function () {
-            if (Xhr.readyState == 4 && Xhr.status == 200) {
-                write_file(savePath, Xhr.response);
-                console.log(savePath + " Downloaded");
-                return;
-            };
-        };
-        await sleep(15000);
+                file.on("finish", () => {
+                    file.close(() => {
+                        console.log(`${savePath} Downloaded`);
+                        resolve();
+                    });
+                });
 
-    } catch (error) {
-        console.error(`Error downloading file from ${fileUrl}:`, error);
-    }
-};
+                file.on("error", (err) => {
+                    fs.unlink(savePath, () => reject(err));
+                });
+            }).on("error", (err) => {
+                reject(err);
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 async function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -112,12 +118,12 @@ async function downloadFiles(filesToDownload, app) {
 
     for (var file of filesToDownload) {
         console.log(file);
-        await checkAndDownloadFile(file, path.join(__dirname,"./apps/",app.name,getFileNameFromUrl(file)));
+        await checkAndDownloadFile(file, path.join(__dirname, "./apps/", app.name, getFileNameFromUrl(file)));
         completed++;
         const progress = (completed / totalFiles) * 100;
         downloadProgress.value = progress;
         downloadStatus.innerText = `در حال دانلود: ${completed}/${totalFiles} فایل`;
-        if (!fs.existsSync(path.join(__dirname,"./apps/",app.name,getFileNameFromUrl(file)))) {
+        if (!fs.existsSync(path.join(__dirname, "./apps/", app.name, getFileNameFromUrl(file)))) {
             alert("Error Download Files Try Again");
             hideDownloadDialog();
             return;
@@ -138,12 +144,16 @@ function runApp(app) {
     else alert("Error RUN APP")
 
 }
-function CloseToPlus() {
+
+function onLoad() {
+}
+onLoad();
+function CloseToMain() {
     try {
-        ipc.send("load-file", "./index.html");
+        ipc.send("load-main-app");
     }
     catch { }
 }
 document.getElementById("back").addEventListener("click", function () {
-    CloseToPlus();
+    CloseToMain();
 })

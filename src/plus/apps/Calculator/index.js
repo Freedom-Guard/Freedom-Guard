@@ -1,33 +1,60 @@
 function append(text) {
-    if (document.getElementById("display").value == "Syntax Error") {
-        document.getElementById("display").value = "";
+    const display = document.getElementById("display");
+
+    if (display.value === "Syntax Error") {
+        display.value = "";
     }
-    document.getElementById("display").value += text;
-    var inputField = document.getElementById('display');
-    var length = inputField.value.length;
-    inputField.style.fontSize = (length > 8 ? (35 / (length / 100)) + '%' : '4rem');
+    display.value += text;
+
+    const length = display.value.length;
+    display.style.fontSize = length > 8 ? `${Math.max(2, 35 / (length / 100))}%` : '4rem';
 }
-function CloseToPlus() {
+
+function closeToPlus() {
     try {
-        const ipc = require('electron').ipcRenderer;
-        ipc.send("load-file", path.join("src", "plus/index.html"));
+        const { ipcRenderer } = require('electron');
+        const path = require('path');
+        ipcRenderer.send("load-file", path.join("src", "plus/index.html"));
+    } catch (error) {
+        console.error("Error loading plus/index.html:", error);
     }
-    catch { }
 }
+
 function calculate() {
+    const display = document.getElementById("display");
+
     try {
-        document.getElementById("display").value = eval(document.getElementById("display").value);
+        display.value = eval(display.value);
+    } catch {
+        display.value = "Syntax Error";
     }
-    catch {
-        document.getElementById("display").value = "Syntax Error"
-    }
-    var inputField = document.getElementById('display');
-    var length = inputField.value.length;
-    inputField.style.fontSize = (length > 8 ? (35 / (length / 100)) + '%' : '4rem');
+
+    const length = display.value.length;
+    display.style.fontSize = length > 8 ? `${Math.max(2, 35 / (length / 100))}%` : '4rem';
 }
+
 function clearDisplay() {
     document.getElementById("display").value = "";
 }
-document.getElementById("back").addEventListener("click", function () {
-    CloseToPlus();
-})
+
+function handleKeyPress(event) {
+    const key = event.key;
+    const validKeys = '0123456789+-*/.()';
+
+    if (validKeys.includes(key)) {
+        append(key);
+    } else if (key === 'Enter') {
+        calculate();
+    } else if (key === 'Backspace') {
+        const display = document.getElementById("display");
+        display.value = display.value.slice(0, -1);
+        const length = display.value.length;
+        display.style.fontSize = length > 8 ? `${Math.max(2, 35 / (length / 100))}%` : '4rem';
+    } else if (key === 'Escape') {
+        clearDisplay();
+    }
+}
+
+document.getElementById("back").addEventListener("click", closeToPlus);
+
+document.addEventListener("keydown", handleKeyPress);
