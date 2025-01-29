@@ -396,7 +396,7 @@ function importConfig(config = "") {
     ResetArgsWarp();
     SetSettingWarp();
 }
-function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json") {
+function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json") {
     console.log("Reseting setting Warp ....")
     settingWarp = {
         proxy: "127.0.0.1:8086",

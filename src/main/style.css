@@ -103,89 +103,110 @@ img {
     border-radius: 10px;
     margin-bottom: 2vh;
 }
-
 #ChangeStatus {
     margin-top: 7vh;
-    width: 175px;
-    height: 175px;
-    font-size: 55px;
+    width: 180px;
+    height: 180px;
+    font-size: 60px;
     color: white;
-    background: linear-gradient(#2502eb86 0 0) padding-box, linear-gradient(to right, #2c003e, #ff007f) border-box;
-    padding: 10px;
-    border: 5px solid transparent;
-    border-radius: 100px;
+    background: linear-gradient(135deg, #3a0ca3, #7209b7) padding-box;
+    padding: 12px;
+    border: 6px solid transparent;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: ChangeStatusAnimOff 10s infinite;
-    box-shadow: 0 0 50px rgba(255, 0, 127, 0.3);
-    transition: background 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+    animation: ChangeStatusAnimOff 10s infinite ease-in-out;
+    box-shadow: 0 0 30px rgba(114, 9, 183, 0.5), 0 0 15px rgba(58, 12, 163, 0.4);
+    transition: all 0.5s ease-in-out;
     cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    outline: none;
+    border: 4px solid #b7098c;
+}
+
+#ChangeStatus i {
+    transition: transform 0.3s ease-in-out;
 }
 
 #ChangeStatus:hover {
-    transition: 0.8s;
-    backdrop-filter: blur(5px);
-    background: transparent;
-    border-color: #1100ff;
-    box-shadow: 0 0 50px rgba(255, 0, 128, 0.432), 0 0 20px rgba(44, 0, 62, 0.5);
+    backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, #560bad, #b5179e);
+    border-color: #b5179e;
+    box-shadow: 0 0 40px rgba(181, 23, 158, 0.6), 0 0 20px rgba(86, 11, 173, 0.5);
+    transform: scale(1.05);
 }
 
+#ChangeStatus:hover i {
+    transform: rotate(180deg);
+}
 @keyframes ChangeStatusAnimOff {
-    10% {
-        border-color: #9c20aa;
+    0% {
+        border-color: #7209b7;
     }
-
-    20% {
-        border-color: #fb3570;
+    25% {
+        border-color: #b5179e;
     }
-
     50% {
-        border-color: #3F36AE;
+        border-color: #3a0ca3;
     }
-
+    75% {
+        border-color: #560bad;
+    }
     100% {
-        border-color: #970f53af;
+        border-color: #7209b7;
     }
 }
 
 @keyframes glow {
     0% {
-        box-shadow: 0 0 10px rgba(255, 0, 127, 0.3), 0 0 5px rgba(44, 0, 62, 0.3);
+        box-shadow: 0 0 10px rgba(114, 9, 183, 0.4), 0 0 5px rgba(86, 11, 173, 0.4);
     }
-
     50% {
-        box-shadow: 0 0 380px rgba(255, 0, 127, 0.3), 0 0 55px rgba(44, 0, 62, 0.5);
+        box-shadow: 0 0 50px rgba(181, 23, 158, 0.6), 0 0 25px rgba(58, 12, 163, 0.5);
     }
-
     100% {
-        box-shadow: 0 0 50px rgba(255, 0, 127, 0.3), 0 0 5px rgba(44, 0, 62, 0.3);
+        box-shadow: 0 0 10px rgba(114, 9, 183, 0.4), 0 0 5px rgba(86, 11, 173, 0.4);
     }
 }
-
 @keyframes Connect {
-    25% {
-        border-color: #ff9100;
+    0% {
+        border-color: #6a00ff;
+        box-shadow: 0 0 10px #6a00ff;
+        transform: scale(1) rotate(0deg);
     }
 
-    50% {
-        border-color: #5900ff;
+    20% {
+        border-color: #8a2be2;
+        box-shadow: 0 0 15px #8a2be2;
+        transform: scale(1.05);
+    }
+
+    40% {
+        border-color: #4b0082;
+        box-shadow: 0 0 20px #4b0082;
+        transform: scale(1) rotate(120deg);
+    }
+
+    60% {
+        border-color: #483d8b;
+        box-shadow: 0 0 25px #483d8b;
+        transform: scale(1.1) rotate(240deg);
+    }
+
+    80% {
+        border-color: #4169e1;
+        box-shadow: 0 0 30px #4169e1;
+        transform: scale(1.05) rotate(320deg);
     }
 
     100% {
-        border-color: #1100ff;
-    }
-
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(7200deg);
+        border-color: #00bfff;
+        box-shadow: 0 0 35px #00bfff;
+        transform: scale(1) rotate(360deg);
     }
 }
-
-
 
 .header {
     position: fixed;

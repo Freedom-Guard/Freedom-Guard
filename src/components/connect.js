@@ -32,7 +32,7 @@ var settingWarp = {
     timeOutVibeAuto: 45000,
     timeOutWarp: 60000,
     timeOutVibe: 60000,
-    "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json"
+    "configfg": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json"
 };
 var argsWarp = [""];
 var argsVibe = [""];
@@ -507,7 +507,6 @@ function importConfig(config = "") {
     saveSetting();
     ResetArgsVibe();
     ResetArgsWarp();
-    SetSettingWarp();
 }
 var modeConn = "normal";
 var number = 0;

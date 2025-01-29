@@ -31,7 +31,9 @@
     <!-- #endregion Loading -->
     <!-- #region Freedom Warp => setting & main  -->
     <h2 id="Status" title="false"></h2>
-    <button id="ChangeStatus" class="bx-spin-hover"><i class="bx bx-power-off"></i></button>
+    <button id="ChangeStatus" class="bx-spin-hover">
+        <i class="bx bx-power-off"></i>
+    </button>
     <div class="header">
         <button class="menu-show bx-flashing-hover" id="menu-show" style="margin-right: auto;padding: 2px 7px;"><i
                 class="bx bx-menu-alt-left"></i></button>
@@ -100,7 +102,7 @@
         <div id="config-fg" class="form-control-c">
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
                 id="config-fg-text"
-                value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/linksnew.json">
+                value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json">
             <button id="selector-file" class="btn">
                 <label for="selector-file-config" style="display: flex; align-items: center;"><i
                         class='bx bx-folder-open' style="font-size:150%;"></i></label>
@@ -227,8 +229,10 @@
             <button id="repo-contact" class="btn">Repository Freedom Guard on Github</button>
             <button id="telegram-contact" class="btn">Telegram Freedom Guard</button>
             <div style="width: 100%;"></div>
-            <input type="text" id="set-setting-warp-key" class="input input-alt" placeholder="settingWarp[Key=?]" style="width: 45%;">
-            <input type="text" id="set-setting-warp-value" class="input input-alt" placeholder="value" style="width: 45%;">
+            <input type="text" id="set-setting-warp-key" class="input input-alt" placeholder="settingWarp[Key=?]"
+                style="width: 45%;">
+            <input type="text" id="set-setting-warp-value" class="input input-alt" placeholder="value"
+                style="width: 45%;">
             <button id="set-setting-warp" class="btn">Set</button>
         </div>
     </div>
