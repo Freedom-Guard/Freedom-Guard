@@ -470,6 +470,45 @@ async function RefreshLinks() {
     }
     catch { }
 }
+function importConfig(config = "") {
+    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard")) {
+        settingWarp["core"] = "vibe";
+        settingVibe["config"] = config;
+    }
+    else if (config.startsWith("vibe")) {
+        config.replace("vibe://", "").split("&").forEach((item) => {
+            settingVibe[item.split("=")[0]] = (item.split("=")[1] == 'true' ? true : item.split("=")[1] == 'false' ? false : item.split("=")[1]);
+        });
+    }
+    else if (config.startsWith("freedom-guard")) {
+        settingWarp["core"] = config.replace("freedom-guard://", "").split("&")[0].split("=")[1];
+        config.replace("freedom-guard://", "").split("&").forEach((item) => {
+            if (settingWarp["core"] == "vibe") {
+                settingVibe[item.split("=")[0]] = item.split("=")[1];
+            }
+            else if (settingWarp["core"] == "warp") {
+                settingWarp[item.split("=")[0]] = item.split("=")[1];
+            }
+            else if (settingWarp["core"] == "auto") {
+                settingWarp[item.split("=")[0]] = item.split("=")[1];
+            }
+        });
+    }
+    else if (config.startsWith("warp")) {
+        config.replace("warp://", "").split("&").forEach((item) => {
+            console.log(item);
+            settingWarp[item.split("=")[0]] = (item.split("=")[1] == 'true' ? true : item.split("=")[1] == 'false' ? false : item.split("=")[1]);
+        });
+    }
+    else {
+        alert("Config not supported");
+    }
+    settingWarp["configAuto"] = config;
+    saveSetting();
+    ResetArgsVibe();
+    ResetArgsWarp();
+    SetSettingWarp();
+}
 var modeConn = "normal";
 var number = 0;
 async function connectAuto(num = 0, mode = 'normal') {
@@ -477,28 +516,13 @@ async function connectAuto(num = 0, mode = 'normal') {
     number = num; // Number of try: connect
     await RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
-    let configType = links[settingWarp["isp"]][num].split(",")[0];
+    let configType = links[settingWarp["isp"]][num].split(",;,")[0];
     if (links[settingWarp["isp"]] == undefined) settingWarp["isp"] = "other";
     if (links[settingWarp["isp"]].length < num) { disconnectVPN(); return true };
-    if (configType == "warp") {
-        settingWarp[links[settingWarp["isp"]][num].split(",")[1]] = links[settingWarp["isp"]][num].split(",")[2] == "true" ? true : links[settingWarp["isp"]][num].split(",")[2];
-    } else if (configType == "vibe") {
-        settingVibe["config"] = links[settingWarp["isp"]][num].split(",")[1];
-    }
-    else if (configType == "auto") {
-        links[settingWarp["isp"]][num].split(",")[1].split("|").forEach(element => {
-            settingWarp[element.split("=")[0]] = element.split("=")[1] == "true" ? true : element.split("=")[1];
-        });
-        if (settingWarp["core"] == "warp") {
-            settingWarp["core"] = "auto";
-            configType = "warp";
-        }
-        else if (settingWarp["core"] == "vibe") {
-            settingWarp["core"] = "auto";
-            configType = "vibe";
-        }
-    }
-
+    let configText = links[settingWarp["isp"]][num].split(",;,")[1];
+    importConfig(configText);
+    await setTimeout(500);
+    settingWarp["core"] = "auto";
     ResetArgsVibe();
     ResetArgsWarp();
     connect(configType, num = num, mode = modeConn);
@@ -612,7 +636,7 @@ async function connectVibe(num = number, mode = 'normal') {
         else {
             var configs = [settingVibe["config"]];
             let config = settingVibe["config"];
-            if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard") ) {
+            if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard")) {
                 write_file(path.join(__dirname, "config", "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
                 configs = [path.join(__dirname, "config", "config.txt")];
             }

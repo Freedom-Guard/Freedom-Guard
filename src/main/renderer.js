@@ -363,13 +363,13 @@ function importConfig(config = "") {
         settingVibe["config"] = config;
     }
     else if (config.startsWith("vibe")) {
-        config.replace("vibe://").split("&").forEach((item) => {
-            settingVibe[item.split("=")[0]] = item.split("=")[1];
+        config.replace("vibe://", "").split("&").forEach((item) => {
+            settingVibe[item.split("=")[0]] = (item.split("=")[1] == 'true' ? true : item.split("=")[1] == 'false' ? false : item.split("=")[1]);
         });
     }
     else if (config.startsWith("freedom-guard")) {
-        settingWarp["core"] = config.replace("freedom-guard://").split("&")[0].split("=")[1];
-        config.replace("freedom-guard://").split("&").forEach((item) => {
+        settingWarp["core"] = config.replace("freedom-guard://", "").split("&")[0].split("=")[1];
+        config.replace("freedom-guard://", "").split("&").forEach((item) => {
             if (settingWarp["core"] == "vibe") {
                 settingVibe[item.split("=")[0]] = item.split("=")[1];
             }
@@ -382,8 +382,9 @@ function importConfig(config = "") {
         });
     }
     else if (config.startsWith("warp")) {
-        config.replace("warp://").split("&").forEach((item) => {
-            settingWarp[item.split("=")[0]] = item.split("=")[1];
+        config.replace("warp://", "").split("&").forEach((item) => {
+            console.log(item);
+            settingWarp[item.split("=")[0]] = (item.split("=")[1] == 'true' ? true : item.split("=")[1] == 'false' ? false : item.split("=")[1]);
         });
     }
     else {
