@@ -358,7 +358,7 @@ function Loading(time = 5000, textloading = "") {
 
 };
 function importConfig(config = "") {
-    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic")) {
+    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard")) {
         settingWarp["core"] = "vibe";
         settingVibe["config"] = config;
     }
@@ -386,9 +386,8 @@ function importConfig(config = "") {
             settingWarp[item.split("=")[0]] = item.split("=")[1];
         });
     }
-    else if (config.startsWith("http")) {
-        settingWarp["core"] = "vibe";
-        settingVibe["config"] = config;
+    else {
+        alert("Config not supported");
     }
     settingWarp["configAuto"] = config;
     saveSetting();
@@ -979,39 +978,7 @@ function getQueryParams(url) {
 var queryParams = getQueryParams(window.location.href);
 ipcRenderer.on('start-link', (event, link) => {
     link = link.replace("freedom-guard:", "").replace("?", "");
-    queryParams = getQueryParams(link);
-    if (queryParams["core"] == "vibe") {
-        Object.entries(queryParams).forEach(para => {
-            settingVibe[para[0]] = para[1];
-        });
-        ResetArgsVibe();
-        if (queryParams["type"] == "connect") {
-            settingWarp["core"] = queryParams["core"];
-            ResetArgsWarp();
-            SetSettingWarp();
-            saveSetting();
-        }
-    }
-    else {
-        Object.entries(queryParams).forEach(para => {
-            settingWarp[para[0]] = para[1];
-        })
-        if (queryParams["type"] == "connect") {
-            settingWarp["core"] = queryParams["core"];
-            ResetArgsWarp();
-            SetSettingWarp();
-            saveSetting()
-        }
-    }
-    if (settingWarp["core"] == "vibe") {
-        connect(core = "vibe");
-    }
-    else if (settingWarp["core"] == "warp") {
-        connect(core = "warp");
-    }
-    else {
-        connect(core = queryParams["core"]);
-    }
+    importConfig(link);
 });
 // #endregion
 // #region Interval Timers and Loads

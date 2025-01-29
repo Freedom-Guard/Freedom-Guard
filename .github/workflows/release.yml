@@ -1,90 +1,95 @@
-name: Build and Release
+name: Build and Release Electron App
+
 on:
-    push:
-        tags:
-            - "v*" 
+  push:
+    tags:
+      - 'v*'  # اجرا فقط هنگام پوش کردن یک تگ مثل v1.0.0
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
 
-        strategy:
-            matrix:
-                os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "18"
+      - name: Install Dependencies
+        run: npm install
 
-            - name: Install Dependencies
-              run: npm install
+      - name: Build Electron App (Windows)
+        if: matrix.os == 'windows-latest'
+        run: npx electron-builder --win --publish never
 
-            - name: Build Application
-              run: |
-                  if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-                    npm run build:linux
-                  elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-                    npm run build:win
-                  fi
+      - name: Build Electron App (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: npx electron-builder --linux --publish never
 
-            - name: Upload Build Artifacts
-              uses: actions/upload-artifact@v3
-              with:
-                  name: ${{ matrix.os }}-build
-                  path: |
-                      dist/*.exe
-                      dist/*.deb
+      - name: Upload Artifact (Windows EXE)
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: freedom-guard-win-exe
+          path: dist/*.exe
 
-    release:
-        runs-on: ubuntu-latest
-        needs: build
+      - name: Upload Artifact (Linux AppImage)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: freedom-guard-linux-appimage
+          path: dist/*.AppImage
 
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v3
+      - name: Upload Artifact (Linux DEB)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: freedom-guard-linux-deb
+          path: dist/*.deb
 
-            - name: Download Build Artifacts
-              uses: actions/download-artifact@v3
-              with:
-                  name: ubuntu-latest-build
-                  path: ./linux-build
+  release:
+    needs: build
+    runs-on: ubuntu-latest
 
-            - name: Download Windows Artifacts
-              uses: actions/download-artifact@v3
-              with:
-                  name: windows-latest-build
-                  path: ./windows-build
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-            - name: Create Release
-              id: create_release
-              uses: actions/create-release@v1
-              with:
-                  tag_name: ${{ github.ref_name }}
-                  release_name: Release ${{ github.ref_name }}
-                  body: |
-                      نسخه جدید منتشر شد! 🎉
-                  draft: false
-                  prerelease: false
+      - name: Download Windows EXE
+        uses: actions/download-artifact@v3
+        with:
+          name: freedom-guard-win-exe
+          path: dist/
 
-            - name: Upload Linux Build (.deb)
-              uses: actions/upload-release-asset@v2
-              with:
-                  repo: ${{ github.repository }}
-                  release_id: ${{ steps.create_release.outputs.id }}
-                  asset_path: ./linux-build/*.deb
-                  asset_name: application.deb
-                  asset_content_type: application/x-debian-package
+      - name: Download Linux AppImage
+        uses: actions/download-artifact@v3
+        with:
+          name: freedom-guard-linux-appimage
+          path: dist/
 
-            - name: Upload Windows Build (.exe)
-              uses: actions/upload-release-asset@v2
-              with:
-                  repo: ${{ github.repository }}
-                  release_id: ${{ steps.create_release.outputs.id }}
-                  asset_path: ./windows-build/*.exe
-                  asset_name: application.exe
-                  asset_content_type: application/vnd.microsoft.portable-executable
+      - name: Download Linux DEB
+        uses: actions/download-artifact@v3
+        with:
+          name: freedom-guard-linux-deb
+          path: dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            🎉 New release ${{ github.ref_name }} is available!
+
+            - Windows EXE (.exe)
+            - Linux AppImage (.AppImage)
+            - Linux DEB (.deb)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

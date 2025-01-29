@@ -105,7 +105,7 @@ async function checkDataOut(data, core) {
                 exec("bash " + path.join(__dirname, "assets", "bash", "set_proxy-gn.sh") + ` ${settingWarp["proxy"].replace(":", " ")}`);
                 if (await testProxy() || !(settingWarp["core"] == "auto")) {
                     ConnectedWarp();
-                    alert("Proxy is working on: "+settingWarp["proxy"]);
+                    alert("Proxy is working on: " + settingWarp["proxy"]);
                     ConnectedWarp();
                 }
             }
@@ -611,7 +611,8 @@ async function connectVibe(num = number, mode = 'normal') {
         }
         else {
             var configs = [settingVibe["config"]];
-            if (settingVibe["config"].startsWith("vless") || settingVibe["config"].startsWith("vmess") || settingVibe["config"].startsWith("trojan") || settingVibe["config"].startsWith("shadowsocks")) {
+            let config = settingVibe["config"];
+            if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard") ) {
                 write_file(path.join(__dirname, "config", "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
                 configs = [path.join(__dirname, "config", "config.txt")];
             }
