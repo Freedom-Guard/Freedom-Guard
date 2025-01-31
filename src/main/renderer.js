@@ -129,6 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("reset-setting-warp-btn").onclick = () => {
         resetSettingWarp();
     };
+    document.getElementById("reset-setting-vibe-btn").onclick = () => {
+        resetSettingVibe();
+    };
     document.getElementById("set-on").onclick = () => {
         StatusGuard = true;
         settingVibe["status"] = true;
@@ -166,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mail-contact").onclick = () => openLink("mailto:fwldom@duck.com?subject=Help me")
     document.getElementById("repo-contact").onclick = () => openLink("https://github.com/Freedom-Guard/Freedom-Guard")
     document.getElementById("set-setting-warp").onclick = () => { settingWarp[document.getElementById("set-setting-warp-key").value] = document.getElementById("set-setting-warp-value").value; saveSetting(); SetSettingWarp(); };
+    document.getElementById("set-setting-vibe").onclick = () => { settingWarp[document.getElementById("set-setting-vibe-key").value] = document.getElementById("set-setting-vibe-value").value; saveSetting(); SetSettingWarp(); };
     document.getElementById("selector-file-config").addEventListener("change", async (event) => {
         const file = event.target.files[0];
         const arrayBuffer = await file.arrayBuffer();
@@ -358,7 +362,7 @@ function Loading(time = 5000, textloading = "") {
 
 };
 function importConfig(config = "") {
-    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard")) {
+    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard") || config.startsWith("hy2")) {
         settingWarp["core"] = "vibe";
         settingVibe["config"] = config;
     }
@@ -394,6 +398,20 @@ function importConfig(config = "") {
     saveSetting();
     ResetArgsVibe();
     ResetArgsWarp();
+    SetSettingWarp();
+}
+function resetSettingVibe() {
+    console.log("Reseting setting Vibe ....")
+    var settingVibe = {
+        "status": false,
+        "config": "auto",
+        "fragment": false,
+        "fragment-size": "",
+        "dns-direct": "",
+        "dns-remote": "",
+        "tun": false
+    };
+    saveSetting();
     SetSettingWarp();
 }
 function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json") {

@@ -421,11 +421,12 @@ function disconnectVPN() {
         offProxy(settingWarp["proxy"]);
     };
     sect == "main" ? SetAnim("ChangeStatus", "Connect 5s") : ("");
-    setTimeout(() => {
+    global.setTimeout(() => {
         sect == "main" ? SetAnim("ChangeStatus", "") : ("");
     }, 600);
     NotifApp("Disconnected Freedom Guard");
     saveSetting();
+    Onloading();
     setSystemTrayOFF();
 }
 async function connect(core = 'warp', config = 'auto', os = process.platform, num = 0, mode = 'normal') {
@@ -471,7 +472,7 @@ async function RefreshLinks() {
     catch { }
 }
 function importConfig(config = "") {
-    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard")) {
+    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard") || config.startsWith("hy2")) {
         settingWarp["core"] = "vibe";
         settingVibe["config"] = config;
     }
@@ -511,9 +512,9 @@ function importConfig(config = "") {
 var modeConn = "normal";
 var number = 0;
 async function connectAuto(num = 0, mode = 'normal') {
-    modeConn = mode;
+    modeConn = mode; 
     number = num; // Number of try: connect
-    await RefreshLinks();
+    await RefreshLinks(); 
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
     let configType = links[settingWarp["isp"]][num].split(",;,")[0];
     if (links[settingWarp["isp"]] == undefined) settingWarp["isp"] = "other";
@@ -633,9 +634,9 @@ async function connectVibe(num = number, mode = 'normal') {
             ]
         }
         else {
-            var configs = [settingVibe["config"]];
+            var configs = [settingVibe["config"] == "auto" ? "https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt" : settingVibe["config"]];
             let config = settingVibe["config"];
-            if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard")) {
+            if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard") || config.startsWith("hy2")) {
                 write_file(path.join(__dirname, "config", "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
                 configs = [path.join(__dirname, "config", "config.txt")];
             }
@@ -797,7 +798,7 @@ function ResetArgsVibe(config = "auto") {
 };
 setInterval(() => {
     Onloading();
-}, 500);
+}, 5000);
 async function saveSetting() {
     // Save setting vibe & setting warp In freedom-guard.json
     try {
