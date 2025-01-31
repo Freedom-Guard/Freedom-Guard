@@ -5,7 +5,10 @@ body {
 .tab.active {
     background-color: #2a2a4d !important;
 }
-
+*.deactive {
+    opacity: 0.7;
+    color: #ccc;
+}
 .tab::before {
     content: attr(title);
     visibility: hidden;

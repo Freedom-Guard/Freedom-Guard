@@ -2,7 +2,7 @@
 // Start Code
 // #region Libraries
 ;
-const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, net, protocol, session, BrowserView } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, net, protocol, session, BrowserView, ipcRenderer } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require("child_process");
@@ -51,10 +51,10 @@ function CreateViewBrowser(url) {
   ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
   ViewBrowser.setAutoResize({ width: true, height: true });
   ViewBrowser.webContents.loadURL(url);
-  ViewBrowser.webContents.on('new-window', (event, url) => {
-    event.preventDefault();
-    ViewBrowser.webContents.loadURL(url);
-  })
+  ViewBrowser.webContents.setWindowOpenHandler(({ url }) => {
+    mainWindow.webContents.send('open-new-tab', url);
+    return { action: 'deny' };
+  });
 };
 
 // #endregion
@@ -213,6 +213,36 @@ ipc.on("load-main-app", (event) => {
 ipc.on('hide-browser', (event, url) => {
   mainWindow.removeBrowserView(ViewBrowser);
 });
+ipc.on('go-back', () => {
+  if (ViewBrowser.webContents.navigationHistory.canGoBack()) {
+    ViewBrowser.webContents.navigationHistory.goBack();
+    if (ViewBrowser.webContents.navigationHistory.canGoBack()) {
+      mainWindow.webContents.send("go-back-false", '');
+    }
+  }
+});
+ipc.on('go-forward', () => {
+  if (ViewBrowser.webContents.navigationHistory.canGoForward()) {
+    ViewBrowser.webContents.navigationHistory.goForward();
+  }
+});
+ipc.on('reload', () => {
+  ViewBrowser.webContents.reload();
+});
+
+ipc.on('stop-loading', () => {
+  ViewBrowser.webContents.stop();
+});
+ipcMain.on('zoom-in', () => {
+  ViewBrowser.webContents.setZoomFactor(ViewBrowser.webContents.getZoomFactor() + 0.1);
+});
+ipcMain.on('zoom-out', () => {
+  ViewBrowser.webContents.setZoomFactor(ViewBrowser.webContents.getZoomFactor() - 0.1);
+});
+ipcMain.on('toggle-fullscreen', () => {
+  let isFullScreen = mainWindow.isFullScreen();
+  mainWindow.setFullScreen(!isFullScreen);
+});
 ipc.on('show-browser', (event, url) => {
   mainWindow.setBrowserView(ViewBrowser);
 });
@@ -225,6 +255,18 @@ ipc.on('load-browser', (event) => {
     mainWindow.webContents.send('set-url', (currentURL));
     pageTitle = ViewBrowser.webContents.getTitle();
     mainWindow.webContents.send('set-title', (pageTitle));
+    if (!ViewBrowser.webContents.navigationHistory.canGoForward()) {
+      mainWindow.webContents.send("go-forward-false", '');
+    }
+    else {
+      mainWindow.webContents.send("go-forward-true", '');
+    }
+    if (!ViewBrowser.webContents.navigationHistory.canGoBack()) {
+      mainWindow.webContents.send("go-back-false", '');
+    }
+    else {
+      mainWindow.webContents.send("go-back-true", '');
+    }
   });
   ViewBrowser.webContents.on("did-navigate", (event, url) => {
     currentURL = ViewBrowser.webContents.getURL();
@@ -232,10 +274,11 @@ ipc.on('load-browser', (event) => {
     mainWindow.webContents.send('set-url', (url));
   });
   mainWindow.maximize();
-  ViewBrowser.setBounds({ x: 2, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width , height: mainWindow.getBounds().height / 1.3 });
+  ViewBrowser.setBounds({ x: 2, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
 });
 ipc.on('load-url-browser', (event, url) => {
   ViewBrowser.webContents.loadURL(url);
+  
 });
 ipc.on('exit-app', (event) => {
   mainWindow.close();

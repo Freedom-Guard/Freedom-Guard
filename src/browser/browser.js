@@ -65,21 +65,22 @@ function TabSelect(idtab) {
 };
 
 async function Back() {
-    if (CurrentHistory > 0) {
-        CurrentHistory--;
-        tabURLs[currentTab] = HistoryTabs[currentTab][CurrentHistory];
-        BackTab = true;
-        TabSelect(currentTab);
-    }
+    ipc.send("go-back");
 }
-
+ipc.on("go-back-false", () => {
+    document.getElementById("back-btn-header").classList.add("deactive");
+});
+ipc.on("go-back-true", () => {
+    document.getElementById("back-btn-header").classList.remove("deactive");
+})
+ipc.on("go-forward-true", () => {
+    document.getElementById("forward-btn-header").classList.remove("deactive");
+})
+ipc.on("go-forward-false", () => {
+    document.getElementById("forward-btn-header").classList.add("deactive");
+})
 async function Forward() {
-    if (CurrentHistory < HistoryTabs[currentTab].length - 1) {
-        CurrentHistory++;
-        tabURLs[currentTab] = HistoryTabs[currentTab][CurrentHistory];
-        BackTab = true;
-        TabSelect(currentTab);
-    };
+    ipc.send("go-forward");
 };
 
 function sleep(ms) {
@@ -140,7 +141,8 @@ document.getElementById("url-input").addEventListener('keydown', (event) => {
         document.getElementById("search-btn-header").click();
     }
 });
-
+document.getElementById("back-btn-header").addEventListener("click", Back);
+document.getElementById("forward-btn-header").addEventListener("click", Forward);
 document.getElementById("home-btn-header").addEventListener('click', () => {
     document.getElementById("url-input").value = document.getElementById("default-home-page").value;
     document.getElementById("search-btn-header").click();
@@ -211,11 +213,6 @@ ipc.on("set-url", (event, url) => {
     document.getElementById("refresh-btn-header").style.animation = "spin 1s linear infinite";
     setTimeout(() => document.getElementById("refresh-btn-header").style.animation = "", 3000);
     document.getElementById("url-input").value = url;
-    if (!BackTab) {
-        tabURLs[currentTab] = url;
-        HistoryTabs[currentTab].push(url);
-    }
-    BackTab = false;
 });
 
 ipc.on("set-title", (event, title) => {
@@ -250,7 +247,20 @@ function write_file(path, output) {
     }
 }
 // #endregion
-
+ipc.on('open-new-tab', (event, url) => {
+    tabCount += 1;
+    const idTab = tabCount;
+    tabs.push(idTab);
+    document.getElementById("tab-list").innerHTML += `
+    <div class='tab' id='tab-${idTab}' onclick='TabSelect(${idTab})'>
+    <div class='tab-title' id='tab-title-${idTab}'>New Tab</div>
+    <div class='tab-icon' id='tab-icon-${idTab}'></div>
+    <div class='tab-close' id='tab-close-${idTab}' onclick='TabClose(${idTab})'><i class="bi bi-x"></i></div>`;
+    HistoryTabs.push([]);
+    tabURLs[idTab] = url;
+    TabSelect(idTab);
+    ipc.send("show-browser");
+});
 setInterval(testProxy, 10000);
 testProxy();
 trackEvent("start-browser");
