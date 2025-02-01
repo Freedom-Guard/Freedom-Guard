@@ -59,7 +59,7 @@
         },
         "linux": {
             "icon": "src/assets/icon/ico.png",
-            "target": "deb",
+            "target": ["deb", "AppImage"],
             "category": "VPN",
             "publish": false
         },
