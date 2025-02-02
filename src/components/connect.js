@@ -453,6 +453,7 @@ function disconnectVPN() {
     sect == "main" ? removeClass("ChangeStatus", "connected") : ("");
     sect == "main" ? removeClass("ip-ping-warp", "connected") : ("");
     NotifApp("Disconnected Freedom Guard");
+    testProxy();
     saveSetting();
     Onloading();
     setSystemTrayOFF();
@@ -593,6 +594,7 @@ async function connectVibe(num = number, mode = 'normal') {
         return;
     }
     if (settingVibe["status"] == false && settingWarp["core"] == "auto") {
+        console.log("Connecting to vibe auto mode...");
         if (process.platform == "linux") {
             exec("bash " + path.join(__dirname, "assets", "bash", "reset_proxy-gn.sh"));
         }
@@ -600,6 +602,7 @@ async function connectVibe(num = number, mode = 'normal') {
             offProxy(settingWarp["proxy"]);
         };
         sect == "main" ? SetAnim("ChangeStatus", "Connect 7s infinite") : ("");
+        ResetArgsVibe(config);
         Run("HiddifyCli.exe", argsVibe, "admin", core = "vibe");
         settingVibe["status"] = true;
         await setTimeout(settingWarp["timeOutVibeAuto"] ?? 40000);
@@ -803,10 +806,15 @@ async function connectWarp(num = 0, mode = 'normal') {
 
 // #endregion
 // #region Reset Args
-function ResetArgsVibe(config = "auto") {
+function ResetArgsVibe(config = settingVibe["config"]) {
     argsVibe = [];
     argsVibe.push("run");
     argsVibe.push("--config");
+    config = settingVibe["config"];
+    if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard") || config.startsWith("hy2")) {
+        write_file(path.join(__dirname, "config", "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
+        config = path.join(__dirname, "config", "config.txt");
+    }
     argsVibe.push(config);
     if (settingVibe["fragment"] & settingVibe["fragment-size"] != "") {
         argsVibe.push("--fragment");
