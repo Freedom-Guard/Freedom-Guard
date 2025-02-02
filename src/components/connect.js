@@ -27,7 +27,7 @@ var settingWarp = {
     startup: "warp",
     isp: "other",
     core: "auto",
-    testUrl: "https://fb.com",
+    testUrl: "https://x.com",
     timeOutWarpAuto: 30000,
     timeOutVibeAuto: 45000,
     timeOutWarp: 60000,
@@ -271,7 +271,7 @@ async function testProxy() {
         sect == "main" ? SetHTML("ip-ping-vibe", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
         testproxystat = true;
         try {
-            var testBypass = await axios.get(settingWarp["testUrl"] ?? "https://fb.com", {
+            var testBypass = await axios.get(settingWarp["testUrl"] ?? "https://x.com", {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
@@ -668,8 +668,8 @@ async function connectVibe(num = number, mode = 'normal') {
             var configs = [settingVibe["config"] == "auto" ? "https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt" : settingVibe["config"]];
             let config = settingVibe["config"];
             if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard") || config.startsWith("hy2")) {
-                write_file(path.join(__dirname, "config", "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
-                configs = [path.join(__dirname, "config", "config.txt")];
+                write_file(path.join(__dirname, "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
+                configs = [`"${path.join(__dirname, "config.txt")}"`];
             }
         }
         for (var config of configs) {
@@ -809,13 +809,12 @@ async function connectWarp(num = 0, mode = 'normal') {
 function ResetArgsVibe(config = settingVibe["config"]) {
     argsVibe = [];
     argsVibe.push("run");
-    argsVibe.push("--config");
     config = settingVibe["config"];
     if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("wireguard") || config.startsWith("hy2")) {
-        write_file(path.join(__dirname, "config", "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
-        config = path.join(__dirname, "config", "config.txt");
+        write_file(path.join(__dirname, "config.txt"), btoa(unescape(encodeURIComponent(settingVibe["config"]))));
+        config = `"${path.join(__dirname, "config.txt")}"`;
     }
-    argsVibe.push(config);
+    argsVibe.push("--config " + config);
     if (settingVibe["fragment"] & settingVibe["fragment-size"] != "") {
         argsVibe.push("--fragment");
         argsVibe.push(settingVibe["fragment-size"]);

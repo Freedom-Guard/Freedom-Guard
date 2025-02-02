@@ -15,7 +15,7 @@ const { readFile } = require("fs/promises");
 const axios = require('axios');
 const { type, platform } = require("os");
 const geoip = require('geoip-lite');
-const versionapp = "1.4.2";
+const versionapp = "1.4.3";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
@@ -176,8 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const file = event.target.files[0];
         const arrayBuffer = await file.arrayBuffer();
         const content = new Uint8Array(arrayBuffer);
-        write_file(path.join(__dirname, "config", "config.txt"), content);
-        settingWarp["configfg"] = "file://" + path.join(__dirname, "config", "config.txt");
+        write_file(path.join(__dirname, "config.txt"), content);
+        settingWarp["configfg"] = "file://" + path.join(__dirname, "config.txt");
         saveSetting();
         SetSettingWarp();
     });
@@ -493,7 +493,7 @@ function resetSettingWarp(configFG = "https://raw.githubusercontent.com/Freedom-
         startup: "warp",
         isp: "other",
         core: "auto",
-        testUrl: "https://fb.com",
+        testUrl: "https://x.com",
         timeOutWarpAuto: 30000,
         timeOutVibeAuto: 45000,
         timeOutWarp: 60000,

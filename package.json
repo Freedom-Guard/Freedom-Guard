@@ -1,9 +1,10 @@
-{    "name": "freedom-guard",
+{
+    "name": "freedom-guard",
     "productName": "Freedom Guard",
-    "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
+    "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Plus",
     "keywords": [],
     "main": "./main.js",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "author": "Freedom Guard <fwldom@duck.com>",
     "scripts": {
         "start": "npx electron .",
@@ -59,7 +60,10 @@
         },
         "linux": {
             "icon": "src/assets/icon/ico.png",
-            "target": ["deb", "AppImage"],
+            "target": [
+                "deb",
+                "AppImage"
+            ],
             "category": "VPN",
             "publish": false
         },
