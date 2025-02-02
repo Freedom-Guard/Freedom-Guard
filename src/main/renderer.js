@@ -15,7 +15,7 @@ const { readFile } = require("fs/promises");
 const axios = require('axios');
 const { type, platform } = require("os");
 const geoip = require('geoip-lite');
-const versionapp = "1.4.0";
+const versionapp = "1.4.2";
 const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
 var sect = "main";
@@ -36,6 +36,8 @@ var WarpServer = [
     "endpoint,162.159.192.175:891|core,warp;Warp + Endpoint 162.159.192.175:891",
     "endpoint,162.159.192.36:908|core,warp;Warp + Endpoint 162.159.192.36:908"
 ];
+let importedServers = [
+]
 // #endregion
 // #region all Listener
 document.addEventListener("DOMContentLoaded", () => {
@@ -185,14 +187,41 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // #endregion
 // #region Functions For Load
-function Onload() {
-    trackEvent("start-app");
-    ResetArgsWarp();
-    Loading(3500);
-    process.platform == "win32" ? exec(path.join(__dirname, "src", "scripts", "register-url-win.bat")) : ("");
-    // Start Add Element Countries to box select country psiphon
+function ReloadServers() {
+    saveSetting();
     var container = document.getElementById("box-select-country");
+    container.innerHTML = "";
     var configBox = document.createElement("div");
+    configBox.innerHTML = "Imported Servers <b class='btn' style='max-width:fit-content;max-height:fit-content;display: flex;justify-content: center;'><i class='bx bx-plus' id='add-config-import' onclick='importConfigUSR()'></i></b>";
+    configBox.style = "border:none;font-size:1em";
+    container.appendChild(configBox);
+    importedServers.forEach((config, index) => {
+        config = importedServers[index];
+        configBox = document.createElement("div");
+        configBox.id = "config-box-imported-sel" + index;
+        configBox.classList.add("config-box-imported-sel" + index);
+        configBox.title = config;
+        let img = document.createElement("img");
+        img.src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
+        let p = document.createElement("p");
+        p.textContent = config.split("#")[1] ?? config.substring(1, 10);
+        configBox.appendChild(img);
+        configBox.appendChild(p);
+        configBox.addEventListener("click", () => {
+            importConfig(config);
+            document.getElementById("box-select-country").style.display = "none";
+        });
+        configBox.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            if (confirm("Are you sure you want to delete this imported server?")) {
+                importedServers.splice(index, 1);
+                saveSetting();
+                ReloadServers();
+            }
+        });
+        container.appendChild(configBox);
+    })
+    configBox = document.createElement("div");
     configBox.innerHTML = "Freedom Warp Server";
     configBox.style = "border:none;font-size:1em";
     container.appendChild(configBox);
@@ -283,11 +312,17 @@ function Onload() {
             SetSettingWarp();
         });
     });
-    // End Added All Elements
+}
+function Onload() {
+    trackEvent("start-app");
+    ResetArgsWarp();
+    Loading(3500);
+    process.platform == "win32" ? exec(path.join(__dirname, "src", "scripts", "register-url-win.bat")) : ("");
     try {
         // Restore settings from json
         settingWarp = JSON.parse(read_file("freedom-guard.json"))["warp"];
         settingVibe = JSON.parse(read_file("freedom-guard.json"))["vibe"];
+        importedServers = JSON.parse(read_file("freedom-guard.json"))["importedServers"];
         SetSettingWarp()
     }
     catch {
@@ -320,6 +355,7 @@ function Onload() {
         }
     };
     checkUpdate();
+    ReloadServers();
 };
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * backgroundList.length);
@@ -361,15 +397,22 @@ function Loading(time = 5000, textloading = "") {
     });
 
 };
+function importConfigUSR() {
+    document.getElementById('setting-show').click();
+    document.getElementById("config").focus();
+}
 function importConfig(config = "") {
+    let isImported = false;
     if (config.startsWith("vless") || config.startsWith("vmess") || config.startsWith("trojan") || config.startsWith("ss") || config.startsWith("hysteria") || config.startsWith("shadowtls") || config.startsWith("tuic") || config.startsWith("socks") || config.startsWith("http") || config.startsWith("https") || config.startsWith("wireguard") || config.startsWith("hy2")) {
         settingWarp["core"] = "vibe";
         settingVibe["config"] = config;
+        isImported = true;
     }
     else if (config.startsWith("vibe")) {
         config.replace("vibe://", "").split("&").forEach((item) => {
             settingVibe[item.split("=")[0]] = (item.split("=")[1] == 'true' ? true : item.split("=")[1] == 'false' ? false : item.split("=")[1]);
         });
+        isImported = true;
     }
     else if (config.startsWith("freedom-guard")) {
         settingWarp["core"] = config.replace("freedom-guard://", "").split("&")[0].split("=")[1];
@@ -384,15 +427,27 @@ function importConfig(config = "") {
                 settingWarp[item.split("=")[0]] = item.split("=")[1];
             }
         });
+        isImported = true;
     }
     else if (config.startsWith("warp")) {
         config.replace("warp://", "").split("&").forEach((item) => {
             console.log(item);
             settingWarp[item.split("=")[0]] = (item.split("=")[1] == 'true' ? true : item.split("=")[1] == 'false' ? false : item.split("=")[1]);
         });
+        isImported = true;
     }
     else {
         alert("Config not supported");
+    }
+    if (isImported) {
+        isDuplicate = false;
+        importedServers.forEach((item, index) => {
+            if (item == config) {
+                isDuplicate = true;
+            }
+        });
+        if (!isDuplicate) { importedServers.push(config) };
+        ReloadServers();
     }
     settingWarp["configAuto"] = config;
     saveSetting();
@@ -474,6 +529,15 @@ function SetAnim(id, anim) {
 function SetAttr(id, attr, value) {
     document.getElementById(id).setAttribute(attr, value);
 }
+function toggleClass(id, className) {
+    document.getElementById(id).classList.toggle(className);
+}
+function addClass(id, className) {
+    document.getElementById(id).classList.add(className);
+}
+function removeClass(id, className) {
+    document.getElementById(id).classList.remove(className);
+}
 function SetHTML(id, value) {
     document.getElementById(id).innerHTML = value;
 };
@@ -503,7 +567,7 @@ function HelpStart(step = 1) {
     else if (step == 2) {
         HelpStartElem = document.getElementById("HelpMess");
         HelpStartElem.innerHTML = `
-        از بخش منو میتونید به بخش های دیگر مثل Freedom Vibe و Freedom Get و Dns Changer دسترسی داشته باشید.
+        از بخش منو میتونید به بخش های دیگر مثل Freedom Vibe و Freedom Browser و Dns Changer دسترسی داشته باشید.
         <br>
         برای بعدی کلیک کنید.`
         HelpStartElem.style.top = "55px";
@@ -517,7 +581,7 @@ function HelpStart(step = 1) {
     else if (step == 3) {
         HelpStartElem = document.getElementById("HelpMess");
         HelpStartElem.innerHTML = `
-        بر روی نماد وسط صفحه ضربه بزنید تا Freedom Warp متصل شود
+        بر روی نماد وسط صفحه ضربه بزنید تا گارد آزادی متصل شود
         <br>
         برای پایان کلیک کنید.`;
         HelpStartElem.style.top = "40vh";
@@ -676,9 +740,6 @@ document.getElementById("setting-show-vibe").addEventListener("click", () => {
         document.getElementById("setting-vibe").style.display = "";
     }
 });
-document.getElementById("menu-website").addEventListener("click", () => {
-    openLink("https://freedom-guard.github.io/Freedom/")
-})
 document.getElementById("menu-about").addEventListener("click", () => { document.getElementById("about-app").style.display = "flex" })
 document.getElementById("more-options").addEventListener("click", () => { document.getElementById("more-options-content").classList.toggle("active") })
 document.getElementById("about").addEventListener("click", () => { document.getElementById("about-app").style.display = "flex" })
@@ -689,11 +750,7 @@ document.getElementById("close-about").addEventListener("click", () => { documen
 //#endregion
 // #region Section Menu
 document.getElementById("menu-show").onclick = () => {
-    document.getElementById("menu").style.display = "flex";
-    document.getElementById("menu").style.transition = "0.5s";
-    document.getElementById("menu").style.position = "absolute";
-    document.getElementById("menu").style.left = "";
-    document.getElementById("menu").style.visibility = "1";
+    document.getElementById("menu").classList.toggle("show")
 };
 document.getElementById("menu-freedom-vibe").onclick = () => {
     Loading();
@@ -707,10 +764,7 @@ document.getElementById("menu-freedom-plus").onclick = () => {
 };
 document.getElementById("menu-dns").onclick = () => { document.getElementById("dns-set").style.display = "flex" };
 document.getElementById("menu-exit").onclick = () => {
-    document.getElementById("menu").style.transition = "1.3s";
-    document.getElementById("menu").style.position = "absolute"
-    document.getElementById("menu").style.left = "-110vw";
-    document.getElementById("menu").style.visibility = "0.3";
+    document.getElementById("menu").classList.toggle("show")
 };
 document.getElementById("menu-exit-app").onclick = () => {
     ipc.send("exit-app", "")
@@ -771,7 +825,8 @@ async function saveSetting() {
         "warp": settingWarp,
         "links": links,
         "configsVibeLink": configsVibeLink,
-        "configsVibeName": configsVibeName
+        "configsVibeName": configsVibeName,
+        "importedServers": importedServers
     }));
     ResetArgsVibe();
     ResetArgsWarp();

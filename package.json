@@ -3,7 +3,7 @@
     "description": "Warp + Psiphon + Freedom Vibe + Freedom Browser + Freedom Plus",
     "keywords": [],
     "main": "./main.js",
-    "version": "1.4.0",
+    "version": "1.4.2",
     "author": "Freedom Guard <fwldom@duck.com>",
     "scripts": {
         "start": "npx electron .",
@@ -49,7 +49,7 @@
             "icon": "src/assets/icon/ico.png",
             "target": "nsis",
             "requestedExecutionLevel": "requireAdministrator",
-            "legalTrademarks": "(c) 2024 freedom-guard.github.io/Freedom",
+            "legalTrademarks": "(c) 2025 freedom-guard.github.io/Freedom",
             "publisherName": "Freedom Guard"
         },
         "nsis": {

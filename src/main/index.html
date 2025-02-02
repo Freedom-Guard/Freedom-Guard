@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freedom Guard 1.4.0 (pre-release)</title>
+    <title>Freedom Guard 1.4.2 (latest-release)</title>
     <link href="../assets/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="../assets/icon/ico.png" type="image/png">
@@ -39,18 +39,6 @@
                 class="bx bx-menu-alt-left"></i></button>
         <button class="setting-show bx bx-tada-hover" id="setting-show" style="margin-left: auto;padding: 7px;"><i
                 class="bx bxs-cog" style="font-size: 43px;"></i></button>
-    </div>
-    <div class="options">
-        <p>Gool</p>
-        <label class="switch">
-            <input type="checkbox" id="Gool" />
-            <span class="slider"></span>
-        </label>
-        <p>Scan</p>
-        <label class="switch">
-            <input type="checkbox" id="Scan" />
-            <span class="slider"></span>
-        </label>
     </div>
     <p id="ip-ping-warp">IP : x.x.x.x | Ping : ms</p>
     <div class="box-select-country" id="box-select-country" style="transition: all 1.3s ease 0s;top: 100vh;">
@@ -162,6 +150,20 @@
                 <option value="IPV6">IP Version 6</option>
             </select>
         </div>
+        <b>Gool Warp</b>
+        <div>
+            <label class="switch">
+                <input type="checkbox" id="Gool" />
+                <span class="slider"></span>
+            </label>
+        </div>
+        <b>Scan Warp</b>
+        <div>
+            <label class="switch">
+                <input type="checkbox" id="Scan" />
+                <span class="slider"></span>
+            </label>
+        </div>
         <b>Endpoint</b>
         <div id="end-point" class="form-control-c">
             <input placeholder="IP : 192.x.x.x" class="input input-alt" type="text" id="end-point-address">
@@ -244,15 +246,28 @@
             <button id="set-setting-vibe" class="btn">Set</button>
         </div>
     </div>
-    <div id="menu" style="position: absolute; display: flex; transition: all 1.3s ease 0s; left: -110vw;">
-        <div id="menu-dns">Set DNS</div>
-        <div id="menu-freedom-browser">Freedom Browser</div>
-        <div id="menu-freedom-vibe">Freedom Vibe</div>
-        <div id="menu-freedom-plus">Freedom Plus</div>
-        <div id="menu-website">Website App</div>
-        <div id="menu-about">About App</div>
-        <div id="menu-exit">Exit Menu</div>
-        <div id="menu-exit-app">Exit Freedom Guard</div>
+    <div id="menu">
+        <div id="menu-dns">
+            <i class='bx bx-server'></i> Set DNS
+        </div>
+        <div id="menu-freedom-browser">
+            <i class='bx bx-globe'></i> Freedom Browser
+        </div>
+        <div id="menu-freedom-vibe">
+            <i class='bx bx-music'></i> Freedom Vibe
+        </div>
+        <div id="menu-freedom-plus">
+            <i class='bx bx-plus'></i> Freedom Plus
+        </div>
+        <div id="menu-exit">
+            <i class='bx bx-door-open'></i> Exit Menu
+        </div>
+        <div id="menu-exit-app">
+            <i class='bx bx-power-off'></i> Exit App
+        </div>
+        <div id="menu-about">
+            <i class='bx bx-info-circle'></i> About the App
+        </div>
     </div>
 
     <!-- #endregion Warp -->
@@ -364,7 +379,7 @@
     <!-- #region Other All -->
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
-        <p> Freedom Guard 1.4.0 (pre-release)</p>
+        <p> Freedom Guard 1.4.2 (latest-release)</p>
         <p> Developed By Freedom Guard Team 👩‍💻</p>
         <p>👇 Acknowledgements 👇</p>
         <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>

@@ -262,20 +262,44 @@ async function testProxy() {
             var geo = geoip.lookup(ip);
             if (geo) {
                 countryIP = geo.country;
-                return `<img src="${path.join(__dirname, "src", "svgs", countryIP.toLowerCase() + ".svg")}" width="40rem" style='margin:1rem'>`
+                return `<img src="${path.join(__dirname, "src", "svgs", countryIP.toLowerCase() + ".svg")}" width="40rem" style='margin:0.4rem 0.4rem 0.4rem 0rem;'/>`;
             } else {
                 return '❓';
             }
         }
         var countryEmoji = getCountryFromIP(testConnection.data.ip);
         sect == "main" ? SetHTML("ip-ping-vibe", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
-        sect == "main" ? SetHTML("ip-ping-warp", "" + countryEmoji + testConnection.data.ip + " | <b>" + pingTime + "</b>") : ("");
         testproxystat = true;
         try {
             var testBypass = await axios.get(settingWarp["testUrl"] ?? "https://fb.com", {
                 timeout: 5000, // Timeout in ms
             });
             console.log("Fliternet Bypassed");
+            isConnected = StatusGuard || settingVibe["status"];
+            sect == "main" ? addClass("ip-ping-warp", "connected") : ("");
+            sect == "main" ? SetHTML("ip-ping-warp", `
+                <div class="ip-ping-info">
+                    <p class="ip-ping-item">
+                        <span class="ip-icon">🌍</span> 
+                        Country: ${countryEmoji}
+                    </p>
+                    <p class="ip-ping-item">
+                        <span class="ip-icon">🔍</span> 
+                        IP: <b>${testConnection.data.ip}</b>
+                    </p>
+                    <p class="ip-ping-item">
+                        <span class="ip-icon">⚡</span> 
+                        Ping: <b>${pingTime}</b>
+                    </p>
+                    <p class="ip-ping-item">
+                        <span class="ip-icon">🚀</span> 
+                        Bypass: <b>On</b>
+                    </p>
+                    <p id="connection-status" class="ip-status ${isConnected ? '' : 'disconnected'}">
+                        ${isConnected ? '🟢 Connected' : '🔴 Disconnected'}
+                    </p>
+                </div>
+            `) : ("");
             if (StatusGuard || settingVibe["status"]) {
                 ConnectedVibe(StatusGuard ? "warp" : "vibe");
             }
@@ -284,6 +308,7 @@ async function testProxy() {
         }
         catch {
             filterBypassStat = false;
+            sect == "main" ? SetHTML("ip-ping-warp", "" + pingTime + "") : ("");
             return false;
         }
     } catch (error) {
@@ -367,6 +392,7 @@ function ConnectedVibe(stat = "normal") {
     sect == "main" ? SetAttr("changeStatus-vibe", "style", "animation:;") : ("")
     sect == "main" ? SetHTML("status-vibe-conn", "🚀 Connected") : ('');
     sect == "main" ? SetAnim("ChangeStatus", "Load") : ("");
+    sect == "main" ? addClass("ChangeStatus", "connected") : ("");
     sect == "main" ? SetBorderColor("ChangeStatus", "#15ff00") : ("");
     if (stat == "normal") {
         NotifApp("🚀!Connected To Vibe!🚀");
@@ -424,6 +450,8 @@ function disconnectVPN() {
     global.setTimeout(() => {
         sect == "main" ? SetAnim("ChangeStatus", "") : ("");
     }, 600);
+    sect == "main" ? removeClass("ChangeStatus", "connected") : ("");
+    sect == "main" ? removeClass("ip-ping-warp", "connected") : ("");
     NotifApp("Disconnected Freedom Guard");
     saveSetting();
     Onloading();
@@ -512,9 +540,9 @@ function importConfig(config = "") {
 var modeConn = "normal";
 var number = 0;
 async function connectAuto(num = 0, mode = 'normal') {
-    modeConn = mode; 
+    modeConn = mode;
     number = num; // Number of try: connect
-    await RefreshLinks(); 
+    await RefreshLinks();
     console.log("ISP IS " + settingWarp["isp"] + " | Start Auto Server");
     let configType = links[settingWarp["isp"]][num].split(",;,")[0];
     if (links[settingWarp["isp"]] == undefined) settingWarp["isp"] = "other";
@@ -807,7 +835,8 @@ async function saveSetting() {
             "warp": settingWarp,
             "links": links,
             "configsVibeLink": configsVibeLink,
-            "configsVibeName": configsVibeName
+            "configsVibeName": configsVibeName,
+            "importedServers": importedServers
         }));
     }
     catch { };
