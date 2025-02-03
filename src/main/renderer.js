@@ -12,7 +12,12 @@ const { execPath } = require("process");
 const { execFile, spawn, exec } = require("child_process");
 var fs = require("fs");
 const { readFile } = require("fs/promises");
-const axios = require('axios');
+if (process.platform == "linux") {
+    const axios = require(path.join(process.resourcesPath, 'app/node_modules/axios'))
+}
+else {
+    const axios = require('axios');
+}
 const { type, platform } = require("os");
 const geoip = require('geoip-lite');
 const versionapp = "1.4.4";

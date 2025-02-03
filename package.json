@@ -37,6 +37,10 @@
                 "filter": [
                     "**/*"
                 ]
+            },
+            {
+                "from": "node_modules/axios",
+                "to": "app/node_modules/axios"
             }
         ],
         "productName": "Freedom Guard",
@@ -73,6 +77,7 @@
         },
         "files": [
             "!assets/**/*",
+            "node_modules/axios/**/*",
             "node_modules/music-metadata-browser/**/*",
             "src/**/*",
             "!src/main/cores",

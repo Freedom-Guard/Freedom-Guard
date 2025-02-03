@@ -11,6 +11,7 @@ const { initialize } = require('@aptabase/electron/main');
 const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
 ;
+__dirnameFile = __dirname;
 if (process.platform == "linux") {
   __dirnameFile = __dirname.replace("app.asar", "");
 }
