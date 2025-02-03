@@ -194,16 +194,18 @@ app.on('activate', () => {
     createWindow();
   }
 });
-app.setUserTasks([
-  {
-    program: process.execPath,
-    arguments: '--new-window',
-    iconPath: process.execPath,
-    iconIndex: 0,
-    title: 'New Window',
-    description: 'Create a new window'
-  }
-]);
+if (process.platform === "win32") {
+  app.setUserTasks([
+    {
+      program: process.execPath,
+      arguments: "--new-window",
+      iconPath: process.execPath,
+      iconIndex: 0,
+      title: "New Window",
+      description: "Open a new window"
+    }
+  ]);
+}
 // #endregion
 // #region IPC
 ipc.on("load-main-app", (event) => {
@@ -278,7 +280,7 @@ ipc.on('load-browser', (event) => {
 });
 ipc.on('load-url-browser', (event, url) => {
   ViewBrowser.webContents.loadURL(url);
-  
+
 });
 ipc.on('exit-app', (event) => {
   mainWindow.close();
