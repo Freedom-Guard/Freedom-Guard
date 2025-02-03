@@ -37,7 +37,7 @@ function createWindow() {
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  mainWindow.loadFile(path.join("src", "main/index.html"));
+  mainWindow.loadFile(path.join(__dirname, "src", "main/index.html"));
   mainWindow.on('resize', function () {
     try {
       ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
