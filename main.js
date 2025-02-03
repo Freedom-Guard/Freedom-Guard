@@ -1,4 +1,3 @@
-
 // Start Code
 // #region Libraries
 ;
@@ -13,7 +12,7 @@ const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
 ;
 if (process.platform == "linux") {
-  __dirname = __dirname.replace("app.asar", "");
+  __dirnameFile = __dirname.replace("app.asar", "");
 }
 // #endregion
 // #region Vars
@@ -30,9 +29,9 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, "src", "assets", "icon", 'ico.ico'),
+    icon: path.join(__dirnameFile, "src", "assets", "icon", 'ico.ico'),
     webPreferences: {
-      preload: path.join(__dirname, "src", 'preload.js'),
+      preload: path.join(__dirnameFile, "src", 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false
     },
@@ -40,7 +39,7 @@ function createWindow() {
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  mainWindow.loadFile(path.join(__dirname, "src", "main/index.html"));
+  mainWindow.loadFile(path.join(__dirnameFile, "src", "main/index.html"));
   mainWindow.on('resize', function () {
     try {
       ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
@@ -106,7 +105,7 @@ function setSystemTray(status = "off") {
     tray.destroy();
     tray = null;
   }
-  icon = nativeImage.createFromPath(path.join(__dirname, "src", "assets", "icon", 'ico.png'))
+  icon = nativeImage.createFromPath(path.join(__dirnameFile, "src", "assets", "icon", 'ico.png'))
   tray = new Tray(icon);
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -290,7 +289,7 @@ ipc.on('exit-app', (event) => {
   app.exit();
 });
 ipc.on('load-file', (event, Pathfile) => {
-  mainWindow.loadFile(path.join(__dirname, Pathfile));
+  mainWindow.loadFile(path.join(__dirnameFile, Pathfile));
 });
 ipc.on('load-file-plus', (event, Pathfile) => {
   mainWindow.loadFile(path.join(Pathfile));
