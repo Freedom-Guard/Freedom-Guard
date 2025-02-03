@@ -12,6 +12,9 @@ const { initialize } = require('@aptabase/electron/main');
 const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
 ;
+if (process.platform == "linux") {
+  __dirname = __dirname.replace("app.asar", "");
+}
 // #endregion
 // #region Vars
 initialize("A-EU-5072151346");
