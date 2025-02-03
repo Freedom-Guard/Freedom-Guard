@@ -15,6 +15,12 @@
         "build:linux": "electron-builder --linux deb"
     },
     "build": {
+        "externals": [
+            "axios"
+        ],
+        "asarUnpack": [
+            "node_modules/axios"
+        ],
         "protocols": [
             {
                 "name": "freedom guard",
@@ -37,10 +43,6 @@
                 "filter": [
                     "**/*"
                 ]
-            },
-            {
-                "from": "node_modules/axios",
-                "to": "app/node_modules/axios"
             }
         ],
         "productName": "Freedom Guard",
