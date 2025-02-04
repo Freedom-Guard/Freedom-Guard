@@ -32,12 +32,16 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: npx electron-builder --linux --publish never
 
-            - name: Build Snap Package (Linux)
+            - name: Install snapcraft on Ubuntu
               if: matrix.os == 'ubuntu-latest'
               run: |
                   sudo apt update
-                  sudo apt install -y snapcraft
-                  snapcraft --use-lxd  # اگر از LXD استفاده می‌کنید، یا از snapcraft معمولی استفاده کنید.
+                  sudo apt install -y snapd
+                  sudo snap install snapcraft --classic
+
+            - name: Build Snap Package (Linux)
+              if: matrix.os == 'ubuntu-latest'
+              run: |
                   snapcraft
 
             - name: Upload Artifact (Windows EXE)
