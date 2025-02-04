@@ -38,13 +38,6 @@ jobs:
           sudo apt update
           sudo apt install -y snapd
           sudo snap install snapcraft --classic
-          # Ensure Multipass is installed for building snaps
-          sudo snap install multipass --classic
-
-      - name: Start Multipass VM (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          multipass launch --name snap-builder --mem 4G --disk 20G
 
       - name: Build Snap Package (Linux)
         if: matrix.os == 'ubuntu-latest'
