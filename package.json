@@ -65,7 +65,6 @@
             "icon": "src/assets/icon/ico.png",
             "target": [
                 "deb",
-                "AppImage",
                 "tar.gz",
                 "rpm"
             ],

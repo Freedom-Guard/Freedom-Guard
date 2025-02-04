@@ -32,31 +32,12 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: npx electron-builder --linux --publish never
 
-            - name: Build TAR.GZ (Linux)
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                  mkdir -p dist/linux
-                  tar -czvf dist/linux/freedom-guard-linux.tar.gz -C dist electron-app/
-
-            - name: Build RPM (Linux)
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                  mkdir -p dist/linux
-                  tar -czvf dist/linux/freedom-guard-linux.rpm -C dist electron-app/
-
             - name: Upload Artifact (Windows EXE)
               if: matrix.os == 'windows-latest'
               uses: actions/upload-artifact@v4
               with:
                   name: freedom-guard-win-exe
                   path: dist/*.exe
-
-            - name: Upload Artifact (Linux AppImage)
-              if: matrix.os == 'ubuntu-latest'
-              uses: actions/upload-artifact@v4
-              with:
-                  name: freedom-guard-linux-appimage
-                  path: dist/*.AppImage
 
             - name: Upload Artifact (Linux DEB)
               if: matrix.os == 'ubuntu-latest'
@@ -70,14 +51,14 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: freedom-guard-linux-tar
-                  path: dist/linux/*.tar.gz
+                  path: dist/*.tar.gz
 
             - name: Upload Artifact (Linux RPM)
               if: matrix.os == 'ubuntu-latest'
               uses: actions/upload-artifact@v4
               with:
                   name: freedom-guard-linux-rpm
-                  path: dist/linux/*.rpm
+                  path: dist/*.rpm
 
     release:
         needs: build
@@ -91,12 +72,6 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: freedom-guard-win-exe
-                  path: dist/
-
-            - name: Download Linux AppImage
-              uses: actions/download-artifact@v4
-              with:
-                  name: freedom-guard-linux-appimage
                   path: dist/
 
             - name: Download Linux DEB
@@ -127,7 +102,6 @@ jobs:
                       🎉 New release ${{ github.ref_name }} is available!
 
                       - Windows EXE (.exe)
-                      - Linux AppImage (.AppImage)
                       - Linux DEB (.deb)
                       - Linux TAR.GZ (.tar.gz)
                       - Linux RPM (.rpm)
