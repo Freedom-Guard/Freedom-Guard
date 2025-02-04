@@ -1,121 +1,128 @@
 name: Build and Release Electron App
 
 on:
-    push:
-        tags:
-            - "v*"
+  push:
+    tags:
+      - "v*"
 
 jobs:
-    build:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: [windows-latest, ubuntu-latest]
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
 
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 18
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-            - name: Install Dependencies
-              run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-            - name: Build Electron App (Windows)
-              if: matrix.os == 'windows-latest'
-              run: npx electron-builder --win --publish never
+      - name: Build Electron App (Windows)
+        if: matrix.os == 'windows-latest'
+        run: npx electron-builder --win --publish never
 
-            - name: Build Electron App (Linux)
-              if: matrix.os == 'ubuntu-latest'
-              run: npx electron-builder --linux --publish never
+      - name: Build Electron App (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: npx electron-builder --linux --publish never
 
-            - name: Install snapcraft on Ubuntu
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                  sudo apt update
-                  sudo apt install -y snapd
-                  sudo snap install snapcraft --classic
+      - name: Install snapcraft on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install -y snapd
+          sudo snap install snapcraft --classic
+          # Ensure Multipass is installed for building snaps
+          sudo snap install multipass --classic
 
-            - name: Build Snap Package (Linux)
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                  snapcraft
+      - name: Start Multipass VM (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          multipass launch --name snap-builder --mem 4G --disk 20G
 
-            - name: Upload Artifact (Windows EXE)
-              if: matrix.os == 'windows-latest'
-              uses: actions/upload-artifact@v4
-              with:
-                  name: freedom-guard-win-exe
-                  path: dist/*.exe
+      - name: Build Snap Package (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          snapcraft
 
-            - name: Upload Artifact (Linux AppImage)
-              if: matrix.os == 'ubuntu-latest'
-              uses: actions/upload-artifact@v4
-              with:
-                  name: freedom-guard-linux-appimage
-                  path: dist/*.AppImage
+      - name: Upload Artifact (Windows EXE)
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: freedom-guard-win-exe
+          path: dist/*.exe
 
-            - name: Upload Artifact (Linux DEB)
-              if: matrix.os == 'ubuntu-latest'
-              uses: actions/upload-artifact@v4
-              with:
-                  name: freedom-guard-linux-deb
-                  path: dist/*.deb
+      - name: Upload Artifact (Linux AppImage)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: freedom-guard-linux-appimage
+          path: dist/*.AppImage
 
-            - name: Upload Artifact (Linux Snap)
-              if: matrix.os == 'ubuntu-latest'
-              uses: actions/upload-artifact@v4
-              with:
-                  name: freedom-guard-linux-snap
-                  path: dist/*.snap
+      - name: Upload Artifact (Linux DEB)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: freedom-guard-linux-deb
+          path: dist/*.deb
 
-    release:
-        needs: build
-        runs-on: ubuntu-latest
+      - name: Upload Artifact (Linux Snap)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: freedom-guard-linux-snap
+          path: dist/*.snap
 
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v4
+  release:
+    needs: build
+    runs-on: ubuntu-latest
 
-            - name: Download Windows EXE
-              uses: actions/download-artifact@v4
-              with:
-                  name: freedom-guard-win-exe
-                  path: dist/
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-            - name: Download Linux AppImage
-              uses: actions/download-artifact@v4
-              with:
-                  name: freedom-guard-linux-appimage
-                  path: dist/
+      - name: Download Windows EXE
+        uses: actions/download-artifact@v4
+        with:
+          name: freedom-guard-win-exe
+          path: dist/
 
-            - name: Download Linux DEB
-              uses: actions/download-artifact@v4
-              with:
-                  name: freedom-guard-linux-deb
-                  path: dist/
+      - name: Download Linux AppImage
+        uses: actions/download-artifact@v4
+        with:
+          name: freedom-guard-linux-appimage
+          path: dist/
 
-            - name: Download Linux Snap
-              uses: actions/download-artifact@v4
-              with:
-                  name: freedom-guard-linux-snap
-                  path: dist/
+      - name: Download Linux DEB
+        uses: actions/download-artifact@v4
+        with:
+          name: freedom-guard-linux-deb
+          path: dist/
 
-            - name: Create GitHub Release
-              uses: softprops/action-gh-release@v1
-              with:
-                  files: dist/*
-                  tag_name: ${{ github.ref_name }}
-                  name: Release ${{ github.ref_name }}
-                  body: |
-                      🎉 New release ${{ github.ref_name }} is available!
+      - name: Download Linux Snap
+        uses: actions/download-artifact@v4
+        with:
+          name: freedom-guard-linux-snap
+          path: dist/
 
-                      - Windows EXE (.exe)
-                      - Linux AppImage (.AppImage)
-                      - Linux DEB (.deb)
-                      - Linux Snap (.snap)
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            🎉 New release ${{ github.ref_name }} is available!
+
+            - Windows EXE (.exe)
+            - Linux AppImage (.AppImage)
+            - Linux DEB (.deb)
+            - Linux Snap (.snap)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
