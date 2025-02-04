@@ -13,16 +13,16 @@ const { execFile, spawn, exec } = require("child_process");
 var fs = require("fs");
 const { readFile } = require("fs/promises");
 const axios = require('axios');
-const { type, platform } = require("os");
 const geoip = require('geoip-lite');
-const versionapp = "1.4.4";
-const ipc = require('electron').ipcRenderer;
 const { trackEvent } = require('@aptabase/electron/renderer');
+const { type, platform } = require("os");
+const versionapp = "1.4.5";
+const ipc = require('electron').ipcRenderer;
 var sect = "main";
 var { NotifApp, RefreshLinks, settingVibe, getWarpKey, links, Onloading, connectVibe, connectWarp, setProxy, offProxy, settingWarp, ConnectedVibe, FindBestEndpointWarp, settingVibe, changeISP, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, connectAuto, connect, isp, disconnectVPN, StatusGuard } = require('../components/connect.js');
 // #endregion
 // #region Global Var
-__dirname = path.join(__dirname.replace("app.asar", ""), "../../");
+__dirnameFile = path.join(__dirname.replace("app.asar", ""), "../../");
 var Psicountry = ["IR", "AT", "BE", "BG", "BR", "CA", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "HU", "HR", "IE", "IN", "IT", "JP", "LV", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SG", "SK", "UA", "US"];
 var PsicountryFullname = ["Auto Server", "Austria", "Belgium", "Bulgaria", "Brazil", "Canada", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia", "Spain", "Finland", "France", "United Kingdom", "Hungary", "Croatia", "Ireland", "India", "Italy", "Japan", "Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Serbia", "Sweden", "Singapore", "Slovakia", "Ukraine", "United States"];
 var backgroundList = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg"];
@@ -176,8 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const file = event.target.files[0];
         const arrayBuffer = await file.arrayBuffer();
         const content = new Uint8Array(arrayBuffer);
-        write_file(path.join(__dirname, "config.txt"), content);
-        settingWarp["configfg"] = "file://" + path.join(__dirname, "config.txt");
+        write_file(path.join(__dirnameFile, "config.txt"), content);
+        settingWarp["configfg"] = "file://" + path.join(__dirnameFile, "config.txt");
         saveSetting();
         SetSettingWarp();
     });
@@ -202,7 +202,7 @@ function ReloadServers() {
         configBox.classList.add("config-box-imported-sel" + index);
         configBox.title = config;
         let img = document.createElement("img");
-        img.src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
+        img.src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
         let p = document.createElement("p");
         p.textContent = config.split("#")[1] ?? config.substring(1, 10);
         configBox.appendChild(img);
@@ -231,7 +231,7 @@ function ReloadServers() {
         configBox.classList.add("config-box-warp-sel" + index);
         configBox.title = config;
         let img = document.createElement("img");
-        img.src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
+        img.src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
         let p = document.createElement("p");
         p.textContent = WarpServer[index].split(";")[1];
         configBox.appendChild(img);
@@ -250,7 +250,7 @@ function ReloadServers() {
             SetSettingWarp();
             document.getElementById("textOfCfon").innerHTML = WarpServer[index].split(";")[1];
             saveSetting();
-            document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
+            document.getElementById("imgOfCfonCustom").src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
         });
         document.getElementById("box-select-country").appendChild(configBox);
     });
@@ -264,7 +264,7 @@ function ReloadServers() {
         configBox.classList.add("config-box-vibe-sel" + index);
         configBox.title = config;
         let img = document.createElement("img");
-        img.src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
+        img.src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
         img.id = "imgOfCfon";
         let p = document.createElement("p");
         p.id = "textOfCfonS";
@@ -279,7 +279,7 @@ function ReloadServers() {
             settingWarp["core"] = "vibe";
             document.getElementById("textOfCfon").innerHTML = configsVibeName[index];
             saveSetting();
-            document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg");
+            document.getElementById("imgOfCfonCustom").src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
             SetSettingWarp();
         });
         document.getElementById("box-select-country").appendChild(configBox);
@@ -295,7 +295,7 @@ function ReloadServers() {
         countryDiv.id = `cfonCountry${country}`;
         countryDiv.title = country;
         let img = document.createElement("img");
-        img.src = path.join(__dirname, "src", "svgs", country + ".svg");
+        img.src = path.join(__dirnameFile, "src", "svgs", country + ".svg");
         img.id = "imgOfCfon";
         let p = document.createElement("p");
         p.id = "textOfCfonS";
@@ -317,7 +317,7 @@ function Onload() {
     trackEvent("start-app");
     ResetArgsWarp();
     Loading(3500);
-    process.platform == "win32" ? exec(path.join(__dirname, "src", "scripts", "register-url-win.bat")) : ("");
+    process.platform == "win32" ? exec(path.join(__dirnameFile, "src", "scripts", "register-url-win.bat")) : ("");
     try {
         // Restore settings from json
         settingWarp = JSON.parse(read_file("freedom-guard.json"))["warp"];
@@ -602,7 +602,7 @@ function SetCfon(country) {
     settingWarp["cfon"] = true;
     settingWarp["cfonc"] = country;
     document.getElementById("textOfCfon").innerHTML = PsicountryFullname[Psicountry.indexOf(country.toString().toUpperCase())];
-    document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", country.toString().toLowerCase() + ".svg");
+    document.getElementById("imgOfCfonCustom").src = path.join(__dirnameFile, "src", "svgs", country.toString().toLowerCase() + ".svg");
     ResetArgsWarp();
     saveSetting();
     // Set Psiphon Country 
@@ -646,7 +646,7 @@ function SetSettingWarp() {
     SetValueInput("config-fg-text", settingWarp["configfg"])
     SetValueInput("config-text", settingWarp["configAuto"])
     SetHTML("textOfCfon", settingWarp["core"] == "warp" ? PsicountryFullname[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())] : (configsVibeName[configsVibeLink.indexOf(settingVibe["config"])] == undefined ? (settingWarp["configAuto"].includes("#") ? settingWarp["configAuto"].split("#")[1] : "Vibe Server") : configsVibeName[configsVibeLink.indexOf(settingVibe["config"])]));
-    settingWarp["core"] == "vibe" ? document.getElementById("imgOfCfonCustom").src = path.join(__dirname, "src", "svgs", "glob" + ".svg") : SetCfon(Psicountry[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())]);
+    settingWarp["core"] == "vibe" ? document.getElementById("imgOfCfonCustom").src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg") : SetCfon(Psicountry[Psicountry.indexOf(settingWarp["cfonc"].toUpperCase())]);
 }
 function SetValueInput(id, Value) {
     // Set Value In Input
@@ -960,7 +960,7 @@ function SetDNS(dns1, dns2) {
     if (process.platform === "linux") {
         exec(
             `"${path.join(
-                __dirname,
+                __dirnameFile,
                 "src",
                 "main",
                 "cores",
@@ -985,7 +985,7 @@ function SetDNS(dns1, dns2) {
     } else if (process.platform === "win32") {
         exec(
             `"${path.join(
-                __dirname,
+                __dirnameFile,
                 "src",
                 "main",
                 "cores",

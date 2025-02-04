@@ -8,6 +8,7 @@ const { exec } = require("child_process");
 const { eventNames } = require('process');
 const ipc = require('electron').ipcMain;
 const { initialize } = require('@aptabase/electron/main');
+initialize("A-EU-5072151346");
 const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
 ;
@@ -17,7 +18,6 @@ if (process.platform == "linux") {
 }
 // #endregion
 // #region Vars
-initialize("A-EU-5072151346");
 var currentURL = "";
 var mainWindow = null
 var ViewBrowser = null;

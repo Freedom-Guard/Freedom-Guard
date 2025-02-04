@@ -1,0 +1,15 @@
+name: freedom-guard
+version: '$(node -p "require(''./package.json'').version")'
+summary: Freedom Guard is a tool for bypassing internet censorship.
+description: |
+    Freedom Warp+ Freedom Vibe+ Freedom Browser+.
+
+grade: stable
+confinement: strict
+
+apps:
+    freedom-guard:
+        command: freedom-guard
+        plugs:
+            - network
+            - network-bind

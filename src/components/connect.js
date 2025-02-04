@@ -52,17 +52,17 @@ var links = [];
 
 //#endregion
 // #region Libraries
-const geoip = require('geoip-lite');
-const versionapp = "1.4.0";
+const versionapp = "1.4.5";
 const ipc = require('electron').ipcRenderer;
+const axios = require('axios');
+const geoip = require('geoip-lite');
 const { trackEvent } = require('@aptabase/electron/renderer');
+const Winreg = require('winreg');
+const notifier = require('node-notifier');
 const { spawn, exec, execSync } = require("child_process");
 const { setTimeout } = require("timers/promises");
 const { config } = require('process');
-const Winreg = require('winreg');
-const notifier = require('node-notifier');
 __dirname = path.join(__dirname.replace("app.asar", ""), "../../");
-
 // #endregion
 // #region Functions
 var childProcess = null;
