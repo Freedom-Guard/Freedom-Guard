@@ -65,7 +65,9 @@
             "icon": "src/assets/icon/ico.png",
             "target": [
                 "deb",
-                "AppImage"
+                "AppImage",
+                "tar.gz",
+                "rpm"
             ],
             "category": "VPN",
             "publish": false
