@@ -25,18 +25,10 @@ document.getElementById("download-config").addEventListener("click", () => {
     const fileName = "configAUTO.json";
     const jsonData = JSON.stringify(configAUTO, null, 4);
     if (window && window.process && window.process.type) {
-        const { dialog } = require("electron").remote;
+        const { dialog } = require("electron");
         const fs = require("fs");
-
-        dialog.showSaveDialog({
-            title: "Save Config File",
-            defaultPath: fileName,
-            filters: [{ name: "JSON Files", extensions: ["json"] }]
-        }).then(result => {
-            if (!result.canceled) {
-                fs.writeFileSync(result.filePath, jsonData, "utf-8");
-            }
-        }).catch(err => console.error("Error saving file:", err));
+        const ipcRenderer = require("electron").ipcRenderer;
+        ipcRenderer.send("export-settings", jsonData);
     } else {
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonData);
         let downloadAnchorNode = document.createElement("a");
@@ -47,3 +39,13 @@ document.getElementById("download-config").addEventListener("click", () => {
         document.body.removeChild(downloadAnchorNode);
     }
 });
+function closeToPlus() {
+    try {
+        const { ipcRenderer } = require('electron');
+        const path = require('path');
+        ipcRenderer.send("load-file", path.join("src", "plus/index.html"));
+    } catch (error) {
+        console.error("Error loading plus/index.html:", error);
+    }
+}
+document.getElementById("back").addEventListener("click", closeToPlus);

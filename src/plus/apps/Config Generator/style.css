@@ -4,9 +4,11 @@ body {
     padding: 1em;
     margin: 0;
 }
+
 * {
     box-sizing: border-box;
 }
+
 h1 {
     color: #333;
     text-align: center;
@@ -45,6 +47,7 @@ input[type="text"] {
     margin-bottom: 10px;
     border: 1px solid #ccc;
 }
+
 select {
     width: 100%;
     padding: 10px;
@@ -61,4 +64,32 @@ textarea {
 }
 
 #preview {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#back {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    background-color: #5c5c82;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#back:hover {
+    background-color: #7979a3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
 }
