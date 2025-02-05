@@ -216,16 +216,16 @@ ipc.on('hide-browser', (event, url) => {
   mainWindow.removeBrowserView(ViewBrowser);
 });
 ipc.on('go-back', () => {
-  if (ViewBrowser.webContents.navigationHistory.canGoBack()) {
-    ViewBrowser.webContents.navigationHistory.goBack();
-    if (ViewBrowser.webContents.navigationHistory.canGoBack()) {
+  if (ViewBrowser.webContents.canGoBack()) {
+    ViewBrowser.webContents.goBack();
+    if (ViewBrowser.webContents.canGoBack()) {
       mainWindow.webContents.send("go-back-false", '');
     }
   }
 });
 ipc.on('go-forward', () => {
-  if (ViewBrowser.webContents.navigationHistory.canGoForward()) {
-    ViewBrowser.webContents.navigationHistory.goForward();
+  if (ViewBrowser.webContents.canGoForward()) {
+    ViewBrowser.webContents.goForward();
   }
 });
 ipc.on('reload', () => {
@@ -257,13 +257,13 @@ ipc.on('load-browser', (event) => {
     mainWindow.webContents.send('set-url', (currentURL));
     pageTitle = ViewBrowser.webContents.getTitle();
     mainWindow.webContents.send('set-title', (pageTitle));
-    if (!ViewBrowser.webContents.navigationHistory.canGoForward()) {
+    if (!ViewBrowser.webContents.canGoForward()) {
       mainWindow.webContents.send("go-forward-false", '');
     }
     else {
       mainWindow.webContents.send("go-forward-true", '');
     }
-    if (!ViewBrowser.webContents.navigationHistory.canGoBack()) {
+    if (!ViewBrowser.webContents.canGoBack()) {
       mainWindow.webContents.send("go-back-false", '');
     }
     else {

@@ -223,7 +223,7 @@ function ReloadServers() {
             container.appendChild(configBox);
         })
     }
-    catch { }
+    catch { };
     configBox = document.createElement("div");
     configBox.innerHTML = "Freedom Warp Server";
     configBox.style = "border:none;font-size:1em";
@@ -320,6 +320,14 @@ function Onload() {
     trackEvent("start-app");
     ResetArgsWarp();
     Loading(3500);
+    process.nextTick(function() {
+        document.querySelectorAll('a').forEach(anchor => {
+            anchor.onclick = (event) => {
+                event.preventDefault();
+                openLink(anchor.href);
+            };
+        });
+    });
     process.platform == "win32" ? exec(path.join(__dirnameFile, "src", "scripts", "register-url-win.bat")) : ("");
     try {
         // Restore settings from json

@@ -1,6 +1,10 @@
 /*///////////////////////////////////////////*/
 /* Start Code*/
 /* #region warp */
+:root {
+    --main-color: #1b1b1b;
+    --box-pop: #007bff;
+}
 
 body {
     flex-direction: column;
@@ -636,16 +640,16 @@ img {
     color: white;
     display: none;
     width: 75%;
-    height: 75%;
+    height: fit-content;
     left: 12.5%;
     top: 12.5%;
     position: absolute;
     justify-content: center;
     align-items: center;
-    background-color: rgba(30, 17, 104, 0.7);
+    background-color: var(--box-pop);
     flex-direction: column;
     backdrop-filter: blur(10px);
-    z-index: 9;
+    z-index: 999;
     border-radius: 15px;
 }
 
@@ -736,6 +740,7 @@ img {
 #menu>div:hover i {
     transform: scale(1.1);
 }
+
 /*#endregion
 /* #region Section Freedom-Vibe */
 #freedom-vibe {
@@ -1036,7 +1041,7 @@ img {
     height: 40%;
     left: 12.5%;
     backdrop-filter: blur(5px);
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--box-pop);
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -1310,7 +1315,7 @@ select option {
 
 .box-notif {
     display: none;
-    background-color: #007bff;
+    background-color: var(--box-pop);
     border: 2px solid #0400ff;
     border-radius: 8px;
     padding: 20px;
