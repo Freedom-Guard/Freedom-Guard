@@ -21,5 +21,17 @@
         "website": "https://github.com/Freedom-Guard/Freedom-Guard",
         "license": "MIT",
         "files": ["https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Freedom Player/index.js", "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Freedom Player/index.html", "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Freedom Player/style.css", "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Freedom Player/Freedom_Player.png"]
+    },
+    "Config Generator": {
+        "name": "Config Generator",
+        "icon": "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Config Generator/icon.png",
+        "directory": "./apps/Config Generator",
+        "type": "app",
+        "description": "A Config Generator for Freedom Guard",
+        "version": "1.0.0",
+        "author": "Freedom-Guard",
+        "website": "https://github.com/Freedom-Guard/Freedom-Guard",
+        "license": "MIT",
+        "files": ["https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Config Generator/index.js", "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Config Generator/index.html", "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/plus/apps/Config Generator/style.css"]
     }
 }

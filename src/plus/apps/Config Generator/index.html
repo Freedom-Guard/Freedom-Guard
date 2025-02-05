@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config Generator Freedom Guard (v1.0.0)</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h1>Config Generator for auto mode</h1>
+    <button id="download-config">Save config</button>
+    <div id="add-config">
+        <div id="select-isp">
+            <select id="selector-isp-value">
+                <option value="0">Choose ISP</option>
+                <option value="IRANCELL">Irancell</option>
+                <option value="MCI">MCI</option>
+                <option value="PISHGAMAN">PishGaman</option>
+                <option value="other">Other ISP</option>
+            </select>
+        </div>
+        <div id="select-core">
+            <select id="selector-core-value">
+                <option value="0">Choose core</option>
+                <option value="vibe">Freedom Vibe</option>
+                <option value="warp">Freedom Warp</option>
+            </select>
+        </div>
+        <div class="config">
+            <input type="text" id="config" placeholder="Config" />
+            <button id="add-config-btn">Add</button>
+        </div>
+    </div>
+    <div id="preview"></div>
+    <script src="index.js"></script>
+</body>
+
+</html>
