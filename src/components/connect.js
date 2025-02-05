@@ -27,7 +27,7 @@ var settingWarp = {
     startup: "warp",
     isp: "other",
     core: "auto",
-    testUrl: "https://x.com",
+    testUrl: "https://one.one.one.one/cdn-cgi/trace",
     timeOutWarpAuto: 30000,
     timeOutVibeAuto: 45000,
     timeOutWarp: 60000,
