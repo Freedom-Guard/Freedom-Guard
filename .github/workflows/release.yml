@@ -30,7 +30,7 @@ jobs:
 
             - name: Build Electron App (Linux)
               if: matrix.os == 'ubuntu-latest'
-              run: npx electron-builder --linux --publish never
+              run: npx electron-builder --linux deb tar.gz rpm AppImage --publish never
 
             - name: Upload Artifact (Windows EXE)
               if: matrix.os == 'windows-latest'
@@ -59,6 +59,13 @@ jobs:
               with:
                   name: freedom-guard-linux-rpm
                   path: dist/*.rpm
+
+            - name: Upload Artifact (Linux AppImage)
+              if: matrix.os == 'ubuntu-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-linux-appimage
+                  path: dist/*.AppImage
 
     release:
         needs: build
@@ -92,6 +99,12 @@ jobs:
                   name: freedom-guard-linux-rpm
                   path: dist/
 
+            - name: Download Linux AppImage
+              uses: actions/download-artifact@v4
+              with:
+                  name: freedom-guard-linux-appimage
+                  path: dist/
+
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v1
               with:
@@ -105,5 +118,6 @@ jobs:
                       - Linux DEB (.deb)
                       - Linux TAR.GZ (.tar.gz)
                       - Linux RPM (.rpm)
+                      - Linux AppImage (.AppImage)
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
