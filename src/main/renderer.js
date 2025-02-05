@@ -195,32 +195,35 @@ function ReloadServers() {
     configBox.innerHTML = "Imported Servers <b class='btn' style='max-width:fit-content;max-height:fit-content;display: flex;justify-content: center;'><i class='bx bx-plus' id='add-config-import' onclick='importConfigUSR()'></i></b>";
     configBox.style = "border:none;font-size:1em";
     container.appendChild(configBox);
-    importedServers.forEach((config, index) => {
-        config = importedServers[index];
-        configBox = document.createElement("div");
-        configBox.id = "config-box-imported-sel" + index;
-        configBox.classList.add("config-box-imported-sel" + index);
-        configBox.title = config;
-        let img = document.createElement("img");
-        img.src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
-        let p = document.createElement("p");
-        p.textContent = config.split("#")[1] ?? config.substring(1, 10);
-        configBox.appendChild(img);
-        configBox.appendChild(p);
-        configBox.addEventListener("click", () => {
-            importConfig(config);
-            document.getElementById("box-select-country").style.display = "none";
-        });
-        configBox.addEventListener("contextmenu", (e) => {
-            e.preventDefault();
-            if (confirm("Are you sure you want to delete this imported server?")) {
-                importedServers.splice(index, 1);
-                saveSetting();
-                ReloadServers();
-            }
-        });
-        container.appendChild(configBox);
-    })
+    try {
+        importedServers.forEach((config, index) => {
+            config = importedServers[index];
+            configBox = document.createElement("div");
+            configBox.id = "config-box-imported-sel" + index;
+            configBox.classList.add("config-box-imported-sel" + index);
+            configBox.title = config;
+            let img = document.createElement("img");
+            img.src = path.join(__dirnameFile, "src", "svgs", "glob" + ".svg");
+            let p = document.createElement("p");
+            p.textContent = config.split("#")[1] ?? config.substring(1, 10);
+            configBox.appendChild(img);
+            configBox.appendChild(p);
+            configBox.addEventListener("click", () => {
+                importConfig(config);
+                document.getElementById("box-select-country").style.display = "none";
+            });
+            configBox.addEventListener("contextmenu", (e) => {
+                e.preventDefault();
+                if (confirm("Are you sure you want to delete this imported server?")) {
+                    importedServers.splice(index, 1);
+                    saveSetting();
+                    ReloadServers();
+                }
+            });
+            container.appendChild(configBox);
+        })
+    }
+    catch { }
     configBox = document.createElement("div");
     configBox.innerHTML = "Freedom Warp Server";
     configBox.style = "border:none;font-size:1em";
