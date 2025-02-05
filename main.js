@@ -29,7 +29,6 @@ function createWindow() {
     height: 600,
     icon: path.join(__dirnameFile, "src", "assets", "icon", 'ico.ico'),
     webPreferences: {
-      preload: path.join(__dirnameFile.replace("app.asar", ""), "src", 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false
     },
