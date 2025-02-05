@@ -1,15 +1,15 @@
 let configAUTO = {
     "MCI": {
-
+        "length": 0
     },
     "PISHGAMAN": {
-
+        "length": 0
     },
     "IRANCELL": {
-
+        "length": 0
     },
     "other": {
-
+        "length": 0
     }
 }
 document.getElementById("add-config-btn").addEventListener("click", () => {
@@ -17,7 +17,8 @@ document.getElementById("add-config-btn").addEventListener("click", () => {
     let isp = document.getElementById("selector-isp-value").value;
     let core = document.getElementById("selector-core-value").value;
     if (configValue != "" && isp != "" && core != "") {
-        configAUTO[isp] = core + ",;," + configValue;
+        configAUTO[isp][configAUTO[isp]["length"]] = core + ",;," + configValue;
+        configAUTO[isp]["length"] = configAUTO[isp]["length"] + 1;
     }
     document.getElementById('preview').innerHTML = JSON.stringify(configAUTO);
 });
