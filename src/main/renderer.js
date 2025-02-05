@@ -320,7 +320,7 @@ function Onload() {
     trackEvent("start-app");
     ResetArgsWarp();
     Loading(3500);
-    process.nextTick(function() {
+    process.nextTick(function () {
         document.querySelectorAll('a').forEach(anchor => {
             anchor.onclick = (event) => {
                 event.preventDefault();
@@ -410,6 +410,9 @@ function Loading(time = 5000, textloading = "") {
 };
 function importConfigUSR() {
     document.getElementById('setting-show').click();
+    document.getElementById("config").addEventListener("focus", function () {
+        this.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
     document.getElementById("config").focus();
 }
 function importConfig(config = "") {
