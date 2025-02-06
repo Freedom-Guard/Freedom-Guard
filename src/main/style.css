@@ -54,43 +54,35 @@ h2 {
     font-size: 18px;
 }
 
-#ip-ping-warp,
-#ip-ping-vibe {
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px 10px;
-    border-radius: 10px;
-}
-
-#ip-ping-warp:not(.connected) * {
+#ip-ping:not(.connected) {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#ip-ping-warp.connected {
+#ip-ping:not(.connected) * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ip-ping.connected {
     margin-bottom: 15vh;
     background: rgba(30, 30, 30, 0.3);
     backdrop-filter: blur(10px);
-    padding: 12px 20px;
+    padding: 12px 2em;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: fit-content;
     min-width: 250px;
-    max-width: 380px;
+    width: fit-content;
     height: fit-content;
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease-in-out;
 }
 
-#ip-ping-warp:hover {
-    transform: scale(1.03);
+#ip-ping.connected:hover {
     box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
 }
 
@@ -116,6 +108,10 @@ h2 {
     justify-content: center;
 }
 
+.ip-ping-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .ip-status {
     font-size: 18px;
     font-weight: bold;
@@ -133,32 +129,12 @@ h2 {
     background: rgba(255, 82, 82, 0.2);
 }
 
-#ip-ping-vibe:hover {
-    transition: 0.3s;
-    backdrop-filter: blur(5px);
-    background: #f7f9fc2c;
-}
-
 img {
     border-radius: 8px;
 }
 
-#ip-ping-vibe img {
-    margin: 0 5px !important;
-}
-
-#ip-ping-warp b,
-#ip-ping-vibe b {
+#ip-ping b {
     margin-left: 1vw;
-}
-
-#ip-ping-vibe {
-    height: fit-content;
-    background-color: #f7f9fc0c;
-    backdrop-filter: blur(10px);
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 2vh;
 }
 
 #ChangeStatus {
@@ -429,6 +405,10 @@ img {
     backdrop-filter: blur(15px);
 }
 
+.box-select-country.show {
+    display: flex !important;
+}
+
 .box-select-country::-webkit-scrollbar-button {
     width: 2px;
     color: black;
@@ -551,11 +531,10 @@ img {
 
 /*#endregion */
 /* #region Section Setting */
-#setting,
-#setting-vibe {
+#setting-app {
     display: none;
     position: fixed;
-    right: 0%;
+    right: -1300px;
     top: 0%;
     transition: all 0.7s ease-out !important;
     width: 80%;
@@ -567,13 +546,14 @@ img {
     z-index: 999;
 }
 
-#setting h3 {
+
+#setting-app h3 {
     margin: 0.2em 0.7em;
     border-bottom: #000000 5px solid;
     font-size: 1.5em;
 }
 
-#setting h3::after {
+#setting-app h3::after {
     display: block;
     content: "";
     background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);
@@ -583,8 +563,8 @@ img {
     max-height: 0.2vh;
 }
 
-#setting>div,
-#setting-vibe>div {
+#setting-app>div,
+#setting-app>section>div {
     width: 100%;
     min-height: fit-content;
     background-color: transparent;
@@ -596,8 +576,7 @@ img {
     flex-wrap: wrap;
 }
 
-#setting>b,
-#setting-vibe>b {
+#setting-app b {
     color: #ccc;
     margin: 3px;
     margin-left: 10px;
@@ -619,8 +598,7 @@ img {
     padding: 10px;
 }
 
-#setting input[type="text"],
-#setting-vibe input[type="text"] {
+#setting-app input[type="text"] {
     background-color: transparent;
     border: none;
     font-size: 25px;
@@ -629,12 +607,9 @@ img {
     width: 70%;
 }
 
-#setting .btn,
-#setting-vibe .btn {
+#setting-app .btn {
     max-height: 50px;
 }
-
-
 
 #about-app {
     color: white;
@@ -664,19 +639,6 @@ img {
     background-color: transparent;
 }
 
-#setting-vibe #about {
-    max-width: 55px;
-    min-height: 45px;
-    font-size: 25px;
-    background-color: transparent;
-    border: none;
-    color: #ffffff;
-    position: absolute;
-    right: 0%;
-    top: 0%;
-    margin: 5px;
-}
-
 /* #endregion */
 /* #region Section Menu */
 #menu {
@@ -685,7 +647,6 @@ img {
     align-items: center;
     position: fixed;
     width: fit-content;
-    transition: 0.5s;
     left: 1vw;
     top: 1vh;
     height: 94vh;
@@ -699,10 +660,10 @@ img {
     padding: 15px;
     opacity: 0;
     transform: scale(0.5);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 #menu.show {
-    transition: 0.5s !important;
     display: flex;
     opacity: 1;
     transform: scale(1);
@@ -742,241 +703,6 @@ img {
 }
 
 /*#endregion
-/* #region Section Freedom-Vibe */
-#freedom-vibe {
-    position: absolute;
-    left: 0%;
-    width: 100%;
-    top: 0%;
-    height: 100%;
-    background: #05274e linear-gradient(120deg, rgba(2, 0, 36, 0.3) 0%, rgba(45, 44, 61, 0.5) 49%, rgba(0, 212, 255, 0.4) 100%);
-    display: none;
-    z-index: 6;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-#freedom-vibe>#changeStatus-vibe {
-    background-color: #ccc;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 2.5vh;
-    box-shadow: 10px 10px 20px 5px rgba(36, 0, 155, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 55px;
-}
-
-#freedom-vibe>#logo-vibe {
-    align-items: flex-start;
-    margin-bottom: auto;
-}
-
-#freedom-vibe>#status-vibe,
-#freedom-vibe>#status-vibe-conn {
-    font-size: 18px;
-    margin-bottom: auto;
-    color: white;
-    font-weight: bold;
-    font-family: "Vazirmatn", "Vazir", 'Segoe UI', Geneva, Verdana, sans-serif;
-}
-
-@keyframes changeStatus-vibe-animation {
-    0% {
-        box-shadow: 0px 0px 10px 2px rgba(246, 0, 209, 0.5);
-    }
-
-    25% {
-        box-shadow: 0px 0px 20px 4px rgba(20, 2, 124, 0.7);
-    }
-
-    50% {
-        box-shadow: 0px 0px 30px 6px rgba(6, 225, 221, 0.45);
-    }
-
-    75% {
-        box-shadow: 0px 0px 40px 8px rgba(11, 2, 38, 0.6);
-    }
-
-    100% {
-        box-shadow: 0px 0px 50px 10px rgba(98, 255, 0, 0.7);
-    }
-
-    to {
-        transform: rotate(9000deg);
-    }
-}
-
-#freedom-vibe>#close-vibe {
-    position: absolute;
-    left: 1%;
-    top: 1%;
-    font-size: 35px;
-    background-color: transparent;
-    border: none;
-    color: white;
-}
-
-#freedom-vibe>.setting-show-vibe {
-    position: absolute;
-    right: 1%;
-    top: 1%;
-    font-size: 35px;
-    background-color: transparent;
-    border: none;
-    color: white;
-}
-
-
-#freedom-vibe>#vibe-profile {
-    background-color: rgba(191, 188, 199, 0.185);
-    left: 1vw;
-    backdrop-filter: blur(5px);
-    bottom: 1vh;
-    position: sticky;
-    height: 5vh;
-    border-radius: 15px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2vw;
-}
-
-#freedom-vibe>#vibe-profile * {
-    display: flex;
-    height: 80%;
-    align-items: center;
-    padding-top: 2%;
-}
-
-#vibe-profile-manage {
-    width: 98vw;
-    position: absolute;
-    left: 1vw;
-    top: 10vh;
-    height: 88vh;
-    background-color: rgba(191, 188, 199, 0.185);
-    backdrop-filter: blur(5px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 15px;
-    color: white;
-    font-size: 1.5rem;
-}
-
-#vibe-profile-manage>#vibe-profile-list {
-    overflow-y: auto;
-    width: 90vw;
-    display: flex;
-    margin: 0.1vw 1vw;
-    padding: 2vw;
-    box-sizing: border-box;
-    margin-bottom: auto;
-    height: fit-content;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-#vibe-profile-manage>#vibe-profile-list::-webkit-scrollbar {
-    width: 0.5vw;
-}
-
-#vibe-profile-manage>#vibe-profile-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 0px;
-}
-
-#vibe-profile-manage>#vibe-profile-list::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 0px;
-}
-
-#vibe-profile-manage>#vibe-profile-list::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-#profile-add {
-    overflow: hidden;
-    width: 98vw;
-    position: absolute;
-    left: 1vw;
-    top: 25vh;
-    height: 45vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: rgba(191, 188, 199, 0.185);
-    backdrop-filter: blur(5px);
-    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 15px;
-    color: white;
-    font-size: 1.5rem;
-    display: none;
-}
-
-#profile-add>#close-profile-add {
-    position: absolute;
-}
-
-#profile-add * {
-    color: white;
-    margin: 10vw;
-    border: none;
-    margin: 3vh;
-    width: 80%;
-    background-color: rgba(113, 111, 121, 0.185);
-    backdrop-filter: blur(5px);
-}
-
-#vibe-profile-manage #config-box-vibe-sel,
-#vibe-profile-manage .config-box-vibe-sel {
-    width: 96%;
-    height: 5vh;
-    background-color: #414141;
-    margin-top: 1vh;
-    padding: 1vw;
-    border-radius: 10px;
-    font-size: 1.5rem;
-    color: white;
-}
-
-#vibe-profile-manage #config-box-vibe-sel:hover,
-#vibe-profile-manage .config-box-vibe-sel:hover {
-    background-color: #0974f1;
-}
-
-
-#vibe-profile-manage>#close-vibe-profile-manage {
-    position: absolute;
-    right: 1%;
-    top: 1%;
-    font-size: 35px;
-    background-color: transparent;
-    border: none;
-}
-
-#vibe-profile-manage>#add-config-vibe {
-    position: absolute;
-    right: 1%;
-    bottom: 1%;
-    border-radius: 15px;
-    padding: 5px;
-    font-size: 25px;
-    background-color: transparent;
-    border: none;
-    color: white;
-    background-color: #0974f1;
-}
-
-/*#endregion */
 /* #region Section All */
 .input {
     color: #fff;
@@ -1048,6 +774,11 @@ img {
     z-index: 999;
     border-radius: 10px;
     gap: 10px;
+}
+
+#dns-set.show {
+    display: flex;
+
 }
 
 #dns-set>#close-dns {
@@ -1262,8 +993,7 @@ select option {
         height: 10vh;
     }
 
-    #setting,
-    #setting-vibe {
+    #setting {
         width: 100%;
     }
 
@@ -1379,9 +1109,9 @@ select option {
     position: absolute;
     background-color: #1b0033;
     min-width: 350px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 8px 16px 0px rgba(55, 49, 68, 0.5);
     padding: 0;
-    z-index: 1;
+    z-index: 999;
     flex-direction: column;
     border-radius: 8px;
 }

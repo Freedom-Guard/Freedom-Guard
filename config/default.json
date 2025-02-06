@@ -5,13 +5,13 @@
         "2": "vibe,;,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
         "3": "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp",
         "4": "vibe,;,https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/sub/base64/mix",
-        "5": "vibe,;,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/base64/vless",
+        "5": "vibe,;,https://raw.githubusercontent.com/tkamirparsa/Sh/refs/heads/main/Sub.text8080",
         "length": 6
     },
     "IRANCELL": {
         "0": "warp,;,warp://gool=true&scan=true",
         "1": "warp,;,warp://gool=false&scan=true",
-        "2": "vibe,;,https://raw.githubusercontent.com/yebekhe/TVC/main/subscriptions/xray/normal/mix",
+        "2": "vibe,;,https://raw.githubusercontent.com/tkamirparsa/Sh/refs/heads/main/Sub.text8080",
         "3": "warp,;,endpoint,engage.cloudflareclient.com:2408",
         "4": "vibe,;,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml",
         "5": "warp,;,warp://scan=true",

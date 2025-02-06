@@ -4,7 +4,7 @@
     "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Plus",
     "keywords": [],
     "main": "./main.js",
-    "version": "1.4.5",
+    "version": "2.0.0",
     "author": "Freedom Guard <fwldom@duck.com>",
     "scripts": {
         "start": "npx electron .",
@@ -101,6 +101,7 @@
         "bootstrap-icons": "^1.11.3",
         "electron-google-analytics": "^1.0.2",
         "geoip-lite": "^1.4.10",
+        "jquery": "^3.7.1",
         "music-metadata": "^10.6.2",
         "music-metadata-browser": "^2.5.11",
         "node-gyp": "^10.1.0",
