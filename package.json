@@ -25,13 +25,6 @@
         ],
         "extraResources": [
             {
-                "from": "src/",
-                "to": "src/",
-                "filter": [
-                    "**/*"
-                ]
-            },
-            {
                 "from": "assets/",
                 "to": "assets/",
                 "filter": [
@@ -51,7 +44,19 @@
             "target": "nsis",
             "requestedExecutionLevel": "requireAdministrator",
             "legalTrademarks": "(c) 2025 freedom-guard.github.io/Freedom",
-            "publisherName": "Freedom Guard"
+            "publisherName": "Freedom Guard",
+            "extraResources": [
+                {
+                    "from": "src/main/cores/win32/",
+                    "to": "src/main/cores/win32/",
+                    "filter": [
+                        "**/*"
+                    ]
+                }
+            ],
+            "files": [
+                "!src/main/cores/**/*"
+            ]
         },
         "nsis": {
             "allowToChangeInstallationDirectory": true,
@@ -67,7 +72,19 @@
                 "AppImage"
             ],
             "category": "VPN",
-            "publish": false
+            "publish": false,
+            "extraResources": [
+                {
+                    "from": "src/main/cores/linux/",
+                    "to": "src/main/cores/linux/",
+                    "filter": [
+                        "**/*"
+                    ]
+                }
+            ],
+            "files": [
+                "!src/main/cores/**/*"
+            ]
         },
         "publish": {
             "provider": "github",
