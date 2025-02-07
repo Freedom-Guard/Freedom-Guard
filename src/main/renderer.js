@@ -21,7 +21,23 @@ class main {
         this.reloadServer();
         this.setPingBox(await this.publicSet.getIP_Ping());
     };
-    async loading(textloading = "", time = 5000) {
+    connectFG() {
+        if (this.publicSet.status == false) {
+            this.publicSet.status = true;
+            if (this.publicSet.settingsALL["public"]["core"] == "auto") {
+                this.connectAuto.connect();
+            }
+            else {
+                this.connect.connect();
+            }
+        }
+        else {
+            this.publicSet.status = false;
+            this.connect.killVPN(this.publicSet.settingsALL["public"]["core"]);
+            this.connectAuto.killVPN();
+        }
+    };
+    async loading(textloading = "", time = 3000) {
         let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg", "kian.jpg", "mehrshad.jpg", "hadis.jpg", "hananeh.jpg", "hamidreza.jpg", "AylarH.jpg"];
         let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده", "به یاد کیان پیرفلک", "به یاد مهرشاد شهیدی", "به یاد حدیث نجفی", "به یاد حنانه کیا", "به یاد حمید رضا روحی", "به یاد آیلار حقی"];
         let random = Math.floor(Math.random() * loaderImages.length);
@@ -33,7 +49,7 @@ class main {
         $("#loading").attr("style", "display:flex;");
         process.nextTick(() => {
             global.setTimeout(() => {
-                $("#loading").fadeOut("slow");
+                $("#loading").fadeOut("fast");
             }, time);
         });
     };
@@ -86,6 +102,9 @@ class main {
         $("#ip-ping").on('click', async () => {
             this.setPingBox(await this.publicSet.getIP_Ping());
         });
+        $("#ChangeStatus").on("click", () => {
+            this.connectFG();
+        });
         process.nextTick(() => this.addEventsSetting());
     };
     addEventsSetting() {
@@ -93,6 +112,7 @@ class main {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
             $("#warp, #vibe, #auto, #flex, #grid").slideUp();
             $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
+            this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
         });
         $("#vpn-type-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
@@ -108,6 +128,22 @@ class main {
         });
 
     };
+    addEventSect(core) {
+        if (core == "warp") {
+            $("#endpoint-warp-value").on("input", () => {
+                this.publicSet.settingsALL["warp"]["endpoint"] = $("#endpoint-warp-value").val(); this.publicSet.saveSettings();
+            });
+        }
+        else if (core == "vibe") {
+
+        }
+        else if (core == "grid") {
+
+        }
+        else if (core == "flex") {
+
+        }
+    }
     setSettings() {
         this.publicSet.ReloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
@@ -115,8 +151,10 @@ class main {
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
+        $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
         $("#warp, #vibe, #auto, #flex, #grid").slideUp();
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
+        this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };
     reloadServer() {
 

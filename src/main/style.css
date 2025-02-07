@@ -563,6 +563,16 @@ img {
     max-height: 0.2vh;
 }
 
+#setting-app section h3::after {
+    display: block;
+    content: "";
+    background: linear-gradient(90deg, #d88057 0%, #b2ff59 50%, #4769ff 100%);
+    width: 100%;
+    border-radius: 8px;
+    padding: 2px;
+    max-height: 0.2vh;
+}
+
 #setting-app>div,
 #setting-app>section>div {
     width: 100%;

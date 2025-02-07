@@ -123,23 +123,26 @@
             <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
             <span class="input-border input-border-alt"></span>
         </div>
-        <b>Your ISP</b>
-        <div id="isp-guard" class="form-control-c">
-            <select value="other" id="isp-guard-selected">
-                <option value="other">All ISP</option>
-                <option value="MCI">MCI (HamrahAval)</option>
-                <option value="IRANCELL">Irancell</option>
-                <option value="PISHGAMAN">Pishgaman</option>
-            </select>
-        </div>
         <b>Connection Test URL</b>
         <div id="conn-test" class="form-control-c">
             <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
                 id="conn-test-text">
             <span class="input-border input-border-alt"></span>
         </div>
+        <section id="auto">
+            <h3>Auto mode</h3>
+            <b>Your ISP</b>
+            <div id="isp-guard" class="form-control-c">
+                <select value="other" id="isp-guard-selected">
+                    <option value="other">All ISP</option>
+                    <option value="MCI">MCI (HamrahAval)</option>
+                    <option value="IRANCELL">Irancell</option>
+                    <option value="PISHGAMAN">Pishgaman</option>
+                </select>
+            </div>
+        </section>
         <section id="warp">
-            <h3>Warp</h3>
+            <h3>Warp mode</h3>
             <b>Warp Key</b>
             <div id="warp-key" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="key : xxxxxxxxxxxxx" id="warp-key-text">
@@ -151,7 +154,7 @@
                 <input type="text" class="input input-alt" placeholder="dns : 8.8.8.8" id="dns-warp-text">
                 <span class="input-border input-border-alt"></span>
             </div>
-            <h3>Network Settings</h3>
+            <h3>Network Settings Warp</h3>
             <b>IP Version</b>
             <div id="ip-version">
                 <select name="" id="selector-ip-version">
@@ -174,8 +177,8 @@
                 </label>
             </div>
             <b>Endpoint</b>
-            <div id="end-point" class="form-control-c">
-                <input placeholder="IP : 192.x.x.x" class="input input-alt" type="text" id="end-point-address">
+            <div id="endpoint-warp" class="form-control-c">
+                <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
                 <span class="input-border input-border-alt"></span>
                 <button class="btn btn-primary" id="find-best-endpoint">Find Best Endpoint</button>
             </div>
@@ -184,7 +187,7 @@
                 <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-text">
                 <span class="input-border input-border-alt"></span>
             </div>
-            <h3>Advanced Settings</h3>
+            <h3>Advanced Settings Warp</h3>
             <b>Verbose</b>
             <div id="verbose">
                 <label class="switch">
@@ -214,6 +217,15 @@
                 <input type="text" class="input input-alt" placeholder="Directory : ./../" id="cache-dir">
                 <span class="input-border input-border-alt"></span>
             </div>
+        </section>
+        <section id="vibe">
+            <h3>Vibe Mode</h3>
+        </section>
+        <section id="flex">
+            <h3>Flex Mode</h3>
+        </section>
+        <section id="grid">
+            <h3>Grid Mode</h3>
         </section>
         <h3>Options</h3>
         <div id="options-setting-warp" style="display: flex;gap: 10px;padding: 1em 2em;box-sizing: border-box;">
