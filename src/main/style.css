@@ -628,6 +628,7 @@ img {
     backdrop-filter: blur(10px);
     z-index: 999;
     border-radius: 15px;
+    gap: 2px;
 }
 
 #about-app>#close-about {
@@ -644,7 +645,7 @@ img {
 /* #endregion */
 /* #region Section Menu */
 #menu {
-    display: none ;
+    display: none;
     position: fixed;
     left: 1vw;
     top: 1vh;
@@ -1045,6 +1046,95 @@ select option {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border: none;
     border-radius: 7px;
+}
+
+#Logs {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-size: 0.5em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: auto;
+}
+
+#Logs #OptionsLogs {
+    position: fixed;
+    top: 1vw;
+    left: 1vw;
+    margin: 5px;
+    font-size: 25px;
+    color: white;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    height: fit-content;
+}
+
+#Logs #OptionsLogs button {
+    margin: 5px;
+    font-size: 25px;
+    color: white;
+    border: none;
+    background-color: transparent;
+}
+
+#Logs #OptionsLogs button:hover {
+    color: #00a8ff;
+}
+
+#Logs .command-line-fg {
+    width: 100%;
+    height: fit-content;
+    color: white;
+    font-size: 1.5em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    display: flex;
+    gap: 10px;
+    position: fixed;
+    bottom: 5vh;
+    left: 0;
+}
+
+#Logs .command-line-fg>* {
+    background-color: transparent;
+    color: #00b894;
+    border: none;
+    width: 92vw;
+    padding: 5px 10px;
+    outline: 2px solid #00b894;
+    border-radius: 8px;
+}
+
+#Logs #LogsContent {
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+#Logs #LogsContent p {
+    font-size: 1.2em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    color: #00b894;
 }
 
 ::-webkit-scrollbar {

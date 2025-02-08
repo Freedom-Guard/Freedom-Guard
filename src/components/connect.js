@@ -109,21 +109,17 @@ class publicSet {
     };
     async getIP_Ping() {
         let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
-
         try {
             const time = Date.now();
             const response = await this.axios.get("https://api.ipify.org?format=json", { timeout: 3000 });
 
             responseFunc.ip = response.data.ip;
             responseFunc.ping = Date.now() - time;
-            responseFunc.country = this.geoip.lookup(response.data.ip).country;
-
+            responseFunc.country = this.geoip.lookup(response.data.ip)?.country || "unknown";
             try {
                 const testResponse = await this.axios.get(this.settingsALL["public"]["testUrl"], { timeout: 3000 });
-                if (testResponse.data !== "") {
-                    responseFunc.filternet = false;
-                    this.LOGLOG("filternet is not active!");
-                }
+                responseFunc.filternet = false;
+                this.LOGLOG("filternet is not active!");
             } catch (err) {
                 this.LOGLOG("filternet check failed, assuming active!");
             }
@@ -131,11 +127,17 @@ class publicSet {
         } catch (error) {
             console.error("خطا در دریافت IP:", error);
         }
-
         return responseFunc;
     };
-    LOGLOG(text) {
-        console.log(text);
+    LOGLOG(text = "", type = 'log') {
+        if (type == "clear") {
+            window.LogLOG("", "clear");
+            console.clear();
+        }
+        else {
+            window.LogLOG(text);
+            console.log(text);
+        }
     };
     connectedVPN(core) {
         this.LOGLOG("connected " + core);
@@ -149,8 +151,37 @@ class publicSet {
         });
         connectedUI();
     };
-    setProxy(proxy) {
+    setProxy(proxy, type = "socks5") {
         this.LOGLOG("setting proxy...");
+        if (process.platform == "win32") {
+            const setRegistryValue = (key, name, type, value) => {
+                return new Promise((resolve, reject) => {
+                    key.set(name, type, value, (err) => {
+                        if (err) reject(err);
+                        else resolve();
+                    });
+                });
+            };
+            const setProxy = async (proxy) => {
+                const regKey = new this.Winreg({
+                    hive: this.Winreg.HKCU,
+                    key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
+                });
+
+                try {
+                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+                } catch (error) {
+                    console.error('Error setting proxy:', error);
+                }
+            };
+            setProxy(proxy);
+        }
+        else if (process.platform == "linux") {
+            alert(`Proxy ${type} with ${this.settingsALL["public"]["core"]}: ${this.settingsALL["public"]["proxy"]} ==== Please set this proxy on your system.`)
+        }
+    };
+    offProxy() {
         const setRegistryValue = (key, name, type, value) => {
             return new Promise((resolve, reject) => {
                 key.set(name, type, value, (err) => {
@@ -159,21 +190,20 @@ class publicSet {
                 });
             });
         };
-        const setProxy = async (proxy) => {
+        const offProxy = async () => {
             const regKey = new this.Winreg({
                 hive: this.Winreg.HKCU,
                 key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
             });
 
             try {
-                await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
-                await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+                await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
             } catch (error) {
-                console.error('Error setting proxy:', error);
+                console.error('Error off proxy:', error);
             }
         };
-        setProxy(proxy);
-    };
+        offProxy();
+    }
     async sleep(time) {
         return new Promise((resolve) => {
             this.setTimeout(resolve, time);
@@ -239,6 +269,7 @@ class connect extends publicSet {
     };
     connect() {
         this.ReloadSettings();
+        this.LOGLOG("", 'clear');
         this.LOGLOG("starting connect... -> " + this.settingsALL["public"]["core"]);
         if (this.settingsALL["public"]["core"] == 'warp') {
             this.connectWarp();
@@ -322,10 +353,15 @@ class connect extends publicSet {
     };
     killVPN(core) {
         this.LOGLOG("disconnecting... -> " + core);
-        core == "warp" ? this.processWarp.kill() : '';
-        core == "vibe" ? this.processVibe.kill() : '';
-        core == "grid" ? this.processGrid.kill() : '';
-        core == "flex" ? this.processFlex.kill() : '';
+        try {
+            core == "warp" ? this.processWarp.kill() : '';
+            core == "vibe" ? this.processVibe.kill() : '';
+            core == "grid" ? this.processGrid.kill() : '';
+            core == "flex" ? this.processFlex.kill() : '';
+        }
+        catch (error) {
+            this.LOGLOG("error in killVPN: " + error);
+        };
     };
     DataoutWarp(data = "") {
         this.LOGLOG(data);

@@ -1,25 +1,34 @@
 // #region Libraries 
-const { ipcRenderer, dialog } = require('electron');
+const { ipcRenderer, dialog, shell } = require('electron');
 const { path } = require('path');
 const { readFileSync } = require('fs');
 const { connect, connectAuto, test, publicSet } = require('../components/connect');
 let $ = require('jquery');
 const { count } = require('console');
+const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
 const vesrionApp = "2.0.0";
+let LOGS = [];
 function connectedUI() {
     $("#ChangeStatus").addClass("connected");
     $("#ip-ping").trigger("click");
     $("#ChangeStatus").removeClass("connecting");
+};
+window.LogLOG = (log = "", type = "info") => {
+    LOGS.push(log);
+    $("#LogsContent").append(`<p class="log-item">${log}</p>`);
+    if (type == "clear") { $("#LogsContent").html("Logs Cleared!") };
 };
 class main {
     constructor() {
         this.connect = new connect();
         this.connectAuto = new connectAuto();
         this.test = new test();
+        this.path = require("path");
         this.publicSet = new publicSet();
     };
     init = async () => {
+        this.publicSet.LOGLOG("App Started");
         await this.loading();
         this.addEvents();
         this.setSettings();
@@ -71,7 +80,15 @@ class main {
     onConnect() {
 
     };
+    openLink(href) {
+        shell.openExternal(href);
+    }
     addEvents() {
+        $("a").on('click', (e) => {
+            e.preventDefault();
+            let href = $(e.target).attr("href");
+            this.openLink(href);
+        });
         $('#menu-show, #menu-exit').on('click', () => {
             $('#menu').css('display') === 'none' ? $('#menu').css('display', 'flex') : $('#menu').css('display', 'none');
             global.setTimeout(() => {
@@ -115,6 +132,24 @@ class main {
         });
         $("#ChangeStatus").on("click", () => {
             this.connectFG();
+        });
+        $("#menu-freedom-logs, #CloseLogs").on("click", () => {
+            $("#Logs").slideToggle("slow");
+        });
+        $("#ClearLogs").on("click", () => {
+            window.LogLOG("", "clear");
+        });
+        $("#CopyLogs").on("click", () => {
+            let logs = LOGS.join("\n");
+            navigator.clipboard.writeText(logs);
+        });
+        $("#menu-kill-all").on("click", () => {
+            this.KILLALLCORES('warp');
+            this.KILLALLCORES('flex');
+            this.KILLALLCORES('grid');
+            this.KILLALLCORES('vibe');
+            this.publicSet.offProxy();
+            this.setPingBox();
         });
         process.nextTick(() => this.addEventsSetting());
     };
@@ -199,7 +234,7 @@ class main {
                 </p>
                 <p class="ip-ping-item">
                     <span class="ip-icon">🚀</span> 
-                    Bypass: <b>${data.filternet ? "On" : "Off"}</b>
+                    Bypass: <b>${isConnected ? "On" : "Off"}</b>
                 </p>
                 <p id="connection-status" class="ip-status ${isConnected ? '' : 'disconnected'}">
                     ${isConnected ? '🟢 Connected' : '🔴 Disconnected'}
@@ -219,6 +254,179 @@ class main {
         $("#ip-ping").html(htmlContent);
         isConnected ? $("#ip-ping, #ChangeStatus").addClass("connected") : $("#ip-ping, #ChangeStatus").removeClass("connected");
     };
+    KILLALLCORES(core) {
+        core = core.toString().toLowerCase() + "-core";
+        window.LogLOG(`Killing ${core}...`);
+        if (process.platform == "win32") {
+            if (!core || typeof core !== "string") {
+                window.LogLOG("Error: Invalid process name.");
+            } else {
+                execFile("taskkill", ["/f", "/im", `${core}.exe`], (error, stdout, stderr) => {
+                    if (error) {
+                        window.LogLOG(`Error: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        window.LogLOG(`stderr: ${stderr}`);
+                        return;
+                    }
+                    window.LogLOG(`stdout: ${stdout}`);
+                });
+            }
+        }
+        else if (process.platform) {
+            if (!core || typeof core !== "string") {
+                window.LogLOG("Error: Invalid process name.");
+            } else {
+                execFile("killall", [core], (error, stdout, stderr) => {
+                    if (error) {
+                        window.LogLOG(`Error: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        window.LogLOG(`stderr: ${stderr}`);
+                        return;
+                    }
+                    window.LogLOG(`stdout: ${stdout}`);
+                });
+            }
+        }
+    }
+};
+class fgCLI extends main {
+    constructor() {
+        super();
+    };
+    init = async () => {
+        $("#submit-command-line").on("click", () => {
+            let command = $("#command-line").val();
+            this.enterCommand(command);
+        });
+        $("#command-line").on("keypress", (event) => {
+            if (event.which === 13) {
+                let command = $("#command-line").val();
+                this.enterCommand(command);
+            }
+        });
+    };
+    async enterCommand(command) {
+        $("#command-line").val("");
+        let commandSplit = command.split(" ");
+        let commandName = commandSplit[0];
+        let commandArgs = commandSplit.slice(1);
+        switch (commandName.toString().toLowerCase()) {
+            case "connect":
+                commandArgs.length > 0 ? this.publicSet.settingsALL["public"]["core"] = commandArgs[0] : this.publicSet.settingsALL["public"]["core"] = "auto";
+                this.setSettings();
+                this.connectFG();
+                break;
+            case "disconnect":
+                this.connectFG();
+                break;
+            case "ping":
+                window.LogLOG("Getting IP information...");
+                let data = await this.publicSet.getIP_Ping();
+                window.LogLOG(`Country: ${data.country}`);
+                window.LogLOG(`IP: ${data.ip}`);
+                window.LogLOG(`Ping: ${data.ping}`);
+                window.LogLOG(`Bypass: ${!data.filternet}`);
+                break;
+            case "clear":
+                window.LogLOG("", "clear");
+                break;
+            case "exit":
+                ipcRenderer.send("exit-app");
+                break;
+            case "help":
+                this.helpCommand();
+                break;
+            case "set":
+                if (commandArgs.length > 1) {
+                    let sect = commandArgs[0];
+                    let key = commandArgs[1];
+                    let value = commandArgs[2];
+                    this.publicSet.settingsALL[sect][key] = value;
+                    this.publicSet.saveSettisngs();
+                    window.LogLOG(`Set ${sect}->${key} to ${value}`);
+                }
+                else {
+                    window.LogLOG("Invalid arguments");
+                }
+                break;
+            case "show":
+                window.LogLOG("Showing settings->" + commandArgs[0] ?? "" + "...");
+                if (commandArgs.length > 0) {
+                    let sect = commandArgs[0];
+                    let keys = commandArgs[1] == undefined ? Object.keys(this.publicSet.settingsALL[sect]) : [[commandArgs[1]]];
+                    keys.forEach((key) => {
+                        window.LogLOG(`&nbsp;&nbsp;&nbsp;&nbsp;${key}: ${this.publicSet.settingsALL[sect][key]}`);
+                    });
+                }
+                else {
+                    window.LogLOG("Invalid arguments, no section provided, use show [section]");
+                }
+                break;
+            case "start":
+                const corePath = this.path.join(
+                    this.publicSet.coresPath,
+                    commandArgs[0],
+                    this.connect.addExt(commandArgs[0] + "-core")
+                );
+                window.LogLOG(`Starting ${corePath} ${commandArgs.slice(1).join(" ")}...`);
+                const process = spawn(corePath, commandArgs.slice(1), {
+                    stdio: "pipe",
+                    shell: false,
+                });
+
+                process.stdout.on("data", (data) => {
+                    window.LogLOG(`stdout: ${data.toString().trim()}`);
+                });
+
+                process.stderr.on("data", (data) => {
+                    window.LogLOG(`stderr: ${data.toString().trim()}`);
+                });
+
+                process.on("close", (code) => {
+                    window.LogLOG(`Process exited with code ${code}`);
+                });
+
+                process.on("error", (err) => {
+                    window.LogLOG(`Error: ${err.message}`);
+                });
+                break;
+            case "kill":
+                this.connect.killVPN(commandArgs[0]);
+                commandArgs[1] == "/f" ? this.KILLALLCORES(commandArgs[0]) : "";
+                window.LogLOG(`Killed ${commandArgs[0] + (commandArgs[1] == "/f" ? " with force" : "")}`);
+                break;
+            case "proxy":
+                let proxy = commandArgs[0];
+                this.publicSet.setProxy(proxy);
+                break;
+            default:
+                window.LogLOG("Command not found");
+                break;
+        }
+        $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
+        $("#command-line").focus();
+    };
+    helpCommand() {
+        window.LogLOG("Available commands:");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;connect - Connect to VPN with core selected(setting)");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;start - start [core] [args]");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;disconnect - Disconnect from VPN");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;ping - Get IP information");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;set - settings->set public core warp");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;show - settings->show public core");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;kill - only core selected mode->kill warp (/f)");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;clear - Clear logs");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;exit - Exit application");
+    };
 };
 const mainSTA = new main();
 mainSTA.init();
+const fgCLI_STA = new fgCLI();
+fgCLI_STA.init();
+window.disconnect = () => {
+
+}
