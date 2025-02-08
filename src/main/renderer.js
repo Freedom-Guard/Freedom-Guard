@@ -7,6 +7,11 @@ let $ = require('jquery');
 const { count } = require('console');
 window.$ = $;
 const vesrionApp = "2.0.0";
+function connectedUI() {
+    $("#ChangeStatus").addClass("connected");
+    $("#ip-ping").trigger("click");
+    $("#ChangeStatus").removeClass("connecting");
+};
 class main {
     constructor() {
         this.connect = new connect();
@@ -22,6 +27,8 @@ class main {
         this.setPingBox(await this.publicSet.getIP_Ping());
     };
     connectFG() {
+        $("#ChangeStatus").removeClass("connected");
+        $("#ChangeStatus").addClass("connecting");
         if (this.publicSet.status == false) {
             this.publicSet.status = true;
             if (this.publicSet.settingsALL["public"]["core"] == "auto") {
@@ -32,6 +39,7 @@ class main {
             }
         }
         else {
+            $("#ChangeStatus").removeClass("connecting");
             this.publicSet.status = false;
             this.connect.killVPN(this.publicSet.settingsALL["public"]["core"]);
             this.connectAuto.killVPN();
@@ -65,7 +73,10 @@ class main {
     };
     addEvents() {
         $('#menu-show, #menu-exit').on('click', () => {
-            $('#menu').toggleClass('show');
+            $('#menu').css('display') === 'none' ? $('#menu').css('display', 'flex') : $('#menu').css('display', 'none');
+            global.setTimeout(() => {
+                $('#menu').toggleClass('show');
+            }, 100);
         });
         $('#menu-dns, #close-dns').on('click', () => {
             $('#dns-set').toggleClass('show');
@@ -133,6 +144,12 @@ class main {
             $("#endpoint-warp-value").on("input", () => {
                 this.publicSet.settingsALL["warp"]["endpoint"] = $("#endpoint-warp-value").val(); this.publicSet.saveSettings();
             });
+            $("#Gool").on("click", () => {
+                this.publicSet.settingsALL["warp"]["gool"] = !this.publicSet.settingsALL["warp"]["gool"]; this.publicSet.saveSettings();
+            });
+            $("#Scan").on("click", () => {
+                this.publicSet.settingsALL["warp"]["scan"] = !this.publicSet.settingsALL["warp"]["scan"]; this.publicSet.saveSettings();
+            });
         }
         else if (core == "vibe") {
 
@@ -152,6 +169,8 @@ class main {
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
+        $("#Gool").val(this.publicSet.settingsALL["warp"]["gool"]);
+        $("#Scan").val(this.publicSet.settingsALL["warp"]["scan"]);
         $("#warp, #vibe, #auto, #flex, #grid").slideUp();
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
@@ -159,9 +178,10 @@ class main {
     reloadServer() {
 
     };
-    setPingBox({ ip, ping, country, filternet }) {
-        let countryEmoji = country ? `🌍 ${country}` : "🌍 Unknown";
-        let isConnected = filternet;
+    async setPingBox() {
+        let data = await this.publicSet.getIP_Ping();
+        let countryEmoji = data.country ? `🌍 ${data.country}` : "🌍 Unknown";
+        let isConnected = !data.filternet;
         let htmlContent = "";
         if (isConnected) {
             htmlContent = `
@@ -171,29 +191,33 @@ class main {
                 </p>
                 <p class="ip-ping-item">
                     <span class="ip-icon">🔍</span> 
-                    IP: <b>${ip || "Unknown"}</b>
+                    IP: <b>${data.ip || "Unknown"}</b>
                 </p>
                 <p class="ip-ping-item">
                     <span class="ip-icon">⚡</span> 
-                    Ping: <b>${ping || "N/A"} ms</b>
+                    Ping: <b>${data.ping || "N/A"} ms</b>
                 </p>
                 <p class="ip-ping-item">
                     <span class="ip-icon">🚀</span> 
-                    Bypass: <b>${filternet ? "On" : "Off"}</b>
+                    Bypass: <b>${data.filternet ? "On" : "Off"}</b>
                 </p>
                 <p id="connection-status" class="ip-status ${isConnected ? '' : 'disconnected'}">
                     ${isConnected ? '🟢 Connected' : '🔴 Disconnected'}
                 </p>
         `;
+            $("#ChangeStatus").addClass("connected");
+            this.publicSet.status = true;
+            this.publicSet.connected = true;
         } else {
             htmlContent = `
                 <p class="ip-ping-item" style='margin:0;padding:0;'>
-                    <b style='color:${ping > 1500 ? "red" : "green"};margin:0.5em 1em'>${ping}ms</b>
+                    <b style='color:${data.ping > 1500 ? "red" : "green"};margin:0.5em 1em'>${data.ping}ms</b>
                 </p>
-                `
+                `;
+            this.publicSet.connected = false;
         }
         $("#ip-ping").html(htmlContent);
-        isConnected ? $("#ip-ping").addClass("connected") : $("#ip-ping").removeClass("connected");
+        isConnected ? $("#ip-ping, #ChangeStatus").addClass("connected") : $("#ip-ping, #ChangeStatus").removeClass("connected");
     };
 };
 const mainSTA = new main();

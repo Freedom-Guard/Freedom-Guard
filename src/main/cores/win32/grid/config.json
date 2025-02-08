@@ -1,0 +1,30 @@
+{
+    "log": {
+      "level": "info"
+    },
+    "inbounds": [
+      {
+        "type": "http",
+        "tag": "http-in",
+        "listen": "127.0.0.1",
+        "listen_port": 8888
+      }
+    ],
+    "outbounds": [
+      {
+        "type": "socks",
+        "tag": "warp-out",
+        "server": "127.0.0.1",
+        "server_port": 8086
+      }
+    ],
+    "route": {
+      "rules": [
+        {
+          "type": "all",
+          "outbound": "warp-out"
+        }
+      ]
+    }
+  }
+  

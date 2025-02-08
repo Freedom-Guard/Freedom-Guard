@@ -31,7 +31,7 @@
     <!-- #endregion Loading -->
     <!-- #region Freedom Warp => setting & main  -->
     <h2 id="Status" title="false"></h2>
-    <button id="ChangeStatus" class="bx-spin-hover">
+    <button id="ChangeStatus">
         <i class="bx bx-power-off"></i>
     </button>
     <div class="header">
@@ -41,7 +41,11 @@
                 class="bx bxs-cog" style="font-size: 43px;"></i></button>
     </div>
     <p id="ip-ping">IP : x.x.x.x | Ping : ms</p>
-    <div class="box-select-country" id="box-select-country" style="transition: all 1.3s ease 0s;top: 100vh;">
+    <div class="box-select-country" id="box-select-country">
+        <div class="country-option">
+            <img src="../svgs/ir.svg" alt="Auto Server">
+            <p>Auto Server</p>
+        </div>
     </div>
     <div class="options-select-cfon">
         <div class="box-select-country-mini" id="box-select-country-mini">
@@ -61,7 +65,7 @@
     <div id="setting-app">
         <nav id="nav-top"
             style="position: sticky;  top: 0%;
-  left: 0%;display: flex;align-items: center;background: linear-gradient(90deg,rgba(32, 117, 29, 0.7) 5%,rgb(12, 20, 128,0.7) 100%,rgba(128, 97, 12, 0.7) 100%);backdrop-filter: blur(25px);width: 100%;min-height: 7.5vh;z-index: 10;">
+  left: 0%;display: flex;align-items: center;background: linear-gradient(90deg,rgba(1, 8, 31, 0.7) 5%,rgba(2, 39, 47, 0.361) 100%,rgba(27, 1, 37, 0.7) 100%);backdrop-filter: blur(25px);width: 100%;min-height: 7.5vh;z-index: 10;">
             <button id="close-setting">
                 <i class='bx bx-arrow-back'></i>
             </button>
@@ -86,7 +90,6 @@
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
                 id="config-text">
             <button id="submit-config" class="btn">Import</button>
-            <span class="input-border input-border-alt"></span>
         </div>
         <b>Config Freedom Guard for auto mode</b>
         <div id="config-fg" class="form-control-c">
@@ -98,7 +101,6 @@
                         class='bx bx-folder-open' style="font-size:150%;"></i></label>
                 <input type="file" id="selector-file-config" style="display: none;">
             </button>
-            <span class="input-border input-border-alt"></span>
         </div>
         <h3>VPN Settings</h3>
         <b>VPN Core</b>
@@ -121,13 +123,11 @@
         <b>Bind Address</b>
         <div id="bind-address" class="form-control-c">
             <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
-            <span class="input-border input-border-alt"></span>
         </div>
         <b>Connection Test URL</b>
         <div id="conn-test" class="form-control-c">
             <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
                 id="conn-test-text">
-            <span class="input-border input-border-alt"></span>
         </div>
         <section id="auto">
             <h3>Auto mode</h3>
@@ -146,13 +146,12 @@
             <b>Warp Key</b>
             <div id="warp-key" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="key : xxxxxxxxxxxxx" id="warp-key-text">
-                <span class="input-border input-border-alt"></span>
                 <button class="btn btn-primary" id="get-key-warp">Get Key</button>
             </div>
             <b>DNS</b>
             <div id="dns-warp" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="dns : 8.8.8.8" id="dns-warp-text">
-                <span class="input-border input-border-alt"></span>
+
             </div>
             <h3>Network Settings Warp</h3>
             <b>IP Version</b>
@@ -179,13 +178,13 @@
             <b>Endpoint</b>
             <div id="endpoint-warp" class="form-control-c">
                 <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
-                <span class="input-border input-border-alt"></span>
+
                 <button class="btn btn-primary" id="find-best-endpoint">Find Best Endpoint</button>
             </div>
             <b>Scanner RTT Limit</b>
             <div id="scan-rtt" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-text">
-                <span class="input-border input-border-alt"></span>
+
             </div>
             <h3>Advanced Settings Warp</h3>
             <b>Verbose</b>
@@ -205,17 +204,17 @@
             <b>Config Directory</b>
             <div id="config-dir-warp" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="Path file config" id="config-dir">
-                <span class="input-border input-border-alt"></span>
+
             </div>
             <b>Wireguard Config Directory</b>
             <div id="wgconfig" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="Path file" id="wgconfig-dir">
-                <span class="input-border input-border-alt"></span>
+
             </div>
             <b>Cache Directory</b>
             <div id="cache" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="Directory : ./../" id="cache-dir">
-                <span class="input-border input-border-alt"></span>
+
             </div>
         </section>
         <section id="vibe">

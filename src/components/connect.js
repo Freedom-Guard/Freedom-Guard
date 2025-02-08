@@ -2,6 +2,7 @@ const { rejects } = require('assert');
 const { spawn, exec, execSync } = require('child_process');
 const fs = require('fs');
 const { notify } = require('node-notifier');
+const { type } = require('os');
 const { resolve } = require('path');
 read_file = function (path) {
     return fs.readFileSync(path, 'utf8');
@@ -14,7 +15,8 @@ class publicSet {
         this.axios = require('axios');
         this.geoip = require('geoip-lite');
         this.path = require('path');
-        this.setTimeout = require("timers/promises");
+        this.setTimeout = require('timers').setTimeout;
+        this.Winreg = require('winreg');
         this.status = false;
         this.connected = false;
         this.Process = {
@@ -29,6 +31,7 @@ class publicSet {
             "setupAuto": function kill() { },
             "setup": function kill() { }
         };
+        this.mainDir = this.path.join(__dirname + "/../../");
         this.coresPath = this.path.join(__dirname.replace("app.asar", "") + "/../../", "src/main/cores/", process.platform);
         this.settingsALL = {
             "flex": {},
@@ -46,6 +49,42 @@ class publicSet {
                 key: "",
                 timeout: 60000,
             },
+            "setupGrid":
+            {
+                "inbounds": [
+                    {
+                        "type": "socks",
+                        "tag": "socks-in",
+                        "listen": "127.0.0.1:40000"
+                    }
+                ],
+                "outbounds": [
+                    {
+                        "type": "socks5",
+                        "tag": "warp-out",
+                        "server": "127.0.0.1",
+                        "port": 8086
+                    },
+                    {
+                        "type": "tun",
+                        "interface_name": "sign-tun",
+                        "mtu": 1500,
+                        "stack": "gvisor",
+                        "auto_route": true,
+                        "auto_detect_interface": true
+                    }
+                ],
+                "route": {
+                    "auto_detect_interface": true,
+                    "rules": [
+                        {
+                            "type": "field",
+                            "inbound": "socks-in",
+                            "outbound": "tun"
+                        }
+                    ]
+                }
+            },
             "public": {
                 proxy: "127.0.0.1:8086",
                 configAuto: "",
@@ -53,7 +92,7 @@ class publicSet {
                 core: "auto",
                 dns: ["8.8.8.8"],
                 protocol: "auto",
-                testUrl: "https://one.one.one.one/cdn-cgi/trace",
+                testUrl: "https://1.1.1.1/cdn-cgi/trace",
                 type: "system",
                 isp: "other"
             }
@@ -69,30 +108,76 @@ class publicSet {
         } catch (error) { this.saveSettings(); }
     };
     async getIP_Ping() {
-        let responseFunc = { ip: "", ping: "", country: "unknow", filternet: false };
+        let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
+
         try {
-            const time = new Date().getTime();
-            const response = await this.axios.get('https://api.ipify.org?format=json');
+            const time = Date.now();
+            const response = await this.axios.get("https://api.ipify.org?format=json", { timeout: 3000 });
+
             responseFunc.ip = response.data.ip;
-            responseFunc.ping = new Date().getTime() - time;
+            responseFunc.ping = Date.now() - time;
+            responseFunc.country = this.geoip.lookup(response.data.ip).country;
+
             try {
-                responseFunc.country = this.geoip.lookup(response.data.ip).country;
-                this.axios.get(this.settingsALL["public"]["testUrl"]).then((response) => {
-                    responseFunc.filternet = true;
-                });
+                const testResponse = await this.axios.get(this.settingsALL["public"]["testUrl"], { timeout: 3000 });
+                if (testResponse.data !== "") {
+                    responseFunc.filternet = false;
+                    this.LOGLOG("filternet is not active!");
+                }
+            } catch (err) {
+                this.LOGLOG("filternet check failed, assuming active!");
             }
-            catch { };
-            return responseFunc;
+
         } catch (error) {
             console.error("خطا در دریافت IP:", error);
-            return responseFunc;
-        };
+        }
+
+        return responseFunc;
     };
     LOGLOG(text) {
         console.log(text);
     };
     connectedVPN(core) {
         this.LOGLOG("connected " + core);
+        notify({
+            title: 'Connected!',
+            message: `Proxy has been set to ${this.settingsALL["public"]["proxy"]}`,
+            icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
+            sound: true,
+            wait: true,
+            appID: 'Freedom Guard'
+        });
+        connectedUI();
+    };
+    setProxy(proxy) {
+        this.LOGLOG("setting proxy...");
+        const setRegistryValue = (key, name, type, value) => {
+            return new Promise((resolve, reject) => {
+                key.set(name, type, value, (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
+        };
+        const setProxy = async (proxy) => {
+            const regKey = new this.Winreg({
+                hive: this.Winreg.HKCU,
+                key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
+            });
+
+            try {
+                await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
+                await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+            } catch (error) {
+                console.error('Error setting proxy:', error);
+            }
+        };
+        setProxy(proxy);
+    };
+    async sleep(time) {
+        return new Promise((resolve) => {
+            this.setTimeout(resolve, time);
+        });
     }
 }
 class connectAuto extends publicSet {
@@ -173,6 +258,8 @@ class connect extends publicSet {
     }
     async connectWarp() {
         this.ResetArgs('warp');
+        await this.sleep(1000);
+        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + this.argsWarp);
         this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
         this.processWarp.stderr.on("data", (data) => {
             this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
@@ -181,9 +268,16 @@ class connect extends publicSet {
             this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
         });
         this.processWarp.on("close", () => {
-            this.killVPN();
+            this.killVPN("warp");
+            this.notConnected("warp");
+            this.LOGLOG("warp closed!");
         });
-        await this.setTimeout(this.settingsALL["warp"]["timeout"]);
+        await this.sleep(60000);
+        if (!this.connected) {
+            this.killVPN("warp");
+            this.LOGLOG("warp not connected!");
+            this.notConnected("warp");
+        };
     };
     connectVibe() {
         return new Promise((resolve, reject) => {
@@ -197,11 +291,15 @@ class connect extends publicSet {
         return new Promise((resolve, reject) => {
         });
     }
-    setupGrid(proxy, type = 'proxy') {
-        return new Promise((resolve, reject) => {
-        });
+    setupGrid(proxy, type = 'proxy', typeProxy) {
+        if (type == "tun") {
+        }
+        else if (type = 'system') {
+            this.setProxy(proxy);
+        }
     };
     ResetArgs() {
+        this.ReloadSettings();
         let settingWarp = this.settingsALL["warp"];
         if (settingWarp["gool"]) {
             this.argsWarp.push("--gool");
@@ -223,7 +321,7 @@ class connect extends publicSet {
         } catch (error) { this.saveSettings(); }
     };
     killVPN(core) {
-        this.LOGLOG("disconnecting... -> " + core)
+        this.LOGLOG("disconnecting... -> " + core);
         core == "warp" ? this.processWarp.kill() : '';
         core == "vibe" ? this.processVibe.kill() : '';
         core == "grid" ? this.processGrid.kill() : '';
@@ -232,8 +330,22 @@ class connect extends publicSet {
     DataoutWarp(data = "") {
         this.LOGLOG(data);
         if (data.toString().includes("serving")) {
+            this.ReloadSettings();
             this.connectedVPN("warp");
+            this.connected = true;
+            this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
         }
+    };
+    notConnected(core) {
+        this.LOGLOG("not connected " + core);
+        notify({
+            title: 'Connection Failed',
+            message: `Failed to connect to ${core}`,
+            icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
+            sound: true,
+            wait: true,
+            appID: 'Freedom Guard'
+        });
     };
 };
 class test extends publicSet {
