@@ -9,15 +9,24 @@ const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
 const vesrionApp = "2.0.0";
 let LOGS = [];
-function connectedUI() {
-    $("#ChangeStatus").addClass("connected");
-    $("#ip-ping").trigger("click");
-    $("#ChangeStatus").removeClass("connecting");
-};
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
     $("#LogsContent").append(`<p class="log-item">${log}</p>`);
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!") };
+};
+window.diconnectedUI = () => {
+    $("#ChangeStatus").removeClass("connecting");
+    mainSTA.publicSet.status = false;
+    mainSTA.publicSet.connected = false;
+    mainSTA.connect.killVPN(mainSTA.publicSet.settingsALL["public"]["core"]);
+    mainSTA.connectAuto.killVPN();
+};
+window.connectedUI = () => {
+    $("#ChangeStatus").addClass("connected");
+    $("#ip-ping").trigger("click");
+    $("#ChangeStatus").removeClass("connecting");
+    mainSTA.publicSet.status = true;
+    mainSTA.publicSet.connected = true;
 };
 class main {
     constructor() {
@@ -25,6 +34,7 @@ class main {
         this.connectAuto = new connectAuto();
         this.test = new test();
         this.path = require("path");
+        this.axios = require('axios');
         this.publicSet = new publicSet();
     };
     init = async () => {
@@ -179,12 +189,50 @@ class main {
             $("#endpoint-warp-value").on("input", () => {
                 this.publicSet.settingsALL["warp"]["endpoint"] = $("#endpoint-warp-value").val(); this.publicSet.saveSettings();
             });
+            $("#get-endpoint-warp").on("click", async () => {
+                try {
+                    const response = await this.axios.get("https://raw.githubusercontent.com/ircfspace/endpoint/refs/heads/main/ip.json");
+                    const ipData = (response.data);
+                    const version = this.publicSet.settingsALL["warp"]["ipv"].toLowerCase() ?? "ipv4";
+                    const ipList = version === "ipv6" ? ipData.ipv6 : ipData.ipv4;
+                    if (ipList.length === 0) {
+                        this.publicSet.LOGLOG("No available endpoints for the selected IP version.");
+                        return;
+                    }
+                    const randomIP = ipList[Math.floor(Math.random() * ipList.length)];
+                    $("#endpoint-warp-value").val(randomIP);
+                    this.publicSet.settingsALL["warp"]["endpoint"] = randomIP;
+                    this.publicSet.saveSettings();
+                } catch (error) {
+                    this.publicSet.LOGLOG("Error fetching endpoint data:", error);
+                }
+            });
+
             $("#Gool").on("click", () => {
                 this.publicSet.settingsALL["warp"]["gool"] = !this.publicSet.settingsALL["warp"]["gool"]; this.publicSet.saveSettings();
             });
             $("#Scan").on("click", () => {
                 this.publicSet.settingsALL["warp"]["scan"] = !this.publicSet.settingsALL["warp"]["scan"]; this.publicSet.saveSettings();
             });
+            $("#get-key-warp").on("click", async () => {
+                try {
+                    const response = await this.axios.get("https://raw.githubusercontent.com/ircfspace/warpkey/main/plus/full");
+                    const keys = response.data.split("\n").filter(key => key.trim() !== "");
+                    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    $("#warp-key-value").val(randomKey);
+                    this.publicSet.settingsALL["warp"]["key"] = randomKey;
+                    this.publicSet.saveSettings();
+                } catch (error) {
+                    this.publicSet.LOGLOG("Error fetching WARP keys:", error);
+                }
+            });
+            $("#warp-key-value").on("change", () => {
+                this.publicSet.settingsALL["warp"]["key"] = $("#warp-key-value").val(); this.publicSet.saveSettings();
+            });
+            $("#selector-ip-version-warp").on("change", () => {
+                this.publicSet.settingsALL["warp"]["ipv"] = $("#selector-ip-version-warp").val();
+                this.publicSet.saveSettings();
+            })
         }
         else if (core == "vibe") {
 
@@ -204,6 +252,7 @@ class main {
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
+        $("#selector-ip-version-warp").val(this.publicSet.settingsALL["warp"]["ipv"] ?? "IPV4");
         $("#Gool").val(this.publicSet.settingsALL["warp"]["gool"]);
         $("#Scan").val(this.publicSet.settingsALL["warp"]["scan"]);
         $("#warp, #vibe, #auto, #flex, #grid").slideUp();
@@ -218,7 +267,7 @@ class main {
         let countryEmoji = data.country ? `🌍 ${data.country}` : "🌍 Unknown";
         let isConnected = !data.filternet;
         let htmlContent = "";
-        if (isConnected) {
+        if (this.publicSet.connected) {
             htmlContent = `
                 <p class="ip-ping-item">
                     <span class="ip-icon">🌍</span> 
@@ -236,8 +285,8 @@ class main {
                     <span class="ip-icon">🚀</span> 
                     Bypass: <b>${isConnected ? "On" : "Off"}</b>
                 </p>
-                <p id="connection-status" class="ip-status ${isConnected ? '' : 'disconnected'}">
-                    ${isConnected ? '🟢 Connected' : '🔴 Disconnected'}
+                <p id="connection-status" class="ip-status ${this.publicSet.connected ? '' : 'disconnected'}">
+                    ${this.publicSet.connected ? '🟢 Connected' : '🔴 Disconnected'}
                 </p>
         `;
             $("#ChangeStatus").addClass("connected");
@@ -249,10 +298,9 @@ class main {
                     <b style='color:${data.ping > 1500 ? "red" : "green"};margin:0.5em 1em'>${data.ping}ms</b>
                 </p>
                 `;
-            this.publicSet.connected = false;
         }
         $("#ip-ping").html(htmlContent);
-        isConnected ? $("#ip-ping, #ChangeStatus").addClass("connected") : $("#ip-ping, #ChangeStatus").removeClass("connected");
+        this.publicSet.connected ? $("#ip-ping, #ChangeStatus").addClass("connected") : $("#ip-ping, #ChangeStatus").removeClass("connected");
     };
     KILLALLCORES(core) {
         core = core.toString().toLowerCase() + "-core";

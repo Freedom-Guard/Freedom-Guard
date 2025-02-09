@@ -45,7 +45,7 @@ class publicSet {
                 dns: "",
                 verbose: false,
                 scanrtt: "",
-                ipv: "",
+                ipv: "IPV4",
                 key: "",
                 timeout: 60000,
             },
@@ -149,7 +149,7 @@ class publicSet {
             wait: true,
             appID: 'Freedom Guard'
         });
-        connectedUI();
+        window.connectedUI();
     };
     setProxy(proxy, type = "socks5") {
         this.LOGLOG("setting proxy...");
@@ -208,6 +208,9 @@ class publicSet {
         return new Promise((resolve) => {
             this.setTimeout(resolve, time);
         });
+    };
+    diconnectedUI() {
+        window.diconnectedUI();
     }
 }
 class connectAuto extends publicSet {
@@ -282,7 +285,7 @@ class connect extends publicSet {
         }
         else {
             this.connectVibe();
-        }
+        };
     };
     addExt(name) {
         return process.platform == "win32" ? name + ".exe" : name;
@@ -332,6 +335,9 @@ class connect extends publicSet {
     ResetArgs() {
         this.ReloadSettings();
         let settingWarp = this.settingsALL["warp"];
+        if (settingWarp["ipv"] != "IPV4") {
+            this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
+        };
         if (settingWarp["gool"]) {
             this.argsWarp.push("--gool");
         };
@@ -341,7 +347,15 @@ class connect extends publicSet {
         if (settingWarp["endpoint"] != "") {
             this.argsWarp.push("--endpoint");
             this.argsWarp.push(settingWarp["endpoint"]);
-        }
+        };
+        if (settingWarp["key"]) {
+            this.argsWarp.push("--key");
+            this.argsWarp.push(settingWarp["key"]);
+        };
+        if (settingWarp["dns"]) {
+            this.argsWarp.push("--dns");
+            this.argsWarp.push(settingWarp["dns"]);
+        };
     };
     saveSettings() {
         super.saveSettings(this.settings);
@@ -382,6 +396,7 @@ class connect extends publicSet {
             wait: true,
             appID: 'Freedom Guard'
         });
+        this.diconnectedUI();
     };
 };
 class test extends publicSet {

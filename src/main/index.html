@@ -163,18 +163,18 @@
             <h3>Warp mode</h3>
             <b>Warp Key</b>
             <div id="warp-key" class="form-control-c">
-                <input type="text" class="input input-alt" placeholder="key : xxxxxxxxxxxxx" id="warp-key-text">
+                <input type="text" class="input input-alt" placeholder="key: xxxxxxxxxxxxx" id="warp-key-value">
                 <button class="btn btn-primary" id="get-key-warp">Get Key</button>
             </div>
             <b>DNS</b>
             <div id="dns-warp" class="form-control-c">
-                <input type="text" class="input input-alt" placeholder="dns : 8.8.8.8" id="dns-warp-text">
+                <input type="text" class="input input-alt" placeholder="dns: 8.8.8.8" id="dns-warp-text">
 
             </div>
             <h3>Network Settings Warp</h3>
             <b>IP Version</b>
             <div id="ip-version">
-                <select name="" id="selector-ip-version">
+                <select name="" id="selector-ip-version-warp">
                     <option value="IPV4">IP Version 4</option>
                     <option value="IPV6">IP Version 6</option>
                 </select>
@@ -196,13 +196,11 @@
             <b>Endpoint</b>
             <div id="endpoint-warp" class="form-control-c">
                 <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
-
-                <button class="btn btn-primary" id="find-best-endpoint">Find Best Endpoint</button>
+                <button class="btn btn-primary" id="get-endpoint-warp">Get Endpoint</button>
             </div>
             <b>Scanner RTT Limit</b>
             <div id="scan-rtt" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-text">
-
             </div>
             <h3>Advanced Settings Warp</h3>
             <b>Verbose</b>
@@ -257,16 +255,11 @@
             <button id="repo-contact" class="btn">Repository Freedom Guard on Github</button>
             <button id="telegram-contact" class="btn">Telegram Freedom Guard</button>
             <div style="width: 100%;"></div>
-            <input type="text" id="set-setting-warp-key" class="input input-alt" placeholder="settingWarp[Key=?]"
+            <input type="text" id="set-setting-key" class="input input-alt" placeholder="settingWarp[Key=?]"
                 style="width: 45%;">
-            <input type="text" id="set-setting-warp-value" class="input input-alt" placeholder="value"
-                style="width: 45%;">
+            <input type="text" id="set-setting-value" class="input input-alt" placeholder="value" style="width: 45%;">
             <button id="set-setting-warp" class="btn">Set</button>
             <div style="width: 100%;"></div>
-            <input type="text" id="set-setting-vibe-key" class="input input-alt" placeholder="settingVibe[Key=?]"
-                style="width: 45%;">
-            <input type="text" id="set-setting-vibe-value" class="input input-alt" placeholder="value"
-                style="width: 45%;">
             <button id="set-setting-vibe" class="btn">Set</button>
         </div>
     </div>
@@ -287,7 +280,7 @@
             <i class='bx bx-plus'></i> Freedom Plus
         </div>
         <div id="menu-kill-all">
-            <i class="bx bxs-pear"></i> Kill All services 
+            <i class="bx bxs-pear"></i> Kill All services
         </div>
         <div id="menu-exit-app">
             <i class='bx bx-power-off'></i> Exit App
