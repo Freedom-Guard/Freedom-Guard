@@ -6,6 +6,7 @@ const { connect, connectAuto, test, publicSet } = require('../components/connect
 let $ = require('jquery');
 const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
+const { on } = require('events');
 window.$ = $;
 const vesrionApp = "2.0.0";
 let LOGS = [];
@@ -42,8 +43,8 @@ class main {
         await this.loading();
         this.addEvents();
         this.setSettings();
-        this.reloadServer();
-        this.setPingBox(await this.publicSet.getIP_Ping());
+        this.reloadServers();
+        this.setPingBox();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -111,7 +112,7 @@ class main {
         $('#menu-freedom-plus').on('click', () => {
             ipcRenderer.send("load-file", "./src/plus/index.html")
         });
-        $("#menu-about").on('click', () => {
+        $("#menu-about, #about").on('click', () => {
             $("#about-app").attr("style", "display:flex;");
         });
         $("#setting-show, #close-setting").on('click', () => {
@@ -138,7 +139,7 @@ class main {
             ipcRenderer.send("exit-app");
         });
         $("#ip-ping").on('click', async () => {
-            this.setPingBox(await this.publicSet.getIP_Ping());
+            this.setPingBox();
         });
         $("#ChangeStatus").on("click", () => {
             this.connectFG();
@@ -168,10 +169,27 @@ class main {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
             $("#warp, #vibe, #auto, #flex, #grid").slideUp();
             $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
+            this.publicSet.settingsALL["public"]["core"] == "warp" ? $("#vpn-type-selected").val("system") : '';
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
         });
+        $("#reset-setting-btn").on("click", () => {
+            this.publicSet.resetSettings();
+        });
+        $("#config-fg-value").on("input", () => {
+            this.publicSet.settingsALL["public"]["configAuto"] = $("#config-fg-value").val(); this.publicSet.saveSettings();
+        });
+        $("#submit-config").on("click", async () => {
+            await this.publicSet.importConfig($("#config-value").val());
+            this.setSettings();
+            this.reloadServers();
+        });
         $("#vpn-type-selected").on('change', () => {
-            this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
+            if (!(this.publicSet["settingsALL"]["public"]["core"] != "vibe" && $("#vpn-type-selected").val() == "tun")) {
+                this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
+            } else {
+                alert("tun mode only for Freedom vibe");
+                $("#vpn-type-selected").val("system");
+            }
         });
         $("#bind-address-text").on('change', () => {
             this.publicSet.settingsALL["public"]["proxy"] = $("#bind-address-text").val(); this.publicSet.saveSettings();
@@ -226,13 +244,27 @@ class main {
                     this.publicSet.LOGLOG("Error fetching WARP keys:", error);
                 }
             });
-            $("#warp-key-value").on("change", () => {
+            $("#warp-key-value").on("input", () => {
                 this.publicSet.settingsALL["warp"]["key"] = $("#warp-key-value").val(); this.publicSet.saveSettings();
             });
             $("#selector-ip-version-warp").on("change", () => {
-                this.publicSet.settingsALL["warp"]["ipv"] = $("#selector-ip-version-warp").val();
-                this.publicSet.saveSettings();
-            })
+                this.publicSet.settingsALL["warp"]["ipv"] = $("#selector-ip-version-warp").val(); this.publicSet.saveSettings();
+            });
+            $("#scan-rtt-value").on("input", () => {
+                this.publicSet.settingsALL["warp"]["scanrtt"] = $("#scan-rtt-value").val(); this.publicSet.saveSettings();
+            });
+            $("#verbose-status").on("click", () => {
+                this.publicSet.settingsALL["warp"]["verbose"] = !this.publicSet.settingsALL["warp"]["verbose"]; this.publicSet.saveSettings();
+            });
+            $("#reserved-status").on("click", () => {
+                this.publicSet.settingsALL["warp"]["reserved"] = !this.publicSet.settingsALL["warp"]["reserved"]; this.publicSet.saveSettings();
+            });
+            $("#test-url-warp-status").on("click", () => {
+                this.publicSet.settingsALL["warp"]["testUrl"] = !this.publicSet.settingsALL["warp"]["testUrl"]; this.publicSet.saveSettings();
+            });
+            $("#dns-warp-value").on("input", () => {
+                this.publicSet.settingsALL["warp"]["dns"] = $("#dns-warp-value").val(); this.publicSet.saveSettings();
+            });
         }
         else if (core == "vibe") {
 
@@ -246,20 +278,49 @@ class main {
     }
     setSettings() {
         this.publicSet.ReloadSettings();
+        this.reloadServers();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
         $("#vpn-type-selected").val(this.publicSet.settingsALL["public"]["type"]);
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
+        $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
         $("#selector-ip-version-warp").val(this.publicSet.settingsALL["warp"]["ipv"] ?? "IPV4");
-        $("#Gool").val(this.publicSet.settingsALL["warp"]["gool"]);
-        $("#Scan").val(this.publicSet.settingsALL["warp"]["scan"]);
+        $("#scan-rtt-value").val(this.publicSet.settingsALL["warp"]["scanrtt"]);
+        $("#warp-key-value").val(this.publicSet.settingsALL["warp"]["key"]);
+        $("#Gool").prop("checked", this.publicSet.settingsALL["warp"]["gool"]);
+        $("#Scan").prop("checked", this.publicSet.settingsALL["warp"]["scan"]);
+        $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
+        $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
+        $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
+        $("#dns-warp-value").val(this.publicSet.settingsALL["warp"]["dns"]);
         $("#warp, #vibe, #auto, #flex, #grid").slideUp();
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };
-    reloadServer() {
+    reloadServers() {
+        this.publicSet.ReloadSettings();
+        let importedServer = this.publicSet.settingsALL["public"]["importedServer"];
+        let box = document.getElementById("box-select-country");
+        box.innerHTML = `
+        <button class="btn" style="border-top-right-radius: 0;border-bottom-left-radius: 0;margin-bottom:0.5em;">
+            Add Server
+        </button>`;
+
+        importedServer.forEach(server => {
+            let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
+            let div = document.createElement("div");
+            div.className = "country-option";
+            div.title = server;
+            div.innerHTML = `<img src="../svgs/glob.svg" alt="${name}"><p>${name}</p>`;
+            div.addEventListener("click", async () => {
+                await this.publicSet.importConfig(server);
+                this.setSettings();
+            });
+            box.appendChild(div);
+
+        });
 
     };
     async setPingBox() {
@@ -475,6 +536,6 @@ const mainSTA = new main();
 mainSTA.init();
 const fgCLI_STA = new fgCLI();
 fgCLI_STA.init();
-window.disconnect = () => {
-
-}
+window.reloadPing = () => {
+    mainSTA.setPingBox();
+};

@@ -1,5 +1,6 @@
 const { rejects } = require('assert');
 const { spawn, exec, execSync } = require('child_process');
+const { protocol } = require('electron');
 const fs = require('fs');
 const { notify } = require('node-notifier');
 const { type } = require('os');
@@ -36,7 +37,16 @@ class publicSet {
         this.settingsALL = {
             "flex": {},
             "grid": {},
-            "vibe": {},
+            "vibe": {
+                config: "",
+                typeConfig: "url/file",
+                dnsDirect: "",
+                dnsRemote: "",
+                configFile: "",
+                fragmentSize: "",
+                fragment: "",
+                fragmentSleep: ""
+            },
             "warp": {
                 gool: false,
                 scan: false,
@@ -48,55 +58,30 @@ class publicSet {
                 ipv: "IPV4",
                 key: "",
                 timeout: 60000,
+                cfon: false,
+                testUrl: false,
             },
-            "setupGrid":
-            {
-                "inbounds": [
-                    {
-                        "type": "socks",
-                        "tag": "socks-in",
-                        "listen": "127.0.0.1:40000"
-                    }
-                ],
-                "outbounds": [
-                    {
-                        "type": "socks5",
-                        "tag": "warp-out",
-                        "server": "127.0.0.1",
-                        "port": 8086
-                    },
-                    {
-                        "type": "tun",
-                        "interface_name": "sign-tun",
-                        "mtu": 1500,
-                        "stack": "gvisor",
-                        "auto_route": true,
-                        "auto_detect_interface": true
-                    }
-                ],
-                "route": {
-                    "auto_detect_interface": true,
-                    "rules": [
-                        {
-                            "type": "field",
-                            "inbound": "socks-in",
-                            "outbound": "tun"
-                        }
-                    ]
-                }
-            },
+            "setupGrid": {},
             "public": {
                 proxy: "127.0.0.1:8086",
-                configAuto: "",
+                configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json",
                 configManual: "",
                 core: "auto",
                 dns: ["8.8.8.8"],
                 protocol: "auto",
                 testUrl: "https://1.1.1.1/cdn-cgi/trace",
                 type: "system",
-                isp: "other"
+                isp: "other",
+                importedServer: []
             }
         };
+        this.supported = {
+            vibe: ["ss", "http", "vless", "vmess", "trojan", "hysteria", "shadowtls", "tuic", "socks", "wireguard", "hy2"],
+            warp: ["warp"],
+            grid: ["grid"],
+            flex: ["flex"],
+            other: ["freedom-guard://"]
+        }
     };
     saveSettings(settingsSave = this.settingsALL) {
         write_file('freedom-guard.json', JSON.stringify(settingsSave));
@@ -178,8 +163,8 @@ class publicSet {
             setProxy(proxy);
         }
         else if (process.platform == "linux") {
-            alert(`Proxy ${type} with ${this.settingsALL["public"]["core"]}: ${this.settingsALL["public"]["proxy"]} ==== Please set this proxy on your system.`)
-        }
+            alert(`Proxy ${type} with ${this.settingsALL["public"]["core"]}: ${this.settingsALL["public"]["proxy"]} ==== Please set this proxy on your system.`);
+        };
     };
     offProxy() {
         const setRegistryValue = (key, name, type, value) => {
@@ -211,7 +196,90 @@ class publicSet {
     };
     diconnectedUI() {
         window.diconnectedUI();
-    }
+    };
+    resetSettings() {
+        this.settingsALL = {
+            "flex": {},
+            "grid": {},
+            "vibe": {
+                config: "",
+                typeConfig: "url/file",
+                dnsDirect: "",
+                dnsRemote: "",
+                configFile: "",
+                fragmentSize: "",
+                fragment: "",
+                fragmentSleep: ""
+            },
+            "warp": {
+                gool: false,
+                scan: false,
+                endpoint: "",
+                reserved: false,
+                dns: "",
+                verbose: false,
+                scanrtt: "",
+                ipv: "IPV4",
+                key: "",
+                timeout: 60000,
+                cfon: false,
+                testUrl: false,
+            },
+            "setupGrid": {},
+            "public": {
+                proxy: "127.0.0.1:8086",
+                configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json",
+                configManual: "",
+                core: "auto",
+                dns: ["8.8.8.8"],
+                protocol: "auto",
+                testUrl: "https://1.1.1.1/cdn-cgi/trace",
+                type: "system",
+                isp: "other",
+                importedServer: []
+            },
+
+        };
+        this.saveSettings();
+        alert("settings deafult!");
+        location.reload();
+    };
+    async importConfig(config) {
+        try { config = config.toString() } catch { if (config == "") { alert("config is empty!"); return; } };
+        this.LOGLOG(config);
+        this.settingsALL["public"]["configManual"] = config;
+        if (!(this.settingsALL["public"]["importedServer"].some(server => config == server))) {
+            this.settingsALL["public"]["importedServer"].push(config)
+        }
+        if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
+            this.settingsALL["public"]["core"] = "vibe";
+            if (!(config.startsWith("http"))) {
+                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), btoa(unescape(encodeURIComponent(config))));
+                this.settingsALL["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
+            }
+            else {
+                this.settingsALL["vibe"]["config"] = config;
+            };
+        }
+        else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
+
+        }
+        else if (this.supported["flex"].some(protocol => config.toString().startsWith(protocol))) {
+
+        }
+        else if (this.supported["grid"].some(protocol => config.toString().startsWith(protocol))) {
+
+        }
+        else if (this.supported["other"].some(protocol => config.toString().startsWith(protocol))) {
+
+        }
+        else {
+            this.LOGLOG("config -> not supported");
+            alert("config -> not supported");
+            return;
+        }
+        this.saveSettings();
+    };
 }
 class connectAuto extends publicSet {
     constructor() {
@@ -332,30 +400,56 @@ class connect extends publicSet {
             this.setProxy(proxy);
         }
     };
-    ResetArgs() {
+    ResetArgs(core = "warp") {
         this.ReloadSettings();
-        let settingWarp = this.settingsALL["warp"];
-        if (settingWarp["ipv"] != "IPV4") {
-            this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
-        };
-        if (settingWarp["gool"]) {
-            this.argsWarp.push("--gool");
-        };
-        if (settingWarp["scan"]) {
-            this.argsWarp.push("--scan");
-        };
-        if (settingWarp["endpoint"] != "") {
-            this.argsWarp.push("--endpoint");
-            this.argsWarp.push(settingWarp["endpoint"]);
-        };
-        if (settingWarp["key"]) {
-            this.argsWarp.push("--key");
-            this.argsWarp.push(settingWarp["key"]);
-        };
-        if (settingWarp["dns"]) {
-            this.argsWarp.push("--dns");
-            this.argsWarp.push(settingWarp["dns"]);
-        };
+        if (core == "warp") {
+            this.argsWarp = [];
+            let settingWarp = this.settingsALL["warp"];
+            if (settingWarp["ipv"] != "IPV4") {
+                this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
+            };
+            if (settingWarp["gool"]) {
+                this.argsWarp.push("--gool");
+            };
+            if (settingWarp["scan"]) {
+                this.argsWarp.push("--scan");
+                if (settingWarp["scanrtt"]) {
+                    this.argsWarp.push("--rtt");
+                    this.argsWarp.push(settingWarp["scanrtt"] ?? "1s");
+                }
+            };
+            if (settingWarp["endpoint"] != "") {
+                this.argsWarp.push("--endpoint");
+                this.argsWarp.push(settingWarp["endpoint"]);
+            };
+            if (settingWarp["key"]) {
+                this.argsWarp.push("--key");
+                this.argsWarp.push(settingWarp["key"]);
+            };
+            if (settingWarp["dns"]) {
+                this.argsWarp.push("--dns");
+                this.argsWarp.push(settingWarp["dns"]);
+            };
+            if (settingWarp["cfon"]) {
+                this.argsWarp.push("--cfon");
+                this.argsWarp.push("--country");
+                this.argsWarp.push(settingWarp["cfon"]);
+            };
+            if (this.settingsALL["public"]["type"] == "tun") {
+                this.argsWarp.push("");
+            };
+            if (settingWarp["reserved"]) {
+                this.argsWarp.push("--reserved");
+                this.argsWarp.push("0,0,0");
+            };
+            if (settingWarp["verbose"]) {
+                this.argsWarp.push("--verbose");
+            };
+            if (settingWarp["testUrl"]) {
+                this.argsWarp.push("--test-url");
+                this.argsWarp.push(this.settingsALL["public"]["testUrl"]);
+            };
+        }
     };
     saveSettings() {
         super.saveSettings(this.settings);
@@ -376,6 +470,7 @@ class connect extends publicSet {
         catch (error) {
             this.LOGLOG("error in killVPN: " + error);
         };
+        window.reloadPing();
     };
     DataoutWarp(data = "") {
         this.LOGLOG(data);

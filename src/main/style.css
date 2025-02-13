@@ -1176,7 +1176,7 @@ select option {
     border-radius: 8px;
 }
 
-.dropdown-content a {
+.dropdown-content div {
     border-radius: 8px;
     display: flex !important;
     justify-content: start;
@@ -1192,7 +1192,7 @@ select option {
     font-size: 100%;
 }
 
-.dropdown-content a:hover {
+.dropdown-content div:hover {
     background-color: #8338ec59;
 }
 

@@ -62,10 +62,10 @@
     </div>
     <p id="ip-ping"></p>
     <div class="box-select-country" id="box-select-country">
-        <div class="country-option">
-            <img src="../svgs/ir.svg" alt="Auto Server">
-            <p>Auto Server</p>
-        </div>
+        <button class="btn" id="add-server-btn"
+            style="border-top-right-radius: 0;border-bottom-left-radius: 0;margin-bottom:0.5em;">
+            Add Server
+        </button>
     </div>
     <div class="options-select-cfon">
         <div class="box-select-country-mini" id="box-select-country-mini">
@@ -95,29 +95,29 @@
             <div class="dropdown" id="more-options" style="margin-left: auto;padding: 10px;">
                 <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;" id="open-drop-setting"></i>
                 <div class="dropdown-content" id="more-options-content">
-                    <a id="import-config-file"><i class="bx bx-import" style="font-size: 1.5em;"></i>Import config</a>
-                    <a id="export-config"><i class="bx bx-export" style="font-size: 1.5em;"></i>Export config</a>
-                    <a id="reset-setting-btn"><i class="bx bx-reset" style="font-size: 1.5em;"></i>Reset setting
-                    </a>
-                    <a id="about"><i class="bx bx-info-circle" style="font-size: 1.5em;"></i>About app</a>
+                    <div id="import-config-file"><i class="bx bx-import" style="font-size: 1.5em;"></i>Import config
+                    </div>
+                    <div id="export-config"><i class="bx bx-export" style="font-size: 1.5em;"></i>Export config</div>
+                    <div id="reset-setting-btn"><i class="bx bx-reset" style="font-size: 1.5em;"></i>Reset setting</div>
+                    <div id="about"><i class="bx bx-info-circle" style="font-size: 1.5em;"></i>About app</div>
                 </div>
             </div>
         </nav>
         <b>Config Freedom Guard</b>
         <div id="config" class="form-control-c">
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
-                id="config-text">
+                id="config-value">
             <button id="submit-config" class="btn">Import</button>
         </div>
         <b>Config Freedom Guard for auto mode</b>
         <div id="config-fg" class="form-control-c">
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
-                id="config-fg-text"
+                id="config-fg-value"
                 value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json">
             <button id="selector-file" class="btn">
                 <label for="selector-file-config" style="display: flex; align-items: center;"><i
                         class='bx bx-folder-open' style="font-size:150%;"></i></label>
-                <input type="file" id="selector-file-config" style="display: none;">
+                <input type="file" id="selector-file-config-fg" style="display: none;">
             </button>
         </div>
         <h3>VPN Settings</h3>
@@ -125,8 +125,8 @@
         <div id="core-guard" class="form-control-c">
             <select value="auto" id="core-guard-selected">
                 <option value="auto">Automatic</option>
-                <option value="flex">Freedom Flex</option>
-                <option value="grid">Freedom Grid</option>
+                <!-- <option value="flex">Freedom Flex</option>
+                <option value="grid">Freedom Grid</option> -->
                 <option value="vibe">Freedom Vibe</option>
                 <option value="warp">Freedom Warp</option>
             </select>
@@ -166,10 +166,9 @@
                 <input type="text" class="input input-alt" placeholder="key: xxxxxxxxxxxxx" id="warp-key-value">
                 <button class="btn btn-primary" id="get-key-warp">Get Key</button>
             </div>
-            <b>DNS</b>
+            <b>DNS Warp</b>
             <div id="dns-warp" class="form-control-c">
-                <input type="text" class="input input-alt" placeholder="dns: 8.8.8.8" id="dns-warp-text">
-
+                <input type="text" class="input input-alt" placeholder="dns: 8.8.8.8" id="dns-warp-value">
             </div>
             <h3>Network Settings Warp</h3>
             <b>IP Version</b>
@@ -200,7 +199,7 @@
             </div>
             <b>Scanner RTT Limit</b>
             <div id="scan-rtt" class="form-control-c">
-                <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-text">
+                <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-value">
             </div>
             <h3>Advanced Settings Warp</h3>
             <b>Verbose</b>
@@ -217,7 +216,14 @@
                     <span class="slider"></span>
                 </label>
             </div>
-            <b>Config Directory</b>
+            <b>Test URL Warp</b>
+            <div id="test-url-warp">
+                <label class="switch">
+                    <input type="checkbox" id="test-url-warp-status" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <!-- <b>Config Directory</b>
             <div id="config-dir-warp" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="Path file config" id="config-dir">
 
@@ -230,8 +236,7 @@
             <b>Cache Directory</b>
             <div id="cache" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="Directory : ./../" id="cache-dir">
-
-            </div>
+            </div> -->
         </section>
         <section id="vibe">
             <h3>Vibe Mode</h3>
