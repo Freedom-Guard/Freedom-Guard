@@ -5,6 +5,8 @@ const fs = require('fs');
 const { notify } = require('node-notifier');
 const { type } = require('os');
 const { resolve } = require('path');
+const { trackEvent } = require("@aptabase/electron/renderer");
+trackEvent("app_started");
 read_file = function (path) {
     return fs.readFileSync(path, 'utf8');
 };
@@ -45,7 +47,8 @@ class publicSet {
                 configFile: "",
                 fragmentSize: "",
                 fragment: "",
-                fragmentSleep: ""
+                fragmentSleep: "",
+                timeout: 60000
             },
             "warp": {
                 gool: false,
@@ -72,7 +75,9 @@ class publicSet {
                 testUrl: "https://1.1.1.1/cdn-cgi/trace",
                 type: "system",
                 isp: "other",
-                importedServer: []
+                importedServers: [],
+                ispServers: [],
+                timeout: 60000
             }
         };
         this.supported = {
@@ -87,7 +92,7 @@ class publicSet {
         write_file('freedom-guard.json', JSON.stringify(settingsSave));
         this.settingsALL = settingsSave;
     };
-    ReloadSettings() {
+    async ReloadSettings() {
         try {
             this.settingsALL = JSON.parse(read_file('freedom-guard.json'));
         } catch (error) { this.saveSettings(); }
@@ -134,6 +139,10 @@ class publicSet {
             wait: true,
             appID: 'Freedom Guard'
         });
+        trackEvent("connected", {
+            core: this.settingsALL["public"]["core"],
+            isp: this.settingsALL["public"]["isp"]
+        })
         window.connectedUI();
     };
     setProxy(proxy, type = "socks5") {
@@ -209,7 +218,8 @@ class publicSet {
                 configFile: "",
                 fragmentSize: "",
                 fragment: "",
-                fragmentSleep: ""
+                fragmentSleep: "",
+                timeout: 60000
             },
             "warp": {
                 gool: false,
@@ -236,7 +246,9 @@ class publicSet {
                 testUrl: "https://1.1.1.1/cdn-cgi/trace",
                 type: "system",
                 isp: "other",
-                importedServer: []
+                importedServers: [],
+                ispServers: [],
+                timeout: 45000
             },
 
         };
@@ -248,8 +260,8 @@ class publicSet {
         try { config = config.toString() } catch { if (config == "") { alert("config is empty!"); return; } };
         this.LOGLOG(config);
         this.settingsALL["public"]["configManual"] = config;
-        if (!(this.settingsALL["public"]["importedServer"].some(server => config == server))) {
-            this.settingsALL["public"]["importedServer"].push(config)
+        if (!(this.settingsALL["public"]["importedServers"].some(server => config == server))) {
+            this.settingsALL["public"]["importedServers"].push(config)
         }
         if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "vibe";
@@ -262,7 +274,13 @@ class publicSet {
             };
         }
         else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
-
+            this.settingsALL["public"]["core"] = "warp";
+            let optionsWarp = config.replace("warp://", "").split("&");
+            optionsWarp.forEach(option => {
+                this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1];
+            });
+            this.saveSettings();
+            window.setSettings();
         }
         else if (this.supported["flex"].some(protocol => config.toString().startsWith(protocol))) {
 
@@ -271,15 +289,26 @@ class publicSet {
 
         }
         else if (this.supported["other"].some(protocol => config.toString().startsWith(protocol))) {
-
+            let optionsFreedomGuard = config.replace("freedom-guard://", "").split("&");
+            optionsFreedomGuard.forEach(option => {
+                this.settingsALL["public"][option.split("=")[0]] = option.split("=")[1];
+            });
+            this.saveSettings();
+            window.setSettings();
         }
         else {
             this.LOGLOG("config -> not supported");
             alert("config -> not supported");
             return;
-        }
+        };
+        window.setHTML("#textOfCfon", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
         this.saveSettings();
     };
+    async deleteConfig(config) {
+        this.settingsALL["public"]["importedServers"] = this.settingsALL["public"]["importedServers"].filter(item => item !== config);
+        this.saveSettings();
+        window.setHTML("#textOfCfon", "Auto Server");
+    }
 }
 class connectAuto extends publicSet {
     constructor() {
@@ -374,16 +403,37 @@ class connect extends publicSet {
             this.notConnected("warp");
             this.LOGLOG("warp closed!");
         });
-        await this.sleep(60000);
+        await this.sleep(this.settingsALL["warp"]["timeout"]);
         if (!this.connected) {
             this.killVPN("warp");
             this.LOGLOG("warp not connected!");
             this.notConnected("warp");
         };
     };
-    connectVibe() {
-        return new Promise((resolve, reject) => {
+    async connectVibe() {
+        this.ResetArgs("vibe");
+        await this.sleep(1000);
+        this.LOGLOG(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")) + " " + this.argsVibe);
+        this.processVibe = spawn(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")), this.argsVibe);
+        this.processVibe.stderr.on("data", (data) => {
+            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
         });
+        this.processVibe.stdout.on("data", (data) => {
+            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
+        });
+        this.processVibe.on("close", () => {
+            this.killVPN("vibe");
+            this.notConnected("vibe");
+            this.LOGLOG("vibe closed!");
+            this.offProxy();
+        });
+        await this.sleep(this.settingsALL["vibe"]["timeout"]);
+        if (!this.connected) {
+            this.killVPN("vibe");
+            this.LOGLOG("vibe not connected!");
+            this.notConnected("vibe");
+            this.offProxy();
+        };
     };
     connectFlex() {
         return new Promise((resolve, reject) => {
@@ -450,6 +500,19 @@ class connect extends publicSet {
                 this.argsWarp.push(this.settingsALL["public"]["testUrl"]);
             };
         }
+        else if (core == "vibe") {
+            this.argsVibe = [];
+            let settingVibe = this.settingsALL["vibe"];
+            this.argsVibe.push("run")
+            this.argsVibe.push("--config");
+            this.argsVibe.push(settingVibe["config"]);
+            if (this.settingsALL["public"]["type"] == "tun") {
+                this.argsVibe.push("--tun");
+            }
+            else {
+                this.argsVibe.push("--system-proxy");
+            };
+        }
     };
     saveSettings() {
         super.saveSettings(this.settings);
@@ -474,13 +537,23 @@ class connect extends publicSet {
     };
     DataoutWarp(data = "") {
         this.LOGLOG(data);
-        if (data.toString().includes("serving")) {
+        data = data.toString();
+        if (data.includes("serving")) {
             this.ReloadSettings();
             this.connectedVPN("warp");
             this.connected = true;
             this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
         }
     };
+    async DataoutVibe(data = "") {
+        this.LOGLOG(data)
+        data = data.toString();
+        if (data.includes("CORE STARTED")) {
+            this.ReloadSettings();
+            this.connectedVPN("vibe");
+            this.connected = true;
+        }
+    }
     notConnected(core) {
         this.LOGLOG("not connected " + core);
         notify({

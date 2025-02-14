@@ -30,7 +30,9 @@ function createWindow() {
     icon: path.join(__dirnameFile, "src", "assets", "icon", 'ico.ico'),
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      preload: __dirname + "\\preload.js",
+      enableRemoteModule: false
     },
     autoHideMenuBar: true,
     titleBarOverlay: "Freedom Guard",
@@ -207,6 +209,16 @@ if (process.platform === "win32") {
 }
 // #endregion
 // #region IPC
+ipcMain.handle("submit-dialog", async (message) => {
+  const result = await dialog.showMessageBox({
+    type: "question",
+    buttons: ["بله", "خیر"],
+    title: "تأیید",
+    message: "آیا مطمئن هستید که می‌خواهید کانفیگ را حذف کنید؟"
+  });
+
+  return result.response === 0;
+});
 ipc.on("load-main-app", (event) => {
   mainWindow.loadFile(path.join("src", "main/index.html"));
   mainWindow.removeBrowserView(ViewBrowser);

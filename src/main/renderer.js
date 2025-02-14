@@ -1,5 +1,6 @@
 // #region Libraries 
 const { ipcRenderer, dialog, shell } = require('electron');
+const { remote } = require('electron');
 const { path } = require('path');
 const { readFileSync } = require('fs');
 const { connect, connectAuto, test, publicSet } = require('../components/connect');
@@ -28,6 +29,9 @@ window.connectedUI = () => {
     $("#ChangeStatus").removeClass("connecting");
     mainSTA.publicSet.status = true;
     mainSTA.publicSet.connected = true;
+};
+window.setHTML = (selector, text) => {
+    $(selector).html(text);
 };
 class main {
     constructor() {
@@ -162,6 +166,11 @@ class main {
             this.publicSet.offProxy();
             this.setPingBox();
         });
+        $("#add-server-btn").on("click", () => {
+            let settingApp = $("#setting-app");
+            settingApp.show().animate({ right: "0px" }, 700);
+            $("#config-value").focus();
+        });
         process.nextTick(() => this.addEventsSetting());
     };
     addEventsSetting() {
@@ -267,7 +276,11 @@ class main {
             });
         }
         else if (core == "vibe") {
-
+            $("#config-vibe-value").on("input", () => {
+                this.publicSet.settingsALL["public"]["configManual"] = $("#config-vibe-value").val();
+                this.publicSet.settingsALL["vibe"]["config"] = $("#config-vibe-value").val();
+                this.publicSet.saveSettings();
+            });
         }
         else if (core == "grid") {
 
@@ -284,6 +297,8 @@ class main {
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
+        this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
+        window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? "Auto Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
         $("#selector-ip-version-warp").val(this.publicSet.settingsALL["warp"]["ipv"] ?? "IPV4");
@@ -301,14 +316,18 @@ class main {
     };
     reloadServers() {
         this.publicSet.ReloadSettings();
-        let importedServer = this.publicSet.settingsALL["public"]["importedServer"];
+        let importedServers = this.publicSet.settingsALL["public"]["importedServers"];
         let box = document.getElementById("box-select-country");
         box.innerHTML = `
-        <button class="btn" style="border-top-right-radius: 0;border-bottom-left-radius: 0;margin-bottom:0.5em;">
+        <button class="btn" style="border-top-right-radius: 0;border-bottom-left-radius: 0;margin-bottom:0.5em;" id="add-server-btn">
             Add Server
         </button>`;
-
-        importedServer.forEach(server => {
+        $("#add-server-btn").on("click", () => {
+            let settingApp = $("#setting-app");
+            settingApp.show().animate({ right: "0px" }, 700);
+            $("#config-value").focus();
+        });
+        importedServers.forEach(server => {
             let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
             let div = document.createElement("div");
             div.className = "country-option";
@@ -318,6 +337,27 @@ class main {
                 await this.publicSet.importConfig(server);
                 this.setSettings();
             });
+            div.addEventListener("contextmenu", async () => {
+                const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید کانفیگ را حذف کنید؟");
+                if (!userConfirmed) return;
+                this.publicSet.LOGLOG("delete config -> " + server)
+                try {
+                    if (!server) return;
+
+                    await this.publicSet.deleteConfig(server);
+                    await this.publicSet.ReloadSettings();
+
+                    this.publicSet.settingsALL["public"]["core"] = "auto";
+                    this.publicSet.settingsALL["public"]["configManual"] = "";
+
+                    this.publicSet.saveSettings();
+                    this.setSettings();
+                    this.reloadServers();
+                } catch (error) {
+                    console.error("خطا:", error);
+                }
+            });
+
             box.appendChild(div);
 
         });
@@ -455,7 +495,8 @@ class fgCLI extends main {
                     let key = commandArgs[1];
                     let value = commandArgs[2];
                     this.publicSet.settingsALL[sect][key] = value;
-                    this.publicSet.saveSettisngs();
+                    this.publicSet.saveSettings();
+                    this.setSettings();
                     window.LogLOG(`Set ${sect}->${key} to ${value}`);
                 }
                 else {
@@ -538,4 +579,7 @@ const fgCLI_STA = new fgCLI();
 fgCLI_STA.init();
 window.reloadPing = () => {
     mainSTA.setPingBox();
+};
+window.setSettings = () => {
+    mainSTA.setSettings();
 };
