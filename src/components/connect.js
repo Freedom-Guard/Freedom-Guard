@@ -75,7 +75,7 @@ class publicSet {
                 testUrl: "https://1.1.1.1/cdn-cgi/trace",
                 type: "system",
                 isp: "other",
-                importedServers: [],
+                importedServers: ["freedom-guard://core=auto#Auto Server"],
                 ispServers: [],
                 timeout: 60000
             }
@@ -246,7 +246,7 @@ class publicSet {
                 testUrl: "https://1.1.1.1/cdn-cgi/trace",
                 type: "system",
                 isp: "other",
-                importedServers: [],
+                importedServers: ["freedom-guard://core=auto#Auto Server"],
                 ispServers: [],
                 timeout: 45000
             },
@@ -266,7 +266,7 @@ class publicSet {
         if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "vibe";
             if (!(config.startsWith("http"))) {
-                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), btoa(unescape(encodeURIComponent(config))));
+                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
                 this.settingsALL["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
             }
             else {
@@ -289,7 +289,7 @@ class publicSet {
 
         }
         else if (this.supported["other"].some(protocol => config.toString().startsWith(protocol))) {
-            let optionsFreedomGuard = config.replace("freedom-guard://", "").split("&");
+            let optionsFreedomGuard = config.replace("freedom-guard://", "").split("#")[0].split("&");
             optionsFreedomGuard.forEach(option => {
                 this.settingsALL["public"][option.split("=")[0]] = option.split("=")[1];
             });

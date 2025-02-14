@@ -1114,12 +1114,17 @@ select option {
 
 #Logs .command-line-fg>* {
     background-color: transparent;
-    color: #00b894;
+    color: #0f0;
     border: none;
-    width: 92vw;
+    border-bottom: 2px solid #0f0;
+    width: 91vw;
     padding: 5px 10px;
-    outline: 2px solid #00b894;
     border-radius: 8px;
+}
+
+#Logs .command-line-fg>*:focus {
+    outline: 2px solid #0f0;
+    transition: 0.3s;
 }
 
 #Logs #LogsContent {
