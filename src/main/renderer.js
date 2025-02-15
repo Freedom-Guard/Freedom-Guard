@@ -553,6 +553,8 @@ class fgCLI extends main {
                 let proxy = commandArgs[0];
                 this.publicSet.setProxy(proxy);
                 break;
+            case "update":
+            // update isp, servers (not ready)
             default:
                 window.LogLOG("Command not found");
                 break;

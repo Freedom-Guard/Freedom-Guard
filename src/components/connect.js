@@ -67,7 +67,7 @@ class publicSet {
             "setupGrid": {},
             "public": {
                 proxy: "127.0.0.1:8086",
-                configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json",
+                configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json",
                 configManual: "",
                 core: "auto",
                 dns: ["8.8.8.8"],
@@ -238,7 +238,7 @@ class publicSet {
             "setupGrid": {},
             "public": {
                 proxy: "127.0.0.1:8086",
-                configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json",
+                configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json",
                 configManual: "",
                 core: "auto",
                 dns: ["8.8.8.8"],
@@ -308,7 +308,55 @@ class publicSet {
         this.settingsALL["public"]["importedServers"] = this.settingsALL["public"]["importedServers"].filter(item => item !== config);
         this.saveSettings();
         window.setHTML("#textOfCfon", "Auto Server");
-    }
+    };
+    async updateISPServers(isp = this.settingsALL["public"]["isp"]) {
+        try {
+            this.ReloadSettings();
+            let serverISP = this.settingsALL["public"]["configAuto"];
+            let response = await this.axios.get(serverISP);
+            let responseServerISP;
+            try {
+                responseServerISP = JSON.parse(response.data);
+            } catch (error) {
+                this.LOGLOG("Error parsing JSON: " + error);
+                alert("Invalid response format from server.");
+                return false;
+            }
+
+            if (!responseServerISP || typeof responseServerISP !== "object") {
+                alert("Invalid ISP data received.");
+                this.LOGLOG("Invalid ISP data received.");
+                return false;
+            }
+
+            if (!(isp in responseServerISP)) {
+                this.LOGLOG(`ISP "${isp}" not found in server response.`);
+                alert(`ISP "${isp}" not found in server response.`);
+                return false;
+            }
+
+            this.settingsALL["public"]["ispServers"] = responseServerISP[isp];
+            this.saveSettings();
+            return true;
+        } catch (error) {
+            this.LOGLOG("Network or server error:", error);
+            alert("Cannot access the repository. Please check your connection.");
+            this.saveSettings();
+            return false;
+        }
+    };
+    notConnected(core = "") {
+        this.LOGLOG("not connected " + core);
+        notify({
+            title: 'Connection Failed',
+            message: `Failed to connect to ${core}`,
+            icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
+            sound: true,
+            wait: true,
+            appID: 'Freedom Guard'
+        });
+        this.diconnectedUI();
+    };
 }
 class connectAuto extends publicSet {
     constructor() {
@@ -331,14 +379,51 @@ class connectAuto extends publicSet {
             "public": this.settingsALL["public"]
         };
     };
-    connect() {
+    async connect() {
         this.LOGLOG("starting Auto...");
-    }
-    connectWarp() {
+        this.LOGLOG("I'm still alive ;)");
+        if (!(await this.updateISPServers())) {
+            this.LOGLOG("not connected auto -> isp servers");
+            this.notConnected("Auto");
+            return;
+        }
+        this.ReloadSettings();
+        try {
+            for (let server of this.settingsALL["public"]["ispServers"]) {
+                let mode = server.split(",;,")[0];
+                server = server.split(",;,")[1];
+                this.LOGLOG(mode + " -> " + server);
+                if (this.connected) {
+                    this.connectedVPN("auto");
+                    return;
+                }
+                else {
+                    this.LOGLOG("not connected -> next server...");
+                }
+                if (mode == "warp") {
+                    server.split("&").forEach(option => {
+                        this.settings["warp"][option.split("=")[0]] = option.split("=")[1];
+                    });
+                    await this.connectWarp();
+                }
+                else if (mode == "vibe") {
+                    this.settings["vibe"]["config"] = server;
+                    await this.connectVibe();
+                };
+            };
+        }
+        catch {
+            this.LOGLOG("not connected auto -> isp servers");
+            this.notConnected("auto");
+            return;
+        };
 
     }
-    connectVibe() {
-    }
+    async connectWarp() {
+
+    };
+    async connectVibe() {
+    };
     connectFlex() {
     }
     connectGrid() {
@@ -347,7 +432,11 @@ class connectAuto extends publicSet {
     };
     killVPN() {
 
-    }
+    };
+    connectFailed(from = "start") {
+        // this.
+
+    };
 };
 class connect extends publicSet {
     constructor() {
@@ -553,18 +642,6 @@ class connect extends publicSet {
             this.connectedVPN("vibe");
             this.connected = true;
         }
-    }
-    notConnected(core) {
-        this.LOGLOG("not connected " + core);
-        notify({
-            title: 'Connection Failed',
-            message: `Failed to connect to ${core}`,
-            icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
-            sound: true,
-            wait: true,
-            appID: 'Freedom Guard'
-        });
-        this.diconnectedUI();
     };
 };
 class test extends publicSet {
