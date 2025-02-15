@@ -313,10 +313,11 @@ class publicSet {
         try {
             this.ReloadSettings();
             let serverISP = this.settingsALL["public"]["configAuto"];
-            let response = await this.axios.get(serverISP);
+            let response = await this.axios.get(serverISP, { timeout: 3000 });
             let responseServerISP;
+            this.LOGLOG("RAW RESPONSE:", response.data);
             try {
-                responseServerISP = JSON.parse(response.data);
+                responseServerISP = response.data[isp];
             } catch (error) {
                 this.LOGLOG("Error parsing JSON: " + error);
                 alert("Invalid response format from server.");
@@ -334,8 +335,8 @@ class publicSet {
                 alert(`ISP "${isp}" not found in server response.`);
                 return false;
             }
-
-            this.settingsALL["public"]["ispServers"] = responseServerISP[isp];
+            this.LOGLOG("isp servers updated: " + responseServerISP);
+            this.settingsALL["public"]["ispServers"] = responseServerISP;
             this.saveSettings();
             return true;
         } catch (error) {
@@ -380,7 +381,6 @@ class connectAuto extends publicSet {
         };
     };
     async connect() {
-        this.LOGLOG("starting Auto...");
         this.LOGLOG("I'm still alive ;)");
         if (!(await this.updateISPServers())) {
             this.LOGLOG("not connected auto -> isp servers");
@@ -388,7 +388,9 @@ class connectAuto extends publicSet {
             return;
         }
         this.ReloadSettings();
+        this.LOGLOG("starting Auto...");
         try {
+            this.LOGLOG("isp servers: " + this.settingsALL["public"]["ispServers"]);
             for (let server of this.settingsALL["public"]["ispServers"]) {
                 let mode = server.split(",;,")[0];
                 server = server.split(",;,")[1];
