@@ -11,6 +11,7 @@ const { initialize } = require('@aptabase/electron/main');
 initialize("A-EU-5072151346");
 const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
+const { notify } = require('node-notifier');
 ;
 __dirnameFile = __dirname;
 // #endregion
@@ -44,6 +45,10 @@ function createWindow() {
       ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
     }
     catch { };
+  });
+  mainWindow.on('close', (event) => {
+    event.preventDefault();
+    app.exit();
   });
 };
 function CreateViewBrowser(url) {

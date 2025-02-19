@@ -15,6 +15,7 @@ window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
     $("#LogsContent").append(`<p class="log-item">${log}</p>`);
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!") };
+    $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
 };
 window.diconnectedUI = () => {
     $("#ChangeStatus").removeClass("connecting");
@@ -138,8 +139,7 @@ class main {
             $("#about-app").hide();
         });
         $("#box-select-country-mini").on('click', () => {
-            $("#box-select-country").slideToggle();
-            $("#box-select-country").toggleClass("show");
+            $("#box-select-country").slideToggle("slow");
         });
         $("#menu-exit-app").on('click', () => {
             ipcRenderer.send("exit-app");
@@ -211,7 +211,16 @@ class main {
         $("#conn-test-text").on('input', () => {
             this.publicSet.settingsALL["public"]["testUrl"] = $("#conn-test-text").val(); this.publicSet.saveSettings();
         });
-
+        $("#change-background-btn").on("click", () => {
+            let backgroundImageLists = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg"];
+            let randomIndex = Math.floor(Math.random() * backgroundImageLists.length);
+            let randomImage = backgroundImageLists[randomIndex];
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundImage = "url('background/" + randomImage + "')";
+        });
+        $("#repo-contact").on("click", () => { this.openLink("https://github.com/Freedom-Guard/Freedom-Guard/") });
+        $("#x-contact").on("click", () => { this.openLink("https://x.com/Freedom_Guard_N") });
+        $("#telegram-contact").on("click", () => { this.openLink("https://t.me/Freedom_Guard_Net") });
     };
     addEventSect(core) {
         if (core == "warp") {
@@ -316,8 +325,10 @@ class main {
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };
-    reloadServers() {
+    async reloadServers() {
         this.publicSet.ReloadSettings();
+        await this.publicSet.updateISPServers();
+        let ispServers = this.publicSet.settingsALL["public"]["ispServers"];
         let importedServers = this.publicSet.settingsALL["public"]["importedServers"];
         let box = document.getElementById("box-select-country");
         box.innerHTML = `
@@ -363,7 +374,42 @@ class main {
             box.appendChild(div);
 
         });
+        box.innerHTML += "<h2 style='margin:0.7em;'>ISP Servers</h2>";
+        ispServers.forEach(server => {
+            server = server.replace("vibe,;,", "").replace(",;,", "://");
+            let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
+            let div = document.createElement("div");
+            div.className = "country-option";
+            div.title = server;
+            div.innerHTML = `<img src="../svgs/glob.svg" alt="${name}"><p>${name}</p>`;
+            div.addEventListener("click", async () => {
+                await this.publicSet.importConfig(server);
+                this.setSettings();
+            });
+            div.addEventListener("contextmenu", async () => {
+                const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید کانفیگ را حذف کنید؟");
+                if (!userConfirmed) return;
+                this.publicSet.LOGLOG("delete config -> " + server)
+                try {
+                    if (!server) return;
 
+                    await this.publicSet.deleteConfig(server);
+                    await this.publicSet.ReloadSettings();
+
+                    this.publicSet.settingsALL["public"]["core"] = "auto";
+                    this.publicSet.settingsALL["public"]["configManual"] = "";
+
+                    this.publicSet.saveSettings();
+                    this.setSettings();
+                    this.reloadServers();
+                } catch (error) {
+                    console.error("خطا:", error);
+                }
+            });
+
+            box.appendChild(div);
+
+        });
     };
     async setPingBox() {
         let data = await this.publicSet.getIP_Ping();
@@ -407,38 +453,38 @@ class main {
     };
     KILLALLCORES(core) {
         core = core.toString().toLowerCase() + "-core";
-        window.LogLOG(`Killing ${core}...`);
+        this.publicSet.LOGLOG(`Killing ${core}...`);
         if (process.platform == "win32") {
             if (!core || typeof core !== "string") {
-                window.LogLOG("Error: Invalid process name.");
+                this.publicSet.LOGLOG("Error: Invalid process name.");
             } else {
                 execFile("taskkill", ["/f", "/im", `${core}.exe`], (error, stdout, stderr) => {
                     if (error) {
-                        window.LogLOG(`Error: ${error.message}`);
+                        this.publicSet.LOGLOG(`Error: ${error.message}`);
                         return;
                     }
                     if (stderr) {
-                        window.LogLOG(`stderr: ${stderr}`);
+                        this.publicSet.LOGLOG(`stderr: ${stderr}`);
                         return;
                     }
-                    window.LogLOG(`stdout: ${stdout}`);
+                    this.publicSet.LOGLOG(`stdout: ${stdout}`);
                 });
             }
         }
         else if (process.platform) {
             if (!core || typeof core !== "string") {
-                window.LogLOG("Error: Invalid process name.");
+                this.publicSet.LOGLOG("Error: Invalid process name.");
             } else {
                 execFile("killall", [core], (error, stdout, stderr) => {
                     if (error) {
-                        window.LogLOG(`Error: ${error.message}`);
+                        this.publicSet.LOGLOG(`Error: ${error.message}`);
                         return;
                     }
                     if (stderr) {
-                        window.LogLOG(`stderr: ${stderr}`);
+                        this.publicSet.LOGLOG(`stderr: ${stderr}`);
                         return;
                     }
-                    window.LogLOG(`stdout: ${stdout}`);
+                    this.publicSet.LOGLOG(`stdout: ${stdout}`);
                 });
             }
         }
@@ -457,7 +503,10 @@ class fgCLI extends main {
             if (event.which === 13) {
                 let command = $("#command-line").val();
                 this.enterCommand(command);
-            }
+            };
+        });
+        $("#HelpLogs").on("click", () => {
+            this.enterCommand("help");
         });
     };
     async enterCommand(command) {
