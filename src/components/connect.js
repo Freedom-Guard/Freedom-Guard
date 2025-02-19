@@ -337,7 +337,14 @@ class publicSet {
             return true;
         } catch (error) {
             this.LOGLOG("Network or server error:", error);
-            alert("Cannot access the repository. Please check your connection.");
+            alert("Cannot access the repository. Please check your connection. used backup");
+            if (this.settingsALL["public"]["ispServers"] != []) {
+                return true;
+            }
+            else {
+                this.LOGLOG("backup is empty!");
+                alert("backup is empty!");
+            }
             this.saveSettings();
             return false;
         }
@@ -353,6 +360,7 @@ class publicSet {
             appID: 'Freedom Guard'
         });
         this.diconnectedUI();
+        this.offProxy();
     };
     addExt(name) {
         return process.platform == "win32" ? name + ".exe" : name;
@@ -381,12 +389,12 @@ class connectAuto extends publicSet {
     };
     async connect() {
         this.LOGLOG("I'm still alive ;)");
+        this.ReloadSettings();
         if (!(await this.updateISPServers(this.settingsALL["public"]["isp"]))) {
             this.LOGLOG("not connected auto -> isp servers");
             this.notConnected("Auto");
             return;
         }
-        this.ReloadSettings();
         this.LOGLOG("starting Auto...");
         try {
             this.LOGLOG("isp servers: " + this.settingsALL["public"]["ispServers"]);
@@ -429,7 +437,28 @@ class connectAuto extends publicSet {
         this.LOGLOG("starting warp on Auto...");
         this.ResetArgs("warp");
         await this.sleep(3000);
-        return;
+        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + this.argsWarp);
+        this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
+        this.processWarp.stderr.on("data", (data) => {
+            this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
+        });
+        this.processWarp.stdout.on("data", (data) => {
+            this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
+        });
+        this.processWarp.on("close", () => {
+            this.killVPN("warp");
+            this.notConnected("warp");
+            this.LOGLOG("warp closed!");
+        });
+        await this.sleep(this.settingsALL["warp"]["timeout"]);
+        this.connected = !((await this.getIP_Ping())["filternet"]);
+        this.connected = !((await this.getIP_Ping())["filternet"]);
+        this.connected = !((await this.getIP_Ping())["filternet"]);
+        if (!this.connected) {
+            this.killVPN("warp");
+            this.LOGLOG("warp not connected!");
+            this.notConnected("warp");
+        };
     };
     async connectVibe() {
         this.LOGLOG("starting vibe on Auto...");
@@ -458,10 +487,10 @@ class connectAuto extends publicSet {
             this.offProxy();
         };
         await this.sleep(3000);
-        return;
     };
     async ResetArgs(core) {
         if (core == "vibe") {
+            this.argsVibe = [];
             this.argsVibe.push("run");
             this.argsVibe.push("--config");
             write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (this.settings["vibe"]["config"]));
@@ -474,12 +503,65 @@ class connectAuto extends publicSet {
                 this.argsVibe.push("--system-proxy");
             }
         }
+        else if (core == "warp") {
+            this.argsWarp = [];
+            let settingWarp = this.settings["warp"];
+            if (settingWarp["ipv"] != "IPV4" && settingWarp["ipv"]) {
+                this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
+            };
+            if (settingWarp["gool"]) {
+                this.argsWarp.push("--gool");
+            };
+            if (settingWarp["scan"]) {
+                this.argsWarp.push("--scan");
+                if (settingWarp["scanrtt"]) {
+                    this.argsWarp.push("--rtt");
+                    this.argsWarp.push(settingWarp["scanrtt"] ?? "1s");
+                }
+            };
+            if (settingWarp["endpoint"] != "") {
+                this.argsWarp.push("--endpoint");
+                this.argsWarp.push(settingWarp["endpoint"]);
+            };
+            if (settingWarp["key"]) {
+                this.argsWarp.push("--key");
+                this.argsWarp.push(settingWarp["key"]);
+            };
+            if (settingWarp["dns"]) {
+                this.argsWarp.push("--dns");
+                this.argsWarp.push(settingWarp["dns"]);
+            };
+            if (settingWarp["cfon"]) {
+                this.argsWarp.push("--cfon");
+                this.argsWarp.push("--country");
+                this.argsWarp.push(settingWarp["cfon"]);
+            };
+            if (this.settingsALL["public"]["type"] == "tun") {
+                this.argsWarp.push("");
+            };
+            if (settingWarp["reserved"]) {
+                this.argsWarp.push("--reserved");
+                this.argsWarp.push("0,0,0");
+            };
+            if (settingWarp["verbose"]) {
+                this.argsWarp.push("--verbose");
+            };
+            if (settingWarp["testUrl"]) {
+                this.argsWarp.push("--test-url");
+                this.argsWarp.push(this.settingsALL["public"]["testUrl"]);
+            };
+        }
     }
     connectFlex() {
     }
     connectGrid() {
     }
-    setupGrid(proxy, type = 'proxy') {
+    setupGrid(proxy, type = 'system') {
+        if (type == "tun") {
+        }
+        else if (type = 'system') {
+            this.setProxy(proxy);
+        };
     };
     killVPN(core) {
         this.LOGLOG("disconnecting... -> " + core);
@@ -502,7 +584,17 @@ class connectAuto extends publicSet {
     };
     DataoutVibe(data) {
         this.LOGLOG(data);
-    }
+    };
+    DataoutWarp(data = "") {
+        this.LOGLOG(data);
+        data = data.toString();
+        if (data.includes("serving")) {
+            this.ReloadSettings();
+            this.connectedVPN("warp");
+            this.connected = true;
+            this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
+        }
+    };
 };
 class connect extends publicSet {
     constructor() {
