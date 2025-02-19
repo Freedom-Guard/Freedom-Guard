@@ -64,9 +64,11 @@ class main {
         }
         else {
             $("#ChangeStatus").removeClass("connecting");
+            $("#ChangeStatus").removeClass("connected");
             this.publicSet.status = false;
+            this.publicSet.connected = false;
             this.connect.killVPN(this.publicSet.settingsALL["public"]["core"]);
-            this.connectAuto.killVPN();
+            this.connectAuto.killVPN(this.publicSet.settingsALL["public"]["core"]);
         }
     };
     async loading(textloading = "", time = 3000) {

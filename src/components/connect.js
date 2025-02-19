@@ -393,14 +393,14 @@ class connectAuto extends publicSet {
             for (let server of this.settingsALL["public"]["ispServers"]) {
                 let mode = server.split(",;,")[0];
                 server = server.split(",;,")[1];
-                this.LOGLOG(mode + " -> " + server);
                 if (this.connected) {
                     this.connectedVPN("auto");
                     return;
                 }
                 else {
                     this.LOGLOG("not connected -> next server...");
-                }
+                };
+                this.LOGLOG(mode + " -> " + server);
                 if (mode == "warp") {
                     server.split("&").forEach(option => {
                         this.settings["warp"][option.split("=")[0]] = option.split("=")[1];
@@ -427,6 +427,7 @@ class connectAuto extends publicSet {
     }
     async connectWarp() {
         this.LOGLOG("starting warp on Auto...");
+        this.ResetArgs("warp");
         await this.sleep(3000);
         return;
     };
@@ -447,9 +448,9 @@ class connectAuto extends publicSet {
             this.offProxy();
         });
         await this.sleep(this.settingsALL["vibe"]["timeout"]);
-        this.connected = (await this.getIP_Ping()).filternet;
-        this.connected = (await this.getIP_Ping()).filternet;
-        this.connected = (await this.getIP_Ping()).filternet;
+        this.connected = !((await this.getIP_Ping())["filternet"]);
+        this.connected = !((await this.getIP_Ping())["filternet"]);
+        this.connected = !((await this.getIP_Ping())["filternet"]);
         if (!this.connected) {
             this.killVPN("vibe");
             this.LOGLOG("vibe not connected!");
@@ -480,8 +481,20 @@ class connectAuto extends publicSet {
     }
     setupGrid(proxy, type = 'proxy') {
     };
-    killVPN() {
-
+    killVPN(core) {
+        this.LOGLOG("disconnecting... -> " + core);
+        try {
+            core == "warp" ? this.processWarp.kill() : '';
+            core == "vibe" ? this.processVibe.kill() : '';
+            core == "grid" ? this.processGrid.kill() : '';
+            core == "flex" ? this.processFlex.kill() : '';
+        }
+        catch (error) {
+            this.LOGLOG("error in killVPN: " + error);
+        };
+        this.status = false;
+        this.connected = false;
+        window.reloadPing();
     };
     connectFailed(from = "start") {
         // this.
