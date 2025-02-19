@@ -354,6 +354,9 @@ class publicSet {
         });
         this.diconnectedUI();
     };
+    addExt(name) {
+        return process.platform == "win32" ? name + ".exe" : name;
+    };
 }
 class connectAuto extends publicSet {
     constructor() {
@@ -409,6 +412,11 @@ class connectAuto extends publicSet {
                     await this.connectVibe();
                 };
             };
+            if (!this.connected) {
+                this.LOGLOG("not connected auto -> isp servers");
+                this.notConnected("auto");
+                return;
+            };
         }
         catch {
             this.LOGLOG("not connected auto -> isp servers");
@@ -418,10 +426,54 @@ class connectAuto extends publicSet {
 
     }
     async connectWarp() {
-
+        this.LOGLOG("starting warp on Auto...");
+        await this.sleep(3000);
+        return;
     };
     async connectVibe() {
+        this.LOGLOG("starting vibe on Auto...");
+        this.ResetArgs("vibe");
+        this.processVibe = spawn(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")), this.argsVibe);
+        this.processVibe.stderr.on("data", (data) => {
+            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
+        });
+        this.processVibe.stdout.on("data", (data) => {
+            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
+        });
+        this.processVibe.on("close", () => {
+            this.killVPN("vibe");
+            this.notConnected("vibe");
+            this.LOGLOG("vibe closed!");
+            this.offProxy();
+        });
+        await this.sleep(this.settingsALL["vibe"]["timeout"]);
+        this.connected = (await this.getIP_Ping()).filternet;
+        this.connected = (await this.getIP_Ping()).filternet;
+        this.connected = (await this.getIP_Ping()).filternet;
+        if (!this.connected) {
+            this.killVPN("vibe");
+            this.LOGLOG("vibe not connected!");
+            this.notConnected("vibe");
+            this.offProxy();
+        };
+        await this.sleep(3000);
+        return;
     };
+    async ResetArgs(core) {
+        if (core == "vibe") {
+            this.argsVibe.push("run");
+            this.argsVibe.push("--config");
+            write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (this.settings["vibe"]["config"]));
+            this.settings["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
+            this.argsVibe.push(this.settings["vibe"]["config"]);
+            if (this.settingsALL["public"]["type"] == "tun") {
+                this.argsVibe.push("--tun");
+            }
+            else {
+                this.argsVibe.push("--system-proxy");
+            }
+        }
+    }
     connectFlex() {
     }
     connectGrid() {
@@ -435,6 +487,9 @@ class connectAuto extends publicSet {
         // this.
 
     };
+    DataoutVibe(data) {
+        this.LOGLOG(data);
+    }
 };
 class connect extends publicSet {
     constructor() {
@@ -471,9 +526,6 @@ class connect extends publicSet {
             this.connectVibe();
         };
     };
-    addExt(name) {
-        return process.platform == "win32" ? name + ".exe" : name;
-    }
     async connectWarp() {
         this.ResetArgs('warp');
         await this.sleep(1000);
