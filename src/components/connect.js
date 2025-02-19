@@ -313,7 +313,14 @@ class publicSet {
         try {
             this.ReloadSettings();
             let serverISP = this.settingsALL["public"]["configAuto"];
-            let response = await this.axios.get(serverISP, { timeout: 3000 });
+            this.LOGLOG("getting servers from: " + serverISP)
+            let response = await this.axios.get(serverISP).then(response => {
+                this.LOGLOG("STATUS ISP SERVER:", response.status);
+                this.LOGLOG("HEADERS ISP SERVER:", response.headers);
+                this.LOGLOG("DATA ISP SERVER:", response.data);
+            }).catch(error => {
+                this.LOGLOG("ERROR FETCHING JSON:", error.response ? error.response.status : error.message);
+            });
             let responseServerISP;
             this.LOGLOG("RAW RESPONSE:", response.data);
             try {
