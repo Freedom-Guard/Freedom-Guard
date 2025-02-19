@@ -95,7 +95,7 @@ class publicSet {
     async ReloadSettings() {
         try {
             this.settingsALL = JSON.parse(read_file('freedom-guard.json'));
-        } catch (error) { this.saveSettings(); }
+        } catch (error) { this.saveSettings(); this.LOGLOG("settings file not found: saveSettings") }
     };
     async getIP_Ping() {
         let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
@@ -311,22 +311,16 @@ class publicSet {
     };
     async updateISPServers(isp = this.settingsALL["public"]["isp"]) {
         try {
-            this.ReloadSettings();
-            let serverISP = this.settingsALL["public"]["configAuto"];
-            this.LOGLOG("getting servers from: " + serverISP)
-            let response = await this.axios.get(serverISP).then(response => {
-                this.LOGLOG("STATUS ISP SERVER:", response.status);
-                this.LOGLOG("HEADERS ISP SERVER:", response.headers);
-                this.LOGLOG("DATA ISP SERVER:", response.data);
-            }).catch(error => {
-                this.LOGLOG("ERROR FETCHING JSON:", error.response ? error.response.status : error.message);
-            });
-            let responseServerISP;
-            this.LOGLOG("RAW RESPONSE:", response.data);
+            await this.ReloadSettings();
+            let serverISP = this.settingsALL["public"]["configAuto"].toString();
+            this.LOGLOG("serverISP URL: " + serverISP);
+            let response = await this.axios.get(serverISP, { timeout: 10000 });
+            let responseServerISP = [];
+            await this.sleep(500);
             try {
                 responseServerISP = response.data[isp];
             } catch (error) {
-                this.LOGLOG("Error parsing JSON: " + error);
+                this.LOGLOG("Error parsing JSON: " + error + response);
                 alert("Invalid response format from server.");
                 return false;
             }
@@ -336,13 +330,8 @@ class publicSet {
                 this.LOGLOG("Invalid ISP data received.");
                 return false;
             }
-
-            if (!(isp in responseServerISP)) {
-                this.LOGLOG(`ISP "${isp}" not found in server response.`);
-                alert(`ISP "${isp}" not found in server response.`);
-                return false;
-            }
-            this.LOGLOG("isp servers updated: " + responseServerISP);
+            this.LOGLOG("ISP SELECTED: " + isp);
+            this.LOGLOG("isp servers updated: " + JSON.stringify(responseServerISP));
             this.settingsALL["public"]["ispServers"] = responseServerISP;
             this.saveSettings();
             return true;
@@ -389,7 +378,7 @@ class connectAuto extends publicSet {
     };
     async connect() {
         this.LOGLOG("I'm still alive ;)");
-        if (!(await this.updateISPServers())) {
+        if (!(await this.updateISPServers(this.settingsALL["public"]["isp"]))) {
             this.LOGLOG("not connected auto -> isp servers");
             this.notConnected("Auto");
             return;
