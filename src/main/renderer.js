@@ -117,9 +117,6 @@ class main {
         $('#menu-dns, #close-dns').on('click', () => {
             $('#dns-set').toggleClass('show');
         });
-        $('#menu-freedom-plus').on('click', () => {
-            ipcRenderer.send("load-file", "./src/plus/index.html")
-        });
         $('#menu-freedom-browser').on('click', () => {
             ipcRenderer.send("load-file", "./src/browser/index.html")
         });

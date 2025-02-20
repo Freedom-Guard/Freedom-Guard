@@ -304,9 +304,6 @@ ipc.on('exit-app', (event) => {
 ipc.on('load-file', (event, Pathfile) => {
   mainWindow.loadFile(path.join(__dirnameFile, Pathfile));
 });
-ipc.on('load-file-plus', (event, Pathfile) => {
-  mainWindow.loadFile(path.join(Pathfile));
-});
 ipcMain.on('show-notification', (event, title = "Freedom Guard", body, icon = "./src/assets/icon/icon.png") => {
   const notification = new Notification({
     title: title,
