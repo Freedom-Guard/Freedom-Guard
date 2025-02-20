@@ -7,9 +7,15 @@ var fs = require("fs");
 const path = require("path");
 var sect = "browser";
 const { trackEvent } = require('@aptabase/electron/renderer');
-var { StatusGuard, connectVibe, connectWarp, settingWarp, settingVibe, AssetsPath, ResetArgsVibe, ResetArgsWarp, testProxy, KillProcess, disconnectVibe, saveSetting } = require('../components/connect.js');
+var { connect, connectAuto, publicSet } = require('../components/connect.js');
+let $ = require('jquery');
+LOGS = [];
 // #endregion
-
+let connectSTA = new connect();
+let connectAutoSTA = new connectAuto();
+let publicSetSTA = new publicSet();
+publicSetSTA.ReloadSettings();
+StatusGuard = false;
 // #region Define Variables
 var tabs = [];
 var tabContents = [];
@@ -88,14 +94,13 @@ function sleep(ms) {
 };
 
 function ConnectVPN() {
-    if (settingBrowser["core"] == "warp" && !document.getElementById("vpn-btn-header").classList.contains("active")) {
-        connectWarp();
-    } else if (settingBrowser["core"] == "vibe" && !document.getElementById("vpn-btn-header").classList.contains("active")) {
-        connectVibe();
-    } else {
-        KillProcess();
+    if (!StatusGuard) {
+        connectAutoSTA.connect();
+        StatusGuard = true;
+    }
+    else {
+        connectAutoSTA.killVPN(this.publicSet.settingsALL["public"]["core"]);
         StatusGuard = false;
-        disconnectVibe();
     }
     document.getElementById("vpn-btn-header").classList.toggle("active");
     document.getElementById("vpn-btn-header").style.animation = document.getElementById("vpn-btn-header").classList.contains("active") ? "Connect 1s infinite" : "";
@@ -171,9 +176,9 @@ document.getElementById("search-btn-header").addEventListener("click", function 
     ipc.send("load-url-browser", urlInput);
 });
 
-document.getElementById("vpn-btn-header").addEventListener("click", function () {
-    ConnectVPN();
-});
+// document.getElementById("vpn-btn-header").addEventListener("click", function () {
+//     ConnectVPN();
+// });
 
 document.getElementById("refresh-btn-header").addEventListener("click", function () {
     const inputUrl = document.getElementById("url-input").value;
@@ -261,7 +266,29 @@ ipc.on('open-new-tab', (event, url) => {
     TabSelect(idTab);
     ipc.send("show-browser");
 });
-setInterval(testProxy, 10000);
-testProxy();
 trackEvent("start-browser");
 // End Code
+
+window.LogLOG = (log = "", type = "info") => {
+    LOGS.push(log);
+};
+window.diconnectedUI = () => {
+    $("#vpn-btn-header").removeClass("active");
+};
+window.connectedUI = () => {
+    $("#vpn-btn-header").css("animation", "");
+};
+window.setHTML = (selector, text) => {
+    $(selector).html(text);
+};
+
+window.reloadPing = () => {
+};
+window.setSettings = () => {
+};
+window.startNewUser = () => {
+
+};
+window.showMessageUI = (message, duration = 3000) => {
+
+};

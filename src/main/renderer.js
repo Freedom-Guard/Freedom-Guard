@@ -118,7 +118,7 @@ class main {
             $('#dns-set').toggleClass('show');
         });
         $('#menu-freedom-browser').on('click', () => {
-            ipcRenderer.send("load-file", "./src/browser/index.html")
+            ipcRenderer.send("load-browser");
         });
         $("#menu-about, #about").on('click', () => {
             $("#about-app").attr("style", "display:flex;");

@@ -125,7 +125,7 @@ function setSystemTray(status = "off") {
       type: 'normal',
       click: () => {
         CreateViewBrowser("https://fwldom.github.io/freedom-site-browser/index.html");
-        mainWindow.loadFile(path.join("src", "browser/browser.html"));
+        mainWindow.loadFile(path.join("src", "browser/index.html"));
         ViewBrowser.webContents.on("did-finish-load", (event) => {
           currentURL = ViewBrowser.webContents.getURL();
           pageTitle = ViewBrowser.webContents.getTitle();
@@ -265,7 +265,7 @@ ipc.on('show-browser', (event, url) => {
 });
 ipc.on('load-browser', (event) => {
   CreateViewBrowser("https://fwldom.github.io/freedom-site-browser/index.html");
-  mainWindow.loadFile(path.join("src", "browser/browser.html"));
+  mainWindow.loadFile(path.join("src", "browser/index.html"));
   ViewBrowser.webContents.on("did-finish-load", (event) => {
     currentURL = ViewBrowser.webContents.getURL();
     pageTitle = ViewBrowser.webContents.getTitle();
@@ -295,7 +295,6 @@ ipc.on('load-browser', (event) => {
 });
 ipc.on('load-url-browser', (event, url) => {
   ViewBrowser.webContents.loadURL(url);
-
 });
 ipc.on('exit-app', (event) => {
   mainWindow.close();
