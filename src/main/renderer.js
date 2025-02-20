@@ -120,6 +120,9 @@ class main {
         $('#menu-freedom-plus').on('click', () => {
             ipcRenderer.send("load-file", "./src/plus/index.html")
         });
+        $('#menu-freedom-browser').on('click', () => {
+            ipcRenderer.send("load-file", "./src/browser/index.html")
+        });
         $("#menu-about, #about").on('click', () => {
             $("#about-app").attr("style", "display:flex;");
         });
