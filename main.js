@@ -32,14 +32,13 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: __dirname + "\\preload.js",
-      enableRemoteModule: false
+      allowFileAccess: true
     },
     autoHideMenuBar: true,
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  mainWindow.loadFile(path.join(__dirnameFile, "src", "main/index.html"));
+  mainWindow.loadFile(path.join(__dirnameFile, "src", "/main/index.html"));
   mainWindow.on('resize', function () {
     try {
       ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
@@ -371,9 +370,9 @@ ipcMain.handle("import-config", async () => {
 // #endregion
 // #region Quit
 app.on('before-quit', () => {
-  exec("taskkill /IM " + "HiddifyCli.exe" + " /F");
+  exec("taskkill /IM " + "vibe-core.exe" + " /F");
   exec('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /F');
-  exec("taskkill /IM " + "warp-plus.exe" + " /F");
+  exec("taskkill /IM " + "warp-core.exe" + " /F");
   if (process.platform !== 'darwin') {
     app.quit();
   }

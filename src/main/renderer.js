@@ -3,7 +3,7 @@ const { ipcRenderer, dialog, shell } = require('electron');
 const { remote } = require('electron');
 const { path } = require('path');
 const { readFileSync } = require('fs');
-const { connect, connectAuto, test, publicSet } = require('../components/connect');
+const { connect, connectAuto, test, publicSet, Tools } = require('../components/connect');
 let $ = require('jquery');
 const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
@@ -42,6 +42,7 @@ class main {
         this.path = require("path");
         this.axios = require('axios');
         this.publicSet = new publicSet();
+        this.Tools = new Tools();
     };
     init = async () => {
         this.publicSet.LOGLOG("App Started");
@@ -221,6 +222,8 @@ class main {
         $("#repo-contact").on("click", () => { this.openLink("https://github.com/Freedom-Guard/Freedom-Guard/") });
         $("#x-contact").on("click", () => { this.openLink("https://x.com/Freedom_Guard_N") });
         $("#telegram-contact").on("click", () => { this.openLink("https://t.me/Freedom_Guard_Net") });
+        $("#refresh-servers-btn").on("click", () => { this.publicSet.updateISPServers(this.publicSet.settingsALL["public"]["isp"]); this.publicSet.saveSettings(); });
+        $("#submit-dns").on("click", () => { this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS()); alert("seted dns"); });
     };
     addEventSect(core) {
         if (core == "warp") {

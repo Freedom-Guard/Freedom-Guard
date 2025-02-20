@@ -86,7 +86,8 @@ class publicSet {
             grid: ["grid"],
             flex: ["flex"],
             other: ["freedom-guard://"]
-        }
+        };
+        this.Tools = new Tools();
     };
     saveSettings(settingsSave = this.settingsALL) {
         write_file('freedom-guard.json', JSON.stringify(settingsSave));
@@ -115,7 +116,7 @@ class publicSet {
             }
 
         } catch (error) {
-            console.error("خطا در دریافت IP:", error);
+            this.LOGLOG("خطا در دریافت IP:", error);
         }
         return responseFunc;
     };
@@ -147,33 +148,11 @@ class publicSet {
     };
     setProxy(proxy, type = "socks5") {
         this.LOGLOG("setting proxy...");
-        if (process.platform == "win32") {
-            const setRegistryValue = (key, name, type, value) => {
-                return new Promise((resolve, reject) => {
-                    key.set(name, type, value, (err) => {
-                        if (err) reject(err);
-                        else resolve();
-                    });
-                });
-            };
-            const setProxy = async (proxy) => {
-                const regKey = new this.Winreg({
-                    hive: this.Winreg.HKCU,
-                    key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
-                });
-
-                try {
-                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
-                } catch (error) {
-                    console.error('Error setting proxy:', error);
-                }
-            };
-            setProxy(proxy);
-        }
-        else if (process.platform == "linux") {
-            alert(`Proxy ${type} with ${this.settingsALL["public"]["core"]}: ${this.settingsALL["public"]["proxy"]} ==== Please set this proxy on your system.`);
-        };
+        this.Tools.setProxy(this.Tools.returnOS(), proxy);
+        this.LOGLOG("proxy -> " + proxy);
+        // else if (process.platform == "linux") {
+        //     alert(`Proxy ${type} with ${this.settingsALL["public"]["core"]}: ${this.settingsALL["public"]["proxy"]} ==== Please set this proxy on your system.`);
+        // };
     };
     offProxy() {
         const setRegistryValue = (key, name, type, value) => {
@@ -193,7 +172,7 @@ class publicSet {
             try {
                 await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
             } catch (error) {
-                console.error('Error off proxy:', error);
+                this.LOGLOG('Error off proxy:', error);
             }
         };
         offProxy();
@@ -447,8 +426,8 @@ class connectAuto extends publicSet {
         });
         this.processWarp.on("close", () => {
             this.killVPN("warp");
-            this.notConnected("warp");
-            this.LOGLOG("warp closed!");
+            this.LOGLOG("warp Auto closed!");
+            this.offProxy();
         });
         await this.sleep(this.settingsALL["warp"]["timeout"]);
         this.connected = !((await this.getIP_Ping())["filternet"]);
@@ -456,8 +435,8 @@ class connectAuto extends publicSet {
         this.connected = !((await this.getIP_Ping())["filternet"]);
         if (!this.connected) {
             this.killVPN("warp");
-            this.LOGLOG("warp not connected!");
-            this.notConnected("warp");
+            this.LOGLOG("warp Auto not connected!");
+            this.offProxy();
         };
     };
     async connectVibe() {
@@ -472,8 +451,7 @@ class connectAuto extends publicSet {
         });
         this.processVibe.on("close", () => {
             this.killVPN("vibe");
-            this.notConnected("vibe");
-            this.LOGLOG("vibe closed!");
+            this.LOGLOG("vibe Auto closed!");
             this.offProxy();
         });
         await this.sleep(this.settingsALL["vibe"]["timeout"]);
@@ -482,8 +460,7 @@ class connectAuto extends publicSet {
         this.connected = !((await this.getIP_Ping())["filternet"]);
         if (!this.connected) {
             this.killVPN("vibe");
-            this.LOGLOG("vibe not connected!");
-            this.notConnected("vibe");
+            this.LOGLOG("vibe Auto not connected!");
             this.offProxy();
         };
         await this.sleep(3000);
@@ -646,12 +623,14 @@ class connect extends publicSet {
             this.killVPN("warp");
             this.notConnected("warp");
             this.LOGLOG("warp closed!");
+            this.offProxy();
         });
         await this.sleep(this.settingsALL["warp"]["timeout"]);
         if (!this.connected) {
             this.killVPN("warp");
             this.LOGLOG("warp not connected!");
             this.notConnected("warp");
+            this.offProxy();
         };
     };
     async connectVibe() {
@@ -821,4 +800,217 @@ class test extends publicSet {
     testAll() {
     };
 };
-module.exports = { connect, connectAuto, test, publicSet };
+class Tools {
+    constructor() {
+        this.exec = require("child_process").exec;
+        this.Winreg = require("winreg");
+    };
+    LOGLOG(text = "", type = 'log') {
+        if (type == "clear") {
+            window.LogLOG("", "clear");
+            console.clear();
+        }
+        else {
+            window.LogLOG(text);
+            console.log(text);
+        }
+    };
+    setProxy(os, proxy) {
+        if (os == "win32") {
+            const setRegistryValue = (key, name, type, value) => {
+                return new Promise((resolve, reject) => {
+                    key.set(name, type, value, (err) => {
+                        if (err) reject(err);
+                        else resolve();
+                    });
+                });
+            };
+            const setProxy = async (proxy) => {
+                const regKey = new this.Winreg({
+                    hive: this.Winreg.HKCU,
+                    key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
+                });
+
+                try {
+                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+                } catch (error) {
+                    this.LOGLOG('Error setting proxy:', error);
+                }
+            };
+            setProxy(proxy);
+        } else {
+            const exec = require('child_process').exec;
+
+            const setGnomeProxy = (proxy) => {
+                exec(`gsettings set org.gnome.system.proxy mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting GNOME proxy mode:', err);
+                });
+                exec(`gsettings set org.gnome.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting GNOME proxy host:', err);
+                });
+                exec(`gsettings set org.gnome.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting GNOME proxy port:', err);
+                });
+            };
+
+            const setKdeProxy = (proxy) => {
+                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 1`, (err) => {
+                    if (err) this.LOGLOG('Error setting KDE proxy mode:', err);
+                });
+                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'httpProxy' '${proxy}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting KDE proxy:', err);
+                });
+            };
+
+            const setXfceProxy = (proxy) => {
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyMode -s manual`, (err) => {
+                    if (err) this.LOGLOG('Error setting XFCE proxy mode:', err);
+                });
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPHost -s '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting XFCE proxy host:', err);
+                });
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPPort -s ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting XFCE proxy port:', err);
+                });
+            };
+
+            const setCinnamonProxy = (proxy) => {
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting Cinnamon proxy mode:', err);
+                });
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting Cinnamon proxy host:', err);
+                });
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting Cinnamon proxy port:', err);
+                });
+            };
+
+            const setMateProxy = (proxy) => {
+                exec(`gsettings set org.mate.system.proxy mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting MATE proxy mode:', err);
+                });
+                exec(`gsettings set org.mate.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting MATE proxy host:', err);
+                });
+                exec(`gsettings set org.mate.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting MATE proxy port:', err);
+                });
+            };
+            switch (os) {
+                case "GNOME":
+                    setGnomeProxy(proxy);
+                    break;
+                case "KDE":
+                    setKdeProxy(proxy);
+                    break;
+                case "XFCE":
+                    setXfceProxy(proxy);
+                    break;
+                case "CINNAMON":
+                    setCinnamonProxy(proxy);
+                    break;
+                case "MATE":
+                    setMateProxy(proxy);
+                    break;
+                default:
+                    this.LOGLOG('Unsupported OS or desktop environment');
+            }
+        }
+    };
+    setDNS(dns1, dns2, os) {
+        const exec = require('child_process').exec;
+        const setWindowsDNS = (dns1, dns2) => {
+            this.LOGLOG("setting dns for windows -> " + dns1 + " " + dns2);
+
+            exec(`netsh interface show interface`, (err, stdout) => {
+                if (err) {
+                    this.LOGLOG('Error retrieving interfaces on Windows:', err);
+                    return;
+                }
+
+                const interfaces = stdout
+                    .split('\n')
+                    .slice(3)
+                    .map(line => line.trim().match(/(?:\S+\s+){3}(.+)/))
+                    .filter(match => match)
+                    .map(match => match[1]);
+
+                interfaces.forEach(iface => {
+                    if (!iface) return;
+
+                    exec(`netsh interface ip set dns "${iface}" static ${dns1}`, (err) => {
+                        if (err) this.LOGLOG(`Error setting primary DNS on ${iface}: ${err.message}`);
+                        else this.LOGLOG(`Primary DNS set on ${iface}`);
+                    });
+
+                    if (dns2) {
+                        exec(`netsh interface ip add dns "${iface}" ${dns2} index=2`, (err) => {
+                            if (err) this.LOGLOG(`Error setting secondary DNS on ${iface}: ${err.message}`);
+                            else this.LOGLOG(`Secondary DNS set on ${iface}`);
+                        });
+                    }
+                });
+            });
+        };
+
+
+        const setLinuxDNS = (dns1, dns2) => {
+            exec(`nmcli device status | awk '{print $1}' | tail -n +2`, (err, stdout) => {
+                if (err) {
+                    this.LOGLOG('Error retrieving interfaces on Linux:', err);
+                    return;
+                }
+                const interfaces = stdout.split('\n').filter(iface => iface.trim());
+                interfaces.forEach(iface => {
+                    exec(`nmcli con mod ${iface} ipv4.dns "${dns1} ${dns2 || ''}"`, (err) => {
+                        if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
+                    });
+                    exec(`nmcli con up ${iface}`, (err) => {
+                        if (err) this.LOGLOG(`Error applying DNS settings on ${iface}:`, err);
+                    });
+                });
+            });
+        };
+
+        const setMacDNS = (dns1, dns2) => {
+            exec(`networksetup -listallnetworkservices`, (err, stdout) => {
+                if (err) {
+                    this.LOGLOG('Error retrieving interfaces on macOS:', err);
+                    return;
+                }
+                const interfaces = stdout.split('\n').slice(1);
+                interfaces.forEach(iface => {
+                    exec(`networksetup -setdnsservers "${iface}" ${dns1} ${dns2 || ''}`, (err) => {
+                        if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
+                    });
+                });
+            });
+        };
+
+        switch (os) {
+            case "win32":
+                setWindowsDNS(dns1, dns2);
+                break;
+            case "darwin":
+                setMacDNS(dns1, dns2);
+                break;
+            default:
+                setLinuxDNS(dns1, dns2);
+                break;
+        }
+    }
+
+    returnOS() {
+        const platform = process.platform;
+        if (platform == "win32") {
+            return "win32";
+        }
+        else {
+            const desktopEnv = process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION || 'نامشخص';
+            return desktopEnv;
+        }
+    }
+}
+module.exports = { connect, connectAuto, test, publicSet, Tools };

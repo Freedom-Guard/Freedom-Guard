@@ -102,8 +102,6 @@
             "*.js",
             "*.html",
             "*.css",
-            "fonts/*.*",
-            "svgs/*.*",
             "*.png",
             "*.ico",
             "!one.one",
