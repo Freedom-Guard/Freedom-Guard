@@ -58,10 +58,10 @@
         </div>
     </div>
     <div class="header">
-        <button class="menu-show bx-flashing-hover" id="menu-show" style="margin-right: auto;padding: 2px 7px;"><i
-                class="bx bx-menu-alt-left"></i></button>
+        <button class="menu-show bx-tada-hover" id="menu-show" style="margin-right: auto;padding: 2px 7px;"><i
+                class="bx bx-menu"></i></button>
         <button class="setting-show bx bx-tada-hover" id="setting-show" style="margin-left: auto;padding: 7px;"><i
-                class="bx bxs-cog" style="font-size: 43px;"></i></button>
+                class="bx bxs-cog"></i></button>
     </div>
     <p id="ip-ping"></p>
     <div class="box-select-country" id="box-select-country">
@@ -79,11 +79,22 @@
             </div>
         </div>
     </div>
-    <div id="select-isp">
-        <div id="select-isp-mci">MCI همراه اول</div>
-        <div id="select-isp-irancell">IRANCELL ایرانسل</div>
-        <div id="select-isp-other">Other غیره،وای فای</div>
-        <p>بعدا میتوانید از تنظیمات تغییر دهید</p>
+    <div id="start-box" dir="rtl" style="display: none;">
+        <h2>صفحه شروع</h2>
+        <label for="selector-isp-start">اپراتور شما:</label>
+        <select id="selector-isp-start" class="none-apper" value="other">
+            <option value="MCI">همراه اول</option>
+            <option value="RIGHTEL">رایتل</option>
+            <option value="IRANCELL">ایرانسل</option>
+            <option value="PISHGAMAN">پیشگامان</option>
+            <option value="other">دیگر</option>
+        </select>
+        <label for="selector-mode-start" style="margin-top: 0.2em;">حالت فیلترشکن:</label>
+        <select id="selector-mode-start" class="none-apper">
+            <option value="auto">حالت خودکار</option>
+            <option value="import">انتخاب/وارد کردن کانفیگ</option>
+        </select>
+        <button id="submit-start" class="btn" style="margin-top: auto;margin-bottom: 1em;">شروع</button>
     </div>
     <div id="setting-app">
         <nav id="nav-top"

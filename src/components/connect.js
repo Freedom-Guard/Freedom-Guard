@@ -344,6 +344,15 @@ class publicSet {
     addExt(name) {
         return process.platform == "win32" ? name + ".exe" : name;
     };
+    startINIT() {
+        try {
+            let test = read_file("one.one");
+        }
+        catch {
+            write_file("one.one", "is not new user.");
+            window.startNewUser();
+        };
+    };
 }
 class connectAuto extends publicSet {
     constructor() {

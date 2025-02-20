@@ -51,6 +51,7 @@ class main {
         this.setSettings();
         this.reloadServers();
         this.setPingBox();
+        this.publicSet.startINIT();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -89,7 +90,6 @@ class main {
             }, time);
         });
     };
-
     connectVPN() {
 
     };
@@ -139,7 +139,8 @@ class main {
         $("#close-about").on('click', () => {
             $("#about-app").hide();
         });
-        $("#box-select-country-mini").on('click', () => {
+        $("#box-select-country-mini").on('click', async () => {
+            await this.reloadServers();
             $("#box-select-country").slideToggle("slow");
         });
         $("#menu-exit-app").on('click', () => {
@@ -222,7 +223,10 @@ class main {
         $("#repo-contact").on("click", () => { this.openLink("https://github.com/Freedom-Guard/Freedom-Guard/") });
         $("#x-contact").on("click", () => { this.openLink("https://x.com/Freedom_Guard_N") });
         $("#telegram-contact").on("click", () => { this.openLink("https://t.me/Freedom_Guard_Net") });
-        $("#refresh-servers-btn").on("click", () => { this.publicSet.updateISPServers(this.publicSet.settingsALL["public"]["isp"]); this.publicSet.saveSettings(); });
+        $("#refresh-servers-btn").on("click", async () => {
+            this.publicSet.updateISPServers(this.publicSet.settingsALL["public"]["isp"]); await this.publicSet.updateISPServers();
+            await this.reloadServers(); this.publicSet.saveSettings();
+        });
         $("#submit-dns").on("click", () => { this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS()); alert("seted dns"); });
     };
     addEventSect(core) {
@@ -638,4 +642,16 @@ window.reloadPing = () => {
 };
 window.setSettings = () => {
     mainSTA.setSettings();
+};
+window.startNewUser = () => {
+    $("#start-box").css("display", "");
+    $("#submit-start").on("click", () => {
+        mainSTA.publicSet.settingsALL["public"]["isp"] = $("#selector-isp-start").val();
+        if ($("#selector-mode-start").val() == "import") {
+            $("#box-select-country-mini").trigger("click");
+        };
+        mainSTA.publicSet.saveSettings();
+        $("#start-box").hide();
+        window.setSettings();
+    });
 };

@@ -269,7 +269,7 @@ img {
     background-color: transparent;
     color: #ffffff;
     cursor: pointer;
-    font-size: 45px;
+    font-size: 2.5em;
     border: none;
     padding: 0;
     margin: 0;
@@ -681,13 +681,20 @@ img {
     font-weight: 600;
     color: white;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+
 }
 
 #menu>div:hover {
     background-color: var(--primary-color);
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0, 206, 201, 0.3);
+    transform: translateX(5px) translateY(-2px);
+    box-shadow: 0 2px 25px var(--shadow-glass);
+}
+
+#menu>div:hover i {
+    color: var(--primary-color);
+    transform: rotate(10deg);
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 
@@ -774,6 +781,7 @@ img {
     font-weight: 500;
     cursor: pointer;
     outline: none;
+    border-radius: 15px;
     appearance: none;
 }
 
@@ -912,6 +920,12 @@ img {
     flex-direction: column;
 }
 
+select.none-apper {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 select {
     background: #151025;
     backdrop-filter: blur(8px);
@@ -980,39 +994,21 @@ select option {
     }
 }
 
-#select-isp {
+#start-box {
     background-color: #3F36AE;
     position: absolute;
     z-index: 15;
     border-radius: 15px;
     left: 10vw;
     width: 80vw;
+    padding: 1em;
     height: 50vh;
-    display: none;
-    justify-content: center;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     color: white;
     flex-wrap: wrap;
 }
 
-#select-isp>div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 20vw;
-    height: 20vh;
-    background-color: #3F36AE;
-    border-radius: 15px;
-    margin: 10px;
-    cursor: pointer;
-    transition: 0.5s;
-}
-
-#select-isp>div:hover {
-    background-color: #8338ec;
-    transform: scale(1.1);
-}
 
 .box-notif {
     display: none;
