@@ -85,7 +85,7 @@
 
 ### Freedom Guard 
 
-![Freedom Guard](https://github.com/user-attachments/assets/c0c8aac0-188a-4d0a-9bca-a36fff86af58)
+![image](https://github.com/user-attachments/assets/e9062f41-0558-4997-8815-5994a9a18ceb)
 
 ## تامین کانفیگ خودکار
 
