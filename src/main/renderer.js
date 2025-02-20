@@ -225,9 +225,9 @@ class main {
         $("#telegram-contact").on("click", () => { this.openLink("https://t.me/Freedom_Guard_Net") });
         $("#refresh-servers-btn").on("click", async () => {
             this.publicSet.updateISPServers(this.publicSet.settingsALL["public"]["isp"]); await this.publicSet.updateISPServers();
-            await this.reloadServers(); this.publicSet.saveSettings();
+            await this.reloadServers(); this.publicSet.saveSettings(); window.showMessageUI("Refreshed ISP Servers");
         });
-        $("#submit-dns").on("click", () => { this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS()); alert("seted dns"); });
+        $("#submit-dns").on("click", () => { this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS()); window.showMessageUI("DNS successfully set ✅") });
     };
     addEventSect(core) {
         if (core == "warp") {
@@ -248,6 +248,7 @@ class main {
                     $("#endpoint-warp-value").val(randomIP);
                     this.publicSet.settingsALL["warp"]["endpoint"] = randomIP;
                     this.publicSet.saveSettings();
+                    window.showMessageUI("Endpoint retrieved and pasted into the input. ✅")
                 } catch (error) {
                     this.publicSet.LOGLOG("Error fetching endpoint data:", error);
                 }
@@ -267,6 +268,7 @@ class main {
                     $("#warp-key-value").val(randomKey);
                     this.publicSet.settingsALL["warp"]["key"] = randomKey;
                     this.publicSet.saveSettings();
+                    window.showMessageUI("Warp key retrieved and applied successfully. ✅")
                 } catch (error) {
                     this.publicSet.LOGLOG("Error fetching WARP keys:", error);
                 }
@@ -654,4 +656,23 @@ window.startNewUser = () => {
         $("#start-box").hide();
         window.setSettings();
     });
+};
+window.showMessageUI = (message, duration = 3000) => {
+    const messageBox = document.getElementById("message");
+    const messageText = document.getElementById("messageText");
+    const messageBorder = document.getElementById("message-border");
+
+    if (!messageBox || !messageText || !messageBorder) return;
+
+    messageText.innerHTML = message;
+    messageBox.classList.add("show-message");
+
+    messageBorder.style.width = "100%";
+    setTimeout(() => messageBorder.style.width = "0%", 500);
+
+    setTimeout(() => {
+        $("#message").slideToggle("slow", () => {
+            messageBox.classList.remove("show-message");
+        })
+    }, duration);
 };

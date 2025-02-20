@@ -893,31 +893,44 @@ img {
     font-family: "Vazirmatn", sans-serif;
 }
 
-#message-border {
-    height: 3px;
-    background: linear-gradient(90deg, #FF6464 0%, #FFBF59 50%, #47C9FF 100%);
-    transition: width 0.4s cubic-bezier(0.42, 0, 0.58, 1.00);
-    border-radius: 15px;
-}
-
 #message {
     display: none;
     justify-content: center;
     align-items: center;
-    color: black;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    color: #333;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 1.1rem;
+    padding: 15px;
     width: 30%;
-    height: 20vh;
-    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, #f1e9f2 50%, #ccc 100%);
-    position: absolute;
-    top: 1%;
-    right: 1%;
-    transition: 5s;
-    border-radius: 5px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    z-index: 15;
+    min-width: 250px;
+    height: auto;
+    background: linear-gradient(90deg, #fff 0%, #f9f9f9 50%, #e6e6e6 100%);
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
     flex-direction: column;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+#message-border {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, #FF6464, #FFBF59, #47C9FF);
+    transition: width 3.0s cubic-bezier(0.42, 0, 0.58, 1.00);
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.show-message {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 select.none-apper {
@@ -1169,7 +1182,7 @@ select option {
 
 .dropdown-content {
     display: none;
-    right: 0.3em;
+    right: 0.7em;
     height: 0;
     transition: 0.5s ease;
     position: absolute;
@@ -1184,6 +1197,7 @@ select option {
 
 .dropdown-content div {
     border-radius: 8px;
+    box-sizing: border-box;
     display: flex !important;
     justify-content: start;
     color: white;

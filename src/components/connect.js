@@ -185,7 +185,7 @@ class publicSet {
     diconnectedUI() {
         window.diconnectedUI();
     };
-    resetSettings() {
+    async resetSettings() {
         this.settingsALL = {
             "flex": {},
             "grid": {},
@@ -232,7 +232,8 @@ class publicSet {
 
         };
         this.saveSettings();
-        alert("settings deafult!");
+        window.showMessageUI("⚙️ Settings have been restored to default. Restarting the application... ✅", 5000);
+        await this.sleep(5000);
         location.reload();
     };
     async importConfig(config) {
