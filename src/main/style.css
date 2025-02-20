@@ -978,19 +978,13 @@ select option {
         height: 10vh;
     }
 
-    #setting {
+    #setting-app {
         width: 100%;
     }
 
-    #message {
-        width: 50%;
-        height: 10vh;
-    }
-
-    #menu>div {
-        width: 75%;
-        height: 8.3vh;
-        padding: 0.3vh;
+    #menu {
+        width: 97vw;
+        box-sizing: border-box;
     }
 }
 
@@ -1148,22 +1142,24 @@ select option {
 }
 
 ::-webkit-scrollbar {
-    width: 1.5vw;
+    width: 1em;
 }
 
 ::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, rgba(95, 80, 15, 0.678) 15%, rgb(20, 7, 77) 50%, rgba(7, 97, 119, 0.7) 75%);
+    background: rgba(50, 50, 50, 0.2);
     border-radius: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #386b41a6;
-    backdrop-filter: blur(5px);
+    background: linear-gradient(135deg, #2b1055, #6a11cb);
+    backdrop-filter: blur(8px);
     border-radius: 0px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #0b68807a;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    transform: scale(1.1);
 }
 
 .dropdown {
