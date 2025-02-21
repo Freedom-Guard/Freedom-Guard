@@ -1,1 +1,10 @@
-{ "MCI": ["vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTptcHMzRndtRGpMcldhT1Zn@series-a2.samanehha.co:443#Freedom_Guard_Net"], "IRANCELL": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN"], "RIGHTEL": ["vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTptcHMzRndtRGpMcldhT1Zn@series-a2.samanehha.co:443#Freedom_Guard_Net"], "PISHGAMAN": ["vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTptcHMzRndtRGpMcldhT1Zn@series-a2.samanehha.co:443#Freedom_Guard"], "other": ["vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTptcHMzRndtRGpMcldhT1Zn@series-a2.samanehha.co:443#Freedom_Guard", "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp#VIBE | WARP"] }
+{
+    "MCI": ["vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard_Net"],
+    "IRANCELL": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN"],
+    "RIGHTEL": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN", "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard_Net"],
+    "PISHGAMAN": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN", "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard"],
+    "other": [
+        "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard",
+        "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp#VIBE | WARP"
+    ]
+}
