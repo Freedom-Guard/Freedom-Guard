@@ -95,7 +95,7 @@
 
 ## Contact
 
-Email: [fwldom@duck.com](mailto:fwldom@duck.com)
+X (Twitter): [@Freedom_Guard_N](https://x.com/Freedom_Guard_N)
 
 ---
 
