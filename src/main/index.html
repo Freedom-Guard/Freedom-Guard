@@ -65,17 +65,35 @@
     </div>
     <p id="ip-ping"></p>
     <div class="box-select-country" id="box-select-country">
-        <button class="btn" id="add-server-btn"
-            style="border-top-right-radius: 0;border-bottom-left-radius: 0;margin-bottom:0.5em;">
-            Add Server
-        </button>
+        <section style='display:flex;padding: 0.3em;'>
+            <b id="add-server-btn" title="Add Server">
+                <i class="bx bx-plus" style="font-size: 1.9em;"></i>
+            </b>
+            <b style="margin-left: auto;" id="reload-server-btn">
+                <i class='bx bx-refresh' style='font-size:1.9em;'></i>
+            </b>
+            <b style='margin-left:1vw;color:red;' title="Reload ISP Server" id="close-box-select-server"><i
+                    style='font-size:1.9em;' class='bx bxs-x-square'></i></b>
+        </section>
+        <section id="box-select-servers" class="box-select-servers">
+        </section>
     </div>
     <div class="options-select-cfon">
         <div class="box-select-country-mini" id="box-select-country-mini">
             <div id="flagOfCfon">
-                <img src="../svgs/glob.svg" id="imgOfCfonCustom" width="50px">
+                <img src="../svgs/ir.svg" id="imgOfCfonCustom" width="50px">
                 <div id="textOfCfon">Auto Server</div>
                 <i class="bx bx-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    <div id="prompt" class="hidden">
+        <div class="prompt-container">
+            <p id="prompt-message">لطفاً مقدار موردنظر را وارد کنید:</p>
+            <input type="text" id="prompt-input" class="input" size="150">
+            <div class="prompt-buttons">
+                <button id="confirm-prompt">تأیید</button>
+                <button id="cancel-prompt">لغو</button>
             </div>
         </div>
     </div>
@@ -127,12 +145,7 @@
         <div id="config-fg" class="form-control-c">
             <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
                 id="config-fg-value"
-                value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/default.json">
-            <button id="selector-file" class="btn">
-                <label for="selector-file-config" style="display: flex; align-items: center;"><i
-                        class='bx bx-folder-open' style="font-size:150%;"></i></label>
-                <input type="file" id="selector-file-config-fg" style="display: none;">
-            </button>
+                value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json">
         </div>
         <h3>VPN Settings</h3>
         <b>VPN Core</b>
@@ -352,10 +365,10 @@
         <p id="messageText"></p>
         <span id="message-border"></span>
     </div>
-    <div class="box-notif" dir="auto">
+    <div class="box-notif" dir="rtl">
         <p id="text-box-notif" style="width: 100%;flex: 1 0 100%;"></p>
         <a href="" role="button" id="href-box-notif" class="btn btn-primary btn-sm"
-            style="margin-right: 3vw;width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">بازش
+            style="margin-left: 3vw;width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">بازش
             کن</a>
         <button href="" role="button" id="close-box-notif" class="btn btn-primary btn-sm"
             style="width: 45%;flex: 1 0 45%;height:fit-content;margin-top: auto;text-decoration: none;">الان حالش

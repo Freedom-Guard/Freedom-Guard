@@ -117,6 +117,7 @@
         "electron-google-analytics": "^1.0.2",
         "geoip-lite": "^1.4.10",
         "jquery": "^3.7.1",
+        "jquery.easing": "^1.4.1",
         "music-metadata": "^10.6.2",
         "music-metadata-browser": "^2.5.11",
         "node-gyp": "^10.1.0",

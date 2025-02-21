@@ -441,8 +441,9 @@ class connectAuto extends publicSet {
         });
         await this.sleep(this.settingsALL["warp"]["timeout"]);
         this.connected = !((await this.getIP_Ping())["filternet"]);
-        this.connected = !((await this.getIP_Ping())["filternet"]);
-        this.connected = !((await this.getIP_Ping())["filternet"]);
+        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
+        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
+        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
         if (!this.connected) {
             this.killVPN("warp");
             this.LOGLOG("warp Auto not connected!");
@@ -466,8 +467,9 @@ class connectAuto extends publicSet {
         });
         await this.sleep(this.settingsALL["vibe"]["timeout"]);
         this.connected = !((await this.getIP_Ping())["filternet"]);
-        this.connected = !((await this.getIP_Ping())["filternet"]);
-        this.connected = !((await this.getIP_Ping())["filternet"]);
+        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
+        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
+        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
         if (!this.connected) {
             this.killVPN("vibe");
             this.LOGLOG("vibe Auto not connected!");

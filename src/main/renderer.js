@@ -4,7 +4,8 @@ const { remote } = require('electron');
 const { path } = require('path');
 const { readFileSync } = require('fs');
 const { connect, connectAuto, test, publicSet, Tools } = require('../components/connect');
-let $ = require('jquery');
+const $ = require('jquery');
+require("jquery.easing");
 const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
@@ -52,6 +53,7 @@ class main {
         this.reloadServers();
         this.setPingBox();
         this.publicSet.startINIT();
+        this.checkUPDATE();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -90,6 +92,12 @@ class main {
             }, time);
         });
     };
+    async checkUPDATE() {
+        let response = await this.axios.get("https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/latest.json");
+        if (response.data["version"] > vesrionApp) {
+            window.showModal(response.data["messText"], response.data["url"]);
+        }
+    }
     connectVPN() {
 
     };
@@ -139,10 +147,39 @@ class main {
         $("#close-about").on('click', () => {
             $("#about-app").hide();
         });
-        $("#box-select-country-mini").on('click', async () => {
+        $("#reload-server-btn").on("click", async () => {
             await this.reloadServers();
-            $("#box-select-country").slideToggle("slow");
         });
+
+        $("#box-select-country-mini, #close-box-select-server").on("click", async () => {
+
+            let $box = $("#box-select-country");
+
+            if ($box.is(":visible")) {
+                $box.animate(
+                    { opacity: 0, top: "-20px" },
+                    {
+                        duration: 600,
+                        easing: "easeInBack",
+                        queue: false,
+                        complete: function () {
+                            $box.css("display", "");
+                        },
+                    }
+                );
+            } else {
+                await this.reloadServers();
+                $box.css({ opacity: 0, top: "-20px" }).css("display", "flex");
+                $box.animate(
+                    { opacity: 1, top: "0px" },
+                    {
+                        duration: 600,
+                        easing: "easeOutBack",
+                    }
+                );
+            }
+        });
+
         $("#menu-exit-app").on('click', () => {
             ipcRenderer.send("exit-app");
         });
@@ -170,17 +207,12 @@ class main {
             this.publicSet.offProxy();
             this.setPingBox();
         });
-        $("#add-server-btn").on("click", () => {
-            let settingApp = $("#setting-app");
-            settingApp.show().animate({ right: "0px" }, 700);
-            $("#config-value").focus();
-        });
         process.nextTick(() => this.addEventsSetting());
     };
     addEventsSetting() {
         $("#core-guard-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
-            $("#warp, #vibe, #auto, #flex, #grid").slideUp();
+            $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
             $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
             this.publicSet.settingsALL["public"]["core"] == "warp" ? $("#vpn-type-selected").val("system") : '';
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
@@ -311,7 +343,6 @@ class main {
     }
     setSettings() {
         this.publicSet.ReloadSettings();
-        this.reloadServers();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
         $("#vpn-type-selected").val(this.publicSet.settingsALL["public"]["type"]);
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
@@ -330,96 +361,141 @@ class main {
         $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
         $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
         $("#dns-warp-value").val(this.publicSet.settingsALL["warp"]["dns"]);
-        $("#warp, #vibe, #auto, #flex, #grid").slideUp();
+        $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };
     async reloadServers() {
         this.publicSet.ReloadSettings();
         await this.publicSet.updateISPServers();
-        let ispServers = this.publicSet.settingsALL["public"]["ispServers"];
-        let importedServers = this.publicSet.settingsALL["public"]["importedServers"];
-        let box = document.getElementById("box-select-country");
-        box.innerHTML = `
-        <button class="btn" style="border-top-right-radius: 0;border-bottom-left-radius: 0;margin-bottom:0.5em;" id="add-server-btn">
-            Add Server
-        </button>`;
+
+        let ispServers = [...this.publicSet.settingsALL["public"]["ispServers"]];
+        let importedServers = [...this.publicSet.settingsALL["public"]["importedServers"]];
+
+        let box = document.getElementById("box-select-servers");
+        $("#box-select-servers").html("");
+
+        await this.publicSet.sleep(500);
+
         $("#add-server-btn").on("click", () => {
             let settingApp = $("#setting-app");
-            settingApp.show().animate({ right: "0px" }, 700);
+            settingApp.show().animate({ right: "0px" }, 0);
             $("#config-value").focus();
         });
-        importedServers.forEach(server => {
-            let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
-            let div = document.createElement("div");
-            div.className = "country-option";
-            div.title = server;
-            div.innerHTML = `<img src="../svgs/glob.svg" alt="${name}"><p>${name}</p>`;
-            div.addEventListener("click", async () => {
-                await this.publicSet.importConfig(server);
-                this.setSettings();
-            });
-            div.addEventListener("contextmenu", async () => {
-                const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید کانفیگ را حذف کنید؟");
-                if (!userConfirmed) return;
-                this.publicSet.LOGLOG("delete config -> " + server)
-                try {
-                    if (!server) return;
 
-                    await this.publicSet.deleteConfig(server);
-                    await this.publicSet.ReloadSettings();
+        await this.createServerList("Your Servers", importedServers, box, "imported");
+        await this.createServerList("ISP Servers", ispServers, box, "isp");
+        box.addEventListener("click", async (event) => {
+            let target = event.target.closest(".country-option");
+            if (!target) return;
 
-                    this.publicSet.settingsALL["public"]["core"] = "auto";
-                    this.publicSet.settingsALL["public"]["configManual"] = "";
+            let serverType = target.getAttribute("data-type");
+            let serverIndex = target.getAttribute("data-index");
+            let server = target.getAttribute("data-server");
 
-                    this.publicSet.saveSettings();
-                    this.setSettings();
-                    this.reloadServers();
-                } catch (error) {
-                    console.error("خطا:", error);
-                }
-            });
+            if (!server || serverIndex === null) return;
 
-            box.appendChild(div);
+            event.preventDefault();
 
+            console.log(`🔵 کلیک روی سرور: ${server} - نوع: ${serverType}`);
+
+            await this.publicSet.importConfig(server);
+            this.setSettings();
         });
-        box.innerHTML += "<h2 style='margin:0.7em;'>ISP Servers</h2>";
-        ispServers.forEach(server => {
+
+        box.addEventListener("contextmenu", (event) => {
+            let target = event.target.closest(".country-option");
+            if (!target) return;
+
+            let serverType = target.getAttribute("data-type");
+            let serverIndex = target.getAttribute("data-index");
+            let server = target.getAttribute("data-server");
+
+            if (!server || serverIndex === null) return;
+
+            event.preventDefault();
+            this.showContextMenuServer(event, server, serverType, serverIndex);
+        });
+    }
+
+    async createServerList(title, servers, container, type) {
+        container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
+
+        servers.forEach((server, index) => {
             server = server.replace("vibe,;,", "").replace(",;,", "://");
             let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
+
             let div = document.createElement("div");
             div.className = "country-option";
             div.title = server;
+            div.setAttribute("data-type", type);
+            div.setAttribute("data-index", index);
+            div.setAttribute("data-server", server);
             div.innerHTML = `<img src="../svgs/glob.svg" alt="${name}"><p>${name}</p>`;
-            div.addEventListener("click", async () => {
-                await this.publicSet.importConfig(server);
-                this.setSettings();
-            });
-            div.addEventListener("contextmenu", async () => {
-                const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید کانفیگ را حذف کنید؟");
-                if (!userConfirmed) return;
-                this.publicSet.LOGLOG("delete config -> " + server)
-                try {
-                    if (!server) return;
 
-                    await this.publicSet.deleteConfig(server);
-                    await this.publicSet.ReloadSettings();
-
-                    this.publicSet.settingsALL["public"]["core"] = "auto";
-                    this.publicSet.settingsALL["public"]["configManual"] = "";
-
-                    this.publicSet.saveSettings();
-                    this.setSettings();
-                    this.reloadServers();
-                } catch (error) {
-                    console.error("خطا:", error);
-                }
-            });
-
-            box.appendChild(div);
-
+            container.appendChild(div);
         });
-    };
+    }
+
+    showContextMenuServer(event, server, type, index) {
+        let existingMenu = document.getElementById("server-context-menu");
+        if (existingMenu) existingMenu.remove();
+
+        let menu = document.createElement("div");
+        menu.id = "server-context-menu";
+        menu.className = "server-menu";
+        menu.style.top = `${event.clientY}px`;
+        menu.style.left = `${event.clientX}px`;
+
+        menu.innerHTML = `
+            <button class="edit-server">✏ ویرایش</button>
+            <button class="delete-server">🗑 حذف</button>
+        `;
+
+        menu.querySelector(".edit-server").addEventListener("click", async () => {
+            let newName = await window.prompt("کانفیگ جدید را وارد کنید:", server);
+            if (newName && newName.trim() !== "") {
+                let newServer = newName.trim();
+
+                if (type === "imported") {
+                    this.publicSet.settingsALL["public"]["importedServers"][index] = newServer;
+                } else if (type === "isp") {
+                    this.publicSet.settingsALL["public"]["ispServers"][index] = newServer;
+                }
+
+                await this.publicSet.saveSettings();
+                this.setSettings();
+                this.reloadServers();
+            }
+            menu.remove();
+        });
+
+        menu.querySelector(".delete-server").addEventListener("click", async () => {
+            const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید این کانفیگ را حذف کنید؟");
+            if (!userConfirmed) return;
+
+            try {
+                await this.publicSet.deleteConfig(server);
+                await this.publicSet.ReloadSettings();
+                this.publicSet.settingsALL["public"]["core"] = "auto";
+                this.publicSet.settingsALL["public"]["configManual"] = "";
+                this.publicSet.saveSettings();
+                this.setSettings();
+                this.reloadServers();
+            } catch (error) {
+                console.error("خطا:", error);
+            }
+
+            menu.remove();
+        });
+
+        document.body.appendChild(menu);
+
+        setTimeout(() => {
+            document.addEventListener("click", () => menu.remove(), { once: true });
+        }, 100);
+    }
+
     async setPingBox() {
         let data = await this.publicSet.getIP_Ping();
         let countryEmoji = data.country ? `🌍 ${data.country}` : "🌍 Unknown";
@@ -655,6 +731,8 @@ window.startNewUser = () => {
         mainSTA.publicSet.saveSettings();
         $("#start-box").hide();
         window.setSettings();
+        const { trackEvent } = require("@aptabase/electron");
+        trackEvent("new-user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
     });
 };
 window.showMessageUI = (message, duration = 3000) => {
@@ -676,3 +754,44 @@ window.showMessageUI = (message, duration = 3000) => {
         })
     }, duration);
 };
+window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
+    $("#text-box-notif").html(mess);
+    $(".box-notif").css("display", "flex");
+    $("#href-box-notif").attr("href", link);
+    $("#href-box-notif").html(btnOpenLinkHTML);
+    $("#close-box-notif").html(btnCloseModalHTML);
+    $("#href-box-notif, #close-box-notif").on("click", () => {
+        $(".box-notif").css("display", "none");
+    });
+};
+window.prompt = (message = "لطفاً مقدار موردنظر را وارد کنید:", defaultValue = "") => {
+    return new Promise((resolve) => {
+        const promptBox = document.getElementById("prompt");
+        const promptMessage = document.getElementById("prompt-message");
+        const promptInput = document.getElementById("prompt-input");
+        const confirmBtn = document.getElementById("confirm-prompt");
+        const cancelBtn = document.getElementById("cancel-prompt");
+
+        promptMessage.innerText = message;
+        promptInput.value = defaultValue;
+
+        promptBox.classList.remove("hidden");
+        promptInput.focus();
+
+        confirmBtn.onclick = () => {
+            resolve(promptInput.value);
+            promptBox.classList.add("hidden");
+        };
+
+        cancelBtn.onclick = () => {
+            resolve(null);
+            promptBox.classList.add("hidden");
+        };
+
+        promptInput.onkeydown = (event) => {
+            if (event.key === "Enter") {
+                confirmBtn.click();
+            }
+        };
+    });
+}
