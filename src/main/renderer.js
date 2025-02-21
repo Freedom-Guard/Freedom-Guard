@@ -24,6 +24,7 @@ window.diconnectedUI = () => {
     mainSTA.publicSet.connected = false;
     mainSTA.connect.killVPN(mainSTA.publicSet.settingsALL["public"]["core"]);
     mainSTA.connectAuto.killVPN();
+    ipcRenderer.send("set-off-fg");
 };
 window.connectedUI = () => {
     $("#ChangeStatus").addClass("connected");
@@ -31,6 +32,7 @@ window.connectedUI = () => {
     $("#ChangeStatus").removeClass("connecting");
     mainSTA.publicSet.status = true;
     mainSTA.publicSet.connected = true;
+    ipcRenderer.send("set-on-fg");
 };
 window.setHTML = (selector, text) => {
     $(selector).html(text);
@@ -448,8 +450,8 @@ class main {
         menu.style.left = `${event.clientX}px`;
 
         menu.innerHTML = `
-            <button class="edit-server">✏ ویرایش</button>
-            <button class="delete-server">🗑 حذف</button>
+            <button class="edit-server"><i class='bx bxs-pencil'></i> ویرایش</button>
+            <button class="delete-server"><i class='bx bxs-trash'></i> حذف</button>
         `;
 
         menu.querySelector(".edit-server").addEventListener("click", async () => {
@@ -794,4 +796,29 @@ window.prompt = (message = "لطفاً مقدار موردنظر را وارد �
             }
         };
     });
-}
+};
+// #region IPC 
+ipcRenderer.on("start-link", (event, link) => {
+    function isBase64(str) {
+        try {
+            return btoa(atob(str)) === str;
+        } catch (err) {
+            return false;
+        }
+    }
+    try {
+        mainSTA.publicSet.LOGLOG("import config from deep link -> " + link.split("freedom-guard://")[1]);
+
+        let rawLink = link.split("freedom-guard://")[1];
+
+        if (isBase64(rawLink)) {
+            link = atob(rawLink);
+        } else {
+            link = rawLink;
+        }
+
+        mainSTA.publicSet.importConfig(link);
+    } catch (error) {
+    }
+    window.showMessageUI("Configuration imported successfully from deep link (protocol):" + link.split("://")[0]);
+});

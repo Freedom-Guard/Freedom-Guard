@@ -239,6 +239,11 @@ class publicSet {
     async importConfig(config) {
         try { config = config.toString() } catch { if (config == "") { alert("config is empty!"); return; } };
         this.LOGLOG(config);
+        if (config == '') {
+            this.settingsALL["public"]["configManual"] = config;
+            this.saveSettings();
+            return;
+        }
         this.settingsALL["public"]["configManual"] = config;
         if (!(this.settingsALL["public"]["importedServers"].some(server => config == server))) {
             this.settingsALL["public"]["importedServers"].push(config)
