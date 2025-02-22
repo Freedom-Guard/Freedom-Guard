@@ -77,7 +77,8 @@ class publicSet {
                 isp: "other",
                 importedServers: ["freedom-guard://core=auto#Auto Server"],
                 ispServers: [],
-                timeout: 60000
+                timeout: 60000,
+                freedomLink: false,
             }
         };
         this.supported = {
@@ -125,6 +126,11 @@ class publicSet {
             window.LogLOG("", "clear");
             console.clear();
         }
+        else if (type == "showmess") {
+            window.showMessageUI(text);
+            window.LogLOG(text);
+            console.log(text);
+        }
         else {
             window.LogLOG(text);
             console.log(text);
@@ -143,7 +149,7 @@ class publicSet {
         trackEvent("connected", {
             core: this.settingsALL["public"]["core"],
             isp: this.settingsALL["public"]["isp"]
-        })
+        });
         window.connectedUI();
     };
     setProxy(proxy, type = "socks5") {
@@ -242,6 +248,7 @@ class publicSet {
         if (config == '') {
             this.settingsALL["public"]["configManual"] = config;
             this.saveSettings();
+            window.setHTML("#textOfCfon", this.settingsALL["public"]["core"] + " Server + Customized");
             return;
         }
         this.settingsALL["public"]["configManual"] = config;
@@ -392,11 +399,13 @@ class connectAuto extends publicSet {
         this.LOGLOG("starting Auto...");
         try {
             this.LOGLOG("isp servers: " + this.settingsALL["public"]["ispServers"]);
+            let indexServers = 0;
             for (let server of this.settingsALL["public"]["ispServers"]) {
                 let mode = server.split(",;,")[0];
                 server = server.split(",;,")[1];
                 if (this.connected) {
                     this.connectedVPN("auto");
+                    this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(this.settingsALL["public"]["ispServers"][indexServers - 1]) : ("");
                     return;
                 }
                 else {
@@ -413,6 +422,7 @@ class connectAuto extends publicSet {
                     this.settings["vibe"]["config"] = server;
                     await this.connectVibe();
                 };
+                indexServers++;
             };
             if (!this.connected) {
                 this.LOGLOG("not connected auto -> isp servers");
@@ -584,7 +594,7 @@ class connectAuto extends publicSet {
         data = data.toString();
         if (data.includes("serving")) {
             this.ReloadSettings();
-            this.connectedVPN("warp");
+            this.connectedVPN("auto");
             this.connected = true;
             this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
         }
@@ -781,6 +791,7 @@ class connect extends publicSet {
         if (data.includes("serving")) {
             this.ReloadSettings();
             this.connectedVPN("warp");
+            this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(JSON.stringify(this.settingsALL["warp"])) : ("");
             this.connected = true;
             this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
         }
@@ -790,6 +801,7 @@ class connect extends publicSet {
         data = data.toString();
         if (data.includes("CORE STARTED")) {
             this.ReloadSettings();
+            this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(this.settingsALL["vibe"]["config"]) : ("");
             this.connectedVPN("vibe");
             this.connected = true;
         }
@@ -1028,6 +1040,9 @@ class Tools {
             const desktopEnv = process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION || 'نامشخص';
             return desktopEnv;
         }
+    };
+    donateCONFIG(config) {
+        window.donateCONFIG(config);
     }
 }
 module.exports = { connect, connectAuto, test, publicSet, Tools };

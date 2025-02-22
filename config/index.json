@@ -1,8 +1,9 @@
 {
     "MCI": ["vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard_Net"],
-    "IRANCELL": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN"],
-    "RIGHTEL": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN", "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard_Net"],
-    "PISHGAMAN": ["warp,;,gool=true&scan=true#Warp + GOOL + SCAN", "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard"],
+    "IRANCELL": ["warp,;,gool=true&scan=true#WARP | GOOL"],
+    "RIGHTEL": ["warp,;,gool=true&scan=true#WARP | GOOL", "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard_Net"],
+    "PISHGAMAN": ["warp,;,gool=true&scan=true#WARP | GOOL", "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard"],
+    "TCI": ["vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server TCI"],
     "other": [
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#Freedom_Guard",
         "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp#VIBE | WARP"

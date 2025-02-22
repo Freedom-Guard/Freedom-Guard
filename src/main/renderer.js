@@ -14,8 +14,18 @@ const vesrionApp = "2.0.0";
 let LOGS = [];
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
+    const timestamp = new Date().toLocaleString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+    });
+    log = timestamp + " --" + type + "--> " + log;
     $("#LogsContent").append(`<p class="log-item">${log}</p>`);
-    if (type == "clear") { $("#LogsContent").html("Logs Cleared!") };
+    if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
     $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
 };
 window.diconnectedUI = () => {
@@ -36,6 +46,30 @@ window.connectedUI = () => {
 };
 window.setHTML = (selector, text) => {
     $(selector).html(text);
+};
+window.donateCONFIG = async (config) => {
+    fetch("https://freedom-link.freedomguard.workers.dev/api/submit-config", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer IRAN"
+        },
+        body: JSON.stringify({
+            key: "donated-config",
+            config: {
+                config: config,
+                isp: mainSTA.publicSet.settingsALL["public"]["isp"],
+                device: mainSTA.Tools.returnOS(),
+                ping: await mainSTA.publicSet.getIP_Ping()["ping"],
+                core: mainSTA.publicSet.settingsALL["public"]["core"],
+                timestamp: Date.now(),
+            }
+        })
+    })
+        .then(response => response.json())
+        .then(data => mainSTA.publicSet.LOGLOG("✅ کانفیگ با موفقیت اهدا شد", "showmess"))
+        .catch(error => mainSTA.publicSet.LOGLOG("❌ کانفیگ اهدا نشد:" + error, "showmess"));
+
 };
 class main {
     constructor() {
@@ -198,7 +232,9 @@ class main {
             window.LogLOG("", "clear");
         });
         $("#CopyLogs").on("click", () => {
+            this.publicSet.ReloadSettings();
             let logs = LOGS.join("\n");
+            logs += "\n ISP:" + this.publicSet.settingsALL["public"]["isp"] + " \n CORE:" + this.publicSet.settingsALL["public"]["core"];
             navigator.clipboard.writeText(logs);
         });
         $("#menu-kill-all").on("click", () => {
@@ -218,6 +254,9 @@ class main {
             $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
             this.publicSet.settingsALL["public"]["core"] == "warp" ? $("#vpn-type-selected").val("system") : '';
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
+            $("#config-value").val("");
+            this.publicSet.importConfig("");
+            window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["core"] + " Server + Customized")
         });
         $("#reset-setting-btn").on("click", () => {
             this.publicSet.resetSettings();
@@ -262,6 +301,10 @@ class main {
             await this.reloadServers(); this.publicSet.saveSettings(); window.showMessageUI("Refreshed ISP Servers");
         });
         $("#submit-dns").on("click", () => { this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS()); window.showMessageUI("DNS successfully set ✅") });
+        $("#freedom-link-status").on("click", () => {
+            this.publicSet.settingsALL["public"]["freedomLink"] = !this.publicSet.settingsALL["public"]["freedomLink"]
+            this.publicSet.saveSettings();
+        });
     };
     addEventSect(core) {
         if (core == "warp") {
@@ -351,7 +394,7 @@ class main {
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
-        window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? "Auto Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
+        window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
         $("#selector-ip-version-warp").val(this.publicSet.settingsALL["warp"]["ipv"] ?? "IPV4");
@@ -359,6 +402,7 @@ class main {
         $("#warp-key-value").val(this.publicSet.settingsALL["warp"]["key"]);
         $("#Gool").prop("checked", this.publicSet.settingsALL["warp"]["gool"]);
         $("#Scan").prop("checked", this.publicSet.settingsALL["warp"]["scan"]);
+        $("#freedom-link-status").prop("checked", this.publicSet.settingsALL["public"]["freedomLink"]);
         $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
         $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
         $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
@@ -733,7 +777,7 @@ window.startNewUser = () => {
         mainSTA.publicSet.saveSettings();
         $("#start-box").hide();
         window.setSettings();
-        const { trackEvent } = require("@aptabase/electron");
+        let { trackEvent } = require("@aptabase/electron");
         trackEvent("new-user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
     });
 };
