@@ -1,5 +1,5 @@
 const { rejects } = require('assert');
-const { spawn, exec, execSync } = require('child_process');
+const { spawn, exec, execSync, execFile } = require('child_process');
 const { protocol } = require('electron');
 const fs = require('fs');
 const { notify } = require('node-notifier');
@@ -182,6 +182,7 @@ class publicSet {
             }
         };
         offProxy();
+        this.killGrid();
     }
     async sleep(time) {
         return new Promise((resolve) => {
@@ -367,6 +368,73 @@ class publicSet {
     };
     addExt(name) {
         return process.platform == "win32" ? name + ".exe" : name;
+    };
+    killGrid() {
+        this.KILLALLCORES("grid");
+    };
+    KILLALLCORES(core) {
+        core = core.toString().toLowerCase() + "-core";
+        this.LOGLOG(`Killing ${core}...`);
+        if (process.platform == "win32") {
+            if (!core || typeof core !== "string") {
+                this.LOGLOG("Error: Invalid process name.");
+            } else {
+                execFile("taskkill", ["/f", "/im", `${core}.exe`], (error, stdout, stderr) => {
+                    if (error) {
+                        this.LOGLOG(`Error: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        this.LOGLOG(`stderr: ${stderr}`);
+                        return;
+                    }
+                    this.LOGLOG(`stdout: ${stdout}`);
+                });
+            }
+        }
+        else if (process.platform) {
+            if (!core || typeof core !== "string") {
+                this.LOGLOG("Error: Invalid process name.");
+            } else {
+                execFile("killall", [core], (error, stdout, stderr) => {
+                    if (error) {
+                        this.LOGLOG(`Error: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        this.LOGLOG(`stderr: ${stderr}`);
+                        return;
+                    }
+                    this.LOGLOG(`stdout: ${stdout}`);
+                });
+            }
+        }
+    };
+    setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
+        if (type == "tun") {
+            const gridArgs = [
+                "-device", "fgrid",
+                "-proxy", `${typeProxy}://${proxy}`,
+                "-loglevel", "info",
+                "-disable-udp"
+            ];
+            const gridPath = `"${this.path.join(this.coresPath, "grid", this.addExt("grid-core"))}"`;
+            const gridProcess = spawn(gridPath, gridArgs, { shell: true });
+            gridProcess.stdout.on("data", (data) => {
+                console.log(`📌 grid: ${data}`);
+            });
+
+            gridProcess.stderr.on("data", (data) => {
+                console.error(`❌ grid Error: ${data}`);
+            });
+
+            gridProcess.on("close", (code) => {
+                console.log(`✅ grid اجرا شد و بسته شد. کد خروج: ${code}`);
+            });
+        }
+        else if (type = 'system') {
+            this.setProxy(proxy);
+        }
     };
     startINIT() {
         try {
@@ -571,13 +639,6 @@ class connectAuto extends publicSet {
     }
     connectGrid() {
     }
-    setupGrid(proxy, type = 'system') {
-        if (type == "tun") {
-        }
-        else if (type = 'system') {
-            this.setProxy(proxy);
-        };
-    };
     killVPN(core) {
         this.LOGLOG("disconnecting... -> " + core);
         try {
@@ -704,13 +765,6 @@ class connect extends publicSet {
         return new Promise((resolve, reject) => {
         });
     }
-    setupGrid(proxy, type = 'proxy', typeProxy) {
-        if (type == "tun") {
-        }
-        else if (type = 'system') {
-            this.setProxy(proxy);
-        }
-    };
     ResetArgs(core = "warp") {
         this.ReloadSettings();
         if (core == "warp") {

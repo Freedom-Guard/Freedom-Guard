@@ -62,6 +62,17 @@ function CreateViewBrowser(url) {
   });
 };
 
+function isAdmin() {
+  try {
+    if (process.platform === "win32") {
+      const output = execSync("net session", { stdio: "pipe" }).toString();
+      return output.toLowerCase().includes("there are no entries");
+    }
+    return process.getuid && process.getuid() === 0;
+  } catch (error) {
+    return false;
+  }
+}
 // #endregion
 // #region Interval
 setInterval(() => { // Resize View Browser 
@@ -150,6 +161,7 @@ function setSystemTray(status = "off") {
 }
 app.whenReady().then(() => {
   setSystemTray("off");
+  ipcMain.handle("check-admin", () => isAdmin());
 })
 app.on('ready', createWindow);
 app.on('activate', () => {

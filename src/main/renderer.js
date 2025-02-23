@@ -146,6 +146,14 @@ class main {
     onConnect() {
 
     };
+    async isAdmin() {
+        const isAdmin = await ipcRenderer.invoke("check-admin");
+        if (!isAdmin) {
+            return true;
+            // window.showMessageUI("🔒 برای استفاده از این قابلیت، باید برنامه را با دسترسی ادمین اجرا کنید.\n\nلطفاً برنامه را بسته و با دسترسی ادمین باز کنید.", 7000);
+        }
+        return isAdmin;
+    }
     openLink(href) {
         shell.openExternal(href);
     }
@@ -286,13 +294,12 @@ class main {
             this.setSettings();
             this.reloadServers();
         });
-        $("#vpn-type-selected").on('change', () => {
-            if (!(this.publicSet["settingsALL"]["public"]["core"] != "vibe" && $("#vpn-type-selected").val() == "tun")) {
-                this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
-            } else {
-                alert("tun mode only for Freedom vibe");
+        $("#vpn-type-selected").on('change', async () => {
+            if ((!await this.isAdmin()) && $("#vpn-type-selected").val() == "tun") {
                 $("#vpn-type-selected").val("system");
-            }
+                return;
+            };
+            this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
         });
         $("#bind-address-text").on('change', () => {
             this.publicSet.settingsALL["public"]["proxy"] = $("#bind-address-text").val(); this.publicSet.saveSettings();
@@ -317,7 +324,13 @@ class main {
             this.publicSet.updateISPServers(this.publicSet.settingsALL["public"]["isp"]); await this.publicSet.updateISPServers();
             await this.reloadServers(); this.publicSet.saveSettings(); window.showMessageUI("Refreshed ISP Servers");
         });
-        $("#submit-dns").on("click", () => { this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS()); window.showMessageUI("DNS successfully set ✅") });
+        $("#submit-dns").on("click", async () => {
+            if ((!await this.isAdmin())) {
+                return;
+            };
+            this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS());
+            window.showMessageUI("DNS successfully set ✅")
+        });
         $("#freedom-link-status").on("click", () => {
             this.publicSet.settingsALL["public"]["freedomLink"] = !this.publicSet.settingsALL["public"]["freedomLink"]
             this.publicSet.saveSettings();
