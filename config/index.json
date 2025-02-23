@@ -1,33 +1,40 @@
 {
+    "PUBLIC": [],
     "MCI": [
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#VIBE | MCI",
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1"
+        "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER2"
     ],
     "IRANCELL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
-        "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET"
+        "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER2"
     ],
     "RIGHTEL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
-        "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1"
+        "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER2"
     ],
     "PISHGAMAN": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
-        "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1"
+        "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER2"
     ],
     "TCI": [
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server TCI",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
-        "warp,;,gool=true&scan=true#WARP | GOOL"
+        "warp,;,gool=true&scan=true#WARP | GOOL",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER2"
     ],
     "other": [
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp#VIBE | WARP"
+        "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp#VIBE | WARP",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER2"
     ]
 }
