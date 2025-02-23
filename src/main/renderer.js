@@ -851,6 +851,9 @@ window.prompt = (message = "لطفاً مقدار موردنظر را وارد �
     });
 };
 // #region IPC 
+ipcRenderer.on("start-fg", (event) => {
+    mainSTA.connectFG();
+})
 ipcRenderer.on("start-link", (event, link) => {
     function isBase64(str) {
         try {

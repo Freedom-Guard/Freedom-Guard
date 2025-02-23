@@ -120,48 +120,6 @@ function setSystemTray(status = "off") {
         mainWindow.focus()
       }
     },
-    {
-      label: 'Open Freedom Browser',
-      type: 'normal',
-      click: () => {
-        CreateViewBrowser("https://fwldom.github.io/freedom-site-browser/index.html");
-        mainWindow.loadFile(path.join("src", "browser/index.html"));
-        ViewBrowser.webContents.on("did-finish-load", (event) => {
-          currentURL = ViewBrowser.webContents.getURL();
-          pageTitle = ViewBrowser.webContents.getTitle();
-          mainWindow.webContents.send('set-url', (currentURL));
-          pageTitle = ViewBrowser.webContents.getTitle();
-          mainWindow.webContents.send('set-title', (pageTitle));
-        });
-        ViewBrowser.webContents.on("did-navigate", (event, url) => {
-          currentURL = ViewBrowser.webContents.getURL();
-          pageTitle = ViewBrowser.webContents.getTitle();
-          mainWindow.webContents.send('set-url', (url));
-        });
-        mainWindow.maximize();
-        ViewBrowser.setBounds({ x: 10, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
-      }
-    },
-    {
-      label: 'Settings',
-      submenu: [
-        {
-          label: 'Freedom Warp',
-          submenu: [
-            {
-              label: 'Gool', type: 'normal', id: "Gool", click: () => {
-                mainWindow.webContents.send('set-warp-true', 'gool'); mainWindow.focus()
-              }
-            },
-            {
-              label: 'Scan', type: 'normal', click: () => {
-                mainWindow.webContents.send('set-warp-true', 'scan'); mainWindow.focus()
-              }
-            }
-
-          ]
-        }]
-    },
     { type: 'separator' },
     {
       label: 'Show Application',
