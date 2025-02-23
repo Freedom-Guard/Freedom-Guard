@@ -67,7 +67,7 @@ window.donateCONFIG = async (config) => {
         })
     })
         .then(response => response.json())
-        .then(data => mainSTA.publicSet.LOGLOG("✅ کانفیگ با موفقیت اهدا شد", "showmess"))
+        .then(data => mainSTA.publicSet.LOGLOG("✅ کانفیگ با موفقیت اهدا شد" + JSON.stringify(data), "showmess"))
         .catch(error => mainSTA.publicSet.LOGLOG("❌ کانفیگ اهدا نشد:" + error, "showmess"));
 
 };
@@ -421,8 +421,6 @@ class main {
         let box = document.getElementById("box-select-servers");
         $("#box-select-servers").html("");
 
-        await this.publicSet.sleep(500);
-
         $("#add-server-btn").on("click", () => {
             let settingApp = $("#setting-app");
             settingApp.show().animate({ right: "0px" }, 0);
@@ -468,7 +466,8 @@ class main {
         container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
 
         servers.forEach((server, index) => {
-            server = server.replace("vibe,;,", "").replace(",;,", "://");
+            let imgServer = server.split(",;,")[0] == "warp" ? "warp.webp" : "vibe.png";
+            server = server.replace(",;,", "://");
             let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
 
             let div = document.createElement("div");
@@ -477,7 +476,7 @@ class main {
             div.setAttribute("data-type", type);
             div.setAttribute("data-index", index);
             div.setAttribute("data-server", server);
-            div.innerHTML = `<img src="../svgs/glob.svg" alt="${name}"><p>${name}</p>`;
+            div.innerHTML = `<img src="../svgs/{${imgServer}" alt="${name}"><p>${name}</p>`;
 
             container.appendChild(div);
         });

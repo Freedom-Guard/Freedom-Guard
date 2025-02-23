@@ -140,7 +140,7 @@ class publicSet {
         this.LOGLOG("connected " + core);
         notify({
             title: 'Connected!',
-            message: `Proxy has been set to ${this.settingsALL["public"]["proxy"]}`,
+            message: `🚀 "You're now connected to ${core}!"`,
             icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
@@ -351,6 +351,11 @@ class publicSet {
             wait: true,
             appID: 'Freedom Guard'
         });
+        if (core == "auto") {
+            trackEvent("not_connected_auto", {
+                isp: this.settingsALL["public"]["isp"]
+            });
+        }
         this.diconnectedUI();
         this.offProxy();
     };
@@ -402,7 +407,7 @@ class connectAuto extends publicSet {
             let indexServers = 0;
             for (let server of this.settingsALL["public"]["ispServers"]) {
                 let mode = server.split(",;,")[0];
-                server = server.split(",;,")[1];
+                server = server.split(",;,")[1].split("#")[0];
                 if (this.connected) {
                     this.connectedVPN("auto");
                     this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(this.settingsALL["public"]["ispServers"][indexServers - 1]) : ("");
