@@ -180,7 +180,6 @@ class main {
             };
         });
         $("#open-drop-setting").on("click", () => {
-            $("#more-options-content").fadeToggle(300);
             $("#more-options-content").toggleClass("active");
         });
         $("#close-about").on('click', () => {
@@ -260,6 +259,21 @@ class main {
             $("#config-value").val("");
             this.publicSet.importConfig("");
             window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["core"] + " Server + Customized")
+        });
+        $("#export-config").on("click", async () => {
+            this.publicSet.ReloadSettings();
+            ipcRenderer.send("export-settings", JSON.stringify(this.publicSet.settingsALL));
+            ipcRenderer.on("save-status", (event, status) => {
+                if (status === "success") {
+                    window.showMessageUI("✅ Settings were successfully saved!");
+                }
+            });
+        });
+        $("#import-config-file").on("click", async () => {
+            const response = await ipcRenderer.invoke("import-config");
+            this.publicSet.settingsALL = JSON.parse(response["data"]);
+            this.publicSet.saveSettings();
+            this.setSettings();
         });
         $("#reset-setting-btn").on("click", () => {
             this.publicSet.resetSettings();

@@ -276,7 +276,7 @@ ipc.on("set-on-fg", (event) => {
 ipc.on("set-off-fg", (event) => {
   setSystemTray("off");
 });
-ipcMain.on("export-settings", (event, settings) => {
+ipcMain.on("export-settings", async (event, settings) => {
   const options = {
     title: "Save Settings",
     defaultPath: "freedom-guard-config.json",

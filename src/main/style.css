@@ -1234,45 +1234,44 @@ select option {
 }
 
 .dropdown-content {
-    display: none;
-    right: 0.7em;
-    height: 0;
-    transition: 0.5s ease;
     position: absolute;
-    background-color: #1b0033;
+    right: 0.7em;
+    background-color: var(--main-color);
     min-width: 350px;
-    box-shadow: 0px 8px 16px 0px rgba(55, 49, 68, 0.5);
+    box-shadow: 0px 8px 16px rgba(55, 49, 68, 0.5);
     padding: 0;
     z-index: 999;
     flex-direction: column;
     border-radius: 8px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease-in-out;
 }
 
 .dropdown-content div {
-    border-radius: 8px;
-    box-sizing: border-box;
     display: flex !important;
+    align-items: center;
     justify-content: start;
     color: white;
-    gap: 5px;
+    gap: 8px;
     width: 100%;
     padding: 12px 16px;
+    font-size: 1em;
     text-decoration: none;
-    display: block;
-    font-size: 1.5em;
-    align-items: center;
-    transition: 0.3s;
-    font-size: 100%;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .dropdown-content div:hover {
-    background-color: #8338ec59;
+    background-color: rgba(131, 56, 236, 0.5);
 }
 
 .dropdown-content.active {
-    display: flex;
-    transition: 0.5s ease;
-    height: fit-content;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 #prompt {

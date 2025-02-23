@@ -233,7 +233,8 @@ class publicSet {
                 isp: "other",
                 importedServers: ["freedom-guard://core=auto#Auto Server"],
                 ispServers: [],
-                timeout: 45000
+                timeout: 45000,
+                freedomLink: false
             },
 
         };
