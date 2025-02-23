@@ -245,6 +245,7 @@ class publicSet {
     async importConfig(config) {
         try { config = config.toString() } catch { if (config == "") { alert("config is empty!"); return; } };
         this.LOGLOG(config);
+        let typeConfig = "warp";
         if (config == '') {
             this.settingsALL["public"]["configManual"] = config;
             this.saveSettings();
@@ -257,6 +258,7 @@ class publicSet {
         }
         if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "vibe";
+            typeConfig = "vibe";
             if (!(config.startsWith("http"))) {
                 write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
                 this.settingsALL["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
@@ -267,6 +269,7 @@ class publicSet {
         }
         else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "warp";
+            typeConfig = "warp";
             let optionsWarp = config.replace("warp://", "").split("&");
             optionsWarp.forEach(option => {
                 this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1];
@@ -282,6 +285,7 @@ class publicSet {
         }
         else if (this.supported["other"].some(protocol => config.toString().startsWith(protocol))) {
             let optionsFreedomGuard = config.replace("freedom-guard://", "").split("#")[0].split("&");
+            typeConfig = "other";
             optionsFreedomGuard.forEach(option => {
                 this.settingsALL["public"][option.split("=")[0]] = option.split("=")[1];
             });
@@ -293,6 +297,7 @@ class publicSet {
             alert("config -> not supported");
             return;
         };
+        window.setATTR("#imgServerSelected", "src", "../svgs/" + (typeConfig == "warp" ? "warp.webp" : typeConfig == "vibe" ? "vibe.png" : "ir.svg"));
         window.setHTML("#textOfCfon", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
         this.saveSettings();
     };

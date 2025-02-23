@@ -44,9 +44,6 @@ window.connectedUI = () => {
     mainSTA.publicSet.connected = true;
     ipcRenderer.send("set-on-fg");
 };
-window.setHTML = (selector, text) => {
-    $(selector).html(text);
-};
 window.donateCONFIG = async (config) => {
     fetch("https://freedom-link.freedomguard.workers.dev/api/submit-config", {
         method: "POST",
@@ -70,6 +67,12 @@ window.donateCONFIG = async (config) => {
         .then(data => mainSTA.publicSet.LOGLOG("✅ کانفیگ با موفقیت اهدا شد" + JSON.stringify(data), "showmess"))
         .catch(error => mainSTA.publicSet.LOGLOG("❌ کانفیگ اهدا نشد:" + error, "showmess"));
 
+};
+window.setHTML = (selector, text) => {
+    $(selector).html(text);
+};
+window.setATTR = (selector, attr, value) => {
+    $(selector).attr(attr, value);
 };
 class main {
     constructor() {
@@ -441,11 +444,18 @@ class main {
 
             event.preventDefault();
 
-            console.log(`🔵 کلیک روی سرور: ${server} - نوع: ${serverType}`);
+            document.querySelectorAll(".country-option").forEach(el => {
+                el.style.backgroundColor = "";
+            });
+
+            target.style.backgroundColor = "rgba(105, 10, 255, 0.8)";
+
+            this.publicSet.LOGLOG(`🔵 Clicked on server: ${server} | Type: ${serverType}`);
 
             await this.publicSet.importConfig(server);
             this.setSettings();
         });
+
 
         box.addEventListener("contextmenu", (event) => {
             let target = event.target.closest(".country-option");
@@ -466,8 +476,8 @@ class main {
         container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
 
         servers.forEach((server, index) => {
-            let imgServer = server.split(",;,")[0] == "warp" ? "warp.webp" : "vibe.png";
-            server = server.replace(",;,", "://");
+            let imgServer = server.split(",;,")[0] == "warp" ? "warp.webp" : server.split(",;,")[0] == "vibe" ? "vibe.png" : server.split("://")[0] == "warp" ? "warp.webp" : "vibe.png";
+            server = server.replace("vibe,;,", "").replace(",;,", "://");
             let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
 
             let div = document.createElement("div");
@@ -476,7 +486,7 @@ class main {
             div.setAttribute("data-type", type);
             div.setAttribute("data-index", index);
             div.setAttribute("data-server", server);
-            div.innerHTML = `<img src="../svgs/{${imgServer}" alt="${name}"><p>${name}</p>`;
+            div.innerHTML = `<img src="../svgs/${imgServer}" alt="${name}"><p>${name}</p>`;
 
             container.appendChild(div);
         });
