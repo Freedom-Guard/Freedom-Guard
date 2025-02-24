@@ -236,7 +236,7 @@ class main {
             this.connectFG();
         });
         $("#menu-freedom-logs, #CloseLogs").on("click", () => {
-            $("#Logs").slideToggle("slow");
+            $("#Logs").toggle();
         });
         $("#ClearLogs").on("click", () => {
             window.LogLOG("", "clear");
