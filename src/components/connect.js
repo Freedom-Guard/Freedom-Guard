@@ -153,37 +153,16 @@ class publicSet {
         window.connectedUI();
     };
     setProxy(proxy, type = "socks5") {
-        this.LOGLOG("setting proxy...");
+        this.LOGLOG(`[Proxy] Setting proxy...`);
+        this.LOGLOG(`[Proxy] Type: ${type}, Address: ${proxy}`);
+
         this.Tools.setProxy(this.Tools.returnOS(), proxy);
-        this.LOGLOG("proxy -> " + proxy);
-        // else if (process.platform == "linux") {
-        //     alert(`Proxy ${type} with ${this.settingsALL["public"]["core"]}: ${this.settingsALL["public"]["proxy"]} ==== Please set this proxy on your system.`);
-        // };
+
+        this.LOGLOG(`[Proxy] Proxy set successfully.`);
     };
     offProxy() {
-        const setRegistryValue = (key, name, type, value) => {
-            return new Promise((resolve, reject) => {
-                key.set(name, type, value, (err) => {
-                    if (err) reject(err);
-                    else resolve();
-                });
-            });
-        };
-        const offProxy = async () => {
-            const regKey = new this.Winreg({
-                hive: this.Winreg.HKCU,
-                key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
-            });
-
-            try {
-                await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
-            } catch (error) {
-                this.LOGLOG('Error off proxy:', error);
-            }
-        };
-        offProxy();
-        this.killGrid();
-    }
+        this.Tools.offProxy(this.Tools.returnOS());
+    };
     async sleep(time) {
         return new Promise((resolve) => {
             this.setTimeout(resolve, time);
@@ -823,7 +802,7 @@ class connect extends publicSet {
         } catch (error) { this.saveSettings(); }
     };
     killVPN(core) {
-        this.LOGLOG("disconnecting... -> " + core);
+        this.LOGLOG(`[Connection] Disconnecting from: ${core}...`);
         try {
             core == "warp" ? this.processWarp.kill() : '';
             core == "vibe" ? this.processVibe.kill() : '';
@@ -831,7 +810,7 @@ class connect extends publicSet {
             core == "flex" ? this.processFlex.kill() : '';
         }
         catch (error) {
-            this.LOGLOG("error in killVPN: " + error);
+            this.LOGLOG(`[VPN] Error in killVPN: ${error}`);
         };
         window.reloadPing();
     };
@@ -894,8 +873,10 @@ class Tools {
             console.log(text);
         }
     };
-    setProxy(os, proxy) {
-        if (os == "win32") {
+    offProxy(os) {
+        this.LOGLOG("[Proxy] Disabling proxy...");
+
+        if (os === "win32") {
             const setRegistryValue = (key, name, type, value) => {
                 return new Promise((resolve, reject) => {
                     key.set(name, type, value, (err) => {
@@ -904,104 +885,119 @@ class Tools {
                     });
                 });
             };
-            const setProxy = async (proxy) => {
+
+            const disableProxyWindows = async () => {
                 const regKey = new this.Winreg({
                     hive: this.Winreg.HKCU,
                     key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
                 });
 
                 try {
-                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+                    this.LOGLOG("[Proxy] Modifying Windows registry to disable proxy...");
+                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, '');
+                    this.LOGLOG("[Proxy] Proxy disabled successfully on Windows.");
                 } catch (error) {
-                    this.LOGLOG('Error setting proxy:', error);
+                    this.LOGLOG("[Proxy] Error disabling proxy on Windows:", error);
                 }
             };
-            setProxy(proxy);
+
+            disableProxyWindows();
         } else {
             const exec = require('child_process').exec;
 
-            const setGnomeProxy = (proxy) => {
-                exec(`gsettings set org.gnome.system.proxy mode 'manual'`, (err) => {
-                    if (err) this.LOGLOG('Error setting GNOME proxy mode:', err);
-                });
-                exec(`gsettings set org.gnome.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting GNOME proxy host:', err);
-                });
-                exec(`gsettings set org.gnome.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting GNOME proxy port:', err);
+            const disableGnomeProxy = () => {
+                exec(`gsettings set org.gnome.system.proxy mode 'none'`, (err) => {
+                    if (err) this.LOGLOG('Error disabling GNOME proxy:', err);
+                    else this.LOGLOG("[Proxy] Proxy disabled successfully on GNOME.");
                 });
             };
 
-            const setKdeProxy = (proxy) => {
-                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 1`, (err) => {
-                    if (err) this.LOGLOG('Error setting KDE proxy mode:', err);
-                });
-                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'httpProxy' '${proxy}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting KDE proxy:', err);
+            const disableKdeProxy = () => {
+                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 0`, (err) => {
+                    if (err) this.LOGLOG('Error disabling KDE proxy:', err);
+                    else this.LOGLOG("[Proxy] Proxy disabled successfully on KDE.");
                 });
             };
 
-            const setXfceProxy = (proxy) => {
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyMode -s manual`, (err) => {
-                    if (err) this.LOGLOG('Error setting XFCE proxy mode:', err);
-                });
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPHost -s '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting XFCE proxy host:', err);
-                });
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPPort -s ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting XFCE proxy port:', err);
+            const disableXfceProxy = () => {
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyMode -s none`, (err) => {
+                    if (err) this.LOGLOG('Error disabling XFCE proxy:', err);
+                    else this.LOGLOG("[Proxy] Proxy disabled successfully on XFCE.");
                 });
             };
 
-            const setCinnamonProxy = (proxy) => {
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'manual'`, (err) => {
-                    if (err) this.LOGLOG('Error setting Cinnamon proxy mode:', err);
-                });
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting Cinnamon proxy host:', err);
-                });
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting Cinnamon proxy port:', err);
+            const disableCinnamonProxy = () => {
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'none'`, (err) => {
+                    if (err) this.LOGLOG('Error disabling Cinnamon proxy:', err);
+                    else this.LOGLOG("[Proxy] Proxy disabled successfully on Cinnamon.");
                 });
             };
 
-            const setMateProxy = (proxy) => {
-                exec(`gsettings set org.mate.system.proxy mode 'manual'`, (err) => {
-                    if (err) this.LOGLOG('Error setting MATE proxy mode:', err);
-                });
-                exec(`gsettings set org.mate.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting MATE proxy host:', err);
-                });
-                exec(`gsettings set org.mate.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting MATE proxy port:', err);
+            const disableMateProxy = () => {
+                exec(`gsettings set org.mate.system.proxy mode 'none'`, (err) => {
+                    if (err) this.LOGLOG('Error disabling MATE proxy:', err);
+                    else this.LOGLOG("[Proxy] Proxy disabled successfully on MATE.");
                 });
             };
+
             switch (os) {
                 case "GNOME":
-                    setGnomeProxy(proxy);
+                    disableGnomeProxy();
                     break;
                 case "KDE":
-                    setKdeProxy(proxy);
+                    disableKdeProxy();
                     break;
                 case "XFCE":
-                    setXfceProxy(proxy);
+                    disableXfceProxy();
                     break;
                 case "CINNAMON":
-                    setCinnamonProxy(proxy);
+                    disableCinnamonProxy();
                     break;
                 case "MATE":
-                    setMateProxy(proxy);
+                    disableMateProxy();
                     break;
                 default:
-                    this.LOGLOG('Unsupported OS or desktop environment');
+                    this.LOGLOG('[Proxy] Unsupported OS or desktop environment');
+                    window.showMessageUI('[Proxy] Unsupported OS or desktop environment', 15000);
             }
         }
     };
+    offProxy(os, proxy) {
+        this.LOGLOG("[Proxy] Disabling proxy...");
+
+        const setRegistryValue = (key, name, type, value) => {
+            return new Promise((resolve, reject) => {
+                key.set(name, type, value, (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
+        };
+
+        const offProxy = async () => {
+            const regKey = new this.Winreg({
+                hive: this.Winreg.HKCU,
+                key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
+            });
+
+            try {
+                this.LOGLOG("[Proxy] Modifying registry to disable proxy...");
+                await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
+                this.LOGLOG("[Proxy] Proxy disabled successfully.");
+            } catch (error) {
+                this.LOGLOG("[Proxy] Error disabling proxy:", error);
+            }
+        };
+
+        offProxy();
+        this.LOGLOG("[Proxy] Killing related processes...");
+        this.killGrid();
+    }
     setDNS(dns1, dns2, os) {
         const exec = require('child_process').exec;
         const setWindowsDNS = (dns1, dns2) => {
-            this.LOGLOG("setting dns for windows -> " + dns1 + " " + dns2);
+            this.LOGLOG(`[DNS] Setting DNS for Windows: Primary -> ${dns1}, Secondary -> ${dns2}`);
 
             exec(`netsh interface show interface`, (err, stdout) => {
                 if (err) {
@@ -1083,14 +1079,33 @@ class Tools {
 
     returnOS() {
         const platform = process.platform;
-        if (platform == "win32") {
+
+        if (platform === "win32") {
             return "win32";
         }
-        else {
-            const desktopEnv = process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION || 'نامشخص';
-            return desktopEnv;
+
+        if (platform === "darwin") {
+            return "macOS";
         }
-    };
+
+        if (platform === "linux") {
+            const desktopEnv = process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION || process.env.GDMSESSION;
+
+            if (desktopEnv) {
+                const normalizedEnv = desktopEnv.toLowerCase();
+                if (normalizedEnv.includes("gnome")) return "GNOME";
+                if (normalizedEnv.includes("kde")) return "KDE";
+                if (normalizedEnv.includes("xfce")) return "XFCE";
+                if (normalizedEnv.includes("cinnamon")) return "CINNAMON";
+                if (normalizedEnv.includes("mate")) return "MATE";
+            }
+
+            return "linux-unknown";
+        }
+
+        return "unknown";
+    }
+
     donateCONFIG(config) {
         window.donateCONFIG(config);
     }

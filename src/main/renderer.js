@@ -780,6 +780,9 @@ class fgCLI extends main {
             case "proxy":
                 let proxy = commandArgs[0];
                 this.publicSet.setProxy(proxy);
+                if (!proxy) {
+                    this.publicSet.offProxy(proxy);
+                }
                 break;
             case "update":
             // update isp, servers (not ready)
