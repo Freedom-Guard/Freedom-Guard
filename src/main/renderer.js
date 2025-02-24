@@ -266,6 +266,7 @@ class main {
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
             $("#config-value").val("");
             this.publicSet.importConfig("");
+            window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
             window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["core"] + " Server + Customized")
         });
         $("#export-config").on("click", async () => {
@@ -295,11 +296,14 @@ class main {
             this.reloadServers();
         });
         $("#vpn-type-selected").on('change', async () => {
-            if ((!await this.isAdmin()) && $("#vpn-type-selected").val() == "tun") {
+            if (this.publicSet.settingsALL["public"]["core"] == "warp" && $("#vpn-type-selected").val() == "tun") {
+                window.showMessageUI("😕 اوه! حالت TUN در Warp پشتیبانی نمی‌شه.");
                 $("#vpn-type-selected").val("system");
                 return;
-            };
-            this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
+            }
+            else {
+                this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
+            }
         });
         $("#bind-address-text").on('change', () => {
             this.publicSet.settingsALL["public"]["proxy"] = $("#bind-address-text").val(); this.publicSet.saveSettings();
@@ -424,6 +428,7 @@ class main {
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
+        window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
         window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
@@ -473,9 +478,11 @@ class main {
 
             document.querySelectorAll(".country-option").forEach(el => {
                 el.style.backgroundColor = "";
+                el.id = "";
             });
 
             target.style.backgroundColor = "rgba(105, 10, 255, 0.8)";
+            target.id = "selected-server";
 
             this.publicSet.LOGLOG(`🔵 Clicked on server: ${server} | Type: ${serverType}`);
 
@@ -514,7 +521,10 @@ class main {
             div.setAttribute("data-index", index);
             div.setAttribute("data-server", server);
             div.innerHTML = `<img src="../svgs/${imgServer}" alt="${name}"><p>${name}</p>`;
-
+            if (server == this.publicSet.settingsALL["public"]["configManual"] && $("#selected-server").html() == undefined) {
+                div.style.backgroundColor = "rgba(105, 10, 255, 0.8)";
+                div.id = "selected-server";
+            }
             container.appendChild(div);
         });
     }

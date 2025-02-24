@@ -274,7 +274,10 @@ class publicSet {
             typeConfig = "warp";
             let optionsWarp = config.replace("warp://", "").split("&");
             optionsWarp.forEach(option => {
-                this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1];
+                try {
+                    this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1] == "true" | option.split("=")[1] == "false" ? JSON.parse(option.split("=")[1]) : option.split("=")[1];
+                }
+                catch { };
             });
             this.saveSettings();
             window.setSettings();
@@ -412,25 +415,7 @@ class publicSet {
     };
     setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
         if (type == "tun") {
-            const gridArgs = [
-                "-device", "fgrid",
-                "-proxy", `${typeProxy}://${proxy}`,
-                "-loglevel", "info",
-                "-disable-udp"
-            ];
-            const gridPath = `"${this.path.join(this.coresPath, "grid", this.addExt("grid-core"))}"`;
-            const gridProcess = spawn(gridPath, gridArgs, { shell: true });
-            gridProcess.stdout.on("data", (data) => {
-                console.log(`📌 grid: ${data}`);
-            });
 
-            gridProcess.stderr.on("data", (data) => {
-                console.error(`❌ grid Error: ${data}`);
-            });
-
-            gridProcess.on("close", (code) => {
-                console.log(`✅ grid اجرا شد و بسته شد. کد خروج: ${code}`);
-            });
         }
         else if (type = 'system') {
             this.setProxy(proxy);
