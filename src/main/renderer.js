@@ -117,7 +117,7 @@ class main {
             this.connectAuto.killVPN(this.publicSet.settingsALL["public"]["core"]);
         }
     };
-    async loading(textloading = "", time = 3000) {
+    async loading(textloading = "", time = 3000) {// Displays a random tribute message and image during loading, then hides the loader after a set time.
         let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg", "kian.jpg", "mehrshad.jpg", "hadis.jpg", "hananeh.jpg", "hamidreza.jpg", "AylarH.jpg"];
         let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده", "به یاد کیان پیرفلک", "به یاد مهرشاد شهیدی", "به یاد حدیث نجفی", "به یاد حنانه کیا", "به یاد حمید رضا روحی", "به یاد آیلار حقی"];
         let random = Math.floor(Math.random() * loaderImages.length);
@@ -133,12 +133,12 @@ class main {
             }, time);
         });
     };
-    async checkUPDATE() {
+    async checkUPDATE() {// Checks for updates by fetching the latest version information from a remote JSON file.
         let response = await this.axios.get("https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/latest.json");
         if (response.data["version"] > vesrionApp) {
             window.showModal(response.data["messText"], response.data["url"]);
-        }
-    }
+        };
+    };
     connectVPN() {
 
     };
@@ -148,7 +148,7 @@ class main {
     onConnect() {
 
     };
-    async loadLang() {
+    async loadLang() { // Load lang -> set HTML with key, json
         this.publicSet.ReloadSettings();
         let lang = this.publicSet.settingsALL["public"]["lang"];
         const response = await fetch(`../components/locales/${lang}.json`);
@@ -192,7 +192,7 @@ class main {
     openLink(href) {
         shell.openExternal(href);
     }
-    addEvents() {
+    addEvents() { // Add Events for settings, menu, connect, ....
         $("a").on('click', (e) => {
             e.preventDefault();
             let href = $(e.target).attr("href");
@@ -293,7 +293,7 @@ class main {
         });
         process.nextTick(() => this.addEventsSetting());
     };
-    addEventsSetting() {
+    addEventsSetting() {// Add Event for settings
         $("#core-guard-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
             $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
@@ -385,7 +385,7 @@ class main {
             this.publicSet.saveSettings();
         });
     };
-    addEventSect(core) {
+    addEventSect(core) {// Add Event for sect settings
         if (core == "warp") {
             $("#endpoint-warp-value").on("input", () => {
                 this.publicSet.settingsALL["warp"]["endpoint"] = $("#endpoint-warp-value").val(); this.publicSet.saveSettings();
@@ -465,7 +465,7 @@ class main {
 
         }
     }
-    setSettings() {
+    setSettings() { // Loads and applies saved settings to the UI elements
         this.publicSet.ReloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
         $("#vpn-type-selected").val(this.publicSet.settingsALL["public"]["type"]);
@@ -492,7 +492,7 @@ class main {
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };
-    async reloadServers() {
+    async reloadServers() {// Reloads server list, updates UI, and manages server selection and context menu interactions.
         this.publicSet.ReloadSettings();
         await this.publicSet.updateISPServers();
 
@@ -552,7 +552,7 @@ class main {
         });
     }
 
-    async createServerList(title, servers, container, type) {
+    async createServerList(title, servers, container, type) { // Generates and appends a list of servers to the provided container.
         container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
 
         servers.forEach((server, index) => {
@@ -575,7 +575,7 @@ class main {
         });
     }
 
-    showContextMenuServer(event, server, type, index) {
+    showContextMenuServer(event, server, type, index) {//  Displays a custom right-click context menu for server options.
         let existingMenu = document.getElementById("server-context-menu");
         if (existingMenu) existingMenu.remove();
 
@@ -632,9 +632,8 @@ class main {
         setTimeout(() => {
             document.addEventListener("click", () => menu.remove(), { once: true });
         }, 100);
-    }
-
-    async setPingBox() {
+    };
+    async setPingBox() { // Updates the UI with the current IP, country, ping, and bypass status.
         let data = await this.publicSet.getIP_Ping();
         let countryEmoji = data.country ? `🌍 ${data.country}` : "🌍 Unknown";
         let isConnected = !data.filternet;
@@ -674,7 +673,7 @@ class main {
         $("#ip-ping").html(htmlContent);
         this.publicSet.connected ? $("#ip-ping, #ChangeStatus").addClass("connected") : $("#ip-ping, #ChangeStatus").removeClass("connected");
     };
-    KILLALLCORES(core) {
+    KILLALLCORES(core) { // Terminates a process with the given core name on both Windows and Unix-based systems.
         core = core.toString().toLowerCase() + "-core";
         this.publicSet.LOGLOG(`Killing ${core}...`);
         if (process.platform == "win32") {
@@ -732,7 +731,7 @@ class fgCLI extends main {
             this.enterCommand("help");
         });
     };
-    async enterCommand(command) {
+    async enterCommand(command) {// Executes various user commands from Logs
         $("#command-line").val("");
         let commandSplit = command.split(" ");
         let commandName = commandSplit[0];

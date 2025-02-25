@@ -42,7 +42,7 @@ write_file = function (pathFile, output, type = 'file') {
         fs.writeFileSync(path.join(getConfigPath(), pathFile), output);
     };
 };
-class publicSet {
+class publicSet {// Main functions for connect(Class), connectAuto(class), and managing settings, ...
     constructor() {
         this.axios = require('axios');
         this.geoip = require('geoip-lite');
@@ -132,7 +132,7 @@ class publicSet {
             this.settingsALL = JSON.parse(read_file('freedom-guard.json', "cache"));
         } catch (error) { this.saveSettings(); this.LOGLOG("settings file not found: saveSettings" + error) }
     };
-    async getIP_Ping() {
+    async getIP_Ping() {// Retrieves the current IP, country, and ping of the user.
         let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
         try {
             const time = Date.now();
@@ -390,7 +390,7 @@ class publicSet {
     killGrid() {
         this.KILLALLCORES("grid");
     };
-    KILLALLCORES(core) {
+    KILLALLCORES(core) {// Terminates a process with the given core name on both Windows and Unix-based systems.
         core = core.toString().toLowerCase() + "-core";
         this.LOGLOG(`Killing ${core}...`);
         if (process.platform == "win32") {
@@ -446,7 +446,7 @@ class publicSet {
         };
     };
 }
-class connectAuto extends publicSet {
+class connectAuto extends publicSet {// Connects automatically using ISP config mode (ispServers) == Auto MODE
     constructor() {
         super();
         this.processWarp = null;
@@ -514,8 +514,7 @@ class connectAuto extends publicSet {
             this.notConnected("auto");
             return;
         };
-
-    }
+    };
     async connectWarp() {
         this.LOGLOG("starting warp on Auto...");
         this.ResetArgs("warp");
@@ -640,9 +639,9 @@ class connectAuto extends publicSet {
         }
     }
     connectFlex() {
-    }
+    };
     connectGrid() {
-    }
+    };
     killVPN(core) {
         this.LOGLOG("disconnecting... -> " + core);
         try {
@@ -659,7 +658,6 @@ class connectAuto extends publicSet {
         window.reloadPing();
     };
     connectFailed(from = "start") {
-        // this.
 
     };
     DataoutVibe(data) {
@@ -676,7 +674,7 @@ class connectAuto extends publicSet {
         }
     };
 };
-class connect extends publicSet {
+class connect extends publicSet {// Connects using custom mode(settings) or config mode
     constructor() {
         super();
         this.processWarp = null;
@@ -880,7 +878,7 @@ class connect extends publicSet {
         }
     };
 };
-class test extends publicSet {
+class test extends publicSet { // Not ready - Intended for testing configurations in the servers list.
     constructor() {
         super();
         this.settings = {
@@ -902,7 +900,7 @@ class test extends publicSet {
     testAll() {
     };
 };
-class Tools {
+class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freedom Link)
     constructor() {
         this.exec = require("child_process").exec;
         this.Winreg = require("winreg");
@@ -1148,9 +1146,8 @@ class Tools {
 
         return "unknown";
     }
-
     donateCONFIG(config) {
         window.donateCONFIG(config);
-    }
-}
+    };
+};
 module.exports = { connect, connectAuto, test, publicSet, Tools };
