@@ -113,6 +113,14 @@
             <option value="auto">حالت خودکار</option>
             <option value="import">انتخاب/وارد کردن کانفیگ</option>
         </select>
+        <a href="https://freedom-guard.github.io/Freedom/privacy-terms.html"
+            style="color: white;text-decoration: none;margin: 0.4em;">
+            با ادامه استفاده، شما با <span style="font-weight: bold;"
+                href="https://freedom-guard.github.io/Freedom/privacy-terms.html">سیاست حریم خصوصی و شرایط
+                استفاده</span> موافقت
+            می‌کنید.
+        </a>
+
         <button id="submit-start" class="btn" style="margin-top: auto;margin-bottom: 1em;">شروع</button>
     </div>
     <div id="setting-app">
@@ -122,68 +130,83 @@
             <button id="close-setting">
                 <i class='bx bx-arrow-back'></i>
             </button>
-            <b
-                style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;">Settings
+            <b style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;"
+                data-lang="settings_fg">Settings
                 Freedom Guard</b>
             <div class="dropdown" id="more-options" style="margin-left: auto;padding: 10px;">
                 <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;" id="open-drop-setting"></i>
                 <div class="dropdown-content" id="more-options-content">
-                    <div id="import-config-file"><i class="bx bx-import" style="font-size: 1.5em;"></i>Import config
+                    <div id="import-config-file"><i class="bx bx-import" style="font-size: 1.5em;"></i>
+                        <p data-lang="import_settings">Import settings</p>
                     </div>
-                    <div id="export-config"><i class="bx bx-export" style="font-size: 1.5em;"></i>Export config</div>
-                    <div id="reset-setting-btn"><i class="bx bx-reset" style="font-size: 1.5em;"></i>Reset setting</div>
-                    <div id="about"><i class="bx bx-info-circle" style="font-size: 1.5em;"></i>About app</div>
+                    <div id="export-config"><i class="bx bx-export" style="font-size: 1.5em;"></i>
+                        <p data-lang="export_settings">Export Settings</p>
+                    </div>
+                    <div id="reset-setting-btn"><i class="bx bx-reset" style="font-size: 1.5em;"></i>
+                        <p data-lang="reset_settings">Reset setting</p>
+                    </div>
+                    <div id="about"><i class="bx bx-info-circle" style="font-size: 1.5em;"></i>
+                        <p data-lang="about_app">About app</p>
+                    </div>
                 </div>
             </div>
         </nav>
-        <b>Config Freedom Guard</b>
-        <div id="config" class="form-control-c">
-            <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
-                id="config-value">
-            <button id="submit-config" class="btn">Import</button>
-        </div>
-        <b>Config Freedom Guard for auto mode</b>
-        <div id="config-fg" class="form-control-c">
-            <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
-                id="config-fg-value"
-                value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json">
-        </div>
-        <h3>VPN Settings</h3>
-        <b>VPN Core</b>
-        <div id="core-guard" class="form-control-c">
-            <select value="auto" id="core-guard-selected">
-                <option value="auto">Automatic</option>
-                <!-- <option value="flex">Freedom Flex</option> -->
-                <option value="vibe">Freedom Vibe</option>
-                <option value="warp">Freedom Warp</option>
-            </select>
-        </div>
-        <b>VPN Type</b>
-        <div id="vpn-type">
-            <select value="system" id="vpn-type-selected">
-                <option value="system">System Proxy</option>
-                <option value="tun">VPN Mode (Tun)</option>
-            </select>
-        </div>
-        <b>Bind Address</b>
-        <div id="bind-address" class="form-control-c">
-            <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
-        </div>
-        <b>Connection Test URL</b>
-        <div id="conn-test" class="form-control-c">
-            <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
-                id="conn-test-text">
-        </div>
-        <b>Freedom Link (Support others by sharing your config after connection)</b>
-        <div id="freedom-link">
-            <label class="switch">
-                <input type="checkbox" id="freedom-link-status" />
-                <span class="slider"></span>
-            </label>
-        </div>
+        <section id="main"><b data-lang="config_freedom_guard">Config Freedom Guard</b>
+            <div id="config" class="form-control-c">
+                <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
+                    id="config-value">
+                <button id="submit-config" class="btn" data-lang="import">Import</button>
+            </div>
+            <b data-lang="config_fg_auto">Config Freedom Guard for auto mode</b>
+            <div id="config-fg" class="form-control-c">
+                <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
+                    id="config-fg-value"
+                    value="https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json">
+            </div>
+            <h3 data-lang="vpn-settings">VPN Settings</h3>
+            <b data-lang="vpn-core">VPN Core</b>
+            <div id="core-guard" class="form-control-c">
+                <select value="auto" id="core-guard-selected">
+                    <option value="auto" data-lang="auto-core-select">Automatic</option>
+                    <!-- <option value="flex">Freedom Flex</option> -->
+                    <option value="vibe">Freedom Vibe</option>
+                    <option value="warp">Freedom Warp</option>
+                </select>
+            </div>
+            <b data-lang="vpn-type">VPN Type</b>
+            <div id="vpn-type">
+                <select value="system" id="vpn-type-selected">
+                    <option value="system" data-lang="system-proxy">System Proxy</option>
+                    <option value="tun" data-lang="tun">VPN Mode (Tun)</option>
+                </select>
+            </div>
+            <b data-lang="bind-address">Bind Address</b>
+            <div id="bind-address" class="form-control-c">
+                <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
+            </div>
+            <b data-lang="connection_test_url">Connection Test URL</b>
+            <div id="conn-test" class="form-control-c">
+                <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
+                    id="conn-test-text">
+            </div>
+            <b data-lang="freedom_link">Freedom Link (Support others by sharing your config after connection)</b>
+            <div id="freedom-link">
+                <label class="switch">
+                    <input type="checkbox" id="freedom-link-status" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <b data-lang="lang-selection">Language Selection</b>
+            <div id="lang-app">
+                <select id="lang-app-value" value="en">
+                    <option value="en">English</option>
+                    <option value="fa">فارسی</option>
+                </select>
+            </div>
+        </section>
         <section id="auto">
-            <h3>Auto mode</h3>
-            <b>Your ISP</b>
+            <h3 data-lang="auto-mode">Auto mode</h3>
+            <b data-lang="your_isp">Your ISP</b>
             <div id="isp-guard" class="form-control-c">
                 <select value="other" id="isp-guard-selected">
                     <option value="other">All ISP</option>
@@ -196,69 +219,79 @@
             </div>
         </section>
         <section id="warp">
-            <h3>Warp mode</h3>
-            <b>Warp Key</b>
+            <h3 data-lang="warp_mode">Warp mode</h3>
+            <b data-lang="warp_key">Warp Key</b>
             <div id="warp-key" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="key: xxxxxxxxxxxxx" id="warp-key-value">
                 <button class="btn btn-primary" id="get-key-warp">Get Key</button>
             </div>
-            <b>DNS Warp</b>
+
+            <b data-lang="dns_warp">DNS Warp</b>
             <div id="dns-warp" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="dns: 8.8.8.8" id="dns-warp-value">
             </div>
-            <h3>Network Settings Warp</h3>
-            <b>IP Version</b>
+
+            <h3 data-lang="network_settings_warp">Network Settings Warp</h3>
+            <b data-lang="ip_version">IP Version</b>
             <div id="ip-version">
                 <select name="" id="selector-ip-version-warp">
                     <option value="IPV4">IP Version 4</option>
                     <option value="IPV6">IP Version 6</option>
                 </select>
             </div>
-            <b>Gool Warp</b>
+
+            <b data-lang="gool_warp">Gool Warp</b>
             <div>
                 <label class="switch">
                     <input type="checkbox" id="Gool" />
                     <span class="slider"></span>
                 </label>
             </div>
-            <b>Scan Warp</b>
+
+            <b data-lang="scan_warp">Scan Warp</b>
             <div>
                 <label class="switch">
                     <input type="checkbox" id="Scan" />
                     <span class="slider"></span>
                 </label>
             </div>
-            <b>Endpoint</b>
+
+            <b data-lang="endpoint">Endpoint</b>
             <div id="endpoint-warp" class="form-control-c">
                 <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
                 <button class="btn btn-primary" id="get-endpoint-warp">Get Endpoint</button>
             </div>
-            <b>Scanner RTT Limit</b>
+
+            <b data-lang="scan_rtt">Scanner RTT Limit</b>
             <div id="scan-rtt" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-value">
             </div>
-            <h3>Advanced Settings Warp</h3>
-            <b>Verbose</b>
+
+            <h3 data-lang="advanced_settings_warp">Advanced Settings Warp</h3>
+            <b data-lang="verbose">Verbose</b>
             <div id="verbose">
                 <label class="switch">
                     <input type="checkbox" id="verbose-status" />
                     <span class="slider"></span>
                 </label>
             </div>
-            <b>Reserved</b>
+
+            <b data-lang="reserved">Reserved</b>
             <div id="reserved">
                 <label class="switch">
                     <input type="checkbox" id="reserved-status" />
                     <span class="slider"></span>
                 </label>
             </div>
-            <b>Test URL Warp</b>
+
+            <b data-lang="test_url_warp">Test URL Warp</b>
             <div id="test-url-warp">
                 <label class="switch">
                     <input type="checkbox" id="test-url-warp-status" />
                     <span class="slider"></span>
                 </label>
             </div>
+
             <!-- <b>Config Directory</b>
             <div id="config-dir-warp" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="Path file config" id="config-dir">
@@ -285,12 +318,15 @@
         <section id="grid">
             <h3>Grid Mode</h3>
         </section>
-        <h3>Options</h3>
+        <h3 data-lang="options">Options</h3>
         <div id="options-setting-warp" style="display: flex;gap: 10px;padding: 1em 2em;box-sizing: border-box;">
-            <button id="change-background-btn" class="btn">Change Background</button>
-            <button id="refresh-servers-btn" class="btn">Refresh ISP Servers</button>
+            <button id="change-background-btn" class="btn" data-lang="change_background">Change Background</button>
+            <button id="refresh-servers-btn" class="btn" data-lang="refresh_isp">Refresh ISP Servers</button>
             <div style="width: 100%;"></div>
             <button id="x-contact" class="btn">X Freedom Guard</button>
+            <a class="btn" href="https://freedom-guard.github.io/Freedom/privacy-terms.html"
+                data-lang="privacy_terms">Privacy Policy and Terms of
+                Use</a>
             <button id="repo-contact" class="btn">Repository Freedom Guard on Github</button>
             <button id="telegram-contact" class="btn">Telegram Freedom Guard</button>
             <div style="width: 100%;"></div>
@@ -300,7 +336,7 @@
                 style="width: 45%;">
             <input type="text" id="set-setting-value" class="input input-alt" placeholder="key=value?"
                 style="width: 45%;">
-            <button id="set-setting" class="btn">Set</button>
+            <button id="set-setting" class="btn" data-lang="set">Set</button>
             <div style="width: 100%;"></div>
         </div>
     </div>
@@ -309,22 +345,22 @@
             <i class='bx bx-menu'></i>
         </div>
         <div id="menu-dns">
-            <i class='bx bx-server'></i> Set DNS
+            <i class='bx bx-server'></i> <span data-lang="set_dns">Set DNS</span>
         </div>
         <div id="menu-freedom-browser">
-            <i class='bx bx-globe'></i> Freedom Browser
+            <i class='bx bx-globe'></i> <span data-lang="freedom_browser">Freedom Browser</span>
         </div>
         <div id="menu-freedom-logs">
-            <i class='bx bx-bug'></i> Logs
+            <i class='bx bx-bug'></i> <span data-lang="logs">Logs</span>
         </div>
         <div id="menu-kill-all">
-            <i class="bx bxs-pear"></i> Kill All services
+            <i class="bx bxs-pear"></i> <span data-lang="kill_all_services">Kill All services</span>
         </div>
         <div id="menu-exit-app">
-            <i class='bx bx-power-off'></i> Exit App
+            <i class='bx bx-power-off'></i> <span data-lang="exit_app">Exit App</span>
         </div>
         <div id="menu-about">
-            <i class='bx bx-info-circle'></i> About the App
+            <i class='bx bx-info-circle'></i> <span data-lang="about_app">About the App</span>
         </div>
     </div>
 
@@ -358,15 +394,17 @@
     <!-- #region Other All -->
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
-        <p> Freedom Guard 2 (beta-release)</p>
-        <p> Developed By Freedom Guard Team 👩‍💻</p>
-        <p>👇 Acknowledgements 👇</p>
-        <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>
-        <p> <a href="https://github.com/bepass-org/warp-plus">warp-plus 1.2.5</a> from bepass-org</p>
-        <p> <a href="https://github.com/GFW-knocker/Xray-core">Xray-core 25.1.30</a> from GFW-knocker</p>
-        <p> <a href="https://github.com/ircfspace/warpkey/">WARP+ Keys Collector</a> from IRCF</p>
-        <p> <a href="https://github.com/ircfspace/endpoint/">Endpoint warp+</a> from IRCF</p>
-        <p> <a href="https://x.com/Freedom_Guard_N">X Freedom Guard</a></p>
+        <section data-lang="about_app_html">
+            <p> Freedom Guard 2 (beta-release)</p>
+            <p> Developed By Freedom Guard Team 👩‍💻</p>
+            <p>👇 Acknowledgements 👇</p>
+            <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>
+            <p> <a href="https://github.com/bepass-org/warp-plus">warp-plus 1.2.5</a> from bepass-org</p>
+            <p> <a href="https://github.com/GFW-knocker/Xray-core">Xray-core 25.1.30</a> from GFW-knocker</p>
+            <p> <a href="https://github.com/ircfspace/warpkey/">WARP+ Keys Collector</a> from IRCF</p>
+            <p> <a href="https://github.com/ircfspace/endpoint/">Endpoint warp+</a> from IRCF</p>
+            <p> <a href="https://x.com/Freedom_Guard_N">X Freedom Guard</a></p>
+        </section>
     </div>
     <div id="message" dir="auto">
         <p id="messageText"></p>
@@ -399,9 +437,7 @@
         }
     </script>
     <!-- #endregion Other All -->
+    <script src="./renderer.js"></script>
 </body>
-<!-- #region Scripts -->
-<script src="./renderer.js"></script>
-<!-- #endregion Scripts -->
 
 </html>

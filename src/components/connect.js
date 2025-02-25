@@ -4,14 +4,43 @@ const { protocol } = require('electron');
 const fs = require('fs');
 const { notify } = require('node-notifier');
 const { type } = require('os');
+const os = require('os');
+const path = require('path');
 const { resolve } = require('path');
 const { trackEvent } = require("@aptabase/electron/renderer");
 trackEvent("app_started");
-read_file = function (path) {
-    return fs.readFileSync(path, 'utf8');
+function getConfigPath() {
+    let baseDir;
+
+    if (process.platform === "win32") {
+        baseDir = path.join(process.env.APPDATA, "Freedom Guard");
+    } else if (process.platform === "darwin") {
+        baseDir = path.join(os.homedir(), "Library", "Application Support", "Freedom Guard");
+    } else {
+        baseDir = path.join(os.homedir(), ".config", "Freedom Guard");
+    }
+
+    if (!fs.existsSync(baseDir)) {
+        fs.mkdirSync(baseDir, { recursive: true });
+    }
+
+    return (baseDir);
+}
+read_file = function (pathFile, type = "file") {
+    if (type == "file") {
+        return fs.readFileSync(pathFile, 'utf8');
+    }
+    else {
+        return fs.readFileSync(path.join(getConfigPath(), pathFile), 'utf8')
+    };
 };
-write_file = function (path, output) {
-    fs.writeFileSync(path, output);
+write_file = function (pathFile, output, type = 'file') {
+    if (type == "file") {
+        fs.writeFileSync(pathFile, output);
+    }
+    else {
+        fs.writeFileSync(path.join(getConfigPath(), pathFile), output);
+    };
 };
 class publicSet {
     constructor() {
@@ -79,6 +108,10 @@ class publicSet {
                 ispServers: [],
                 timeout: 60000,
                 freedomLink: false,
+                lang: "en",
+            },
+            "lang": {
+
             }
         };
         this.supported = {
@@ -91,13 +124,13 @@ class publicSet {
         this.Tools = new Tools();
     };
     saveSettings(settingsSave = this.settingsALL) {
-        write_file('freedom-guard.json', JSON.stringify(settingsSave));
+        write_file('freedom-guard.json', JSON.stringify(settingsSave), "cache");
         this.settingsALL = settingsSave;
     };
     async ReloadSettings() {
         try {
-            this.settingsALL = JSON.parse(read_file('freedom-guard.json'));
-        } catch (error) { this.saveSettings(); this.LOGLOG("settings file not found: saveSettings") }
+            this.settingsALL = JSON.parse(read_file('freedom-guard.json', "cache"));
+        } catch (error) { this.saveSettings(); this.LOGLOG("settings file not found: saveSettings" + error) }
     };
     async getIP_Ping() {
         let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
@@ -140,7 +173,7 @@ class publicSet {
         this.LOGLOG("connected " + core);
         notify({
             title: 'Connected!',
-            message: `🚀 "You're now connected to ${core}!"`,
+            message: this.settingsALL["lang"]["connected_mess_notif"].replace("[core]", core),
             icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
@@ -214,9 +247,12 @@ class publicSet {
                 importedServers: ["freedom-guard://core=auto#Auto Server"],
                 ispServers: [],
                 timeout: 45000,
-                freedomLink: false
+                freedomLink: false,
+                lang: "en",
             },
+            "lang": {
 
+            }
         };
         this.saveSettings();
         window.showMessageUI("⚙️ Settings have been restored to default. Restarting the application... ✅", 5000);
@@ -553,6 +589,10 @@ class connectAuto extends publicSet {
         else if (core == "warp") {
             this.argsWarp = [];
             let settingWarp = this.settings["warp"];
+            if (this.settingsALL["public"]["proxy"] != "127.0.0.1:8086") {
+                this.argsWarp("--bind");
+                this.argsWarp.push(this.settingsALL["public"]["proxy"]);
+            };
             if (settingWarp["ipv"] != "IPV4" && settingWarp["ipv"]) {
                 this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
             };
@@ -734,6 +774,10 @@ class connect extends publicSet {
         if (core == "warp") {
             this.argsWarp = [];
             let settingWarp = this.settingsALL["warp"];
+            if (this.settingsALL["public"]["proxy"] != "127.0.0.1:8086") {
+                this.argsWarp("--bind");
+                this.argsWarp.push(this.settingsALL["public"]["proxy"]);
+            };
             if (settingWarp["ipv"] != "IPV4") {
                 this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
             };
@@ -992,7 +1036,6 @@ class Tools {
 
         offProxy();
         this.LOGLOG("[Proxy] Killing related processes...");
-        this.killGrid();
     }
     setDNS(dns1, dns2, os) {
         const exec = require('child_process').exec;

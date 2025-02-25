@@ -43,6 +43,7 @@ window.connectedUI = () => {
     mainSTA.publicSet.status = true;
     mainSTA.publicSet.connected = true;
     ipcRenderer.send("set-on-fg");
+    window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["connected_mess_notif"])
 };
 window.donateCONFIG = async (config) => {
     fetch("https://freedom-link.freedomguard.workers.dev/api/submit-config", {
@@ -93,6 +94,7 @@ class main {
         this.setPingBox();
         this.publicSet.startINIT();
         this.checkUPDATE();
+        this.loadLang();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -146,6 +148,39 @@ class main {
     onConnect() {
 
     };
+    async loadLang() {
+        this.publicSet.ReloadSettings();
+        let lang = this.publicSet.settingsALL["public"]["lang"];
+        const response = await fetch(`../components/locales/${lang}.json`);
+        const translations = await response.json();
+        $('[data-lang]').each(function () {
+            try {
+                let key = $(this).attr('data-lang');
+                if (lang == "fa")
+                    $(this).attr('dir', "rtl");
+                else {
+                    $(this).attr('dir', "ltr");
+                }
+                $(this).html(translations[key]);
+            }
+            catch { }
+        });
+        this.publicSet.settingsALL["lang"] = translations;
+        if (lang == "fa") {
+            $("#setting-app>section").attr("dir", "rtl");
+            $("#setting-app h3").toggleClass("right");
+        }
+        else {
+            $("#setting-app>section").attr("dir", "ltr");
+            $("#setting-app h3").toggleClass("right");
+        }
+        this.publicSet.saveSettings();
+        $("a").on('click', (e) => {
+            e.preventDefault();
+            let href = $(e.target).attr("href");
+            this.openLink(href);
+        });
+    }
     async isAdmin() {
         const isAdmin = await ipcRenderer.invoke("check-admin");
         if (!isAdmin) {
@@ -254,6 +289,7 @@ class main {
             this.KILLALLCORES('vibe');
             this.publicSet.offProxy();
             this.setPingBox();
+            window.showMessageUI(this.publicSet.settingsALL["lang"]["killed_services"]);
         });
         process.nextTick(() => this.addEventsSetting());
     };
@@ -274,7 +310,7 @@ class main {
             ipcRenderer.send("export-settings", JSON.stringify(this.publicSet.settingsALL));
             ipcRenderer.on("save-status", (event, status) => {
                 if (status === "success") {
-                    window.showMessageUI("✅ Settings were successfully saved!");
+                    window.showMessageUI(this.publicSet.settingsALL["lang"]["settings_saved"]);
                 }
             });
         });
@@ -288,7 +324,10 @@ class main {
             this.publicSet.resetSettings();
         });
         $("#config-fg-value").on("input", () => {
-            this.publicSet.settingsALL["public"]["configAuto"] = $("#config-fg-value").val(); this.publicSet.saveSettings();
+            this.publicSet.settingsALL["public"]["configAuto"] = $("#config-fg-value").val();
+            this.publicSet.settingsALL["public"]["core"] = "auto";
+            this.setSettings();
+            this.publicSet.saveSettings();
         });
         $("#submit-config").on("click", async () => {
             await this.publicSet.importConfig($("#config-value").val());
@@ -297,7 +336,7 @@ class main {
         });
         $("#vpn-type-selected").on('change', async () => {
             if (this.publicSet.settingsALL["public"]["core"] == "warp" && $("#vpn-type-selected").val() == "tun") {
-                window.showMessageUI("😕 اوه! حالت TUN در Warp پشتیبانی نمی‌شه.");
+                window.showMessageUI(this.publicSet.settingsALL["lang"]["tun_not_supported"]);
                 $("#vpn-type-selected").val("system");
                 return;
             }
@@ -310,6 +349,12 @@ class main {
         });
         $("#isp-guard-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["isp"] = $("#isp-guard-selected").val(); this.publicSet.saveSettings();
+        });
+        $("#lang-app-value").on("change", () => {
+            this.publicSet.settingsALL["public"]["lang"] = $("#lang-app-value").val();
+            this.publicSet.saveSettings();
+            window.showMessageUI(this.publicSet.settingsALL["lang"]["mess-change-lang"], 5000);
+            this.loadLang();
         });
         $("#conn-test-text").on('input', () => {
             this.publicSet.settingsALL["public"]["testUrl"] = $("#conn-test-text").val(); this.publicSet.saveSettings();
@@ -326,14 +371,14 @@ class main {
         $("#telegram-contact").on("click", () => { this.openLink("https://t.me/Freedom_Guard_Net") });
         $("#refresh-servers-btn").on("click", async () => {
             this.publicSet.updateISPServers(this.publicSet.settingsALL["public"]["isp"]); await this.publicSet.updateISPServers();
-            await this.reloadServers(); this.publicSet.saveSettings(); window.showMessageUI("Refreshed ISP Servers");
+            await this.reloadServers(); this.publicSet.saveSettings(); window.showMessageUI(this.publicSet.settingsALL["lang"]["refreshed_isp_servers"]);
         });
         $("#submit-dns").on("click", async () => {
             if ((!await this.isAdmin())) {
                 return;
             };
             this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS());
-            window.showMessageUI("DNS successfully set ✅")
+            window.showMessageUI(this.publicSet.settingsALL["lang"]["dns_set_success"])
         });
         $("#freedom-link-status").on("click", () => {
             this.publicSet.settingsALL["public"]["freedomLink"] = !this.publicSet.settingsALL["public"]["freedomLink"]
@@ -359,7 +404,7 @@ class main {
                     $("#endpoint-warp-value").val(randomIP);
                     this.publicSet.settingsALL["warp"]["endpoint"] = randomIP;
                     this.publicSet.saveSettings();
-                    window.showMessageUI("Endpoint retrieved and pasted into the input. ✅")
+                    window.showMessageUI(this.publicSet.settingsALL["lang"]["endpoint_retrieved"]);
                 } catch (error) {
                     this.publicSet.LOGLOG("Error fetching endpoint data:", error);
                 }
@@ -379,7 +424,7 @@ class main {
                     $("#warp-key-value").val(randomKey);
                     this.publicSet.settingsALL["warp"]["key"] = randomKey;
                     this.publicSet.saveSettings();
-                    window.showMessageUI("Warp key retrieved and applied successfully. ✅")
+                    window.showMessageUI(this.publicSet.settingsALL["lang"]["warp_key_applied"]);
                 } catch (error) {
                     this.publicSet.LOGLOG("Error fetching WARP keys:", error);
                 }
@@ -427,6 +472,7 @@ class main {
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
+        $("#lang-app-value").val(this.publicSet.settingsALL["public"]["lang"]);
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
         window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
@@ -916,5 +962,5 @@ ipcRenderer.on("start-link", (event, link) => {
         mainSTA.publicSet.importConfig(link);
     } catch (error) {
     }
-    window.showMessageUI("Configuration imported successfully from deep link (protocol):" + link.split("://")[0]);
+    window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["config_imported"] + link.split("://")[0]);
 });
