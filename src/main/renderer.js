@@ -23,7 +23,7 @@ window.LogLOG = (log = "", type = "info") => {
         second: "2-digit",
         hour12: false,
     });
-    log = timestamp + " --" + type + "--> " + log;
+    log = timestamp + (type != "null" ? " --" + type + "--> " : "") + log;
     $("#LogsContent").append(`<p class="log-item">${log}</p>`);
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
     $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
@@ -833,8 +833,11 @@ class fgCLI extends main {
                     this.publicSet.offProxy(proxy);
                 }
                 break;
-            case "update":
-            // update isp, servers (not ready)
+            case "refresh":
+                this.publicSet.ReloadSettings();
+                this.reloadServers();
+                this.setPingBox();
+                this.setSettings();
             default:
                 window.LogLOG("Command not found");
                 break;
@@ -851,6 +854,7 @@ class fgCLI extends main {
         window.LogLOG("&nbsp;&nbsp;&nbsp;set - settings->set public core warp");
         window.LogLOG("&nbsp;&nbsp;&nbsp;show - settings->show public core");
         window.LogLOG("&nbsp;&nbsp;&nbsp;kill - only core selected mode->kill warp (/f)");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;refresh - refresh(isp servers, settings, ping, ...)");
         window.LogLOG("&nbsp;&nbsp;&nbsp;clear - Clear logs");
         window.LogLOG("&nbsp;&nbsp;&nbsp;exit - Exit application");
     };
@@ -872,6 +876,10 @@ window.startNewUser = () => {
         if ($("#selector-mode-start").val() == "import") {
             $("#box-select-country-mini").trigger("click");
         };
+        mainSTA.publicSet.settingsALL["public"]["lang"] = $("#selector-lang-start").val();
+        mainSTA.publicSet.saveSettings();
+        window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["mess-change-lang"], 5000);
+        mainSTA.loadLang();
         mainSTA.publicSet.saveSettings();
         $("#start-box").hide();
         window.setSettings();

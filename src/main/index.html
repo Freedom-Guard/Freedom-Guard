@@ -108,10 +108,17 @@
             <option value="TCI">مخابرات</option>
             <option value="other">دیگر</option>
         </select>
+        <br />
         <label for="selector-mode-start" style="margin-top: 0.2em;">حالت فیلترشکن:</label>
         <select id="selector-mode-start" class="none-apper">
             <option value="auto">حالت خودکار</option>
             <option value="import">انتخاب/وارد کردن کانفیگ</option>
+        </select>
+        <br />
+        <label for="selector-lang-start">زبان شما / Your language:</label>
+        <select id="selector-lang-start" class="none-apper" value="en">
+            <option value="en">English</option>
+            <option value="fa">فارسی</option>
         </select>
         <a href="https://freedom-guard.github.io/Freedom/privacy-terms.html"
             style="color: white;text-decoration: none;margin: 0.4em;">
@@ -310,8 +317,9 @@
         <section id="vibe">
             <h3>Vibe Mode</h3>
             <b>Hiddify Config</b>
-            <div><button id="hiddify-config-vibe">Select File</button>
-                <button id="hiddify-reset-vibe">reset config</button>
+            <div>
+                <button id="hiddify-config-vibe" class="btn">Select File</button>
+                <button id="hiddify-reset-vibe" class="btn">reset config</button>
             </div>
         </section>
         <section id="flex">

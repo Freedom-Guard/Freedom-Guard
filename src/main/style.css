@@ -1071,14 +1071,21 @@ select option {
     position: absolute;
     z-index: 15;
     border-radius: 15px;
-    left: 10vw;
-    width: 80vw;
-    padding: 1em;
-    height: 50vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    padding: 1.5em;
+    height: auto;
+    min-height: 40vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     color: white;
-    flex-wrap: wrap;
+    text-align: center;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -1275,9 +1282,11 @@ select option {
     transition: background-color 0.3s ease;
     cursor: pointer;
 }
+
 .dropdown-content div p {
     padding-top: 5px;
 }
+
 .dropdown-content div:hover {
     background-color: rgba(131, 56, 236, 0.5);
 }
