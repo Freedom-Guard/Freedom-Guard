@@ -324,7 +324,7 @@ ipcMain.handle("import-config", async () => {
     try {
       const data = fs.readFileSync(filePath, "utf8");
       const jsonData = JSON.parse(data);
-      return { success: true, data: jsonData };
+      return { success: true, data: jsonData, noJsonData: data };
     } catch (error) {
       console.error("Error reading configuration file:", error);
       return { success: false, error: "Failed to read the file." };

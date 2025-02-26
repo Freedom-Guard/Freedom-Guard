@@ -81,7 +81,7 @@ class main {
         this.connectAuto = new connectAuto();
         this.test = new test();
         this.path = require("path");
-        this.axios = require('axios');
+        this.axios = require("axios");
         this.publicSet = new publicSet();
         this.Tools = new Tools();
     };
@@ -452,9 +452,13 @@ class main {
             });
         }
         else if (core == "vibe") {
-            $("#config-vibe-value").on("input", () => {
-                this.publicSet.settingsALL["public"]["configManual"] = $("#config-vibe-value").val();
-                this.publicSet.settingsALL["vibe"]["config"] = $("#config-vibe-value").val();
+            $("#hiddify-config-vibe").on("click", async () => {
+                const response = await ipcRenderer.invoke("import-config");
+                this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = response["data"];
+                this.publicSet.saveSettings();
+            });
+            $("#hiddify-reset-vibe").on("click", async () => {
+                this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = null;
                 this.publicSet.saveSettings();
             });
         }

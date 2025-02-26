@@ -77,7 +77,8 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
                 fragmentSize: "",
                 fragment: "",
                 fragmentSleep: "",
-                timeout: 60000
+                timeout: 60000,
+                hiddifyConfigJSON: null
             },
             "warp": {
                 gool: false,
@@ -217,7 +218,8 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
                 fragmentSize: "",
                 fragment: "",
                 fragmentSleep: "",
-                timeout: 60000
+                timeout: 60000,
+                hiddifyConfigJSON: null
             },
             "warp": {
                 gool: false,
@@ -276,13 +278,8 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
         if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "vibe";
             typeConfig = "vibe";
-            if (!(config.startsWith("http"))) {
-                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
-                this.settingsALL["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
-            }
-            else {
-                this.settingsALL["vibe"]["config"] = config;
-            };
+            write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
+            this.settingsALL["vibe"]["config"] = '"' + this.path.join(this.coresPath, "vibe", "config.txt") + '"';
         }
         else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "warp";
@@ -333,9 +330,11 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             this.LOGLOG("serverISP URL: " + serverISP);
             let response = await this.axios.get(serverISP, { timeout: 10000 });
             let responseServerISP = [];
+            let responseServerPublic = [];
             await this.sleep(500);
             try {
                 responseServerISP = response.data[isp];
+                responseServerPublic = response.data["public"];
             } catch (error) {
                 this.LOGLOG("Error parsing JSON: " + error + response);
                 alert("Invalid response format from server.");
@@ -349,12 +348,17 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             }
             this.LOGLOG("ISP SELECTED: " + isp);
             this.LOGLOG("isp servers updated: " + JSON.stringify(responseServerISP));
-            this.settingsALL["public"]["ispServers"] = responseServerISP;
+            this.settingsALL["public"]["ispServers"] = responseServerISP?.length ? responseServerISP.concat(responseServerPublic || []) : responseServerPublic || [];
+            if (this.settingsALL["public"]["ispServers"] == []) {
+                window.showMessageUI(this.settingsALL["lang"]["mess_not_found_isp_in_servers"]);
+                this.LOGLOG("ISP not found: " + isp);
+                return false;
+            }
             this.saveSettings();
             return true;
         } catch (error) {
             this.LOGLOG("Network or server error:", error);
-            alert("Cannot access the repository. Please check your connection. used backup");
+            window.showMessageUI(this.settingsALL["lang"]["message_repo_access_error"]);
             if (this.settingsALL["public"]["ispServers"] != []) {
                 return true;
             }
@@ -577,7 +581,7 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
             this.argsVibe.push("--config");
             write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (this.settings["vibe"]["config"]));
             this.settings["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
-            this.argsVibe.push(this.settings["vibe"]["config"]);
+            this.argsVibe.push('"' + this.settings["vibe"]["config"] + '"');
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsVibe.push("--tun");
             }
@@ -735,7 +739,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
         };
     };
     async connectVibe() {
-        this.ResetArgs("vibe");
+        await this.ResetArgs("vibe");
         await this.sleep(1000);
         this.LOGLOG(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")) + " " + this.argsVibe);
         this.processVibe = spawn(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")), this.argsVibe);
@@ -767,7 +771,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
         return new Promise((resolve, reject) => {
         });
     }
-    ResetArgs(core = "warp") {
+    async ResetArgs(core = "warp") {
         this.ReloadSettings();
         if (core == "warp") {
             this.argsWarp = [];
@@ -826,12 +830,17 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
             let settingVibe = this.settingsALL["vibe"];
             this.argsVibe.push("run")
             this.argsVibe.push("--config");
-            this.argsVibe.push(settingVibe["config"]);
+            this.argsVibe.push(settingVibe["config"].replace(" ", "^ "));
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsVibe.push("--tun");
             }
             else {
                 this.argsVibe.push("--system-proxy");
+            };
+            if (this.settingsALL["vibe"]["hiddifyConfigJSON"] != null) {
+                write_file(this.path.join(this.coresPath, "vibe", "hiddify.json"), JSON.stringify(this.settingsALL["vibe"]["hiddifyConfigJSON"]));
+                this.argsVibe.push("--hiddify");
+                this.argsVibe.push(this.path.join(this.coresPath, "vibe", "hiddify.json").replace(" ", "^ "));
             };
         }
     };
@@ -839,9 +848,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
         super.saveSettings(this.settings);
     };
     ReloadSettings() {
-        try {
-            this.settingsALL = JSON.parse(readFileSync('freedom-guard.json'));
-        } catch (error) { this.saveSettings(); }
+        super.ReloadSettings();
     };
     killVPN(core) {
         this.LOGLOG(`[Connection] Disconnecting from: ${core}...`);
@@ -1005,36 +1012,6 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
             }
         }
     };
-    offProxy(os, proxy) {
-        this.LOGLOG("[Proxy] Disabling proxy...");
-
-        const setRegistryValue = (key, name, type, value) => {
-            return new Promise((resolve, reject) => {
-                key.set(name, type, value, (err) => {
-                    if (err) reject(err);
-                    else resolve();
-                });
-            });
-        };
-
-        const offProxy = async () => {
-            const regKey = new this.Winreg({
-                hive: this.Winreg.HKCU,
-                key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
-            });
-
-            try {
-                this.LOGLOG("[Proxy] Modifying registry to disable proxy...");
-                await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
-                this.LOGLOG("[Proxy] Proxy disabled successfully.");
-            } catch (error) {
-                this.LOGLOG("[Proxy] Error disabling proxy:", error);
-            }
-        };
-
-        offProxy();
-        this.LOGLOG("[Proxy] Killing related processes...");
-    }
     setDNS(dns1, dns2, os) {
         const exec = require('child_process').exec;
         const setWindowsDNS = (dns1, dns2) => {

@@ -52,5 +52,7 @@
     "advanced_settings_warp": "Advanced Settings Warp",
     "verbose": "Verbose",
     "reserved": "Reserved",
-    "test_url_warp": "Test URL Warp"
+    "test_url_warp": "Test URL Warp",
+    "mess_not_found_isp_in_servers": "🚫 Oops! The requested ISP wasn’t found in the auto-config server list, and there’s no public config defined either. 😕 Please check the settings or contact support. 📞",
+    "message_repo_access_error": "⚠️ Unable to access the repository! Please check your internet connection. Using backup settings instead. 🔄"
 }

@@ -15,6 +15,7 @@
         "build:linux": "electron-builder --linux deb"
     },
     "build": {
+        "compression": "maximum",
         "protocols": [
             {
                 "name": "freedom guard",

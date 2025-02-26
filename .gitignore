@@ -24,3 +24,4 @@ src/main/cores/scanner/bestendpoint.txt
 src/main/cores/scanner/result.csv
 config/config.txt
 src/main/cores/win32/vibe/config.txt
+src/main/cores/win32/vibe/hiddify.json
