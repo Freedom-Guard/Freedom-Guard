@@ -894,12 +894,11 @@ img {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    /* display: none; */
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 15;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
 }
 
@@ -919,28 +918,52 @@ img {
 
 .content img {
     margin: 30px;
-    border: 2px solid #333;
-    border-radius: 8px;
-    box-shadow: 0px 0px 20px 5px rgba(189, 5, 127, 0.4);
-    animation: fadeInScale 2s ease infinite;
-    transform: scale(1.1);
+    border: 3px solid #1a1a1a;
+    border-radius: 6px;
+    box-shadow: 0px 0px 30px 6px rgba(8, 27, 90, 0.5);
+    animation: fadeInScale 1.5s ease-in-out infinite alternate;
+    transform: scale(1.05);
     object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content img:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 35px 7px rgba(8, 27, 90, 0.6);
 }
 
 @keyframes fadeInScale {
     0% {
-        opacity: 0.4;
-        transform: scale(0.8);
+        opacity: 0.3;
+        transform: scale(0.8) rotate(-5deg);
+        filter: blur(3px);
+    }
+
+    30% {
+        opacity: 0.7;
+        transform: scale(1) rotate(2deg);
+        filter: blur(1.5px);
     }
 
     50% {
         opacity: 1;
-        transform: scale(1.1);
+        transform: scale(1.15) rotate(0deg);
+        filter: blur(0);
+    }
+
+    70% {
+        transform: scale(1.2) rotate(-2deg);
+    }
+
+    90% {
+        transform: scale(1.25) rotate(3deg);
+        filter: blur(1px);
     }
 
     100% {
-        opacity: 0.3;
-        transform: scale(0.8);
+        opacity: 0.4;
+        transform: scale(0.7) rotate(-5deg);
+        filter: blur(3px);
     }
 }
 
@@ -1069,26 +1092,32 @@ select option {
 }
 
 #start-box {
-    background-color: #3F36AE;
+    background: linear-gradient(135deg, #3F36AE, #5A48D1);
     position: absolute;
-    z-index: 15;
-    border-radius: 15px;
+    z-index: 20;
+    border-radius: 20px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 600px;
-    padding: 1.5em;
-    height: auto;
+    padding: 2em;
     min-height: 40vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     color: white;
     text-align: center;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+#start-box:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.35);
+}
+
 
 
 .box-notif {

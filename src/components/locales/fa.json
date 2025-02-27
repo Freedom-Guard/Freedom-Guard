@@ -31,7 +31,7 @@
     "logs": "لاگ",
     "freedom_browser": "مرورگر آزادی",
     "set_dns": "تنظیم DNS",
-    "about_app_html": "    <p>  گارد آزادی ۲ (نسخه بتا)</p>\n    <p> توسعه داده شده توسط تیم Freedom Guard 👩‍💻</p>\n    <p>👇 تقدیر و تشکر 👇</p>\n    <p> <a href=\"https://github.com/hiddify/hiddify-core/\">hiddify-core 3.1.8</a> از Hiddify</p>\n    <p> <a href=\"https://github.com/bepass-org/warp-plus\">warp-plus 1.2.5</a> از bepass-org</p>\n    <p> <a href=\"https://github.com/GFW-knocker/Xray-core\">Xray-core 25.1.30</a> از GFW-knocker</p>\n    <p> <a href=\"https://github.com/ircfspace/warpkey/\">جمع‌آوری کلیدهای WARP+</a> از IRCF</p>\n    <p> <a href=\"https://github.com/ircfspace/endpoint/\">Endpoint warp+</a> از IRCF</p>\n    <p> <a href=\"https://x.com/Freedom_Guard_N\">X Freedom Guard</a></p>",
+    "about_app_html": "    <p>  گارد آزادی ۲ (نسخه بتا)</p>\n    <p> توسعه داده شده توسط تیم گارد آزادی 👩‍💻</p>\n    <p>👇 تقدیر و تشکر 👇</p>\n    <p> <a href=\"https://github.com/hiddify/hiddify-core/\">hiddify-core 3.1.8</a> از Hiddify</p>\n    <p> <a href=\"https://github.com/bepass-org/warp-plus\">warp-plus 1.2.5</a> از bepass-org</p>\n    <p> <a href=\"https://github.com/GFW-knocker/Xray-core\">Xray-core 25.1.30</a> از GFW-knocker</p>\n    <p> <a href=\"https://github.com/ircfspace/warpkey/\">جمع‌آوری کلیدهای WARP+</a> از IRCF</p>\n    <p> <a href=\"https://github.com/ircfspace/endpoint/\">Endpoint warp+</a> از IRCF</p>\n    <p> <a href=\"https://x.com/Freedom_Guard_N\">X Freedom Guard</a></p>",
     "killed_services": "همه سرویس‌ها متوقف شده‌اند.",
     "settings_saved": "✅ تنظیمات با موفقیت ذخیره شد!",
     "tun_not_supported": "😕 اوه! حالت TUN در Warp پشتیبانی نمی‌شود.",
@@ -62,5 +62,6 @@
     "config": "کانفیگ",
     "no_name": "بدون نام",
     "submit": "✅ ثبت",
-    "cancel": "❌ لغو"
+    "cancel": "❌ لغو",
+    "start_mess": "🚀 خوش آمدید به گارد آزادی! آماده‌ای؟ بیا شروع کنیم!"
 }

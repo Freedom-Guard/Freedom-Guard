@@ -902,8 +902,10 @@ window.startNewUser = () => {
         mainSTA.publicSet.saveSettings();
         $("#start-box").hide();
         window.setSettings();
-        let { trackEvent } = require("@aptabase/electron");
+        window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["start_mess"])
+        const { trackEvent } = require("@aptabase/electron");
         trackEvent("new-user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
+
     });
 };
 window.showMessageUI = (message, duration = 3000) => {
