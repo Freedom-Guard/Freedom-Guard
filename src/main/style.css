@@ -9,6 +9,14 @@
     --bg-glass: rgba(50, 50, 65, 0.3);
     --border-glass: rgba(255, 255, 255, 0.2);
     --shadow-glass: rgba(0, 0, 0, 0.3);
+    --primary-hover: #43A047;
+    --danger-color: #F44336;
+    --danger-hover: #E53935;
+    --background: #ffffff;
+    --text-color: #333;
+    --box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    --border-radius: 12px;
+    --padding: 20px;
 }
 
 body {
@@ -16,7 +24,6 @@ body {
     flex-wrap: wrap;
     background: radial-gradient(circle at center, #1b1b1b, #0d0d0d 40%, #000000);
     background-attachment: fixed;
-    font-family: 'Arial', sans-serif;
     overflow: hidden;
     background-size: cover;
     margin: 0;
@@ -28,7 +35,6 @@ body {
     background: linear-gradient(145deg, #0a0a0a, #090909, #050505);
     color: #E0E0E0;
     background-size: 200% 200%;
-    font-family: 'Arial', sans-serif;
     overflow: hidden;
 }
 
@@ -50,7 +56,6 @@ h1 {
     color: rgb(95, 93, 93);
     font-size: 16px;
     text-align: center;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif, "Vazirmatn", "sans-serif";
     flex: 0 1 100%;
 }
 
@@ -433,7 +438,6 @@ img {
     font-size: 18px;
     font-weight: 500;
     color: #fff;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     flex-grow: 1;
 }
 
@@ -911,14 +915,13 @@ img {
     color: #fff;
     font-size: 1.5rem;
     margin: 5px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .content img {
     margin: 30px;
     border: 2px solid #333;
     border-radius: 8px;
-    box-shadow: 0px 0px 20px 5px rgba(0, 179, 255, 0.4);
+    box-shadow: 0px 0px 20px 5px rgba(189, 5, 127, 0.4);
     animation: fadeInScale 2s ease infinite;
     transform: scale(1.1);
     object-fit: cover;
@@ -964,7 +967,6 @@ img {
     align-items: center;
     text-align: center;
     color: #333;
-    font-family: 'Trebuchet MS', sans-serif;
     font-size: 1.1rem;
     padding: 15px;
     width: 30%;
@@ -1118,7 +1120,6 @@ select option {
     font-size: medium;
     background-color: #0974f1;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border: none;
     border-radius: 7px;
 }
@@ -1139,7 +1140,6 @@ select option {
     flex-direction: column;
     color: white;
     font-size: 0.5em;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-y: auto;
 }
 
@@ -1175,7 +1175,6 @@ select option {
     height: fit-content;
     color: white;
     font-size: 1.5em;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -1195,7 +1194,6 @@ select option {
     width: 91vw;
     padding: 8px 12px;
     border-radius: 8px;
-    font-family: 'Courier New', Courier, monospace;
     transition: background-color 0.3s, transform 0.2s;
 }
 
@@ -1218,7 +1216,6 @@ select option {
 
 #Logs #LogsContent p {
     font-size: 1.2em;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     margin: 5px;
     padding: 5px;
@@ -1299,15 +1296,102 @@ select option {
 
 #prompt {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--main-color);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    min-width: 380px;
+    max-width: 90%;
+    width: fit-content;
+    text-align: center;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
     z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+#prompt.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+#prompt-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-wrapper label {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    margin-top: 0.3em;
+    text-align: left;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border 0.2s;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+#prompt button {
+    flex: 1;
+    margin-top: 1em;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+#prompt button:hover {
+    transform: scale(1.05);
+}
+
+#confirm-prompt {
+    background: var(--primary-color);
+}
+
+#confirm-prompt:hover {
+    background: var(--primary-hover);
+}
+
+#cancel-prompt {
+    background: var(--danger-color);
+}
+
+#cancel-prompt:hover {
+    background: var(--danger-hover);
 }
 
 .hidden {

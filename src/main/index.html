@@ -87,13 +87,13 @@
             </div>
         </div>
     </div>
-    <div id="prompt" class="hidden">
-        <div class="prompt-container">
-            <p id="prompt-message">لطفاً مقدار موردنظر را وارد کنید:</p>
-            <input type="text" id="prompt-input" class="input" size="150">
-            <div class="prompt-buttons">
-                <button id="confirm-prompt">تأیید</button>
-                <button id="cancel-prompt">لغو</button>
+    <div id="prompt" class="hidden" dir="auto">
+        <div id="prompt-box">
+            <h2 id="prompt-title">عنوان ورودی</h2>
+            <div id="prompt-content"></div>
+            <div id="prompt-actions" class="button-group">
+                <button id="confirm-prompt" class="btn" data-lang="submit">✅ تأیید</button>
+                <button id="cancel-prompt" class="btn" data-lang="cancel">❌ لغو</button>
             </div>
         </div>
     </div>
@@ -137,8 +137,7 @@
             <button id="close-setting">
                 <i class='bx bx-arrow-back'></i>
             </button>
-            <b style="color: #db8522;margin-left: 2vw;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: bold;"
-                data-lang="settings_fg">Settings
+            <b style="color: #db8522;margin-left: 2vw;font-weight: bold;" data-lang="settings_fg">Settings
                 Freedom Guard</b>
             <div class="dropdown" id="more-options" style="margin-left: auto;padding: 10px;">
                 <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;" id="open-drop-setting"></i>
@@ -163,6 +162,8 @@
                 <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
                     id="config-value">
                 <button id="submit-config" class="btn" data-lang="import">Import</button>
+                <button id="submit-config-clipboard" class="btn"><i class='bx bxs-paste'></i></button>
+                <button id="submit-config-file" class="btn"><i class='bx bxs-folder-open'></i></button>
             </div>
             <b data-lang="config_fg_auto">Config Freedom Guard for auto mode</b>
             <div id="config-fg" class="form-control-c">

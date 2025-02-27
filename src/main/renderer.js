@@ -1,5 +1,5 @@
 // #region Libraries 
-const { ipcRenderer, dialog, shell } = require('electron');
+const { ipcRenderer, dialog, shell, clipboard } = require('electron');
 const { remote } = require('electron');
 const { path } = require('path');
 const { readFileSync } = require('fs');
@@ -334,6 +334,19 @@ class main {
             this.setSettings();
             this.reloadServers();
         });
+        $("#submit-config-clipboard").on("click", async () => {
+            $("#config-value").val(clipboard.readText());
+            await this.publicSet.importConfig($("#config-value").val());
+            this.setSettings();
+            this.reloadServers();
+        });
+        $("#submit-config-file").on("click", async () => {
+            let server = await ipcRenderer.invoke("import-config")["noJsonData"];
+            $("#config-value").val("VIBE | JSON Server " + this.publicSet.settingsALL["public"]["importedServers"].length + 1);
+            await this.publicSet.importConfig(server);
+            this.setSettings();
+            this.reloadServers();
+        });
         $("#vpn-type-selected").on('change', async () => {
             if (this.publicSet.settingsALL["public"]["core"] == "warp" && $("#vpn-type-selected").val() == "tun") {
                 window.showMessageUI(this.publicSet.settingsALL["lang"]["tun_not_supported"]);
@@ -595,10 +608,16 @@ class main {
         `;
 
         menu.querySelector(".edit-server").addEventListener("click", async () => {
-            let newName = await window.prompt("کانفیگ جدید را وارد کنید:", server);
-            if (newName && newName.trim() !== "") {
-                let newServer = newName.trim();
-
+            let newServer = await window.promptMulti({
+                title: this.publicSet.settingsALL["lang"]["edit_config"],
+                fields: [
+                    { label: this.publicSet.settingsALL["lang"]["config_name"], defaultValue: this.publicSet.settingsALL["public"]["importedServers"][index].split("#")[1] == "" ? "no name" : this.publicSet.settingsALL["public"]["importedServers"][index].split("#")[1], name: "name" },
+                    { label: this.publicSet.settingsALL["lang"]["config"], defaultValue: this.publicSet.settingsALL["public"]["importedServers"][index].split("#")[0], name: "server" }
+                ],
+                returnName: true
+            });
+            if (newServer) {
+                newServer = newServer["server"] + "#" + newServer["name"];
                 if (type === "imported") {
                     this.publicSet.settingsALL["public"]["importedServers"][index] = newServer;
                 } else if (type === "isp") {
@@ -945,6 +964,77 @@ window.prompt = (message = "لطفاً مقدار موردنظر را وارد �
                 confirmBtn.click();
             }
         };
+    });
+};
+window.promptMulti = ({
+    title = "ورودی اطلاعات",
+    fields = [{ name: "input1", label: "ورودی 1", defaultValue: "" }],
+    returnName = false
+}) => {
+    return new Promise((resolve) => {
+        const $promptBox = $("#prompt");
+        const $promptTitle = $("#prompt-title");
+        const $promptContent = $("#prompt-content");
+        const $confirmBtn = $("#confirm-prompt");
+        const $cancelBtn = $("#cancel-prompt");
+        const $addFieldBtn = $("#add-field");
+
+        $promptTitle.text(title);
+        $promptContent.empty();
+
+        const inputs = [];
+
+        fields.forEach(({ name, label, defaultValue }, index) => {
+            const $wrapper = $("<div>").addClass("input-wrapper");
+            const $inputLabel = $("<label>").attr("for", `input-${index}`).text(label);
+            const $inputField = $("<input>").attr({ type: "text", id: `input-${index}`, value: defaultValue, "data-name": name, class: "input input-alt" });
+
+            $wrapper.append($inputLabel, $inputField);
+            $promptContent.append($wrapper);
+            inputs.push($inputField);
+        });
+
+        $promptBox.removeClass("hidden");
+        inputs[0].focus();
+
+        $addFieldBtn.off().on("click", () => {
+            const index = inputs.length;
+            const fieldName = `input${index + 1}`;
+            const $wrapper = $("<div>").addClass("input-wrapper");
+            const $inputLabel = $("<label>").attr("for", `input-${index}`).text(`ورودی ${index + 1}`);
+            const $inputField = $("<input>").attr({ type: "text", id: `input-${index}`, "data-name": fieldName });
+
+            $wrapper.append($inputLabel, $inputField);
+            $promptContent.append($wrapper);
+
+            inputs.push($inputField);
+            $inputField.focus();
+        });
+
+        const closePrompt = (values) => {
+            resolve(values);
+            $promptBox.addClass("hidden");
+        };
+
+        $confirmBtn.off().on("click", () => {
+            let values;
+            if (returnName) {
+                values = {};
+                inputs.forEach(input => values[$(input).attr("data-name")] = $(input).val());
+            } else {
+                values = inputs.map(input => $(input).val());
+            }
+            closePrompt(values);
+        });
+
+        $cancelBtn.off().on("click", () => closePrompt(null));
+
+        inputs.forEach(($input, index) => {
+            $input.on("keydown", (event) => {
+                if (event.key === "Enter" && index === inputs.length - 1) $confirmBtn.click();
+                if (event.key === "Escape") closePrompt(null);
+            });
+        });
     });
 };
 // #region IPC 

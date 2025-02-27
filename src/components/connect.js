@@ -261,8 +261,16 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
         await this.sleep(5000);
         location.reload();
     };
+    isValidJSON = (str) => {
+        try {
+            const parsed = JSON.parse(str);
+            return typeof parsed === "object" && parsed !== null;
+        } catch (e) {
+            return false;
+        }
+    };
     async importConfig(config) {
-        try { config = config.toString() } catch { if (config == "") { alert("config is empty!"); return; } };
+        try { config = config.toString() } catch { if (config == "") { window.showMessageUI(this.settingsALL["lang"]["config_empty"]); return; } };
         this.LOGLOG(config);
         let typeConfig = "warp";
         if (config == '') {
@@ -270,12 +278,18 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             this.saveSettings();
             window.setHTML("#textOfCfon", this.settingsALL["public"]["core"] + " Server + Customized");
             return;
-        }
+        };
         this.settingsALL["public"]["configManual"] = config;
         if (!(this.settingsALL["public"]["importedServers"].some(server => config == server))) {
             this.settingsALL["public"]["importedServers"].push(config)
+        };
+        if (this.isValidJSON(config)) {
+            this.settingsALL["public"]["core"] = "vibe";
+            typeConfig = "vibe";
+            write_file(this.path.join(this.coresPath, "vibe", "config.json"), (JSON.stringify(config)));
+            this.settingsALL["vibe"]["config"] = '"' + this.path.join(this.coresPath, "vibe", "config.json") + '"';
         }
-        if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
+        else if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "vibe";
             typeConfig = "vibe";
             write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
@@ -311,7 +325,7 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
         }
         else {
             this.LOGLOG("config -> not supported");
-            alert("config -> not supported");
+            window.showMessageUI(this.settingsALL["lang"]["config_not_supported"]);
             return;
         };
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (typeConfig == "warp" ? "warp.webp" : typeConfig == "vibe" ? "vibe.png" : "ir.svg"));

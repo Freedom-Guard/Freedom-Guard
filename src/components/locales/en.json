@@ -54,5 +54,13 @@
     "reserved": "Reserved",
     "test_url_warp": "Test URL Warp",
     "mess_not_found_isp_in_servers": "🚫 Oops! The requested ISP wasn’t found in the auto-config server list, and there’s no public config defined either. 😕 Please check the settings or contact support. 📞",
-    "message_repo_access_error": "⚠️ Unable to access the repository! Please check your internet connection. Using backup settings instead. 🔄"
+    "message_repo_access_error": "⚠️ Unable to access the repository! Please check your internet connection. Using backup settings instead. 🔄",
+    "config_empty": "⚠️ The configuration cannot be empty! Please provide a valid config.",
+    "config_not_supported": "⚠️ This config is not supported! Please check your config.",
+    "edit_config": "Edit Config",
+    "config_name": "Config Name",
+    "config": "Config",
+    "no_name": "No Name",
+    "submit": "✅ Submit",
+    "cancel": "❌ Cancel"
 }
