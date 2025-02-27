@@ -232,9 +232,9 @@ class main {
             await this.reloadServers();
         });
 
-        $("#box-select-country-mini, #close-box-select-server").on("click", async () => {
+        $("#box-select-server-mini, #close-box-select-server").on("click", async () => {
 
-            let $box = $("#box-select-country");
+            let $box = $("#box-select-server");
 
             if ($box.is(":visible")) {
                 $box.animate(
@@ -893,7 +893,7 @@ window.startNewUser = () => {
     $("#submit-start").on("click", () => {
         mainSTA.publicSet.settingsALL["public"]["isp"] = $("#selector-isp-start").val();
         if ($("#selector-mode-start").val() == "import") {
-            $("#box-select-country-mini").trigger("click");
+            $("#box-select-server-mini").trigger("click");
         };
         mainSTA.publicSet.settingsALL["public"]["lang"] = $("#selector-lang-start").val();
         mainSTA.publicSet.saveSettings();
