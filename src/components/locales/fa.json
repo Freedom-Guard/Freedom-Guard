@@ -64,5 +64,6 @@
     "submit": "✅ ثبت",
     "cancel": "❌ لغو",
     "start_mess": "🚀 خوش آمدید به گارد آزادی! آماده‌ای؟ بیا شروع کنیم!",
-    "imported_config_file": "✅ فایل کانفیگ خودکار وارد شد!"
+    "imported_config_file": "✅ فایل کانفیگ خودکار وارد شد!",
+    "browser_not_ready": "🛠️🚧 The browser is currently broken, but I’ll fix it later! Your curiosity is truly admirable! 🤓🔥"
 }

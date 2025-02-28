@@ -943,6 +943,110 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
             console.log(text);
         }
     };
+    setProxy(os, proxy) {
+        if (os == "win32") {
+            const setRegistryValue = (key, name, type, value) => {
+                return new Promise((resolve, reject) => {
+                    key.set(name, type, value, (err) => {
+                        if (err) reject(err);
+                        else resolve();
+                    });
+                });
+            };
+            const setProxy = async (proxy) => {
+                const regKey = new this.Winreg({
+                    hive: this.Winreg.HKCU,
+                    key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
+                });
+
+                try {
+                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+                } catch (error) {
+                    this.LOGLOG('Error setting proxy:', error);
+                }
+            };
+            setProxy(proxy);
+        } else {
+            const exec = require('child_process').exec;
+
+            const setGnomeProxy = (proxy) => {
+                exec(`gsettings set org.gnome.system.proxy mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting GNOME proxy mode:', err);
+                });
+                exec(`gsettings set org.gnome.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting GNOME proxy host:', err);
+                });
+                exec(`gsettings set org.gnome.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting GNOME proxy port:', err);
+                });
+            };
+
+            const setKdeProxy = (proxy) => {
+                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 1`, (err) => {
+                    if (err) this.LOGLOG('Error setting KDE proxy mode:', err);
+                });
+                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'httpProxy' '${proxy}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting KDE proxy:', err);
+                });
+            };
+
+            const setXfceProxy = (proxy) => {
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyMode -s manual`, (err) => {
+                    if (err) this.LOGLOG('Error setting XFCE proxy mode:', err);
+                });
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPHost -s '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting XFCE proxy host:', err);
+                });
+                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPPort -s ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting XFCE proxy port:', err);
+                });
+            };
+
+            const setCinnamonProxy = (proxy) => {
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting Cinnamon proxy mode:', err);
+                });
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting Cinnamon proxy host:', err);
+                });
+                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting Cinnamon proxy port:', err);
+                });
+            };
+
+            const setMateProxy = (proxy) => {
+                exec(`gsettings set org.mate.system.proxy mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting MATE proxy mode:', err);
+                });
+                exec(`gsettings set org.mate.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting MATE proxy host:', err);
+                });
+                exec(`gsettings set org.mate.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting MATE proxy port:', err);
+                });
+            };
+            switch (os) {
+                case "GNOME":
+                    setGnomeProxy(proxy);
+                    break;
+                case "KDE":
+                    setKdeProxy(proxy);
+                    break;
+                case "XFCE":
+                    setXfceProxy(proxy);
+                    break;
+                case "CINNAMON":
+                    setCinnamonProxy(proxy);
+                    break;
+                case "MATE":
+                    setMateProxy(proxy);
+                    break;
+                default:
+                    this.LOGLOG('Unsupported OS or desktop environment');
+            }
+        };
+    };
     offProxy(os) {
         this.LOGLOG("[Proxy] Disabling proxy...");
 
