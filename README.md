@@ -79,13 +79,14 @@
 
 ## Screenshots
 
-### Freedom Browser
-
-![Freedom Browser](https://github.com/user-attachments/assets/a6c01de3-f214-45be-8dfc-c78ed43f0d40)
-
 ### Freedom Guard 
 
-![image](https://github.com/user-attachments/assets/e9062f41-0558-4997-8815-5994a9a18ceb)
+![image](https://github.com/user-attachments/assets/dbc34ef6-1dcf-4ae7-945b-7a5a494f1345)
+
+![image](https://github.com/user-attachments/assets/1eef8768-f030-4d7c-b5b2-bfa83a9e56cc)
+
+![image](https://github.com/user-attachments/assets/a3787139-c775-4703-835c-a67ed46b4923)
+
 
 ## تامین کانفیگ خودکار
 
