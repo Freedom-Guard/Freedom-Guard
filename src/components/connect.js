@@ -98,6 +98,7 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             "public": {
                 proxy: "127.0.0.1:8086",
                 configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json",
+                configAutoMode: "remote",
                 configManual: "",
                 core: "auto",
                 dns: ["8.8.8.8"],
@@ -239,6 +240,7 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             "public": {
                 proxy: "127.0.0.1:8086",
                 configAuto: "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/index.json",
+                configAutoMode: "remote",
                 configManual: "",
                 core: "auto",
                 dns: ["8.8.8.8"],
@@ -276,7 +278,7 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
         if (config == '') {
             this.settingsALL["public"]["configManual"] = config;
             this.saveSettings();
-            window.setHTML("#textOfCfon", this.settingsALL["public"]["core"] + " Server + Customized");
+            window.setHTML("#textOfServer", this.settingsALL["public"]["core"] + " Server + Customized");
             return;
         };
         this.settingsALL["public"]["configManual"] = config;
@@ -329,17 +331,22 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             return;
         };
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (typeConfig == "warp" ? "warp.webp" : typeConfig == "vibe" ? "vibe.png" : "ir.svg"));
-        window.setHTML("#textOfCfon", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
+        window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
         this.saveSettings();
     };
     async deleteConfig(config) {
         this.settingsALL["public"]["importedServers"] = this.settingsALL["public"]["importedServers"].filter(item => item !== config);
         this.saveSettings();
-        window.setHTML("#textOfCfon", "Auto Server");
+        window.setHTML("#textOfServer", "Auto Server");
     };
     async updateISPServers(isp = this.settingsALL["public"]["isp"]) {
         try {
             await this.ReloadSettings();
+            if (this.settingsALL["public"]["configAutoMode"] === "local") {
+                this.settingsALL["public"]["ispServers"] = this.settingsALL["public"]["configAuto"][isp];
+                this.saveSettings();
+                return true;
+            };
             let serverISP = this.settingsALL["public"]["configAuto"].toString();
             this.LOGLOG("serverISP URL: " + serverISP);
             let response = await this.axios.get(serverISP, { timeout: 10000 });

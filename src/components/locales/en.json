@@ -63,5 +63,6 @@
     "no_name": "No Name",
     "submit": "✅ Submit",
     "cancel": "❌ Cancel",
-    "start_mess": "🚀 Welcome to Freedom Guard! Ready to begin? Let's get started!"
+    "start_mess": "🚀 Welcome to Freedom Guard! Ready to begin? Let's get started!",
+    "imported_config_file": "✅ The auto-config file has been imported successfully!"
 }

@@ -303,7 +303,7 @@ class main {
             $("#config-value").val("");
             this.publicSet.importConfig("");
             window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
-            window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["core"] + " Server + Customized")
+            window.setHTML("#textOfServer", this.publicSet.settingsALL["public"]["core"] + " Server + Customized")
         });
         $("#export-config").on("click", async () => {
             this.publicSet.ReloadSettings();
@@ -325,6 +325,7 @@ class main {
         });
         $("#config-fg-value").on("input", () => {
             this.publicSet.settingsALL["public"]["configAuto"] = $("#config-fg-value").val();
+            this.publicSet.settingsALL["public"]["configAutoMode"] = "remote";
             this.publicSet.settingsALL["public"]["core"] = "auto";
             this.setSettings();
             this.publicSet.saveSettings();
@@ -342,10 +343,30 @@ class main {
         });
         $("#submit-config-file").on("click", async () => {
             let server = await ipcRenderer.invoke("import-config")["noJsonData"];
-            $("#config-value").val("VIBE | JSON Server " + this.publicSet.settingsALL["public"]["importedServers"].length + 1);
+            $("#config-value").val(server);
             await this.publicSet.importConfig(server);
             this.setSettings();
             this.reloadServers();
+        });
+        $("#config-fg-file").on("click", async () => {
+            let response = await ipcRenderer.invoke("import-config");
+
+            if (response.success) {
+                let servers = JSON.parse(response.noJsonData);
+
+                this.publicSet.settingsALL["public"]["configAutoMode"] = "local";
+                this.publicSet.settingsALL["public"]["configAuto"] = servers;
+                this.publicSet.settingsALL["public"]["core"] = "auto";
+
+                this.publicSet.saveSettings();
+                this.setSettings();
+                this.reloadServers();
+
+                window.showMessageUI(this.publicSet.settingsALL["lang"]["imported_config_file"]);
+            } else {
+                console.error("Failed to import config:", response.error);
+                window.showMessageUI("❌ " + response.error);
+            }
         });
         $("#vpn-type-selected").on('change', async () => {
             if (this.publicSet.settingsALL["public"]["core"] == "warp" && $("#vpn-type-selected").val() == "tun") {
@@ -489,10 +510,11 @@ class main {
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);
         $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
+        $("#config-fg-value").val(this.publicSet.settingsALL["public"]["configAutoMode"] == "local" ? "LOCAL SOURCE (SERVERS)" : this.publicSet.settingsALL["public"]["configAuto"]);
         $("#lang-app-value").val(this.publicSet.settingsALL["public"]["lang"]);
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
-        window.setHTML("#textOfCfon", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
+        window.setHTML("#textOfServer", this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50));
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
         $("#selector-ip-version-warp").val(this.publicSet.settingsALL["warp"]["ipv"] ?? "IPV4");

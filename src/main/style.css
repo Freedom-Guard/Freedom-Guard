@@ -465,7 +465,7 @@ img {
     background: rgba(255, 255, 255, 0.1);
 }
 
-.options-select-cfon {
+.options-select-server {
     position: absolute;
     bottom: 1vh;
     width: 100%;
@@ -481,18 +481,18 @@ img {
     flex-direction: column;
 }
 
-.options-select-cfon:hover {
+.options-select-server:hover {
     color: #a8d0e6;
     transform: translateY(-3px);
 }
 
-.options-select-cfon>p {
+.options-select-server>p {
     font-size: 15px;
     margin-bottom: 8px;
     font-weight: 500;
 }
 
-.options-select-cfon>i {
+.options-select-server>i {
     font-size: 26px;
     margin-bottom: 5px;
 }
@@ -520,43 +520,43 @@ img {
     transform: scale(1.01);
 }
 
-.box-select-server-mini #flagOfCfon {
+.box-select-server-mini #flagOfServer {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.box-select-server-mini #flagOfCfon img {
+.box-select-server-mini #flagOfServer img {
     margin: 6px 10px;
     border-radius: 4px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.box-select-server-mini #flagOfCfon img:hover {
+.box-select-server-mini #flagOfServer img:hover {
     transform: scale(1.08);
 }
 
-#flagOfCfon {
+#flagOfServer {
     display: flex;
     align-items: center;
     font-size: 16px;
     width: 100%;
 }
 
-#flagOfCfon>p {
+#flagOfServer>p {
     margin: 12px auto 10px 0;
     color: #ddd;
     font-weight: 500;
 }
 
-#flagOfCfon>i {
+#flagOfServer>i {
     margin: 12px 0px 10px auto;
     font-size: 22px;
     color: #fff;
     transition: transform 0.2s ease-in-out;
 }
 
-#flagOfCfon>i:hover {
+#flagOfServer>i:hover {
     transform: rotate(15deg);
 }
 
