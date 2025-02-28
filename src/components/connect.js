@@ -861,7 +861,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
             let settingVibe = this.settingsALL["vibe"];
             this.argsVibe.push("run")
             this.argsVibe.push("--config");
-            this.argsVibe.push(settingVibe["config"].replace(" ", "^ "));
+            this.argsVibe.push(settingVibe["config"]);
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsVibe.push("--tun");
             }
@@ -871,7 +871,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
             if (this.settingsALL["vibe"]["hiddifyConfigJSON"] != null) {
                 write_file(this.path.join(this.coresPath, "vibe", "hiddify.json"), JSON.stringify(this.settingsALL["vibe"]["hiddifyConfigJSON"]));
                 this.argsVibe.push("--hiddify");
-                this.argsVibe.push(this.path.join(this.coresPath, "vibe", "hiddify.json").replace(" ", "^ "));
+                this.argsVibe.push(this.path.join(this.coresPath, "vibe", "hiddify.json"));
             };
         }
     };

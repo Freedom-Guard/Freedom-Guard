@@ -78,6 +78,7 @@ h2 {
 
 #ip-ping.connected {
     margin-bottom: 15vh;
+    margin-top: 15vh;
     background: rgba(30, 30, 30, 0.3);
     backdrop-filter: blur(10px);
     padding: 12px 2em;
