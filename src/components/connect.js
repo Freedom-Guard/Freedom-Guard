@@ -294,8 +294,13 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
         else if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "vibe";
             typeConfig = "vibe";
-            write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
-            this.settingsALL["vibe"]["config"] = '"' + this.path.join(this.coresPath, "vibe", "config.txt") + '"';
+            if (config.startsWith("http")) {
+                this.settingsALL["vibe"]["config"] = config;
+            }
+            else {
+                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
+                this.settingsALL["vibe"]["config"] = '' + this.path.join(this.coresPath, "vibe", "config.txt") + '';
+            }
         }
         else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "warp";
@@ -600,9 +605,14 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
             this.argsVibe = [];
             this.argsVibe.push("run");
             this.argsVibe.push("--config");
-            write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (this.settings["vibe"]["config"]));
-            this.settings["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
-            this.argsVibe.push('"' + this.settings["vibe"]["config"] + '"');
+            if (this.settings["vibe"]["config"].startsWith("http")) {
+
+            }
+            else {
+                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (this.settings["vibe"]["config"]));
+                this.settings["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
+            };
+            this.argsVibe.push(this.settings["vibe"]["config"]);
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsVibe.push("--tun");
             }
