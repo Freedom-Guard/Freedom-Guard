@@ -1194,6 +1194,7 @@ select option {
     color: white;
     border: none;
     background-color: transparent;
+    transition: 0.1s;
 }
 
 #Logs #OptionsLogs button:hover {

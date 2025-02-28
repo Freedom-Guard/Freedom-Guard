@@ -282,6 +282,7 @@ class main {
             let logs = LOGS.join("\n");
             logs += "\n ISP:" + this.publicSet.settingsALL["public"]["isp"] + " \n CORE:" + this.publicSet.settingsALL["public"]["core"];
             navigator.clipboard.writeText(logs);
+            window.showMessageUI(this.publicSet.settingsALL["lang"]["copied"])
         });
         $("#menu-kill-all").on("click", () => {
             this.KILLALLCORES('warp');
