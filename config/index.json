@@ -2,42 +2,69 @@
     "PUBLIC": [
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
-        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER"
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ],
     "MCI": [
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#VIBE | MCI",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
-        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2"
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ],
     "IRANCELL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
-        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2"
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ],
     "RIGHTEL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
-        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2"
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ],
     "PISHGAMAN": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
-        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2"
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ],
     "TCI": [
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server TCI",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2"
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ],
     "other": [
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server 1",
@@ -45,6 +72,11 @@
         "vibe,;,https://links.freebustraveler.uk/TNKbpN#FREE | NET",
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://raw.githubusercontent.com/ircfspace/warpsub/main/export/warp#VIBE | WARP",
-        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2"
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/main/SUB/BackUp-07cc47#VIBE | SERVER 2",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
+        "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
+        "warp,;,scan=true#WARP | SCAN"
     ]
 }
