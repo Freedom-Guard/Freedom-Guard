@@ -66,5 +66,7 @@
     "start_mess": "🚀 Welcome to Freedom Guard! Ready to begin? Let's get started!",
     "imported_config_file": "✅ The auto-config file has been imported successfully!",
     "browser_not_ready": "🛠️🚧 The browser is currently broken, but I’ll fix it later! Your curiosity is truly admirable! 🤓🔥",
-    "copied": "Copy operation completed successfully! 🎉📋"
+    "copied": "Copy operation completed successfully! 🎉📋",
+    "docs_fg": "Freedom Guard Documentation",
+    "repo_fg": "Freedom Guard repository on GitHub"
 }

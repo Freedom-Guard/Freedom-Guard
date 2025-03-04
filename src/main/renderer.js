@@ -175,12 +175,12 @@ class main {
             $("#setting-app h3").toggleClass("right");
         }
         this.publicSet.saveSettings();
-        $("a").on('click', (e) => {
+        $("#about-app a").on('click', (e) => {
             e.preventDefault();
             let href = $(e.target).attr("href");
             this.openLink(href);
         });
-    }
+    };
     async isAdmin() {
         const isAdmin = await ipcRenderer.invoke("check-admin");
         if (!isAdmin) {
@@ -396,13 +396,12 @@ class main {
             this.publicSet.settingsALL["public"]["testUrl"] = $("#conn-test-text").val(); this.publicSet.saveSettings();
         });
         $("#change-background-btn").on("click", () => {
-            let backgroundImageLists = ["1.png", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg"];
+            let backgroundImageLists = ["1.jpg", "2.png", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg"];
             let randomIndex = Math.floor(Math.random() * backgroundImageLists.length);
             let randomImage = backgroundImageLists[randomIndex];
             document.body.style.backgroundSize = "cover";
             document.body.style.backgroundImage = "url('background/" + randomImage + "')";
         });
-        $("#repo-contact").on("click", () => { this.openLink("https://github.com/Freedom-Guard/Freedom-Guard/") });
         $("#x-contact").on("click", () => { this.openLink("https://x.com/Freedom_Guard_N") });
         $("#telegram-contact").on("click", () => { this.openLink("https://t.me/Freedom_Guard_Net") });
         $("#refresh-servers-btn").on("click", async () => {
@@ -629,6 +628,7 @@ class main {
         menu.innerHTML = `
             <button class="edit-server"><i class='bx bxs-pencil'></i> ویرایش</button>
             <button class="delete-server"><i class='bx bxs-trash'></i> حذف</button>
+            <button class="share-server"><i class='bx bxs-share'></i> اشتراک‌ گذاری</button>
         `;
 
         menu.querySelector(".edit-server").addEventListener("click", async () => {
@@ -673,7 +673,17 @@ class main {
 
             menu.remove();
         });
-
+        menu.querySelector(".share-server").addEventListener("click", async () => {
+            try {
+                const serverConfig = server.replace(",;,", "://");
+                await navigator.clipboard.writeText(serverConfig);
+                window.showMessageUI("کانفیگ در کلیپ‌بورد کپی شد!", 5000);
+            } catch (error) {
+                console.error("خطا در کپی کردن:", error);
+                window.showMessageUI("خطا در کپی کردن کانفیگ!", 5000);
+            };
+            menu.remove();
+        });
         document.body.appendChild(menu);
 
         setTimeout(() => {

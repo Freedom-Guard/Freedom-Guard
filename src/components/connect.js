@@ -1036,6 +1036,48 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     if (err) this.LOGLOG('Error setting MATE proxy port:', err);
                 });
             };
+
+            const setDeepinProxy = (proxy) => {
+                exec(`dconf write /system/proxy/mode "'manual'"`, (err) => {
+                    if (err) this.LOGLOG('Error setting Deepin proxy mode:', err);
+                });
+                exec(`dconf write /system/proxy/http/host "'${proxy.split(':')[0]}'"`, (err) => {
+                    if (err) this.LOGLOG('Error setting Deepin proxy host:', err);
+                });
+                exec(`dconf write /system/proxy/http/port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting Deepin proxy port:', err);
+                });
+            };
+            const setMinimalWMProxy = (proxy) => {
+                exec(`echo "export http_proxy='http://${proxy}'" >> ~/.xprofile`, (err) => {
+                    if (err) this.LOGLOG('Error setting proxy for minimal window managers:', err);
+                });
+                exec(`echo "export https_proxy='http://${proxy}'" >> ~/.xprofile`, (err) => {
+                    if (err) this.LOGLOG('Error setting HTTPS proxy:', err);
+                });
+            };
+
+            const setBudgieProxy = (proxy) => {
+                exec(`gsettings set com.solus-project.budgie-panel proxy-mode 'manual'`, (err) => {
+                    if (err) this.LOGLOG('Error setting Budgie proxy mode:', err);
+                });
+                exec(`gsettings set com.solus-project.budgie-panel proxy-host '${proxy.split(':')[0]}'`, (err) => {
+                    if (err) this.LOGLOG('Error setting Budgie proxy host:', err);
+                });
+                exec(`gsettings set com.solus-project.budgie-panel proxy-port ${proxy.split(':')[1]}`, (err) => {
+                    if (err) this.LOGLOG('Error setting Budgie proxy port:', err);
+                });
+            };
+
+            const setLXQtProxy = (proxy) => {
+                exec(`lxqt-config-session set /network/proxy mode manual`, (err) => {
+                    if (err) this.LOGLOG('Error setting LXQt proxy mode:', err);
+                });
+                exec(`lxqt-config-session set /network/proxy/http ${proxy}`, (err) => {
+                    if (err) this.LOGLOG('Error setting LXQt proxy:', err);
+                });
+            };
+
             switch (os) {
                 case "GNOME":
                     setGnomeProxy(proxy);
@@ -1052,10 +1094,24 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 case "MATE":
                     setMateProxy(proxy);
                     break;
+                case "DEEPIN":
+                    setDeepinProxy(proxy);
+                    break;
+                case "LXQT":
+                    setLXQtProxy(proxy);
+                    break;
+                case "BUDGIE":
+                    setBudgieProxy(proxy);
+                    break;
+                case "OPENBOX":
+                case "I3WM":
+                    setMinimalWMProxy(proxy);
+                    break;
                 default:
                     this.LOGLOG('Unsupported OS or desktop environment');
                     window.showMessageUI("[Proxy] Unsupported OS or desktop environment. You need to set the proxy manually. A SOCKS5 proxy has been created: " + proxy, 15000);
             }
+            
         };
     };
     offProxy(os) {
@@ -1244,18 +1300,35 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
 
             if (desktopEnv) {
                 const normalizedEnv = desktopEnv.toLowerCase();
+
                 if (normalizedEnv.includes("gnome")) return "GNOME";
                 if (normalizedEnv.includes("kde")) return "KDE";
                 if (normalizedEnv.includes("xfce")) return "XFCE";
                 if (normalizedEnv.includes("cinnamon")) return "CINNAMON";
                 if (normalizedEnv.includes("mate")) return "MATE";
+                if (normalizedEnv.includes("lxqt")) return "LXQT";
+                if (normalizedEnv.includes("budgie")) return "BUDGIE";
+                if (normalizedEnv.includes("deepin")) return "DEEPIN";
+                if (normalizedEnv.includes("enlightenment")) return "ENLIGHTENMENT";
+                if (normalizedEnv.includes("pantheon")) return "PANTHEON";
+                if (normalizedEnv.includes("trinity")) return "TRINITY";
+            }
+
+            const { execSync } = require("child_process");
+            try {
+                const runningProcesses = execSync("ps aux").toString().toLowerCase();
+                if (runningProcesses.includes("i3")) return "I3WM";
+                if (runningProcesses.includes("openbox")) return "OPENBOX";
+            } catch (error) {
+                console.error("Error detecting running processes:", error);
             }
 
             return "linux-unknown";
         }
 
         return "unknown";
-    }
+    };
+
     donateCONFIG(config) {
         window.donateCONFIG(config);
     };
