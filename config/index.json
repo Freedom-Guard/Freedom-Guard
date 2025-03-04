@@ -4,8 +4,7 @@
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
         "vibe,;,https://igdux.top/RsCJ#VIBE | SERVER 3",
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
-        "warp,;,scan=true#WARP | SCAN"
+        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
     ],
     "MCI": [
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
@@ -41,6 +40,12 @@
         "vibe,;,https://elena.com.co/ELiV2-RAY-Sublink.txt#VIBE | Server TCI",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
         "warp,;,scan=true#WARP | SCAN",
+        "vibe,;,https://shz.al/~freenet#Woman Life Freedom"
+    ],
+    "SHATEL": [
+        "vibe,;,https://shz.al/~freenet#Woman Life Freedom"
+    ],
+    "PARSONLINE": [
         "vibe,;,https://shz.al/~freenet#Woman Life Freedom"
     ],
     "other": [
