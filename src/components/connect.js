@@ -360,7 +360,7 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             await this.sleep(500);
             try {
                 responseServerISP = response.data[isp];
-                responseServerPublic = response.data["public"];
+                responseServerPublic = response.data["PUBLIC"];
             } catch (error) {
                 this.LOGLOG("Error parsing JSON: " + error + response);
                 alert("Invalid response format from server.");
@@ -373,8 +373,8 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
                 return false;
             }
             this.LOGLOG("ISP SELECTED: " + isp);
-            this.LOGLOG("isp servers updated: " + JSON.stringify(responseServerISP));
             this.settingsALL["public"]["ispServers"] = responseServerISP?.length ? responseServerISP.concat(responseServerPublic || []) : responseServerPublic || [];
+            this.LOGLOG("isp servers updated: " + JSON.stringify(this.settingsALL["public"]["ispServers"]));
             if (this.settingsALL["public"]["ispServers"] == []) {
                 window.showMessageUI(this.settingsALL["lang"]["mess_not_found_isp_in_servers"]);
                 this.LOGLOG("ISP not found: " + isp);
