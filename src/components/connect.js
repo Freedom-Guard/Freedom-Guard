@@ -1054,6 +1054,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     break;
                 default:
                     this.LOGLOG('Unsupported OS or desktop environment');
+                    window.showMessageUI("[Proxy] Unsupported OS or desktop environment. You need to set the proxy manually. A SOCKS5 proxy has been created: " + proxy, 15000);
             }
         };
     };
@@ -1143,9 +1144,9 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     break;
                 default:
                     this.LOGLOG('[Proxy] Unsupported OS or desktop environment');
-                    window.showMessageUI('[Proxy] Unsupported OS or desktop environment', 15000);
-            }
-        }
+                    window.showMessageUI("[Proxy] Your OS or desktop environment isn't supported. You'll need to disable the proxy manually.", 15000);
+            };
+        };
     };
     setDNS(dns1, dns2, os) {
         const exec = require('child_process').exec;
@@ -1182,8 +1183,6 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 });
             });
         };
-
-
         const setLinuxDNS = (dns1, dns2) => {
             exec(`nmcli device status | awk '{print $1}' | tail -n +2`, (err, stdout) => {
                 if (err) {
@@ -1228,8 +1227,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 setLinuxDNS(dns1, dns2);
                 break;
         }
-    }
-
+    };
     returnOS() {
         const platform = process.platform;
 
