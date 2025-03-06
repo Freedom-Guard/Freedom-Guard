@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "2.0.0";
+const vesrionApp = "2.1.0";
 let LOGS = [];
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
@@ -231,6 +231,7 @@ class main {
         });
         $("#reload-server-btn").on("click", async () => {
             await this.reloadServers();
+            window.showMessageUI(this.publicSet.settingsALL["lang"]["refreshed_isp_servers"]);
         });
 
         $("#box-select-server-mini, #close-box-select-server").on("click", async () => {

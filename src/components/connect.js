@@ -1111,7 +1111,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     this.LOGLOG('Unsupported OS or desktop environment');
                     window.showMessageUI("[Proxy] Unsupported OS or desktop environment. You need to set the proxy manually. A SOCKS5 proxy has been created: " + proxy, 15000);
             }
-            
+
         };
     };
     offProxy(os) {

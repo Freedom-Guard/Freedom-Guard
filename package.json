@@ -4,8 +4,8 @@
     "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Link",
     "keywords": [],
     "main": "./main.js",
-    "version": "2.0.0",
-    "author": "Freedom Guard <fwldom@duck.com>",
+    "version": "2.1.0",
+    "author": "Freedom Guard <FreedomGuard@duck.com>",
     "scripts": {
         "start": "electron .",
         "win": "npx electron-builder --win",
