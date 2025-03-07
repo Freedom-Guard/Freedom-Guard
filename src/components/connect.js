@@ -1163,7 +1163,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 });
             };
 
-            const setProxy = async (proxy) => {
+            const setProxy = async () => {
                 const regKey = new this.Winreg({
                     hive: this.Winreg.HKCU,
                     key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
@@ -1171,7 +1171,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
 
                 try {
                     await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, "127.0.0.1:8086");
 
                     exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
                         if (error) {
@@ -1193,7 +1193,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 }
             };
 
-            setProxy(proxy);
+            setProxy();
 
         } else {
             const exec = require('child_process').exec;
