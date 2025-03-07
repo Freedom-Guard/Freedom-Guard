@@ -438,9 +438,16 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
                     }
                     this.LOGLOG(`stdout: ${stdout}`);
                 });
-            }
+            };
+            exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
+                if (killError) {
+                    this.LOGLOG(`Error killing reg.exe: ${killError.message}`);
+                    return;
+                }
+                this.LOGLOG("All reg.exe processes closed.");
+            });
         }
-        else if (process.platform) {
+        else if (process.platform == "linux") {
             if (!core || typeof core !== "string") {
                 this.LOGLOG("Error: Invalid process name.");
             } else {
@@ -1177,10 +1184,10 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     });
                     exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
                         if (killError) {
-                            console.log(`Error killing reg.exe: ${killError.message}`);
+                            this.LOGLOG(`Error killing reg.exe: ${killError.message}`);
                             return;
                         }
-                        console.log("All reg.exe processes closed.");
+                        this.LOGLOG("All reg.exe processes closed.");
                     });
 
                 } catch (error) {

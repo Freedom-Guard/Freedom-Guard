@@ -749,7 +749,14 @@ class main {
                     }
                     this.publicSet.LOGLOG(`stdout: ${stdout}`);
                 });
-            }
+            };
+            exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
+                if (killError) {
+                    this.publicSet.LOGLOG(`Error killing reg.exe: ${killError.message}`);
+                    return;
+                }
+                this.publicSet.LOGLOG("All reg.exe processes closed.");
+            });
         }
         else if (process.platform) {
             if (!core || typeof core !== "string") {
