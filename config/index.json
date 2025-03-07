@@ -1,5 +1,6 @@
 {
     "PUBLIC": [
+        "vibe,;,https://raw.githubusercontent.com/Everyday-VPN/Everyday-VPN/main/subscription/main.txt#EVERY | VIBE SERVER (POWER)",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs/warp-power.ext#VIBE | WARP SERVER m4",
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
