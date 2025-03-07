@@ -995,10 +995,10 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     });
                     exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
                         if (killError) {
-                            console.log(`Error killing reg.exe: ${killError.message}`);
+                            this.LOGLOG(`Error killing reg.exe: ${killError.message}`);
                             return;
                         }
-                        console.log("All reg.exe processes closed.");
+                        this.LOGLOG("All reg.exe processes closed.");
                     });
 
                 } catch (error) {
@@ -1163,23 +1163,21 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 });
             };
 
-            const disableProxyWindows = async () => {
+            const setProxy = async (proxy) => {
                 const regKey = new this.Winreg({
                     hive: this.Winreg.HKCU,
                     key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
                 });
 
                 try {
-                    this.LOGLOG("[Proxy] Disabling proxy on Windows...");
-
                     await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, '');
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
 
                     exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
                         if (error) {
-                            console.error('[Proxy] ❌ Error applying proxy changes:', error.message);
+                            this.LOGLOG('❌ Error applying proxy settings:', error.message);
                         } else {
-                            console.log('[Proxy] ✅ Proxy disabled successfully.');
+                            this.LOGLOG('✅ Proxy settings applied successfully.');
                         }
                     });
                     exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
@@ -1191,11 +1189,11 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                     });
 
                 } catch (error) {
-                    this.LOGLOG("[Proxy] ❌ Error disabling proxy on Windows:", error);
+                    this.LOGLOG('❌ Error setting proxy:', error);
                 }
             };
 
-            disableProxyWindows();
+            setProxy(proxy);
 
         } else {
             const exec = require('child_process').exec;

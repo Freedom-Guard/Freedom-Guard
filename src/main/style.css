@@ -1092,7 +1092,8 @@ select option {
     }
 }
 
-#start-box {
+#start-box,
+.box {
     background: linear-gradient(135deg, #3F36AE, #5A48D1);
     position: absolute;
     z-index: 20;
@@ -1114,12 +1115,32 @@ select option {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.box {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1em;
+}
+
+.box div {
+    background-color: var(--box-pop);
+    border-radius: 8px;
+    padding: 0.7em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.4em;
+}
+
+.box div {
+    cursor: pointer;
+}
+
 #start-box:hover {
     transform: translate(-50%, -50%) scale(1.05);
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.35);
 }
-
-
 
 .box-notif {
     display: none;

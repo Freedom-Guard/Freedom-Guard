@@ -294,6 +294,9 @@ class main {
             this.setPingBox();
             window.showMessageUI(this.publicSet.settingsALL["lang"]["killed_services"]);
         });
+        $("#menu-tool-box").on("click", () => {
+            this.showToolBox();
+        })
         process.nextTick(() => this.addEventsSetting());
     };
     addEventsSetting() {// Add Event for settings
@@ -504,7 +507,7 @@ class main {
         else if (core == "flex") {
 
         }
-    }
+    };
     setSettings() { // Loads and applies saved settings to the UI elements
         this.publicSet.ReloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
@@ -532,6 +535,23 @@ class main {
         $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
+    };
+    showToolBox() {
+        $("#tool-box").toggle();
+        $("#tool-off-proxy").on("click", () => {
+            this.Tools.offProxy(this.Tools.returnOS());
+        });
+        $("#tool-set-proxy").on("click", () => {
+            this.Tools.offProxy(this.Tools.returnOS(), this.publicSet.settingsALL["public"]["proxy"]);
+        });
+        $("#tool-auto-mode").on("click", () => {
+            this.publicSet.settingsALL["public"]["core"] = "auto";
+            this.publicSet.saveSettings();
+            this.setSettings();
+        });
+        $("#tool-close-box").on("click", () => {
+            $("#tool-box").toggle();
+        });
     };
     async reloadServers() {// Reloads server list, updates UI, and manages server selection and context menu interactions.
         this.publicSet.ReloadSettings();
@@ -945,8 +965,7 @@ window.startNewUser = () => {
         $("#start-box").hide();
         window.setSettings();
         window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["start_mess"])
-        const { trackEvent } = require("@aptabase/electron");
-        trackEvent("new-user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
+        trackEvent("new_user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
 
     });
 };
