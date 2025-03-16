@@ -9,11 +9,11 @@
     "MCI": [
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
-        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
+        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL"
     ],
     "IRANCELL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
+        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
     ],
     "RIGHTEL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
