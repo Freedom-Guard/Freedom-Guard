@@ -63,11 +63,11 @@ h2 {
     margin-top: 2rem;
     font-size: 18px;
 }
-
 #ip-ping:not(.connected) {
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0.8;
 }
 
 #ip-ping:not(.connected) * {
@@ -77,67 +77,76 @@ h2 {
 }
 
 #ip-ping.connected {
-    margin-bottom: 15vh;
-    margin-top: 15vh;
-    background: rgba(30, 30, 30, 0.3);
-    backdrop-filter: blur(10px);
-    padding: 12px 2em;
-    border-radius: 10px;
+    margin: 12vh auto;
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.4), rgba(20, 20, 20, 0.6));
+    backdrop-filter: blur(15px);
+    padding: 1.5rem 2.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 250px;
+    min-width: 280px;
     width: fit-content;
-    height: fit-content;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease-in-out;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #ip-ping.connected:hover {
-    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .ip-ping-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 12px;
     align-items: center;
     text-align: center;
+    width: 100%;
 }
 
 .ip-ping-item {
-    font-size: 16px;
+    font-size: 15px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: white;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 8px 15px;
-    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    padding: 12px 20px;
+    border-radius: 12px;
     width: 100%;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .ip-ping-item:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    transform: scale(1.02);
 }
 
 .ip-status {
-    font-size: 18px;
-    font-weight: bold;
-    color: #4CAF50;
-    background: rgba(76, 175, 80, 0.2);
-    padding: 10px;
-    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.15);
+    padding: 12px 24px;
+    border-radius: 12px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
     width: 100%;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    transition: all 0.3s ease;
 }
 
 .ip-status.disconnected {
-    color: #FF5252;
-    background: rgba(255, 82, 82, 0.2);
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.15);
+    border-color: rgba(248, 113, 113, 0.3);
 }
 
 img {
@@ -363,83 +372,96 @@ img {
     display: none;
     position: absolute;
     top: 10.5vh !important;
-    right: 4.5%;
+    right: 2.5%;
     width: 91%;
     height: 73%;
     overflow-y: auto;
-    border-radius: 12px;
-    transition: all 0.4s ease-in-out;
+    border-radius: 8px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     flex-direction: column;
-    background: rgba(20, 20, 30, 0.75);
-    color: #e0e0e0;
+    background: linear-gradient(145deg, rgba(25, 25, 35, 0.85), rgba(30, 30, 40, 0.85));
+    color: #f5f5f5;
     z-index: 100;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4),
+                0 3px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
 }
 
 .box-select-server>.box-select-servers {
     display: flex;
     flex-direction: column;
+    gap: 12px;
 }
 
 .box-select-server.show {
     display: flex !important;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
 }
 
 .box-select-server::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .box-select-server::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, #6a11cb, #2575fc);
-    border-radius: 6px;
+    background: linear-gradient(45deg, #8a2be2, #4169e1);
+    border-radius: 10px;
 }
 
 .box-select-server::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
 }
 
 .box-select-server>.box-select-servers>div {
     display: flex;
     align-items: center;
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.12);
     cursor: pointer;
-    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    margin-bottom: 8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .box-select-server>.box-select-servers>div:hover {
-    background: rgba(105, 10, 255, 0.8);
-    box-shadow: 0 6px 14px rgba(105, 10, 255, 0.4);
+    background: linear-gradient(145deg, rgba(138, 43, 226, 0.8), rgba(65, 105, 225, 0.8));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .box-select-server>.box-select-servers>div:active {
-    transform: scale(0.98);
+    transform: scale(0.98) translateY(-1px);
 }
 
 .box-select-server>.box-select-servers>div>img {
-    width: 45px;
-    height: 45px;
-    margin-right: 12px;
+    width: 50px;
+    height: 50px;
+    margin-right: 16px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: cover;
 }
 
 .box-select-server>.box-select-servers>div:hover>img {
-    transform: rotate(5deg);
+    transform: rotate(10deg) scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .box-select-server>.box-select-servers>div>span {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     color: #fff;
     flex-grow: 1;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .server-menu {
@@ -572,20 +594,22 @@ img {
     width: 75%;
     height: 100%;
     flex-direction: column;
-    background: #0b0618;
+    background: linear-gradient(135deg, #0b0618, #1a132b);
     overflow-y: auto;
     z-index: 999;
-    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.5);
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+    border-left: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px 0 0 10px;
 }
 
 #setting-app h3 {
     margin: 15px 20px;
-    font-size: 1.5em;
+    font-size: 1.6em;
     color: #fff;
     font-weight: 600;
     position: relative;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
+    text-shadow: 0px 0px 8px rgba(178, 255, 89, 0.5);
 }
 
 #setting-app h3::after {
@@ -594,37 +618,31 @@ img {
     left: 0;
     bottom: 0;
     width: 50px;
-    height: 3px;
+    height: 4px;
     background: #b2ff59;
     border-radius: 3px;
+    box-shadow: 0px 0px 10px #b2ff59;
 }
 
 #setting-app h3.right::after {
-    content: "";
-    position: absolute;
     right: 0;
-    bottom: 0;
-    width: 50px;
-    height: 3px;
-    background: #b2ff59;
-    border-radius: 3px;
 }
 
 #setting-app>div,
 #setting-app>section>div {
     width: 95%;
-    background: transparent;
-    padding: 12px;
+    padding: 14px;
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
+    border-radius: 8px;
 }
 
 #setting-app b {
-    color: #bbb;
+    color: #ccc;
     margin: 5px 10px;
-    font-size: 1.1em;
+    font-size: 1.15em;
     font-weight: 500;
 }
 
@@ -633,55 +651,61 @@ img {
     width: 50px;
     height: 50px;
     font-size: 24px;
-    background: #1a132b;
+    background: linear-gradient(135deg, #1a132b, #251b3c);
     border: none;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background 0.3s;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 #close-setting:hover,
 #close-setting-vibe:hover {
-    background: #251b3c;
+    background: linear-gradient(135deg, #251b3c, #2f1d4d);
+    transform: scale(1.1);
 }
 
 #setting-app input[type="text"] {
-    background: #151025;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 1.2em;
     outline: none;
     color: #ded0ea;
     width: 70%;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: border 0.3s;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: all 0.3s;
 }
 
 #setting-app input[type="text"]:focus {
     border-color: #b2ff59;
+    box-shadow: 0px 0px 10px rgba(178, 255, 89, 0.6);
 }
 
 #setting-app .btn {
     height: fit-content;
-    background: #222;
+    background: linear-gradient(135deg, #222, #333);
     color: #fff;
-    padding: 10px 18px;
-    border-radius: 6px;
+    padding: 12px 20px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
     font-weight: 500;
     text-decoration: none !important;
-    transition: background 0.3s, transform 0.2s;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 #setting-app .btn:hover {
-    background: #333;
-    transform: scale(1.05);
+    background: linear-gradient(135deg, #333, #444);
+    transform: scale(1.08);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
 }
+
 
 #about-app {
     color: white;
@@ -719,52 +743,55 @@ img {
     position: fixed;
     left: 1vw;
     top: 1vh;
-    width: 250px;
-    height: 92vh;
-    backdrop-filter: blur(10px);
-    background: var(--bg-glass);
-    border: 1px solid var(--border-glass);
-    box-shadow: 0 4px 10px var(--shadow-glass);
-    border-radius: 15px;
-    padding: 20px;
-    transform: scale(0.9);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    width: 280px;
+    height: 90vh;
+    backdrop-filter: blur(15px);
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    transform: scale(0.95) translateX(-10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     z-index: 100;
     opacity: 0;
 }
 
 #menu.show {
-    transform: scale(1);
+    transform: scale(1) translateX(0);
     opacity: 1;
 }
 
 #menu>div {
-    background: linear-gradient(145deg, #2a3b4c, #1f2a36);
-    border-radius: 10px;
-    padding: 12px 18px;
+    background: linear-gradient(145deg, rgba(45, 45, 45, 0.6), rgba(35, 35, 35, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    color: white;
+    gap: 15px;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 #menu>div:hover {
-    background-color: var(--primary-color);
-    transform: translateX(5px) translateY(-2px);
-    box-shadow: 0 2px 25px var(--shadow-glass);
+    background: linear-gradient(145deg, rgba(60, 60, 60, 0.8), rgba(50, 50, 50, 0.9));
+    transform: translateX(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 #menu>div:hover i {
-    color: var(--primary-color);
-    transform: rotate(10deg);
-    transition: transform 0.3s ease, color 0.3s ease;
+    color: #4a9eff;
+    transform: scale(1.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
@@ -1091,7 +1118,6 @@ select option {
         box-sizing: border-box;
     }
 }
-
 #start-box,
 .box {
     background: linear-gradient(135deg, #3F36AE, #5A48D1);
@@ -1103,43 +1129,53 @@ select option {
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 600px;
-    padding: 2em;
-    min-height: 40vh;
+    padding: 2.5em;
+    min-height: 45vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #ffffff;
     text-align: center;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .box {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
-    justify-content: center;
-    gap: 1em;
+    justify-content: space-evenly;
+    gap: 1.2em;
 }
 
 .box div {
     background-color: var(--box-pop);
-    border-radius: 8px;
-    padding: 0.7em;
+    border-radius: 12px;
+    padding: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0.4em;
+    margin: 0.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .box div {
     cursor: pointer;
 }
 
+.box div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
 #start-box:hover {
-    transform: translate(-50%, -50%) scale(1.05);
-    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.35);
+    transform: translate(-50%, -50%) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #4a40c4, #6453e7);
 }
 
 .box-notif {

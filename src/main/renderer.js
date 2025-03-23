@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "2.2.0";
+const vesrionApp = "3.0.0";
 let LOGS = [];
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
@@ -235,33 +235,23 @@ class main {
         });
 
         $("#box-select-server-mini, #close-box-select-server").on("click", async () => {
-
             let $box = $("#box-select-server");
-
+        
             if ($box.is(":visible")) {
-                $box.animate(
-                    { opacity: 0, top: "-20px" },
-                    {
-                        duration: 600,
-                        easing: "easeInBack",
-                        queue: false,
-                        complete: function () {
-                            $box.css("display", "");
-                        },
-                    }
-                );
+                $box.animate({ opacity: 0, top: "-20px" }, 300, "easeInBack", () => {
+                    $box.fadeOut("fast");
+                });
             } else {
                 await this.reloadServers();
-                $box.css({ opacity: 0, top: "-20px" }).css("display", "flex");
-                $box.animate(
+                $box.css({ opacity: 0, top: "-20px", display: "flex" }).animate(
                     { opacity: 1, top: "0px" },
-                    {
-                        duration: 600,
-                        easing: "easeOutBack",
-                    }
+                    300,
+                    "easeOutBack"
                 );
             }
         });
+        
+
 
         $("#menu-exit-app").on('click', () => {
             ipcRenderer.send("exit-app");
