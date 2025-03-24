@@ -39,9 +39,9 @@
     ],
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
+        "vibe,;,vless://07a227b7-745e-4b4b-b653-7c05466e662f@151.101.64.155:80?path=%2Ftelegram-ipv2ry-telegram-ipv2ry-telegram-ipv2ry%3Fed%3D2048&security=none&encryption=none&host=1.wexer-rih.ir&type=ws#Freedom 1",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
-        "vibe,;,vless://07a227b7-745e-4b4b-b653-7c05466e662f@151.101.64.155:80?path=%2Ftelegram-ipv2ry-telegram-ipv2ry-telegram-ipv2ry%3Fed%3D2048&security=none&encryption=none&host=1.wexer-rih.ir&type=ws#Freedom 1",
         "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_base64_Sub.txt#RAND | FREEDOM"
     ]
 }
