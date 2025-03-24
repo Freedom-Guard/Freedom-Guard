@@ -1,1 +1,5 @@
-{ "version": "2.2.0", "url": "https://github.com/Freedom-Guard/Freedom-Guard/releases/latest", "messText": "×اگر مشکل مصرف زیاد منابع سیستم را دارید، بروزرسانی را انجام دهید×" }
+{
+    "version": "3.0.0",
+    "url": "https://freedom-guard.github.io",
+    "messText": "نسخه اندروید گارد آزادی منتشر شد \n یکسری بهبود ها برای نسخه دسکتاپ"
+}
