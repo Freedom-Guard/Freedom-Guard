@@ -10,6 +10,12 @@
 
 ---
 
+<div align="center">
+  <p>📱 نسخه موبایل رو امتحان کنید 
+  <br />
+  <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases">Freedom Guard Android</a></p>
+</div>
+
 ## <div align="center">Download the latest version <br> دانلود آخرین نسخه</div>
 
 <div align=center>
@@ -31,6 +37,12 @@
             <td>Linux</td>
             <td>
                 <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.deb"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=linux"> </a><br>
+            </td>
+        </tr>
+        <tr>
+            <td>Android</td>
+            <td>
+                <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases/latest/download/app-release.apk"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=android"> </a><br>
             </td>
         </tr>
     </tbody>
