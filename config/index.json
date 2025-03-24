@@ -38,7 +38,7 @@
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
     ],
     "MOBILE": [
-        "",
+        "warp,;,scan=true#WARP | SCAN",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs-vibe/vibe-power.txt#POWER FG",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
         "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_base64_Sub.txt#RAND | FREEDOM",
