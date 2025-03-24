@@ -13,7 +13,7 @@
 <div align="center">
   <p>📱 نسخه موبایل رو امتحان کنید 
   <br />
-  <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases">Freedom Guard Android</a></p>
+  <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases">Freedom Guard Mobile</a></p>
 </div>
 
 ## <div align="center">Download the latest version <br> دانلود آخرین نسخه</div>
