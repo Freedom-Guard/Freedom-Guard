@@ -64,6 +64,7 @@ h2 {
     margin-top: 2rem;
     font-size: 18px;
 }
+
 #ip-ping:not(.connected) {
     display: flex;
     justify-content: center;
@@ -386,7 +387,7 @@ img {
     z-index: 100;
     backdrop-filter: blur(20px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4),
-                0 3px 10px rgba(0, 0, 0, 0.3);
+        0 3px 10px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 20px;
 }
@@ -949,13 +950,16 @@ img {
 
 .content img {
     margin: 30px;
-    border: 3px solid #1a1a1a;
-    border-radius: 6px;
-    box-shadow: 0px 0px 30px 6px rgba(8, 27, 90, 0.5);
-    animation: fadeInScale 1.5s ease-in-out infinite alternate;
+    border: 5px solid #1A1A1A;
+    border-image: linear-gradient(45deg, #2A2A5A, #055c50, #7b08c9) 1;
+    border-radius: 8px;
+    box-shadow: 0px 0px 30px 6px rgba(15, 50, 120, 0.5);
+    animation: fadeInScale 2.8s ease-in-out infinite alternate;
     transform: scale(1.05);
     object-fit: cover;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    background: rgba(44, 44, 44, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .content img:hover {
@@ -965,13 +969,13 @@ img {
 
 @keyframes fadeInScale {
     0% {
-        opacity: 0.3;
-        transform: scale(0.8) rotate(-5deg);
+        opacity: 0.5;
+        transform: scale(0.9) rotate(-5deg);
         filter: blur(3px);
     }
 
     30% {
-        opacity: 0.7;
+        opacity: 0.9;
         transform: scale(1) rotate(2deg);
         filter: blur(1.5px);
     }
@@ -992,8 +996,8 @@ img {
     }
 
     100% {
-        opacity: 0.4;
-        transform: scale(0.7) rotate(-5deg);
+        opacity: 0.7;
+        transform: scale(0.8) rotate(-5deg);
         filter: blur(3px);
     }
 }
@@ -1054,45 +1058,62 @@ img {
     transform: translateY(0) !important;
 }
 
-select.none-apper {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
 select {
     background: #151025;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
     color: #fff;
-    padding: 10px 15px;
+    padding: 12px 16px;
     width: 100%;
-    max-width: 250px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 260px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     font-size: 1em;
-    border-radius: 6px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     outline: none;
-    transition: border 0.3s, background 0.3s;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    position: relative;
 }
 
 select:hover {
-    background: #1e1635;
+    background: #1a132b;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 select:focus {
     border-color: var(--color-primary);
-}
-
-select::-ms-expand {
-    display: none;
+    box-shadow: 0 0 5px 2px var(--color-primary);
+    background: #21183e;
 }
 
 select option {
     background: #1a132b;
     color: #fff;
     padding: 10px;
+    transition: background 0.2s ease;
 }
 
+select option:hover {
+    background: #2a1c4b;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select::after {
+    content: "▼";
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
 
 #HelpMess {
     width: 30vw;
@@ -1121,6 +1142,7 @@ select option {
         box-sizing: border-box;
     }
 }
+
 #start-box,
 .box {
     background: linear-gradient(135deg, #3F36AE, #5A48D1);

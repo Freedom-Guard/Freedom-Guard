@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "3.0.0";
+const vesrionApp = "3.1.0";
 let LOGS = [];
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
@@ -236,11 +236,9 @@ class main {
 
         $("#box-select-server-mini, #close-box-select-server").on("click", async () => {
             let $box = $("#box-select-server");
-        
+
             if ($box.is(":visible")) {
-                $box.animate({ opacity: 0, top: "-20px" }, 300, "easeInBack", () => {
-                    $box.fadeOut("fast");
-                });
+                $box.fadeOut("fast");
             } else {
                 await this.reloadServers();
                 $box.css({ opacity: 0, top: "-20px", display: "flex" }).animate(
@@ -250,7 +248,7 @@ class main {
                 );
             }
         });
-        
+
 
 
         $("#menu-exit-app").on('click', () => {
