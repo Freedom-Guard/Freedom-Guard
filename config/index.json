@@ -39,8 +39,9 @@
     ],
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
+        "vibe,;,vmess://eyJhZGQiOiI2OC4xNjguMzEuMTk2IiwiYWlkIjoiMCIsImFscG4iOiIiLCJmcCI6IiIsImhvc3QiOiI2OC4xNjguMzEuMTk2IiwiaWQiOiIwM2ZjYzYxOC1iOTNkLTY3OTYtNmFlZC04YTM4Yzk3NWQ1ODEiLCJuZXQiOiJ3cyIsInBhdGgiOiIvbGlua3Z3cyIsInBvcnQiOiI0NDMiLCJwcyI6IvCfh6zwn4enR0ItNjguMTY4LjMxLjE5Ni0yODczIiwic2N5IjoiYXV0byIsInNuaSI6IjY4LjE2OC4zMS4xOTYiLCJ0bHMiOiJ0bHMiLCJ0eXBlIjoiIiwidiI6IjIifQ==",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
-        "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_base64_Sub.txt#RAND | FREEDOM"
+        "vibe,;,https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_base64_Sub.txt#RAND | FREEDOM"
     ]
 }
