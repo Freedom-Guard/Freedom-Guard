@@ -39,6 +39,7 @@
     ],
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
+        "vibe,;, #Auto Server",
         "vibe,;,vless://746eac78-4ebe-475d-8d00-d58c34b3cc83@141.95.103.120:54436?mode=gun&security=none&encryption=none&authority=&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#%F0%9F%87%A9%F0%9F%87%AA+%7C+FAST+%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F",
         "vibe,;,vless://c3231e14-aca0-43d0-8970-8b4eb2ec3c3f@chopper.lnmarketplace.net:443?security=tls&sni=chopper.lnmarketplace.net&alpn=h2&fp=randomized&type=tcp&flow=xtls-rprx-vision&encryption=none#IRCP%20%7C%20Freedom%20Link%202",
         "vibe,;,vmess://eyJhZGQiOiIxNDIuMjE0LjE1My44MiIsImFpZCI6IjAiLCJhbHBuIjoiIiwiZnAiOiIiLCJob3N0IjoiIiwiaWQiOiI0MDEyOTE1YS0wMTkwLTRjYmQtYmEyYy0zZjc1MWM2NmYxMjciLCJuZXQiOiJ0Y3AiLCJwYXRoIjoiIiwicG9ydCI6IjMwNjA2IiwicHMiOiIyfPCfh7rwn4e4MzUgfCAgNS42TUIvcyIsInNjeSI6ImF1dG8iLCJzbmkiOiIiLCJ0bHMiOiIiLCJ0eXBlIjoibm9uZSIsInYiOiIyIn0=",
