@@ -20,7 +20,10 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 20
-          
+                  
+            - name: Set environment variable
+              run: echo "USE_HARD_LINKS=false" >> $GITHUB_ENV
+
             - name: Update electron-builder
               run: npm install -g electron-builder@latest
 
