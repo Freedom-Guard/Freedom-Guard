@@ -21,6 +21,9 @@ jobs:
               with:
                   node-version: 18
             
+            - name: Cleanup Project
+              run: npm run clean
+
             - name: Install Dependencies
               run: npm install
 
