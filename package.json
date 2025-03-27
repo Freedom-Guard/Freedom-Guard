@@ -45,7 +45,6 @@
             "target": "nsis",
             "requestedExecutionLevel": "requireAdministrator",
             "legalTrademarks": "(c) 2025 freedom-guard.github.io/Freedom",
-            "publisherName": "Freedom Guard",
             "extraResources": [
                 {
                     "from": "src/main/cores/win32/",
