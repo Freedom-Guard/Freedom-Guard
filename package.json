@@ -61,7 +61,7 @@
         "nsis": {
             "allowToChangeInstallationDirectory": true,
             "oneClick": false,
-            "license": "./license.html"
+            "license": "./LICENSE"
         },
         "linux": {
             "icon": "src/assets/icon/ico.png",
