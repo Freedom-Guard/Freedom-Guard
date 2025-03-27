@@ -23,7 +23,10 @@ jobs:
             
             - name: Cleanup Project
               run: rm -rf dist tmp || true
-            
+
+            - name: Update electron-builder
+              run: npm install -g electron-builder@latest
+
             - name: Cleanup Project
               run:  npm cache clean --force
 
