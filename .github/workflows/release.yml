@@ -21,16 +21,22 @@ jobs:
               with:
                   node-version: 18
 
+            - name: Cleanup Dist Directory
+              run: rm -rf dist/ || true
+
+            - name: Set TEMP Directory
+              run: export TMPDIR=$GITHUB_WORKSPACE/.tmp
+
             - name: Install Dependencies
               run: npm install
 
             - name: Build Electron App (Windows)
               if: matrix.os == 'windows-latest'
-              run: npx electron-builder --win --publish never
+              run: npx electron-builder --win --publish never --no-symlinks
 
             - name: Build Electron App (Linux)
               if: matrix.os == 'ubuntu-latest'
-              run: npx electron-builder --linux deb tar.gz rpm AppImage --publish never
+              run: npx electron-builder --linux deb tar.gz rpm AppImage --publish never --no-symlinks
 
             - name: Upload Artifact (Windows EXE)
               if: matrix.os == 'windows-latest'
