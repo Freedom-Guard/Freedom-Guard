@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "3.1.0";
+const vesrionApp = "3.4.0";
 let LOGS = [];
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
