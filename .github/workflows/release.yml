@@ -20,20 +20,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 18
-
-            - name: Cleanup Dist Directory
-                run: |
-                  if [[ "$RUNNER_OS" == "Windows" ]]; then
-                      Remove-Item -Recurse -Force dist 2>$null || echo "No dist directory to delete"
-                  else
-                    rm -rf dist || echo "No dist directory to delete"
-                  fi
-              shell: bash
-
-
-            - name: Set TEMP Directory
-              run: export TMPDIR=$GITHUB_WORKSPACE/.tmp
-
+            
             - name: Install Dependencies
               run: npm install
 
