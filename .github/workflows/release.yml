@@ -20,10 +20,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 20
-            
-            - name: Cleanup Project
-              run: rm -rf dist tmp || true
-
+          
             - name: Update electron-builder
               run: npm install -g electron-builder@latest
 
