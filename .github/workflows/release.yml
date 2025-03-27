@@ -22,7 +22,7 @@ jobs:
                   node-version: 18
             
             - name: Cleanup Project
-              run: npm run clean
+              run:  npm cache clean --force
 
             - name: Install Dependencies
               run: npm install
