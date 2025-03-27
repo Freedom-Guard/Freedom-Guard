@@ -19,7 +19,10 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 18
+                  node-version: 20
+            
+            - name: Cleanup Project
+              run: rm -rf dist tmp || true
             
             - name: Cleanup Project
               run:  npm cache clean --force
