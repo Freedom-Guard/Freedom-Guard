@@ -42,7 +42,7 @@
         <tr>
             <td>Android</td>
             <td>
-                <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases/latest/download/app-release.apk"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=android"> </a><br>
+                <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases/latest/download/app-release.apk"><img src="https://img.shields.io/badge/apk-universal-f84e29.svg?logo=android"> </a><br>
             </td>
         </tr>
     </tbody>
