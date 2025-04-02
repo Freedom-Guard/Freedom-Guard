@@ -46,7 +46,7 @@
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
         "vibe,;,vless://fe069d77-882c-4175-b48e-c79e3fe65a81@www.speedtest.net:443?encryption=none&security=tls&sni=karshenashamrah.ir&fp=chrome&type=ws&host=karshenashamrah.ir&path=%2FfsafasfsafA#VIBE 1",
-        "vibe,;,trojan://telegram-id-directvpn@18.158.89.167:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#%F0%9F%8C%8E%20FG%20Server%207",
+        "vibe,;,vmess://eyJhZGQiOiIyMy4xNTguNTYuMTg0IiwiYWlkIjoiMCIsImFscG4iOiIiLCJmcCI6IiIsImhvc3QiOiIiLCJpZCI6IjA0NjIxYmFlLWFiMzYtMTFlYy1iOTA5LTAyNDJhYzEyMDAwMiIsIm5ldCI6InRjcCIsInBhdGgiOiIiLCJwb3J0IjoiMjIzMjQiLCJwcyI6IvCfh6nwn4eqIEZHIFNlcnZlciAxIiwic2N5IjoiYXV0byIsInNuaSI6IiIsInRscyI6IiIsInR5cGUiOiJub25lIiwidiI6IjIifQ==",
         "vibe,;,vless://13909ef5-a4c2-4cc4-8381-93bcfe5e397d@141.95.103.120:54436?mode=gun&security=none&encryption=none&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%208",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpmRERtSDRRZWZtV3FNSjhVVVJackdo@86.104.74.243:14255#%F0%9F%87%B2%F0%9F%87%A9%20FG%20Server%209",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTozOTdJMlhvazViTUhsVVhCZVpjbWVz@2.56.127.33:16680#%F0%9F%87%A8%F0%9F%87%BE%20FG%20Server%2010",
