@@ -45,6 +45,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibr,;,trojan://telegram-id-privatevpns@3.127.187.143:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%20Fast",
         "vibe,;,vless://131387aa-4b2a-43aa-bf7c-d94306ba55fb@104.18.32.69:80?path=%2F%3Fed%3D2560&security=none&encryption=none&host=13tg.jpl8xmqb.workers.dev&type=ws#FG%20Server%205",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpRQ1hEeHVEbFRUTUQ3anRnSFVqSW9q@45.158.171.132:8080#%F0%9F%87%AB%F0%9F%87%B7%20FG%20Server%201",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0YTJyZml4b3BoZGpmZmE4S1ZBNEFh@45.87.175.192:8080#%F0%9F%87%B1%F0%9F%87%B9FG%20Server%202",
