@@ -45,6 +45,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,trojan://telegram-id-directvpn@63.177.163.91:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#FG%20Fast",
         "vibe,;,vless://13909ef5-a4c2-4cc4-8381-93bcfe5e397d@141.95.103.120:54436?mode=gun&security=none&encryption=none&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%20backup",
         "vibr,;,trojan://telegram-id-privatevpns@3.127.187.143:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%20Fast",
         "vibe,;,vless://131387aa-4b2a-43aa-bf7c-d94306ba55fb@104.18.32.69:80?path=%2F%3Fed%3D2560&security=none&encryption=none&host=13tg.jpl8xmqb.workers.dev&type=ws#FG%20Server%205",
