@@ -45,7 +45,8 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibr,;,vless://13909ef5-a4c2-4cc4-8381-93bcfe5e397d@141.95.103.120:54436?mode=gun&security=none&encryption=none&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%202",
+        "vibe,;,vless://13909ef5-a4c2-4cc4-8381-93bcfe5e397d@141.95.103.120:54436?mode=gun&security=none&encryption=none&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%202",
+        "vibe,;,vless://9db7e000-1490-4c9a-a844-484c68c46657@5.182.86.252:8443?path=%2Fassets%2FQZikpYLvEJRzQD4RHb4tJ8TY%3Fed%3D2560&security=tls&alpn=h3&encryption=none&host=trytO.exisTed.WORKeRS.Dev&fp=chrome&type=ws&sni=trytO.exisTed.WORKeRS.Dev#%F0%9F%87%A9%F0%9F%87%AADE",
         "vibe,;,trojan://telegram-id-directvpn@63.177.150.62:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#FG%20Server%20backup",
         "vibe,;,vless://05519058-d2ac-4f28-9e4a-2b2a1386749e@3.68.151.13:22222?path=%2Ftelegram-channel-vlessconfig-ws&security=tls&encryption=none&host=telegram-channel-vlessconfig.sohala.uk&type=ws&sni=telegram-channel-vlessconfig.sohala.uk#%F0%9F%87%A9%F0%9F%87%AA%20FG%20Server%201",
         "vibe,;,vless://131387aa-4b2a-43aa-bf7c-d94306ba55fb@104.18.32.69:80?path=%2F%3Fed%3D2560&security=none&encryption=none&host=13tg.jpl8xmqb.workers.dev&type=ws#FG%20Server%205",
