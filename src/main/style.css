@@ -1147,7 +1147,7 @@ select::after {
 .box {
     background: linear-gradient(135deg, #3F36AE, #5A48D1);
     position: absolute;
-    z-index: 20;
+    z-index: 9999;
     border-radius: 20px;
     left: 50%;
     top: 50%;

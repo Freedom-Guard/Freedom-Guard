@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freedom Guard 3.4 (latest-release)</title>
+    <title>Freedom Guard 4.0 (latest-release)</title>
     <link href="../assets/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="../assets/icon/ico.png" type="image/png">
@@ -139,6 +139,20 @@
 
         <button id="submit-start" class="btn" style="margin-top: auto;margin-bottom: 1em;">شروع</button>
     </div>
+
+    <div id="donate-box" class="box" style="display: none;">
+        <i class="bx bx-x btn" id="close-donate-box"
+            style="font-size: 1.5em;position: absolute; top: 10px; right: 10px;height: fit-content;"></i>
+        <h2 style="width: 100%; text-align: center; margin-bottom: 1em;">Donate Config | اهدای کانفیگ</h2>
+        <p style="text-align: center; margin-bottom: 1em;">با اهدای کانفیگ به گارد آزادی به پایداری آن کمک کنید</p>
+        <textarea id="donate-config-text" placeholder="Paste your config here..."
+            style="width: 100%; height: 120px; margin-bottom: 1em; resize: none;outline: none;" class="input"></textarea>
+        <button id="submit-donate-config" class="btn"
+            style="flex: 1; display: flex; align-items: center; justify-content: center;">
+            <i class="bx bxs-donate-heart" style="font-size: 1.5em; color: red; margin-right: 5px;"></i>
+        </button>
+    </div>
+
     <div id="setting-app">
         <nav id="nav-top"
             style="position: sticky;  top: 0%;
@@ -148,7 +162,10 @@
             </button>
             <b style="color: #db8522;margin-left: 2vw;font-weight: bold;" data-lang="settings_fg">Settings
                 Freedom Guard</b>
-            <div class="dropdown" id="more-options" style="margin-left: auto;padding: 10px;">
+            <div id="show-donate-box" style="margin-left: auto;"><i class="bx bxs-donate-heart"
+                    style="font-size: 1.5em;color:red"></i>
+            </div>
+            <div class="dropdown" id="more-options" style="padding: 10px;">
                 <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;" id="open-drop-setting"></i>
                 <div class="dropdown-content" id="more-options-content">
                     <div id="import-config-file"><i class="bx bx-import" style="font-size: 1.5em;"></i>
@@ -425,7 +442,7 @@
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
         <section data-lang="about_app_html">
-            <p> Freedom Guard 3.4 (latest-release)</p>
+            <p> Freedom Guard 4.0 (latest-release)</p>
             <p> Developed By Freedom Guard Team 👩‍💻</p>
             <p>👇 Acknowledgements 👇</p>
             <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>

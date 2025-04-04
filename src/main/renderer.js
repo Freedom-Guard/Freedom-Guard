@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "3.4.0";
+const vesrionApp = "4.4.0";
 let LOGS = [];
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
@@ -206,6 +206,22 @@ class main {
         });
         $('#menu-dns, #close-dns').on('click', () => {
             $('#dns-set').toggleClass('show');
+        });
+        $("#submit-donate-config").on("click", () => {
+            const config = $("#donate-config-text").val();
+            if (config) {
+                windows.donateCONFIG(config);
+                window.showMessageUI("Config submitted successfully!");
+            } else {
+                window.showMessageUI("Please enter a valid config.");
+            }
+        });
+
+        $("#close-donate-box").on("click", () => {
+            $("#donate-box").hide();
+        });
+        $("#show-donate-box").on("click", () => {
+            $("#donate-box").show();
         });
         $('#menu-freedom-browser').on('click', () => {
             window.showMessageUI(this.publicSet.settingsALL["lang"]["browser_not_ready"])
