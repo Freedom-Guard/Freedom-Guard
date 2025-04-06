@@ -7,7 +7,10 @@ const { type } = require('os');
 const os = require('os');
 const path = require('path');
 const { resolve } = require('path');
-const { trackEvent } = require("@aptabase/electron/renderer");
+try {
+    const { trackEvent } = require("@aptabase/electron/renderer");
+}
+catch { }
 trackEvent("app_started");
 function getConfigPath() {
     let baseDir;
@@ -64,7 +67,15 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             "setup": function kill() { }
         };
         this.mainDir = this.path.join(__dirname + "/../../");
-        this.coresPath = this.path.join(__dirname.replace("app.asar", "") + "/../../", "src/main/cores/", process.platform);
+        this.coresPath = this.path.join(
+            __dirname.replace("app.asar", "") + "/../../",
+            "src/main/cores/",
+            process.platform === "darwin"
+                ? process.arch === "arm64"
+                    ? "mac/arm64"
+                    : "mac/amd64"
+                : process.platform
+        );
         this.settingsALL = {
             "flex": {},
             "grid": {},
@@ -1138,11 +1149,33 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 case "I3WM":
                     setMinimalWMProxy(proxy);
                     break;
+                case "macOS":
+                    setMacProxy(proxy);
+                    break;
                 default:
                     this.LOGLOG('Unsupported OS or desktop environment');
                     window.showMessageUI("[Proxy] Unsupported OS or desktop environment. You need to set the proxy manually. A SOCKS5 proxy has been created: " + proxy, 15000);
             }
 
+            function setMacProxy(proxy) {
+                exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {
+                    if (err) {
+                        this.LOGLOG('Error retrieving network services on macOS:', err);
+                        return;
+                    }
+                    const services = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
+                    services.forEach(service => {
+                        exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxy \\"${service}\\" ${proxy.split(':')[0]} ${proxy.split(':')[1]}" with administrator privileges'`, (err) => {
+                            if (err) this.LOGLOG(`Error setting SOCKS5 proxy on ${service}:`, err);
+                            else this.LOGLOG(`[Proxy] SOCKS5 proxy set successfully on ${service}.`);
+                        });
+                        exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxystate \\"${service}\\" on" with administrator privileges'`, (err) => {
+                            if (err) this.LOGLOG(`Error enabling SOCKS5 proxy on ${service}:`, err);
+                            else this.LOGLOG(`[Proxy] SOCKS5 proxy enabled successfully on ${service}.`);
+                        });
+                    });
+                });
+            }
         };
     };
     offProxy(os) {
@@ -1194,6 +1227,25 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
             };
 
             setProxy();
+
+        } else if (os === "macOS") {
+            const disableMacProxy = () => {
+                exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {
+                    if (err) {
+                        this.LOGLOG('Error retrieving network services on macOS:', err);
+                        return;
+                    }
+                    const services = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
+                    services.forEach(service => {
+                        exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxystate \\"${service}\\" off" with administrator privileges'`, (err) => {
+                            if (err) this.LOGLOG(`Error disabling SOCKS5 proxy on ${service}:`, err);
+                            else this.LOGLOG(`[Proxy] SOCKS5 proxy disabled successfully on ${service}.`);
+                        });
+                    });
+                });
+            };
+
+            disableMacProxy();
 
         } else {
             const exec = require('child_process').exec;
@@ -1309,17 +1361,18 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
         };
 
         const setMacDNS = (dns1, dns2) => {
-            exec(`networksetup -listallnetworkservices`, (err, stdout) => {
-                if (err) {
-                    this.LOGLOG('Error retrieving interfaces on macOS:', err);
-                    return;
-                }
-                const interfaces = stdout.split('\n').slice(1);
-                interfaces.forEach(iface => {
-                    exec(`networksetup -setdnsservers "${iface}" ${dns1} ${dns2 || ''}`, (err) => {
-                        if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
-                    });
+            exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {
+            if (err) {
+                this.LOGLOG('Error retrieving interfaces on macOS:', err);
+                return;
+            }
+            const interfaces = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
+            interfaces.forEach(iface => {
+                exec(`osascript -e 'do shell script "networksetup -setdnsservers \\"${iface}\\" ${dns1} ${dns2 || ''}" with administrator privileges'`, (err) => {
+                if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
+                else this.LOGLOG(`[DNS] DNS set successfully on ${iface}.`);
                 });
+            });
             });
         };
 
@@ -1365,7 +1418,6 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 if (normalizedEnv.includes("trinity")) return "TRINITY";
             }
 
-            const { execSync } = require("child_process");
             try {
                 const runningProcesses = execSync("ps aux").toString().toLowerCase();
                 if (runningProcesses.includes("i3")) return "I3WM";

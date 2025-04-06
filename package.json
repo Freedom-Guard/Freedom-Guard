@@ -58,6 +58,26 @@
                 "!src/main/cores/**/*"
             ]
         },
+        "mac": {
+            "icon": "src/assets/icon/ico.png",
+            "target": [
+                "dmg",
+                "zip"
+            ],
+            "category": "public.app-category.networking.vpn",
+            "extraResources": [
+                {
+                    "from": "src/main/cores/mac/",
+                    "to": "src/main/cores/mac/",
+                    "filter": [
+                        "**/*"
+                    ]
+                }
+            ],
+            "files": [
+                "!src/main/cores/**/*"
+            ]
+        },
         "nsis": {
             "allowToChangeInstallationDirectory": true,
             "oneClick": false,
