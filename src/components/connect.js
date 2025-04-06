@@ -7,10 +7,7 @@ const { type } = require('os');
 const os = require('os');
 const path = require('path');
 const { resolve } = require('path');
-try {
-    const { trackEvent } = require("@aptabase/electron/renderer");
-}
-catch { }
+const { trackEvent } = require("@aptabase/electron/renderer");
 trackEvent("app_started");
 function getConfigPath() {
     let baseDir;

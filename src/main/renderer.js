@@ -217,11 +217,8 @@ class main {
             }
         });
 
-        $("#close-donate-box").on("click", () => {
-            $("#donate-box").hide();
-        });
-        $("#show-donate-box").on("click", () => {
-            $("#donate-box").show();
+        $("#close-donate-box, #show-donate-box").on("click", () => {
+            $("#donate-box").toggle();
         });
         $('#menu-freedom-browser').on('click', () => {
             window.showMessageUI(this.publicSet.settingsALL["lang"]["browser_not_ready"])
@@ -715,16 +712,19 @@ class main {
             document.addEventListener("click", () => menu.remove(), { once: true });
         }, 100);
     };
+    getEmojiCountry(country) {
+        return `<img src="../svgs/${country.toLowerCase()}.svg" style="width: 20px; height: 20px;border-radius:0px;"> ${country}`;
+    }
     async setPingBox() { // Updates the UI with the current IP, country, ping, and bypass status.
         let data = await this.publicSet.getIP_Ping();
-        let countryEmoji = data.country ? `🌍 ${data.country}` : "🌍 Unknown";
+        let countryEmoji = data.country ? ` ${this.getEmojiCountry(data.country)}` : "🌍 Unknown";
         let isConnected = !data.filternet;
         let htmlContent = "";
         if (this.publicSet.connected) {
             htmlContent = `
                 <p class="ip-ping-item">
                     <span class="ip-icon">🌍</span> 
-                    Country: <b>${countryEmoji}</b>
+                    Country: <b style='display:flex;gap: 10px;'>${countryEmoji}</b>
                 </p>
                 <p class="ip-ping-item">
                     <span class="ip-icon">🔍</span> 

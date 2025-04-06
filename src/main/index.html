@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freedom Guard 4.0 (latest-release)</title>
+    <title>Freedom Guard 5.0 (latest-release)</title>
     <link href="../assets/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="../assets/icon/ico.png" type="image/png">
@@ -97,12 +97,12 @@
             </div>
         </div>
     </div>
-    <div id="tool-box" class="box" style="display: none;">
+    <div id="tool-box" class="box flex-row" style="display: none;">
         <h2 style="margin-bottom: auto;width: 100%;">Tool Box</h2>
         <div id="tool-off-proxy">Off Proxy</div>
         <div id="tool-set-proxy">Set Proxy</div>
         <div id="tool-auto-mode">Turn on Auto Mode</div>
-        <div id="tool-close-box">Close Tool Box</div>
+        <i id="tool-close-box" class="bx bx-x btn close-btn"></i>
     </div>
     <div id="start-box" dir="rtl" style="display: none;">
         <h2 style="margin-top: 0;">صفحه شروع</h2>
@@ -141,14 +141,14 @@
     </div>
 
     <div id="donate-box" class="box" style="display: none;">
-        <i class="bx bx-x btn" id="close-donate-box"
-            style="font-size: 1.5em;position: absolute; top: 10px; right: 10px;height: fit-content;"></i>
+        <i class="bx bx-x btn close-btn" id="close-donate-box"></i>
         <h2 style="width: 100%; text-align: center; margin-bottom: 1em;">Donate Config | اهدای کانفیگ</h2>
         <p style="text-align: center; margin-bottom: 1em;">با اهدای کانفیگ به گارد آزادی به پایداری آن کمک کنید</p>
         <textarea id="donate-config-text" placeholder="Paste your config here..."
-            style="width: 100%; height: 120px; margin-bottom: 1em; resize: none;outline: none;" class="input"></textarea>
+            style="width: 100%; height: 120px; margin-bottom: 1em; resize: none;outline: none;"
+            class="input"></textarea>
         <button id="submit-donate-config" class="btn"
-            style="flex: 1; display: flex; align-items: center; justify-content: center;">
+            style="width:37%; display: flex; align-items: center; justify-content: center;">
             <i class="bx bxs-donate-heart" style="font-size: 1.5em; color: red; margin-right: 5px;"></i>
         </button>
     </div>
@@ -426,7 +426,7 @@
             <option value="185.228.168.9,185.228.169.9">CleanBrowsing</option>
             <option value="76.76.19.19,76.223.122.150">Alternate DNS</option>
         </select>
-        <button id="close-dns"><i class='bx bx-x-circle' style='color:#ff0000;font-size: 1.5em;'></i></button>
+        <button id="close-dns close-btn"><i class='bx bx-x' style='color:#ff0000;font-size: 1.5em;'></i></button>
         <input type="text" id="dns1-text" placeholder=" IP DNS : 1.1.1.1">
         <input type="text" id="dns2-text" placeholder=" IP DNS : 8.8.8.8">
         <button id="submit-dns"><i class="bx bx-check" style="font-size: 1.5em;"></i></button>
@@ -442,7 +442,7 @@
     <div id="about-app">
         <button id="close-about"><i class='bx bx-exit-fullscreen'></i></button>
         <section data-lang="about_app_html">
-            <p> Freedom Guard 4.0 (latest-release)</p>
+            <p> Freedom Guard 5.0 (latest-release)</p>
             <p> Developed By Freedom Guard Team 👩‍💻</p>
             <p>👇 Acknowledgements 👇</p>
             <p> <a href="https://github.com/hiddify/hiddify-core/">hiddify-core 3.1.8</a> from Hiddify</p>
