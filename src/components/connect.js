@@ -7,7 +7,10 @@ const { type } = require('os');
 const os = require('os');
 const path = require('path');
 const { resolve } = require('path');
-const { trackEvent } = require("@aptabase/electron/renderer");
+try {
+    const { trackEvent } = require("@aptabase/electron/renderer");
+}
+catch { }
 trackEvent("app_started");
 function getConfigPath() {
     let baseDir;
@@ -1358,16 +1361,15 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
         };
 
         const setMacDNS = (dns1, dns2) => {
-            exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {
+            exec(`networksetup -listallnetworkservices`, (err, stdout) => {
                 if (err) {
                     this.LOGLOG('Error retrieving interfaces on macOS:', err);
                     return;
                 }
-                const interfaces = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
+                const interfaces = stdout.split('\n').slice(1);
                 interfaces.forEach(iface => {
-                    exec(`osascript -e 'do shell script "networksetup -setdnsservers \\"${iface}\\" ${dns1} ${dns2 || ''}" with administrator privileges'`, (err) => {
+                    exec(`networksetup -setdnsservers "${iface}" ${dns1} ${dns2 || ''}`, (err) => {
                         if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
-                        else this.LOGLOG(`[DNS] DNS set successfully on ${iface}.`);
                     });
                 });
             });
