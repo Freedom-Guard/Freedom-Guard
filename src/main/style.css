@@ -1264,7 +1264,6 @@ select::after {
 #start-box:hover {
     transform: translate(-50%, -50%) scale(1.02);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #4a40c4, #6453e7);
 }
 
 .box-notif {

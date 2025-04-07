@@ -166,7 +166,7 @@ class main {
             catch { }
         });
         this.publicSet.settingsALL["lang"] = translations;
-        if (lang == "fa") {
+        if (lang == "fa" || lang == "ar") {
             $("#setting-app>section").attr("dir", "rtl");
             $("#setting-app h3").toggleClass("right");
         }
@@ -955,7 +955,8 @@ window.setSettings = () => {
     mainSTA.setSettings();
 };
 window.startNewUser = () => {
-    $("#start-box").css("display", "");
+    $("#start-box").css("display", "flex");
+    $("#start-box").css("gap", "0.3em");
     $("#submit-start").on("click", () => {
         mainSTA.publicSet.settingsALL["public"]["isp"] = $("#selector-isp-start").val();
         if ($("#selector-mode-start").val() == "import") {
