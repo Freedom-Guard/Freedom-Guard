@@ -10,7 +10,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [windows-latest, ubuntu-latest]
+                os: [windows-latest, ubuntu-latest, macos-latest]
 
         steps:
             - name: Checkout Repository
@@ -28,7 +28,7 @@ jobs:
               run: npm install -g electron-builder@latest
 
             - name: Cleanup Project
-              run:  npm cache clean --force
+              run: npm cache clean --force
 
             - name: Install Dependencies
               run: npm install
@@ -39,7 +39,11 @@ jobs:
             
             - name: Build Electron App (Linux)
               if: matrix.os == 'ubuntu-latest'
-              run: npx electron-builder --linux --publish never 
+              run: npx electron-builder --linux --publish never
+
+            - name: Build Electron App (macOS)
+              if: matrix.os == 'macos-latest'
+              run: npx electron-builder --mac --publish never
 
             - name: Upload Artifact (Windows EXE)
               if: matrix.os == 'windows-latest'
@@ -75,6 +79,20 @@ jobs:
               with:
                   name: freedom-guard-linux-appimage
                   path: dist/*.AppImage
+
+            - name: Upload Artifact (macOS DMG)
+              if: matrix.os == 'macos-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-macos-dmg
+                  path: dist/*.dmg
+
+            - name: Upload Artifact (macOS ZIP)
+              if: matrix.os == 'macos-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-macos-zip
+                  path: dist/*.zip
 
     release:
         needs: build
@@ -114,6 +132,18 @@ jobs:
                   name: freedom-guard-linux-appimage
                   path: dist/
 
+            - name: Download macOS DMG
+              uses: actions/download-artifact@v4
+              with:
+                  name: freedom-guard-macos-dmg
+                  path: dist/
+
+            - name: Download macOS ZIP
+              uses: actions/download-artifact@v4
+              with:
+                  name: freedom-guard-macos-zip
+                  path: dist/
+
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v1
               with:
@@ -128,5 +158,7 @@ jobs:
                       - Linux TAR.GZ (.tar.gz)
                       - Linux RPM (.rpm)
                       - Linux AppImage (.AppImage)
+                      - macOS DMG (.dmg)
+                      - macOS ZIP (.zip)
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
