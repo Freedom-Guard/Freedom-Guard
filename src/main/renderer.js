@@ -205,7 +205,7 @@ class main {
             }, 100);
         });
         $('#menu-dns, #close-dns').on('click', () => {
-            $('#dns-set').toggleClass('show');
+            $('#dns-set').toggle();
         });
         $("#submit-donate-config").on("click", () => {
             const config = $("#donate-config-text").val();
@@ -995,12 +995,12 @@ window.showMessageUI = (message, duration = 3000) => {
 };
 window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
     $("#text-box-notif").html(mess);
-    $(".box-notif").css("display", "flex");
+    $("#box-notif").css("display", "flex");
     $("#href-box-notif").attr("href", link);
     $("#href-box-notif").html(btnOpenLinkHTML);
     $("#close-box-notif").html(btnCloseModalHTML);
     $("#href-box-notif, #close-box-notif").on("click", () => {
-        $(".box-notif").css("display", "none");
+        $("#box-notif").css("display", "none");
     });
 };
 window.prompt = (message = "لطفاً مقدار موردنظر را وارد کنید:", defaultValue = "") => {
