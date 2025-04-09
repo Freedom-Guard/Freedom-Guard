@@ -46,7 +46,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTp6Q2JySWsxMlFsZzlZY0VSZG56am9o@sto2.a.edgeservers.org:39649#Server-1",
+        "vibe,;,trojan://telegram-id-privatevpns@63.176.188.193:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#%F0%9F%87%A9%F0%9F%87%AA%20Server%20under",
         "vibe,;,trojan://c5691b8f-d833-41e4-9295-769f3edb4cd2@94.131.115.71:443?security=tls&sni=customer-94-131-115-71.stark-industries.solutions&allowInsecure=1&type=tcp#%F0%9F%87%B8%F0%9F%87%AA%20Server-4",
         "vibe,;,trojan://Aimer@45.67.215.250:2096?security=tls%5Cu0026sni%3Dageph.ambercc.filegear-sg.me%5Cu0026type%3Dws%5Cu0026host%3Dageph.ambercc.filegear-sg.mehttp/1.1%5Cu0026path%3D/&type=tcp#Server-2",
         "vibe,;,trojan://Aimer@154.197.64.189:2087?security=tls%5Cu0026sni%3Dagepy.ambercc.filegear-sg.me%5Cu0026type%3Dws%5Cu0026host%3Dagepy.ambercc.filegear-sg.mehttp/1.1%5Cu0026path%3D/&type=tcp#Server-14",
