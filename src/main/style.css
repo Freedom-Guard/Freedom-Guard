@@ -362,7 +362,7 @@ img {
 .box-select-server>.box-select-servers>div {
     display: flex;
     align-items: center;
-    padding: 14px;
+    padding-left: 14px;
     border-radius: var(--border-radius);
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -384,8 +384,8 @@ img {
 }
 
 .box-select-server>.box-select-servers>div>img {
-    width: 48px;
-    height: 48px;
+    width: 2em;
+    height: 2em;
     margin-right: 12px;
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.2);
@@ -424,6 +424,7 @@ img {
     background: rgba(30, 30, 30, 0.9);
     border-radius: 8px;
     display: flex;
+    gap: 1vw;
     flex-direction: column;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     z-index: 10000;
@@ -970,13 +971,13 @@ img {
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #333;
+    color: #fff;
     font-size: 1.1rem;
     padding: 15px;
     width: 30%;
     min-width: 250px;
     height: auto;
-    background: linear-gradient(90deg, #fff 0%, #f9f9f9 50%, #e6e6e6 100%);
+    background: var(--box-pop);
     position: fixed;
     top: 5%;
     right: 5%;
@@ -990,12 +991,27 @@ img {
 }
 
 #message-border {
-    height: 4px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
     width: 100%;
-    background: linear-gradient(90deg, #FF6464, #FFBF59, #47C9FF);
-    transition: width 3.0s cubic-bezier(0.42, 0, 0.58, 1.00);
-    border-radius: 15px;
-    margin-top: 10px;
+    background: linear-gradient(90deg, #ff6464, #ffbf59, #47c9ff);
+    background-size: 300% 100%;
+    border-radius: 999px;
+    animation: gradientMove 3s linear infinite;
+    transition: width 3.0s ease-out;
+    box-shadow: 0 0 8px rgba(255, 100, 100, 0.4), 0 0 8px rgba(255, 191, 89, 0.3), 0 0 8px rgba(71, 201, 255, 0.3);
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 .show-message {
@@ -1056,7 +1072,8 @@ img {
 .box .close-btn {
     font-size: 1.5em;
     position: absolute;
-    color: rgba(255, 15, 0, 0.9);
+    color: rgb(255, 0, 0);
+    font-weight: bolder;
     height: fit-content;
     padding: 0.3em 0.3em;
     display: flex;
@@ -1112,7 +1129,8 @@ img {
     min-height: fit-content;
     transition: 0.5s;
     font-size: medium;
-    background-color: var(--secondary-color);
+    background-color: var(--main-color);
+
     color: white;
     border: none;
     border-radius: 7px;

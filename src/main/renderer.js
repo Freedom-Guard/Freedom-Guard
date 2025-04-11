@@ -974,12 +974,25 @@ window.startNewUser = () => {
 
     });
 };
+window.messageQueue = [];
+window.isMessageShowing = false;
+
 window.showMessageUI = (message, duration = 3000) => {
+    window.messageQueue.push({ message, duration });
+    processMessageQueue();
+};
+
+function processMessageQueue() {
+    if (window.isMessageShowing || window.messageQueue.length === 0) return;
+
+    const { message, duration } = window.messageQueue.shift();
     const messageBox = document.getElementById("message");
     const messageText = document.getElementById("messageText");
     const messageBorder = document.getElementById("message-border");
 
     if (!messageBox || !messageText || !messageBorder) return;
+
+    window.isMessageShowing = true;
 
     messageText.innerHTML = message;
     messageBox.classList.add("show-message");
@@ -990,9 +1003,13 @@ window.showMessageUI = (message, duration = 3000) => {
     setTimeout(() => {
         $("#message").slideToggle("slow", () => {
             messageBox.classList.remove("show-message");
-        })
+            $("#message").show();
+            window.isMessageShowing = false;
+            processMessageQueue();
+        });
     }, duration);
-};
+}
+
 window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
     $("#text-box-notif").html(mess);
     $("#box-notif").css("display", "flex");
