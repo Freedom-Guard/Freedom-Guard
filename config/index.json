@@ -46,6 +46,10 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,vless://01cb18d1-2062-47e7-999b-ec08e8b2ec85@104.24.148.184:80?path=%2F%3Fed%3D2560&security=&encryption=none&host=muddy-rain-0a28-ppal03.mitey24737.workers.dev&type=ws#%F0%9F%94%92%20VL-WS-NA%20%F0%9F%8F%B4%E2%80%8D%E2%98%A0%EF%B8%8F%20NA-104.24.148.184%3A80",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpjdklJODVUclc2bjBPR3lmcEhWUzF1@45.87.175.181:8080#%F0%9F%87%B1%F0%9F%87%B9LT-45.87.175.181-0288",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0YTJyZml4b3BoZGpmZmE4S1ZBNEFh@beesyar.org:8080#%F0%9F%87%B1%F0%9F%87%B9LT-45.87.175.192-0296",
+        "vibe,;,vless://0cca1132-94a6-476c-ab13-6b28e0727751@104.16.132.136:80?path=%2F%3Fed%3D2560&security=&encryption=none&host=blue-pine-59a0-ppal03.haleyaw148.workers.dev&type=ws#%F0%9F%94%92%20VL-WS-NONE%20%F0%9F%8F%B4%E2%80%8D%E2%98%A0%EF%B8%8F%20NA-104.16.132.136%3A80",
         "vibe,;,vless://59860b15-b2d9-47f9-9b92-81bd1639fcc5@104.26.5.157:2083?path=%2F&security=tls&encryption=none&host=5-55sfjslf.ifenxiang.cfd&fp=chrome&type=ws&sni=5-55sfjslf.ifenxiang.cfd#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C6%7C",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNToxZmU4ZjZlNTg3ZmRmODRk@57.130.21.59:26567#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C16%7C",
         "vibe,;,ss://YWVzLTEyOC1nY206c2hhZG93c29ja3M%3D@156.146.62.162:443#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C4%7C",
