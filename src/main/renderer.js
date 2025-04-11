@@ -246,24 +246,9 @@ class main {
             await this.reloadServers();
             window.showMessageUI(this.publicSet.settingsALL["lang"]["refreshed_isp_servers"]);
         });
-
         $("#box-select-server-mini, #close-box-select-server").on("click", async () => {
-            let $box = $("#box-select-server");
-
-            if ($box.is(":visible")) {
-                $box.fadeOut("fast");
-            } else {
-                await this.reloadServers();
-                $box.css({ opacity: 0, top: "-20px", display: "flex" }).animate(
-                    { opacity: 1, top: "0px" },
-                    300,
-                    "easeOutBack"
-                );
-            }
+            $("#box-select-server").toggle();
         });
-
-
-
         $("#menu-exit-app").on('click', () => {
             ipcRenderer.send("exit-app");
         });
