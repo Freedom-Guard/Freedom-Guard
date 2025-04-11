@@ -35,7 +35,7 @@
         ],
         "productName": "Freedom Guard",
         "appId": "guard.freedom.com",
-        "artifactName": "freedom-guard-${os}.${ext}",
+        "artifactName": "freedom-guard-${os}-${arch}.${ext}",
         "asar": true,
         "directories": {
             "output": "dist"
@@ -63,6 +63,10 @@
             "target": [
                 "dmg",
                 "zip"
+            ],
+            "arch": [
+                "x64",
+                "arm64"
             ],
             "category": "public.app-category.networking.vpn",
             "extraResources": [

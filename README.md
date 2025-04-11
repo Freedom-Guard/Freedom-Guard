@@ -37,7 +37,10 @@
             <td>Linux</td>
             <td>
                 <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.deb"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=linux"> </a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.AppImage"><img src="https://img.shields.io/badge/AppImage-x64-2d7d9a.svg?logo=linux"></a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.rpm"><img src="https://img.shields.io/badge/rpm-x64-f84e29.svg?logo=rpm"></a><br>
             </td>
+        </tr>
         </tr>
         <tr>
             <td>Android</td>
@@ -45,7 +48,14 @@
                 <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases/latest/download/app-release.apk"><img src="https://img.shields.io/badge/apk-universal-f84e29.svg?logo=android"> </a><br>
             </td>
         </tr>
+        <tr>
+            <td>macOS</td>
+            <td>
+                <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases/latest/download/app-release.apk"><img src="https://img.shields.io/badge/dmg-universal-f84e29.svg?logo=apple"> </a><br>
+            </td>
+        </tr>
     </tbody>
+
 </table>
 </div>
 
@@ -91,14 +101,13 @@
 
 ## Screenshots
 
-### Freedom Guard 
+### Freedom Guard
 
 ![image](https://github.com/user-attachments/assets/dbc34ef6-1dcf-4ae7-945b-7a5a494f1345)
 
 ![image](https://github.com/user-attachments/assets/1eef8768-f030-4d7c-b5b2-bfa83a9e56cc)
 
 ![image](https://github.com/user-attachments/assets/a3787139-c775-4703-835c-a67ed46b4923)
-
 
 ## تامین کانفیگ خودکار
 
