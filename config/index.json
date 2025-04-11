@@ -46,9 +46,9 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,vless://fc6cb45a-36a3-43a0-a343-8df375d76106@144.76.231.27:52152?security=&encryption=none&type=grpc#FG Fast",
-        "vibe,;,vless://0a44145f-59dc-4e5b-a233-677b97f5114c@51.81.18.62:443?security=tls&encryption=none&headerType=&fp=chrome&type=tcp&sni=147135011033.sec21org.com#%F0%9F%94%92%20VL-TCP-TLS%20%F0%9F%87%BA%F0%9F%87%B8%20US-51.81.18.62%3A443",
-        "vibe,;,vless://3609d1ef-f25c-47e5-bd77-f891760fb5d6@194.182.90.159:57860?security=&encryption=none&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#%F0%9F%94%92%20VL-GRPC-NONE%20%F0%9F%87%A8%F0%9F%87%BF%20CZ-194.182.90.159%3A57860",
+        "vibe,;,vless://59860b15-b2d9-47f9-9b92-81bd1639fcc5@104.26.5.157:2083?path=%2F&security=tls&encryption=none&host=5-55sfjslf.ifenxiang.cfd&fp=chrome&type=ws&sni=5-55sfjslf.ifenxiang.cfd#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C6%7C",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNToxZmU4ZjZlNTg3ZmRmODRk@57.130.21.59:26567#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C16%7C",
+        "vibe,;,ss://YWVzLTEyOC1nY206c2hhZG93c29ja3M%3D@156.146.62.162:443#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C4%7C",
         "vibe,;,trojan://psycho@104.21.64.1:443?path=%2FtrEujcp9ekQlNJr3cu%3Fed%3D2560&security=tls&alpn=http%2F1.1&host=psycho.suex12.ir&fp=randomized&type=ws&sni=pSycho.SueX12.Ir#%F0%9F%92%A6%20Trojan%20FG",
         "vibe,;,trojan://telegram-id-privatevpns@63.176.188.193:22222?security=tls&alpn=http%2F1.1&headerType=none&type=tcp&sni=trojan.burgerip.co.uk#%F0%9F%87%A9%F0%9F%87%AA%20Server%20under",
         "vibe,;,trojan://psycho@104.21.112.1:443?path=%2FtrKMOZiiXeYGAYf65Z%3Fed%3D2560&security=tls&alpn=http%2F1.1&host=psycho.suex12.ir&fp=randomized&type=ws&sni=PSycHO.SuEX12.iR#%F0%9F%92%A6%20Trojan",
