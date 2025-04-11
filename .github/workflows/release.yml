@@ -1,141 +1,145 @@
 name: Build and Release Electron App
 
 on:
-  push:
-    tags:
-      - "v*"
+    push:
+        tags:
+            - "v*"
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [windows-latest, ubuntu-latest, macos-latest]
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
 
-      - name: Set environment variable
-        run: echo "USE_HARD_LINKS=false" >> $GITHUB_ENV
+            - name: Set environment variable
+              run: echo "USE_HARD_LINKS=false" >> $GITHUB_ENV
 
-      - name: Update electron-builder
-        run: npm install -g electron-builder@latest
+            - name: Update electron-builder
+              run: npm install -g electron-builder@latest
 
-      - name: Cleanup Project
-        run: npm cache clean --force
+            - name: Cleanup Project
+              run: npm cache clean --force
 
-      - name: Install Dependencies
-        run: npm install
+            - name: Install Dependencies
+              run: npm install
 
-      - name: Build Electron App (Windows)
-        if: matrix.os == 'windows-latest'
-        run: npx electron-builder --win --x64 --publish never
+            - name: Build Electron App (Windows x64)
+              if: matrix.os == 'windows-latest'
+              run: npx electron-builder --win --x64 --publish never
 
-      - name: Build Electron App (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: npx electron-builder --linux --x64 --publish never
+            - name: Build Electron App (Linux)
+              if: matrix.os == 'ubuntu-latest'
+              run: npx electron-builder --linux --publish never
 
-      - name: Build Electron App (macOS x64)
-        if: matrix.os == 'macos-latest'
-        run: npx electron-builder --mac --x64 --publish never
+            - name: Build Electron App (macOS x64)
+              if: matrix.os == 'macos-latest'
+              run: npx electron-builder --mac --x64 --publish never
 
-      - name: Build Electron App (macOS arm64)
-        if: matrix.os == 'macos-latest'
-        run: npx electron-builder --mac --arm64 --publish never
+            - name: Build Electron App (macOS arm64)
+              if: matrix.os == 'macos-latest'
+              run: npx electron-builder --mac --arm64 --publish never
 
-      - name: Upload Artifact (Windows EXE)
-        if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-win-x64
-          path: dist/*x64.exe
+            - name: Upload Artifact (Windows EXE)
+              if: matrix.os == 'windows-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-win-exe
+                  path: dist/*.exe
 
-      - name: Upload Artifact (Linux DEB)
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-linux-deb-x64
-          path: dist/*x64.deb
+            - name: Upload Artifact (Linux DEB)
+              if: matrix.os == 'ubuntu-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-linux-deb
+                  path: dist/*.deb
 
-      - name: Upload Artifact (Linux TAR.GZ)
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-linux-tar-x64
-          path: dist/*x64.tar.gz
+            - name: Upload Artifact (Linux TAR.GZ)
+              if: matrix.os == 'ubuntu-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-linux-tar
+                  path: dist/*.tar.gz
 
-      - name: Upload Artifact (Linux RPM)
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-linux-rpm-x64
-          path: dist/*x64.rpm
+            - name: Upload Artifact (Linux RPM)
+              if: matrix.os == 'ubuntu-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-linux-rpm
+                  path: dist/*.rpm
 
-      - name: Upload Artifact (Linux AppImage)
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-linux-appimage-x64
-          path: dist/*x64.AppImage
+            - name: Upload Artifact (Linux AppImage)
+              if: matrix.os == 'ubuntu-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-linux-appimage
+                  path: dist/*.AppImage
 
-      - name: Upload Artifact (macOS DMG x64)
-        if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-macos-dmg-x64
-          path: dist/*mac-x64.dmg
+            - name: Upload Artifact (macOS DMG x64)
+              if: matrix.os == 'macos-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-macos-dmg-x64
+                  path: dist/*-x64.dmg
 
-      - name: Upload Artifact (macOS DMG arm64)
-        if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-macos-dmg-arm64
-          path: dist/*mac-arm64.dmg
+            - name: Upload Artifact (macOS ZIP x64)
+              if: matrix.os == 'macos-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-macos-zip-x64
+                  path: dist/*-x64.zip
 
-      - name: Upload Artifact (macOS ZIP x64)
-        if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-macos-zip-x64
-          path: dist/*mac-x64.zip
+            - name: Upload Artifact (macOS DMG arm64)
+              if: matrix.os == 'macos-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-macos-dmg-arm64
+                  path: dist/*-arm64.dmg
 
-      - name: Upload Artifact (macOS ZIP arm64)
-        if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: freedom-guard-macos-zip-arm64
-          path: dist/*mac-arm64.zip
+            - name: Upload Artifact (macOS ZIP arm64)
+              if: matrix.os == 'macos-latest'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: freedom-guard-macos-zip-arm64
+                  path: dist/*-arm64.zip
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
+    release:
+        needs: build
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Download all Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dist/
+            - name: Download All Artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  path: dist/
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/**/*.*
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          body: |
-            🎉 New release ${{ github.ref_name }} is available!
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v1
+              with:
+                  files: dist/**/*.*
+                  tag_name: ${{ github.ref_name }}
+                  name: Release ${{ github.ref_name }}
+                  body: |
+                      🎉 New release ${{ github.ref_name }} is available!
 
-            ✅ Windows x64 (.exe)  
-            ✅ Linux x64 (.deb, .rpm, .AppImage, .tar.gz)  
-            ✅ macOS x64 + arm64 (.dmg, .zip)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                      - Windows EXE (.exe)
+                      - Linux DEB (.deb)
+                      - Linux TAR.GZ (.tar.gz)
+                      - Linux RPM (.rpm)
+                      - Linux AppImage (.AppImage)
+                      - macOS DMG (x64 & arm64)
+                      - macOS ZIP (x64 & arm64)
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
