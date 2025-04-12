@@ -51,7 +51,8 @@
         <tr>
             <td>macOS</td>
             <td>
-                <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases/latest/download/app-release.apk"><img src="https://img.shields.io/badge/dmg-universal-f84e29.svg?logo=apple"> </a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-mac-x64.dmg"><img src="https://img.shields.io/badge/dmg-x64-f84e29.svg?logo=apple"> </a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-mac-arm64.dmg"><img src="https://img.shields.io/badge/dmg-arm64-f84e29.svg?logo=apple"> </a><br>
             </td>
         </tr>
     </tbody>
