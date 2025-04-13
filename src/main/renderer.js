@@ -221,8 +221,8 @@ class main {
             $("#donate-box").toggle();
         });
         $('#menu-freedom-browser').on('click', () => {
-            window.showMessageUI(this.publicSet.settingsALL["lang"]["browser_not_ready"])
-            // ipcRenderer.send("load-browser");
+            // window.showMessageUI(this.publicSet.settingsALL["lang"]["browser_not_ready"])
+            ipcRenderer.send("load-browser");
         });
         $("#menu-about, #about").on('click', () => {
             $("#about-app").attr("style", "display:flex;");
