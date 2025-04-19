@@ -383,7 +383,7 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             this.LOGLOG("ISP SELECTED: " + isp);
             this.settingsALL["public"]["ispServers"] = responseServerISP?.length ? responseServerISP.concat(responseServerPublic || []) : responseServerPublic || [];
             this.LOGLOG("isp servers updated: " + JSON.stringify(this.settingsALL["public"]["ispServers"]));
-            if (this.settingsALL["public"]["ispServers"] == []) {
+            if (!this.settingsALL["public"]["ispServers"] || this.settingsALL["public"]["ispServers"].length === 0) {
                 window.showMessageUI(this.settingsALL["lang"]["mess_not_found_isp_in_servers"]);
                 this.LOGLOG("ISP not found: " + isp);
                 return false;
@@ -639,7 +639,7 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
             this.argsWarp = [];
             let settingWarp = this.settings["warp"];
             if (this.settingsALL["public"]["proxy"] != "127.0.0.1:8086") {
-                this.argsWarp("--bind");
+                this.argsWarp.push("--bind");
                 this.argsWarp.push(this.settingsALL["public"]["proxy"]);
             };
             if (settingWarp["ipv"] != "IPV4" && settingWarp["ipv"]) {
@@ -823,7 +823,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
             this.argsWarp = [];
             let settingWarp = this.settingsALL["warp"];
             if (this.settingsALL["public"]["proxy"] != "127.0.0.1:8086") {
-                this.argsWarp("--bind");
+                this.argsWarp.push("--bind");
                 this.argsWarp.push(this.settingsALL["public"]["proxy"]);
             };
             if (settingWarp["ipv"] != "IPV4") {
