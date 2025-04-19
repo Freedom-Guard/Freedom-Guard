@@ -43,9 +43,9 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,vless://425c7f9a-cd38-4cfe-8adc-fc568ac3e7e6@194.182.79.5:39596?security=&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON?ed%3D2048&encryption=none#%F0%9F%87%A8%F0%9F%87%BF%20FG",
-        "vibe,;,vless://f65fbb82-aae9-453a-a04f-ba09f36d1656@194.182.79.49:15450?security=&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON?ed%3D2048&encryption=none#%20%F0%9F%87%A8%F0%9F%87%BF%20",
-        "vibe,;,vless://2d2586d4-7ccf-4604-9dbe-ec3daf1c9ab0@194.182.79.144:49200?mode=gun&security=none&encryption=none&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON%3Fed%3D2048#all FG",
+        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@84.32.9.55:8880?security=&type=grpc&encryption=none#%F0%9F%9A%80%20FG%20FAST",
+        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@84.32.25.111:8880?security=&type=grpc&encryption=none#FG%20LINK%201",
+        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@65.109.171.80:8880?security=&type=grpc&encryption=none#FG%20BackUP",
         "vibe,;,vless://59860b15-b2d9-47f9-9b92-81bd1639fcc5@104.26.5.157:2083?path=%2F&security=tls&encryption=none&host=5-55sfjslf.ifenxiang.cfd&fp=chrome&type=ws&sni=5-55sfjslf.ifenxiang.cfd#%7C%7C07%3A41%7C1404-01-22%7Cfa33da%7C6%7C",
         "vibe,;,vless://aa8b969e-b90e-400e-a36b-9e3cd6722e57@81.2.233.201:23664?security=&type=grpc&serviceName=ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON?ed%3D2048&encryption=none#%F0%9F%8F%81Freedom_Guard_Net",
         "vibe,;,https://raw.githubusercontent.com/4n0nymou3/ss-config-updater/refs/heads/main/configs.txt#👽 | ss FG",
