@@ -700,46 +700,23 @@ class main {
     getEmojiCountry(country) {
         return `<img src="../svgs/${country.toLowerCase()}.svg" style="width: 20px; height: 20px;border-radius:0px;"> ${country}`;
     }
-    async setPingBox() { // Updates the UI with the current IP, country, ping, and bypass status.
-        let data = await this.publicSet.getIP_Ping();
-        let countryEmoji = data.country ? ` ${this.getEmojiCountry(data.country)}` : "🌍 Unknown";
-        let isConnected = !data.filternet;
-        let htmlContent = "";
+    async setPingBox() {
+        $("#connected-ping").html(`Ping: <b>N/A ms</b>`);
+        const connectedInfo = await this.connect.getIP_Ping();
+        const countryEmoji = connectedInfo.country ? ` ${this.getEmojiCountry(connectedInfo.country)}` : "🌍 Unknown";
+        const isConnected = !connectedInfo.filternet;
+
         if (this.publicSet.connected) {
-            htmlContent = `
-                <p class="ip-ping-item">
-                    <span class="ip-icon">🌍</span> 
-                    Country: <b style='display:flex;gap: 10px;'>${countryEmoji}</b>
-                </p>
-                <p class="ip-ping-item">
-                    <span class="ip-icon">🔍</span> 
-                    IP: <b>${data.ip || "Unknown"}</b>
-                </p>
-                <p class="ip-ping-item">
-                    <span class="ip-icon">⚡</span> 
-                    Ping: <b>${data.ping || "N/A"} ms</b>
-                </p>
-                <p class="ip-ping-item">
-                    <span class="ip-icon">🚀</span> 
-                    Bypass: <b>${isConnected ? "On" : "Off"}</b>
-                </p>
-                <p id="connection-status" class="ip-status ${this.publicSet.connected ? '' : 'disconnected'}">
-                    ${this.publicSet.connected ? '🟢 Connected' : '🔴 Disconnected'}
-                </p>
-        `;
-            $("#ChangeStatus").addClass("connected");
-            this.publicSet.status = true;
-            this.publicSet.connected = true;
+            $(".connection, #ip-ping").addClass("connected");
+            $("#connected-country").html(`Country: <b style="display:flex;gap:8px;">${countryEmoji}</b>`);
+            $("#connected-ping").html(`Ping: <b>${connectedInfo.ping || "N/A"} ms</b>`);
+            $("#connected-status").html(`Status: <b>${isConnected ? "🟢 Connected" : "🔴 Disconnected"}</b>`);
+            $("#connected-bypass").html(`Bypass: <b>${isConnected ? "On" : "Off"}</b>`);
         } else {
-            htmlContent = `
-                <p class="ip-ping-item" style='margin:0;padding:0;'>
-                    <b style='color:${data.ping > 1500 ? "red" : "green"};margin:0.5em 1em'>${data.ping}ms</b>
-                </p>
-                `;
+            $("#ip-ping").html(`${connectedInfo.ping}ms`);
+            $(".connection, #ip-ping").removeClass("connected");
         }
-        $("#ip-ping").html(htmlContent);
-        this.publicSet.connected ? $("#ip-ping, #ChangeStatus").addClass("connected") : $("#ip-ping, #ChangeStatus").removeClass("connected");
-    };
+    }
     KILLALLCORES(core) { // Terminates a process with the given core name on both Windows and Unix-based systems.
         core = core.toString().toLowerCase() + "-core";
         this.publicSet.LOGLOG(`Killing ${core}...`);
