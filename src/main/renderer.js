@@ -710,7 +710,7 @@ class main {
             $(".connection, #ip-ping").addClass("connected");
             $("#connected-country").html(`Country: <b style="display:flex;gap:8px;">${countryEmoji}</b>`);
             $("#connected-ping").html(`Ping: <b>${connectedInfo.ping || "N/A"} ms</b>`);
-            $("#connected-status").html(`Status: <b>${isConnected ? "🟢 Connected" : "🔴 Disconnected"}</b>`);
+            $("#connected-status").html(`Status: <b>${isConnected ? "Connected" : "Disconnected"}</b>`);
             $("#connected-bypass").html(`Bypass: <b>${isConnected ? "On" : "Off"}</b>`);
         } else {
             $("#ip-ping").html(`${connectedInfo.ping}ms`);
