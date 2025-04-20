@@ -12,6 +12,8 @@ const { on } = require('events');
 window.$ = $;
 const vesrionApp = "5.5.0";
 let LOGS = [];
+// #endregion
+// #region components
 window.LogLOG = (log = "", type = "info") => {
     LOGS.push(log);
     const timestamp = new Date().toLocaleString("en-US", {
@@ -75,6 +77,8 @@ window.setHTML = (selector, text) => {
 window.setATTR = (selector, attr, value) => {
     $(selector).attr(attr, value);
 };
+// #endregion
+// #region main/classes
 class main {
     constructor() {
         this.connect = new connect();
@@ -597,8 +601,7 @@ class main {
             event.preventDefault();
             this.showContextMenuServer(event, server, serverType, serverIndex);
         });
-    }
-
+    };
     async createServerList(title, servers, container, type) { // Generates and appends a list of servers to the provided container.
         container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
 
@@ -620,8 +623,7 @@ class main {
             }
             container.appendChild(div);
         });
-    }
-
+    };
     showContextMenuServer(event, server, type, index) {//  Displays a custom right-click context menu for server options.
         let existingMenu = document.getElementById("server-context-menu");
         if (existingMenu) existingMenu.remove();
@@ -699,8 +701,8 @@ class main {
     };
     getEmojiCountry(country) {
         return `<img src="../svgs/${country.toLowerCase()}.svg" style="width: 20px; height: 20px;border-radius:0px;"> ${country}`;
-    }
-    async setPingBox() {
+    };
+    async setPingBox() {// Update UI connected-info
         $("#connected-ping").html(`Ping: <b>N/A ms</b>`);
         const connectedInfo = await this.connect.getIP_Ping();
         const countryEmoji = connectedInfo.country ? ` ${this.getEmojiCountry(connectedInfo.country)}` : "🌍 Unknown";
@@ -716,7 +718,7 @@ class main {
             $("#ip-ping").html(`${connectedInfo.ping}ms`);
             $(".connection, #ip-ping").removeClass("connected");
         }
-    }
+    };
     KILLALLCORES(core) { // Terminates a process with the given core name on both Windows and Unix-based systems.
         core = core.toString().toLowerCase() + "-core";
         this.publicSet.LOGLOG(`Killing ${core}...`);
@@ -906,10 +908,15 @@ class fgCLI extends main {
         window.LogLOG("&nbsp;&nbsp;&nbsp;exit - Exit application");
     };
 };
+// #endregion
 const mainSTA = new main();
 mainSTA.init();
 const fgCLI_STA = new fgCLI();
 fgCLI_STA.init();
+// #region end components
+window.messageQueue = [];
+window.isMessageShowing = false;
+
 window.reloadPing = () => {
     mainSTA.setPingBox();
 };
@@ -936,32 +943,19 @@ window.startNewUser = () => {
 
     });
 };
-window.messageQueue = [];
-window.isMessageShowing = false;
-
 window.showMessageUI = (message, duration = 3000) => {
     window.messageQueue.push({ message, duration });
     processMessageQueue();
 };
-
 function processMessageQueue() {
     if (window.isMessageShowing || window.messageQueue.length === 0) return;
-
     const { message, duration } = window.messageQueue.shift();
     const messageBox = document.getElementById("message");
     const messageText = document.getElementById("messageText");
-    const messageBorder = document.getElementById("message-border");
-
-    if (!messageBox || !messageText || !messageBorder) return;
-
+    if (!messageBox || !messageText) return;
     window.isMessageShowing = true;
-
     messageText.innerHTML = message;
     messageBox.classList.add("show-message");
-
-    messageBorder.style.width = "100%";
-    setTimeout(() => messageBorder.style.width = "0%", 500);
-
     setTimeout(() => {
         $("#message").slideToggle("slow", () => {
             messageBox.classList.remove("show-message");
@@ -970,8 +964,7 @@ function processMessageQueue() {
             processMessageQueue();
         });
     }, duration);
-}
-
+};
 window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
     $("#text-box-notif").html(mess);
     $("#box-notif").css("display", "flex");
@@ -1084,6 +1077,8 @@ window.promptMulti = ({
         });
     });
 };
+
+// #endregion
 // #region IPC 
 ipcRenderer.on("start-fg", (event) => {
     mainSTA.connectFG();
@@ -1112,3 +1107,4 @@ ipcRenderer.on("start-link", (event, link) => {
     }
     window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["config_imported"] + link.split("://")[0]);
 });
+// #endregion

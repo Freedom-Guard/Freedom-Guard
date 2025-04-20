@@ -1,3 +1,4 @@
+// #region lib/init
 const { rejects } = require('assert');
 const { spawn, exec, execSync, execFile } = require('child_process');
 const { protocol } = require('electron');
@@ -9,6 +10,7 @@ const path = require('path');
 const { resolve } = require('path');
 const { trackEvent } = require("@aptabase/electron/renderer");
 trackEvent("app_started");
+// #endregion
 function getConfigPath() {
     let baseDir;
 
@@ -1427,9 +1429,9 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
 
         return "unknown";
     };
-
     donateCONFIG(config) {
         window.donateCONFIG(config);
     };
 };
+
 module.exports = { connect, connectAuto, test, publicSet, Tools };
