@@ -33,7 +33,9 @@
         <button id="ChangeStatus">
             <i class="bx bx-power-off"></i>
         </button>
-        <div class="connected-box">
+        <div class="connected-box">Network
+            <i class="bx bx-refresh bx-spin-hover"
+                style="font-size: 2em;margin: 0.2em;margin-left: auto;margin-bottom: auto;" id="reload-ping"></i>
             <div id="connected-info">
                 <div class="connected-item" id="connected-country"></div>
                 <div class="connected-item" id="connected-ping"></div>
@@ -323,9 +325,9 @@
     </div>
     <div id="tool-box" class="box flex-row" style="display: none;">
         <h2 style="margin-bottom: auto;width: 100%;">Tool Box</h2>
-        <div id="tool-off-proxy">Off Proxy</div>
-        <div id="tool-set-proxy">Set Proxy</div>
-        <div id="tool-auto-mode">Turn on Auto Mode</div>
+        <button id="tool-off-proxy" class="btn">Off Proxy</button>
+        <button id="tool-set-proxy" class="btn">Set Proxy</button>
+        <button id="tool-auto-mode" class="btn">Turn on Auto Mode</button>
         <i id="tool-close-box" class="bx bx-x btn close-btn"></i>
     </div>
     <div id="menu">

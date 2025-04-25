@@ -256,7 +256,7 @@ class main {
         $("#menu-exit-app").on('click', () => {
             ipcRenderer.send("exit-app");
         });
-        $("#ip-ping").on('click', async () => {
+        $("#ip-ping, #reload-ping").on('click', async () => {
             this.setPingBox();
         });
         $("#ChangeStatus").on("click", () => {
@@ -530,9 +530,11 @@ class main {
         $("#tool-box").toggle();
         $("#tool-off-proxy").on("click", () => {
             this.Tools.offProxy(this.Tools.returnOS());
+            window.showMessageUI("OFF");
         });
         $("#tool-set-proxy").on("click", () => {
-            this.Tools.offProxy(this.Tools.returnOS(), this.publicSet.settingsALL["public"]["proxy"]);
+            this.Tools.setProxy(this.Tools.returnOS(), this.publicSet.settingsALL["public"]["proxy"]);
+            window.showMessageUI("ON");
         });
         $("#tool-auto-mode").on("click", () => {
             this.publicSet.settingsALL["public"]["core"] = "auto";

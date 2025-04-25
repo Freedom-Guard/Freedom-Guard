@@ -121,6 +121,7 @@ img {
 
 .connection.connected .connected-box {
     display: flex;
+    flex-direction: column;
 }
 
 .connected-box {
@@ -141,7 +142,7 @@ img {
     flex-direction: column;
     gap: 14px;
     width: clamp(280px, 75%, 400px);
-    padding: 1.5rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .connected-item {
@@ -1106,12 +1107,12 @@ img {
 }
 
 .box:hover {
-    transform: translate(-50%, -50%) scale(1.02);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .btn:hover {
     transform: scale(1.1);
+    background-color: var(--primary-color);
 }
 
 .btn {
@@ -1121,7 +1122,6 @@ img {
     transition: 0.5s;
     font-size: medium;
     background-color: var(--main-color);
-
     color: white;
     border: none;
     border-radius: 7px;
