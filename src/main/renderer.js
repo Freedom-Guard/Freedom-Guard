@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "5.5.0";
+const vesrionApp = "6.5.0";
 let LOGS = [];
 // #endregion
 // #region components
@@ -607,7 +607,7 @@ class main {
 
         servers.forEach((server, index) => {
             let imgServer = server.split(",;,")[0] == "warp" ? "warp.webp" : server.split(",;,")[0] == "vibe" ? "vibe.png" : server.split("://")[0] == "warp" ? "warp.webp" : "vibe.png";
-            server = server.replace("vibe,;,", "").replace(",;,", "://");
+            server = decodeURIComponent(server.replace("vibe,;,", "").replace(",;,", "://"));
             let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
 
             let div = document.createElement("div");

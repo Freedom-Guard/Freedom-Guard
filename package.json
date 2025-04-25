@@ -4,7 +4,7 @@
     "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Link",
     "keywords": [],
     "main": "./main.js",
-    "version": "5.5.0",
+    "version": "6.0.0",
     "author": "Freedom Guard <FreedomGuard@duck.com>",
     "scripts": {
         "start": "electron .",
@@ -150,6 +150,6 @@
     },
     "bugs": {
         "url": "https://github.com/Freedom-Guard/Freedom-Guard/issues",
-        "email": "fwldom@duck.com"
+        "email": "FreedomGuard@duck.com"
     }
 }
