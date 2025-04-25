@@ -43,6 +43,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,ss://YWVzLTEyOC1nY206c2hhZG93c29ja3M%3D@156.146.62.163:443#%F0%9F%87%A8%F0%9F%87%ADCH-156.146.62.163-1011",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpRQ1hEeHVEbFRUTUQ3anRnSFVqSW9q@45.87.175.192:8080#%F0%9F%87%B1%F0%9F%87%B9LT-45.87.175.192-0974",
         "vibe,;,vless://6bb86285-d539-44c6-8747-ff04a0063509@77.73.131.152:16345?security=reality&sni=google.com&fp=firefox&pbk=xUhA4LVyXIOHRUvyrW3RXQyKWQfO6XCYRrIJVHKxrVc&sid=23e04f44&type=tcp&flow=xtls-rprx-vision&encryption=none#Server-255278",
         "vibe,;,ss://cmM0LW1kNToxNGZGUHJiZXpFM0hEWnpzTU9yNg==@68.183.227.4:8080#%F0%9F%87%B8%F0%9F%87%ACSG-68.183.227.4-1029",
