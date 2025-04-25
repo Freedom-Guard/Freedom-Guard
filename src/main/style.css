@@ -861,7 +861,7 @@ img {
     display: flex;
     gap: 10px;
     position: fixed;
-    bottom: 2vh;
+    bottom: 1vh;
     left: 0;
 }
 
@@ -881,9 +881,9 @@ img {
 }
 
 #Logs .command-line-fg>*:focus {
-    outline: 2px solid #0f0;
+    outline: none;
     box-shadow: 0 0 5px rgba(15, 255, 15, 0.5);
-    transition: outline 0.3s, box-shadow 0.3s;
+    transition: box-shadow 0.3s;
 }
 
 #Logs #LogsContent {
