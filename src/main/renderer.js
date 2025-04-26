@@ -121,7 +121,8 @@ class main {
             this.connectAuto.killVPN(this.publicSet.settingsALL["public"]["core"]);
         }
     };
-    async loading(textloading = "", time = 3000) {// Displays a random tribute message and image during loading, then hides the loader after a set time.
+    async loading(textloading = "", time = 3000) {
+        // Displays a random tribute message and image during loading, then hides the loader after a set time.
         let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg", "kian.jpg", "mehrshad.jpg", "hadis.jpg", "hananeh.jpg", "hamidreza.jpg", "AylarH.jpg"];
         let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده", "به یاد کیان پیرفلک", "به یاد مهرشاد شهیدی", "به یاد حدیث نجفی", "به یاد حنانه کیا", "به یاد حمید رضا روحی", "به یاد آیلار حقی"];
         let random = Math.floor(Math.random() * loaderImages.length);
@@ -137,7 +138,8 @@ class main {
             }, time);
         });
     };
-    async checkUPDATE() {// Checks for updates by fetching the latest version information from a remote JSON file.
+    async checkUPDATE() {
+        // Checks for updates by fetching the latest version information from a remote JSON file.
         let response = await this.axios.get("https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/latest.json");
         if (response.data["version"] > vesrionApp) {
             window.showModal(response.data["messText"], response.data["url"]);
@@ -152,7 +154,8 @@ class main {
     onConnect() {
 
     };
-    async loadLang() { // Load lang -> set HTML with key, json
+    async loadLang() {
+        // Load lang -> set HTML with key, json
         this.publicSet.ReloadSettings();
         let lang = this.publicSet.settingsALL["public"]["lang"];
         const response = await fetch(`../components/locales/${lang}.json`);
@@ -186,17 +189,13 @@ class main {
         });
     };
     async isAdmin() {
-        const isAdmin = await ipcRenderer.invoke("check-admin");
-        if (!isAdmin) {
-            return true;
-            // window.showMessageUI("🔒 برای استفاده از این قابلیت، باید برنامه را با دسترسی ادمین اجرا کنید.\n\nلطفاً برنامه را بسته و با دسترسی ادمین باز کنید.", 7000);
-        }
-        return isAdmin;
-    }
+
+    };
     openLink(href) {
         shell.openExternal(href);
-    }
-    addEvents() { // Add Events for settings, menu, connect, ....
+    };
+    addEvents() {
+        // Add Events for settings, menu, connect, ....
         $("a").on('click', (e) => {
             e.preventDefault();
             let href = $(e.target).attr("href");
@@ -225,7 +224,6 @@ class main {
             $("#donate-box").toggle();
         });
         $('#menu-freedom-browser').on('click', () => {
-            // window.showMessageUI(this.publicSet.settingsALL["lang"]["browser_not_ready"])
             ipcRenderer.send("load-browser");
         });
         $("#menu-about, #about").on('click', () => {
@@ -289,7 +287,8 @@ class main {
         })
         process.nextTick(() => this.addEventsSetting());
     };
-    addEventsSetting() {// Add Event for settings
+    addEventsSetting() {
+        // Add Event for settings
         $("#core-guard-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
             $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
@@ -414,7 +413,8 @@ class main {
             this.publicSet.saveSettings();
         });
     };
-    addEventSect(core) {// Add Event for sect settings
+    addEventSect(core) {
+        // Add Event for sect settings
         if (core == "warp") {
             $("#endpoint-warp-value").on("input", () => {
                 this.publicSet.settingsALL["warp"]["endpoint"] = $("#endpoint-warp-value").val(); this.publicSet.saveSettings();
@@ -498,7 +498,8 @@ class main {
 
         }
     };
-    setSettings() { // Loads and applies saved settings to the UI elements
+    setSettings() {
+        // Loads and applies saved settings to the UI elements
         this.publicSet.ReloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
         $("#vpn-type-selected").val(this.publicSet.settingsALL["public"]["type"]);
@@ -537,7 +538,7 @@ class main {
             window.showMessageUI("ON");
         });
         $("#tool-auto-mode").on("click", () => {
-            this.publicSet.settingsALL["public"]["core"] = "auto";
+            this.publicSet.settingsALL["public"]["configManual"] = "freedom-guard://core=auto#Auto Server";
             this.publicSet.saveSettings();
             this.setSettings();
         });
@@ -545,7 +546,8 @@ class main {
             $("#tool-box").toggle();
         });
     };
-    async reloadServers() {// Reloads server list, updates UI, and manages server selection and context menu interactions.
+    async reloadServers() {
+        // Reloads server list, updates UI, and manages server selection and context menu interactions.
         this.publicSet.ReloadSettings();
         await this.publicSet.updateISPServers();
 
@@ -705,7 +707,8 @@ class main {
         return `<img src="../svgs/${country.toLowerCase()}.svg" style="width: 20px; height: 20px;border-radius:0px;"> ${country}`;
     };
     async setPingBox() {// Update UI connected-info
-        $("#connected-ping").html(`Ping: <b>N/A ms</b>`);
+        $("#connected-ping").html(`Pinging...`);
+        $("#ip-ping").html(`Pinging...`);
         const connectedInfo = await this.connect.getIP_Ping();
         const countryEmoji = connectedInfo.country ? ` ${this.getEmojiCountry(connectedInfo.country)}` : "🌍 Unknown";
         const isConnected = !connectedInfo.filternet;
@@ -717,6 +720,7 @@ class main {
             $("#connected-status").html(`Status: <b>${isConnected ? "Connected" : "Disconnected"}</b>`);
             $("#connected-bypass").html(`Bypass: <b>${isConnected ? "On" : "Off"}</b>`);
         } else {
+            $("#ip-ping").attr("style", connectedInfo.ping > 1000 ? "color:red;" : "color:green;");
             $("#ip-ping").html(`${connectedInfo.ping}ms`);
             $(".connection, #ip-ping").removeClass("connected");
         }
