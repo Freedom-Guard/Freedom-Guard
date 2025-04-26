@@ -44,7 +44,8 @@ write_file = function (pathFile, output, type = 'file') {
         fs.writeFileSync(path.join(getConfigPath(), pathFile), output);
     };
 };
-class publicSet {// Main functions for connect(Class), connectAuto(class), and managing settings, ...
+class publicSet {
+    // Main functions for connect(Class), connectAuto(class), and managing settings, ...
     constructor() {
         this.axios = require('axios');
         this.geoip = require('geoip-lite');
@@ -144,7 +145,8 @@ class publicSet {// Main functions for connect(Class), connectAuto(class), and m
             this.settingsALL = JSON.parse(read_file('freedom-guard.json', "cache"));
         } catch (error) { this.saveSettings(); this.LOGLOG("settings file not found: saveSettings" + error) }
     };
-    async getIP_Ping() {// Retrieves the current IP, country, and ping of the user.
+    async getIP_Ping() {
+        // Retrieves the current IP, country, and ping of the user.
         let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
         try {
             const time = Date.now();
