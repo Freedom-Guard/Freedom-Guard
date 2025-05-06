@@ -43,7 +43,6 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,vless://65438a33-be79-4def-9190-4d4dba03fca3@185.73.0.93:8443?security=&type=tcp&headerType=http&host=vasaham.com&encryption=none#%F0%9F%87%AB%F0%9F%87%AE%20vless-FI",
         "vibe,;,vless://bbacf1fe-4b0b-42fe-89cb-32fa9c438063@152.42.184.200:443?security=tls&sni=webex.com&alpn=h3,h2,http/1.1&allowInsecure=1&fp=chrome&type=tcp&encryption=none#%F0%9F%87%B8%F0%9F%87%AC%20vless-SG",
         "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@84.32.25.237:8880?security=&type=grpc&encryption=none#%F0%9F%87%B1%F0%9F%87%B9%20vless-LT",
         "vibe,;,vless://e1a5059b-8599-4eb2-95f6-57ce34f5495b@172.82.67.155:21799?security=reality&sni=yahoo.com&fp=chrome&pbk=2kmInR-wqrw2BaYtDVWIpssOTTYs4Q8nYnXJCO5UPwI&sid=426f439fddf6&type=tcp&flow=xtls-rprx-vision&encryption=none#%F0%9F%87%BA%F0%9F%87%B8%20vless-US",
