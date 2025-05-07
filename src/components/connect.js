@@ -317,7 +317,7 @@ class publicSet {
         else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "warp";
             typeConfig = "warp";
-            let optionsWarp = config.replace("warp://", "").split("&")[0];
+            let optionsWarp = config.replace("warp://", "").split("&");
             optionsWarp.forEach(option => {
                 try {
                     this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1] == "true" | option.split("=")[1] == "false" ? JSON.parse(option.split("=")[1]) : option.split("=")[1];
