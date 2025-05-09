@@ -43,10 +43,6 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,vless://bbacf1fe-4b0b-42fe-89cb-32fa9c438063@152.42.184.200:443?security=tls&sni=webex.com&alpn=h3,h2,http/1.1&allowInsecure=1&fp=chrome&type=tcp&encryption=none#%F0%9F%87%B8%F0%9F%87%AC%20vless-SG",
-        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@84.32.25.237:8880?security=&type=grpc&encryption=none#%F0%9F%87%B1%F0%9F%87%B9%20vless-LT",
-        "vibe,;,vless://e1a5059b-8599-4eb2-95f6-57ce34f5495b@172.82.67.155:21799?security=reality&sni=yahoo.com&fp=chrome&pbk=2kmInR-wqrw2BaYtDVWIpssOTTYs4Q8nYnXJCO5UPwI&sid=426f439fddf6&type=tcp&flow=xtls-rprx-vision&encryption=none#%F0%9F%87%BA%F0%9F%87%B8%20vless-US",
-        "vibe,;,vless://f2d1b51c-6624-4f31-8496-d9bc67cf49fe@103.97.88.93:2052?security=&type=grpc&serviceName=vless-grpc&encryption=none#Server-643256",
         "vibe,;,vless://7f3776d8-65bd-4767-a995-34fb4e0937e2@104.16.131.9:443?security=tls&sni=worker.nexvivagroup.com&type=ws&path=/&host=worker.nexvivagroup.com&encryption=none#Server-792366",
         "vibe,;,vless://b15044d3-0686-5e7b-b729-ccbbe589025c@104.17.147.22:2052?security=&type=ws&path=/vless&host=sPeedtest2.sbs.za.vless.sitespeedtest.net&encryption=none#Server-526823",
         "vibe,;,vmess://eyJhZGQiOiIxMDQuMTcuMTQ4LjIyIiwiYWlkIjoiMCIsImhvc3QiOiJkaXZpbmUtc2FsYWQtNDFmYi5tb3N0YWZhc2FmYWlyLndvcmtlcnMuZGV2IiwiaWQiOiIzZjYzOGYzNC04ZGJhLTQxODYtYmM0My0yNzE2YTdkZGQ0YmUiLCJuZXQiOiJ3cyIsInBhdGgiOiIvYXowNS5iZXlvbmR5LmNmZC9saW5rIiwicG9ydCI6IjQ0MyIsInBzIjoiVk0tMDIxMC0wMDMiLCJzY3kiOiJhdXRvIiwic25pIjoiZGl2aW5lLXNhbGFkLTQxZmIubW9zdGFmYXNhZmFpci53b3JrZXJzLmRldiIsInRscyI6InRscyIsInR5cGUiOiJub25lIiwidiI6IjIifQ==#Server-606509",
