@@ -43,6 +43,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,vless://f38e1473-0bb8-4190-8d49-ba1aaaf4e264@157.180.16.69:2087?security=tls&sni=test.gamebestir0.ir&alpn=h2&allowInsecure=1&fp=chrome&type=grpc&encryption=none#%F0%9F%87%AB%F0%9F%87%AE%20vless-FI",
         "vibe,;,vless://7f3776d8-65bd-4767-a995-34fb4e0937e2@104.16.131.9:443?security=tls&sni=worker.nexvivagroup.com&type=ws&path=/&host=worker.nexvivagroup.com&encryption=none#Server-792366",
         "vibe,;,vless://b15044d3-0686-5e7b-b729-ccbbe589025c@104.17.147.22:2052?security=&type=ws&path=/vless&host=sPeedtest2.sbs.za.vless.sitespeedtest.net&encryption=none#Server-526823",
         "vibe,;,vmess://eyJhZGQiOiIxMDQuMTcuMTQ4LjIyIiwiYWlkIjoiMCIsImhvc3QiOiJkaXZpbmUtc2FsYWQtNDFmYi5tb3N0YWZhc2FmYWlyLndvcmtlcnMuZGV2IiwiaWQiOiIzZjYzOGYzNC04ZGJhLTQxODYtYmM0My0yNzE2YTdkZGQ0YmUiLCJuZXQiOiJ3cyIsInBhdGgiOiIvYXowNS5iZXlvbmR5LmNmZC9saW5rIiwicG9ydCI6IjQ0MyIsInBzIjoiVk0tMDIxMC0wMDMiLCJzY3kiOiJhdXRvIiwic25pIjoiZGl2aW5lLXNhbGFkLTQxZmIubW9zdGFmYXNhZmFpci53b3JrZXJzLmRldiIsInRscyI6InRscyIsInR5cGUiOiJub25lIiwidiI6IjIifQ==#Server-606509",
