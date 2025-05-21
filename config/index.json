@@ -43,6 +43,11 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0YTJyZml4b3BoZGpmZmE4S1ZBNEFh@45.87.175.154:8080#%F0%9F%87%B1%F0%9F%87%B9LT-45.87.175.154-0220",
+        "vibe,;,vless://1ebefa01-716a-5bd4-9ae1-48d6bd8fff13@41.216.182.162:2052?mode=gun&security=none&encryption=none&type=grpc&serviceName=vless-grpc#%F0%9F%87%A9%F0%9F%87%AA%20vless-DE",
+        "vibe,;,vless://b4166d9c-565b-5e67-961a-4e5bace61fb8@185.113.139.103:2052?mode=gun&security=none&encryption=none&type=grpc&serviceName=vless-grpc#%F0%9F%87%B1%F0%9F%87%BB%20vless-LV",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTozNjBlMjFkMjE5NzdkYzEx@45.139.24.24:57456#%F0%9F%87%B7%F0%9F%87%BA%20ss-RU",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpRQ1hEeHVEbFRUTUQ3anRnSFVqSW9q@45.158.171.146:8080#%F0%9F%87%AB%F0%9F%87%B7FR-45.158.171.146-0972",
         "vibe,;,vless://838f5273-5d2d-4630-a0f5-9cc8e4aef4d6@www.speedtest.net:443?encryption=none&security=tls&sni=ZjJuNdIy.rIpLeToOrY.InFo&alpn=h2%2Chttp%2F1.1&fp=chrome&type=ws&host=ZjJuNdIy.rIpLeToOrY.InFo&path=%2F#FG",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpMY2MxbHc4SVAyS0k=@77.91.103.73:443#Server-154881",
         "vibe,;,vless://5125ef9d-d366-4e69-b049-0dc37a6f5783@79.137.32.159:2052?security=&type=grpc&serviceName=vless-grpc&encryption=none#Server-569229",
