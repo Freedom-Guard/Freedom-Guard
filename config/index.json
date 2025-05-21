@@ -43,7 +43,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,vless://9bf09a16-c5f1-4c9f-889d-25b9889df1b0@91.107.181.155:2025?mode=gun&security=&encryption=none&type=grpc&serviceName=vless#SERVE%2011",
+        "vibe,;,vless://838f5273-5d2d-4630-a0f5-9cc8e4aef4d6@www.speedtest.net:443?encryption=none&security=tls&sni=ZjJuNdIy.rIpLeToOrY.InFo&alpn=h2%2Chttp%2F1.1&fp=chrome&type=ws&host=ZjJuNdIy.rIpLeToOrY.InFo&path=%2F#FG",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpMY2MxbHc4SVAyS0k=@77.91.103.73:443#Server-154881",
         "vibe,;,vless://5125ef9d-d366-4e69-b049-0dc37a6f5783@79.137.32.159:2052?security=&type=grpc&serviceName=vless-grpc&encryption=none#Server-569229",
         "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@84.32.25.237:8880?security=&type=grpc&encryption=none#Server-173082",
