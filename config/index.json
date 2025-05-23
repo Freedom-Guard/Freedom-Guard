@@ -43,11 +43,8 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,vmess://eyJhZGQiOiIxNS4yMzUuNTAuMTcyIiwiYWlkIjoiMCIsImFscG4iOiIiLCJmcCI6IiIsImhvc3QiOiJiYXJhZGloYS5jb20iLCJpZCI6IjAzZmNjNjE4LWI5M2QtNjc5Ni02YWVkLThhMzhjOTc1ZDU4MSIsIm5ldCI6IndzIiwicGF0aCI6Ii9saW5rdndzIiwicG9ydCI6IjQ0MyIsInBzIjoi8J+HqPCfh6ZDQS0xNS4yMzUuNTAuMTcyLTE2NDUiLCJzY3kiOiJhdXRvIiwic25pIjoiYmFyYWRpaGEuY29tIiwidGxzIjoidGxzIiwidHlwZSI6IiIsInYiOiIyIn0=",
-        "vibe,;,vmess://eyJhZGQiOiIxNzIuNjcuMTU0Ljg0IiwiYWlkIjoiMCIsImFscG4iOiIiLCJmcCI6IiIsImhvc3QiOiJpcnZpZGVvLmNmZCIsImlkIjoiZTUzN2YyZjUtMmEwYy00ZjU5LTkyYzktODMyY2E2NDMzYmYzIiwibmV0Ijoid3MiLCJwYXRoIjoiL2xpbmt3cyIsInBvcnQiOiI0NDMiLCJwcyI6IvCfj4FSRUxBWS0xNzIuNjcuMTU0Ljg0LTEwMDQiLCJzY3kiOiJhdXRvIiwic25pIjoiaXJ2aWRlby5jZmQiLCJ0bHMiOiJ0bHMiLCJ0eXBlIjoiIiwidiI6IjIifQ==",
-        "vibe,;,vless://508a5202-d450-42d2-a74c-9326dcda8b63@172.67.190.149:443?security=tls&sni=sssdeCVBnh.999156.XYz&alpn=http/1.1&fp=chrome&type=ws&path=/prUFeqTNsRZbl4sVHqtMKS&host=sssdecvbnh.999156.xyz&encryption=none#%F0%9F%87%BA%F0%9F%87%B8%20vless-US",
-        "vibe,;,vmess://eyJhZGQiOiI0Ny4yMzcuODQuNzkiLCJhaWQiOiIwIiwiaG9zdCI6IiIsImlkIjoiZGU0OTEzOGMtZGYxMS00YjZjLWVkOTQtMDllMzZiOGZiODkwIiwibmV0IjoidGNwIiwicGF0aCI6IiIsInBvcnQiOiIzMDMwIiwicHMiOiLwn4e48J+HrCIsInNjeSI6ImF1dG8iLCJzbmkiOiIiLCJ0bHMiOiIiLCJ0eXBlIjoibm9uZSIsInYiOiIyIn0=",
-        "vibe,;,vless://16e97003-110a-423b-fe25-0dc26485939e@37.27.255.136:8880?security=&type=grpc&encryption=none#%F0%9F%87%AB%F0%9F%87%AE%20vless-FI",
+        
+     "vibe,;,vless://16e97003-110a-423b-fe25-0dc26485939e@37.27.255.136:8880?security=&type=grpc&encryption=none#%F0%9F%87%AB%F0%9F%87%AE%20vless-FI",
         "vibe,;,trojan://c8eac4b7-95ba-4ce0-920d-c3279eb3b391@172.67.181.193:443?security=tls&sni=EEeEee4.hUAngSHANG2030.dPdNS.org&type=ws&path=/ptGwaGzcA4KNAXX&host=EEeEee4.hUAngSHANG2030.dPdNS.org#%F0%9F%87%BA%F0%9F%87%B8%20trojan-US",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0YTJyZml4b3BoZGpmZmE4S1ZBNEFh@45.87.175.154:8080#%F0%9F%87%B1%F0%9F%87%B9LT-45.87.175.154-0220",
         "vibe,;,vless://9bf09a16-c5f1-4c9f-889d-25b9889df1b0@91.107.181.155:2025?mode=gun&security=&encryption=none&type=grpc&serviceName=vless#SERVE%2011",
