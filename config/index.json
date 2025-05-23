@@ -43,8 +43,9 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        
-     "vibe,;,vless://16e97003-110a-423b-fe25-0dc26485939e@37.27.255.136:8880?security=&type=grpc&encryption=none#%F0%9F%87%AB%F0%9F%87%AE%20vless-FI",
+        "vibe,;,vmess://eyJhZGQiOiIxNzIuNjcuMjA3LjI2IiwiYWlkIjoiMCIsImFscG4iOiIiLCJmcCI6IiIsImhvc3QiOiJnbHdlaWRmLnNicyIsImlkIjoiNzYyMjFiZmItZTkyZi00ZTgwLTgxYzUtNmZlNDhmNTBhYzBiIiwibmV0Ijoid3MiLCJwYXRoIjoiL2xpbmt3cyIsInBvcnQiOiI0NDMiLCJwcyI6IvCfj4FSRUxBWS0xNzIuNjcuMjA3LjI2LTAxNjMiLCJzY3kiOiJhdXRvIiwic25pIjoiZ2x3ZWlkZi5zYnMiLCJ0bHMiOiJ0bHMiLCJ0eXBlIjoiIiwidiI6IjIifQ==",
+        "vibe,;,vmess://eyJhZGQiOiI1LjE4Mi4zNy4yMzEiLCJhaWQiOiIwIiwiYWxwbiI6IiIsImZwIjoiIiwiaG9zdCI6IiIsImlkIjoiOTM5NTQ3NGMtZTJhMS00NTY1LWJhNTYtYzE2ZTczNzNjNGM0IiwibmV0IjoidGNwIiwicGF0aCI6IiIsInBvcnQiOiI0OTY2NCIsInBzIjoiMXzwn4yAMTMtUk8gfCAgMS44TUIvcyIsInNjeSI6ImF1dG8iLCJzbmkiOiIiLCJ0bHMiOiIiLCJ0eXBlIjoibm9uZSIsInYiOiIyIn0=",
+        "vibe,;,vless://16e97003-110a-423b-fe25-0dc26485939e@37.27.255.136:8880?security=&type=grpc&encryption=none#%F0%9F%87%AB%F0%9F%87%AE%20vless-FI",
         "vibe,;,trojan://c8eac4b7-95ba-4ce0-920d-c3279eb3b391@172.67.181.193:443?security=tls&sni=EEeEee4.hUAngSHANG2030.dPdNS.org&type=ws&path=/ptGwaGzcA4KNAXX&host=EEeEee4.hUAngSHANG2030.dPdNS.org#%F0%9F%87%BA%F0%9F%87%B8%20trojan-US",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0YTJyZml4b3BoZGpmZmE4S1ZBNEFh@45.87.175.154:8080#%F0%9F%87%B1%F0%9F%87%B9LT-45.87.175.154-0220",
         "vibe,;,vless://9bf09a16-c5f1-4c9f-889d-25b9889df1b0@91.107.181.155:2025?mode=gun&security=&encryption=none&type=grpc&serviceName=vless#SERVE%2011",
