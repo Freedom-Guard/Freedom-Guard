@@ -1016,6 +1016,7 @@ img {
     border: none;
     border-bottom: var(--border-height) solid var(--border-before-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
 }
 
 .form-control-c {
