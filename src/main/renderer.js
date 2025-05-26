@@ -438,9 +438,20 @@ class main {
                     this.publicSet.LOGLOG("Error fetching endpoint data:", error);
                 }
             });
-
             $("#Gool").on("click", () => {
+                if (!this.publicSet.settingsALL["warp"]["gool"]) {
+                    this.publicSet.settingsALL["warp"]["cfon"] = false;
+                    $("#cfon").prop("checked", this.publicSet.settingsALL["warp"]["cfon"]);
+                };
                 this.publicSet.settingsALL["warp"]["gool"] = !this.publicSet.settingsALL["warp"]["gool"]; this.publicSet.saveSettings();
+            });
+
+            $("#cfon").on("click", () => {
+                if (!this.publicSet.settingsALL["warp"]["cfon"]) {
+                    this.publicSet.settingsALL["warp"]["gool"] = false;
+                    $("#Gool").prop("checked", this.publicSet.settingsALL["warp"]["gool"]);
+                };
+                this.publicSet.settingsALL["warp"]["cfon"] = !this.publicSet.settingsALL["warp"]["cfon"]; this.publicSet.saveSettings();
             });
             $("#Scan").on("click", () => {
                 this.publicSet.settingsALL["warp"]["scan"] = !this.publicSet.settingsALL["warp"]["scan"]; this.publicSet.saveSettings();
@@ -517,6 +528,7 @@ class main {
         $("#scan-rtt-value").val(this.publicSet.settingsALL["warp"]["scanrtt"]);
         $("#warp-key-value").val(this.publicSet.settingsALL["warp"]["key"]);
         $("#Gool").prop("checked", this.publicSet.settingsALL["warp"]["gool"]);
+        $("#cfon").prop("checked", this.publicSet.settingsALL["warp"]["cfon"]);
         $("#Scan").prop("checked", this.publicSet.settingsALL["warp"]["scan"]);
         $("#freedom-link-status").prop("checked", this.publicSet.settingsALL["public"]["freedomLink"]);
         $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);

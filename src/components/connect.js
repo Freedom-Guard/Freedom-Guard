@@ -674,7 +674,7 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
             if (settingWarp["cfon"]) {
                 this.argsWarp.push("--cfon");
                 this.argsWarp.push("--country");
-                this.argsWarp.push(settingWarp["cfon"]);
+                this.argsWarp.push(this.Tools.getRandomCountryCode());
             };
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsWarp.push("");
@@ -858,7 +858,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
             if (settingWarp["cfon"]) {
                 this.argsWarp.push("--cfon");
                 this.argsWarp.push("--country");
-                this.argsWarp.push(settingWarp["cfon"]);
+                this.argsWarp.push(this.Tools.getRandomCountryCode());
             };
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsWarp.push("");
@@ -1387,6 +1387,11 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 setLinuxDNS(dns1, dns2);
                 break;
         }
+    };
+    getRandomCountryCode() {
+        const countryCodes = ["AT", "AU", "BE", "BG", "CA", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "HR", "HU", "IE", "IN", "IT", "JP", "LV", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SG", "SK", "US"];
+        const randomIndex = Math.floor(Math.random() * countryCodes.length);
+        return countryCodes[randomIndex];
     };
     returnOS() {
         const platform = process.platform;
