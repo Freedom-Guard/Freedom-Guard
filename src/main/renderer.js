@@ -10,7 +10,7 @@ const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 window.$ = $;
-const vesrionApp = "7.0.0";
+const vesrionApp = "7.1.0";
 let LOGS = [];
 // #endregion
 // #region components
