@@ -2,8 +2,10 @@
     "PUBLIC": [
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/sinabigo/Xray/main/@sinavm#VIBE FAST",
+        "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MTN",
+        "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MCI",
+        "vibe,;,",
         "vibe,;,https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub#FG | Freedom Link (best)",
-        "vibe,;,https://raw.githubusercontent.com/hamedp-71/Clash_New/refs/heads/main/hp.yaml#Freedom Link | Clash",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs-vibe/warp-power.ext#VIBE | WARP SERVER m4",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
         "vibe,;,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml#FREENET | زن زندگی آزادی",
