@@ -45,6 +45,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,vmess://eyJhZGQiOiIxODMuMTA5LjEzMS4zNiIsImFpZCI6IjAiLCJhbHBuIjoiIiwiZnAiOiIiLCJob3N0IjoiIiwiaWQiOiJkMGViMGY2Zi02OGE4LTRlY2UtYzMzZi03M2M1ZDcxYWMzYTMiLCJuZXQiOiJ3cyIsInBhdGgiOiIvemVkd2FyZS1uZXR3b3JrL2tvcmVhLXRlbGVjb20vIiwicG9ydCI6IjExNDUxIiwicHMiOiLwn4ew8J+Ht0tSLTE4My4xMDkuMTMxLjM2LTU0NTEiLCJzY3kiOiJhdXRvIiwic25pIjoiIiwidGxzIjoiIiwidHlwZSI6ImF1dG8iLCJ2IjoiMiJ9",
         "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@5.199.173.202:8880?security=&type=grpc&encryption=none#Server-617118",
         "vibe,;,trojan://2734c14b-e4ce-48b3-b3de-f80788cb4c47@104.21.84.58:443?security=tls&sni=XXXcddDe.IRaN2035.dpdNs.orG&alpn=http/1.1&fp=chrome&type=ws&path=/bdtuD5eD7Q29WxRG8DqNAB&host=xxxcddde.iran2035.dpdns.org#Server-28434",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTozNjBlMjFkMjE5NzdkYzEx@45.139.24.24:57456#Server-202021",
