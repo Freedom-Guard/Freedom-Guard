@@ -4,7 +4,7 @@
     "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Link",
     "keywords": [],
     "main": "./main.js",
-    "version": "7.1.0",
+    "version": "7.2.0",
     "author": "Freedom Guard <FreedomGuard@duck.com>",
     "scripts": {
         "start": "electron .",

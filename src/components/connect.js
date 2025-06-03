@@ -568,7 +568,7 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
         this.LOGLOG("starting warp on Auto...");
         this.ResetArgs("warp");
         await this.sleep(3000);
-        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + this.argsWarp);
+        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) +" "+ this.argsWarp);
         this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
         this.processWarp.stderr.on("data", (data) => {
             this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
@@ -766,7 +766,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
     async connectWarp() {
         this.ResetArgs('warp');
         await this.sleep(1000);
-        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + this.argsWarp);
+        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) +" "+ this.argsWarp);
         this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
         this.processWarp.stderr.on("data", (data) => {
             this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
