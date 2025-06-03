@@ -9,6 +9,7 @@ require("jquery.easing");
 const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
+const { platform } = require('os');
 window.$ = $;
 const vesrionApp = "7.1.0";
 let LOGS = [];
@@ -99,6 +100,7 @@ class main {
         this.publicSet.startINIT();
         this.checkUPDATE();
         this.loadLang();
+        this.loadCL();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -153,6 +155,12 @@ class main {
     };
     onConnect() {
 
+    };
+    async loadCL() {
+        if (process.platform == "linux") {
+            exec(`chmod +x ${this.path.join(this.publicSet.coresPath+"/vibe/")+"vibe-core"}`);
+            exec(`chmod +x ${this.path.join(this.publicSet.coresPath+"/warp/")+"warp-core"}`);
+        };
     };
     async loadLang() {
         // Load lang -> set HTML with key, json
