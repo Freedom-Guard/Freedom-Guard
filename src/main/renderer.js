@@ -8,6 +8,7 @@ const $ = require('jquery');
 require("jquery.easing");
 const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
+var sudo = require('sudo-prompt');
 const { on } = require('events');
 const { platform } = require('os');
 window.$ = $;
@@ -158,8 +159,8 @@ class main {
     };
     async loadCL() {
         if (process.platform == "linux") {
-            exec(`chmod +x ${this.path.join(this.publicSet.coresPath+"/vibe/")+"vibe-core"}`);
-            exec(`chmod +x ${this.path.join(this.publicSet.coresPath+"/warp/")+"warp-core"}`);
+            sudo.exec(`chmod +x '${this.path.join(this.publicSet.coresPath,"/vibe/")+"vibe-core"}'`);
+            sudo.exec(`chmod +x '${this.path.join(this.publicSet.coresPath,"/warp/")+"warp-core"}'`);
         };
     };
     async loadLang() {
