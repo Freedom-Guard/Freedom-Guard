@@ -45,6 +45,8 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@95.164.45.90:8880?encryption=none&security=none&type=grpc#vless-FR",
+        "vibe,;,trojan://vpn@109.120.132.80:2025?type=ws&host=vkvd127.mycdn.me&path=%2F#trojan-SE",
         "vibe,;,trojan://2734c14b-e4ce-48b3-b3de-f80788cb4c47@104.21.84.58:443?security=tls&sni=XXXcddDe.IRaN2035.dpdNs.orG&alpn=http/1.1&fp=chrome&type=ws&path=/bdtuD5eD7Q29WxRG8DqNAB&host=xxxcddde.iran2035.dpdns.org#Server-28434",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTozNjBlMjFkMjE5NzdkYzEx@45.139.24.24:57456#Server-202021",
         "vibe,;,vless://43324bdf-a0e8-4f6f-8bdc-5482db82fd0f@172.67.133.248:443?security=tls&sni=CCAv.890604.FILEgEaR-sG.Me&alpn=http/1.1&fp=chrome&type=ws&path=/h1iXYtqUZkDQMvgKagyIefJfM0OQ&host=ccav.890604.filegear-sg.me&encryption=none#Server-153214",
