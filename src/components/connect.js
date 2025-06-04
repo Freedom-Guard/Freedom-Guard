@@ -10,6 +10,7 @@ const path = require('path');
 const { resolve } = require('path');
 const { trackEvent } = require("@aptabase/electron/renderer");
 trackEvent("app_started");
+const { app } = require('@electron/remote');
 // #endregion
 function getConfigPath() {
     let baseDir;
@@ -67,15 +68,7 @@ class publicSet {
             "setup": function kill() { }
         };
         this.mainDir = this.path.join(__dirname + "/../../");
-        this.coresPath = this.path.join(
-            __dirname.replace("app.asar", "") + "/../../",
-            "src/main/cores/",
-            process.platform === "darwin"
-                ? process.arch === "arm64"
-                    ? "mac/arm64"
-                    : "mac/amd64"
-                : process.platform
-        );
+        this.coresPath = '';
         this.settingsALL = {
             "flex": {},
             "grid": {},
@@ -135,6 +128,40 @@ class publicSet {
             other: ["freedom-guard://"]
         };
         this.Tools = new Tools();
+        this.init();
+    };
+    init = async () => {
+        this.prepareCores();
+    };
+    prepareCores() {
+        const platformDir =
+            process.platform === 'darwin'
+                ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
+                : "/" + process.platform + "/";
+        this.coresPath = path.join(
+            __dirname.replace('app.asar', ''),
+            '..', '..',
+            'src', 'main', 'cores',
+            platformDir
+        );
+        if (process.platform == "linux") {
+            const destDir = path.join(getConfigPath());
+            const destPathVibe = path.join(destDir,"vibe", 'vibe-core');
+            const destPathWarp = path.join(destDir,"warp", 'warp-core');
+
+            if (!fs.existsSync(destPathVibe.replace("vibe-core",''))) fs.mkdirSync(destPathVibe.replace("vibe-core",""), { recursive: true });
+            if (!fs.existsSync(destPathWarp.replace("warp-core",''))) fs.mkdirSync(destPathWarp.replace("warp-core",""), { recursive: true });
+
+            if (!fs.existsSync(destPathVibe)) {
+                fs.copyFileSync(this.coresPath + "vibe/vibe-core", destPathVibe);
+                fs.chmodSync(destPathVibe, 0o755);
+            };
+            if (!fs.existsSync(destPathWarp)) {
+                fs.copyFileSync(this.coresPath + "warp/warp-core", destPathWarp);
+                fs.chmodSync(destPathWarp, 0o755);
+            };
+            this.coresPath = destDir;
+        };
     };
     saveSettings(settingsSave = this.settingsALL) {
         write_file('freedom-guard.json', JSON.stringify(settingsSave), "cache");
@@ -568,7 +595,7 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
         this.LOGLOG("starting warp on Auto...");
         this.ResetArgs("warp");
         await this.sleep(3000);
-        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) +" "+ this.argsWarp);
+        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + " " + this.argsWarp);
         this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
         this.processWarp.stderr.on("data", (data) => {
             this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
@@ -766,7 +793,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
     async connectWarp() {
         this.ResetArgs('warp');
         await this.sleep(1000);
-        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) +" "+ this.argsWarp);
+        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + " " + this.argsWarp);
         this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
         this.processWarp.stderr.on("data", (data) => {
             this.DataoutWarp(data instanceof Buffer ? data.toString() : data);

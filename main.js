@@ -12,6 +12,7 @@ initialize("A-EU-5072151346");
 const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
 const { notify } = require('node-notifier');
+const remoteMain = require('@electron/remote/main');
 ;
 __dirnameFile = __dirname;
 // #endregion
@@ -21,6 +22,8 @@ var mainWindow = null
 var ViewBrowser = null;
 var pageTitle = "";
 const gotTheLock = app.requestSingleInstanceLock()
+
+remoteMain.initialize();
 // #endregion
 // #region functions
 
@@ -38,6 +41,7 @@ function createWindow() {
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
+  remoteMain.enable(mainWindow.webContents); 
   mainWindow.loadFile(path.join(__dirnameFile, "src", "/main/index.html"));
   mainWindow.on('resize', function () {
     try {

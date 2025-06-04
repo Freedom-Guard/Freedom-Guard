@@ -8,7 +8,6 @@ const $ = require('jquery');
 require("jquery.easing");
 const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
-var sudo = require('sudo-prompt');
 const { on } = require('events');
 const { platform } = require('os');
 window.$ = $;
@@ -101,7 +100,6 @@ class main {
         this.publicSet.startINIT();
         this.checkUPDATE();
         this.loadLang();
-        this.loadCL();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -157,12 +155,9 @@ class main {
     onConnect() {
 
     };
-    async loadCL() {
-        if (process.platform == "linux") {
-            sudo.exec(`chmod +x '${this.path.join(this.publicSet.coresPath,"/vibe/")+"vibe-core"}'`);
-            sudo.exec(`chmod +x '${this.path.join(this.publicSet.coresPath,"/warp/")+"warp-core"}'`);
-        };
-    };
+    async loadBox() {
+        
+    }
     async loadLang() {
         // Load lang -> set HTML with key, json
         this.publicSet.ReloadSettings();
@@ -1000,6 +995,13 @@ window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btn
     $("#close-box-notif").html(btnCloseModalHTML);
     $("#href-box-notif, #close-box-notif").on("click", () => {
         $("#box-notif").css("display", "none");
+    });
+};
+window.showBox = (text="") => {
+    $("#box").css("display", "flex");
+    $("#text-box").html(text);
+    $("#close-box").on("click", () => {
+        $("#box").css("display", "none");
     });
 };
 window.prompt = (message = "لطفاً مقدار موردنظر را وارد کنید:", defaultValue = "") => {
