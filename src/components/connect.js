@@ -144,13 +144,13 @@ class publicSet {
             'src', 'main', 'cores',
             platformDir
         );
-        if (process.platform == "linux") {
+        if (process.platform == "linux" || process.platform == "darwin") {
             const destDir = path.join(getConfigPath());
-            const destPathVibe = path.join(destDir,"vibe", 'vibe-core');
-            const destPathWarp = path.join(destDir,"warp", 'warp-core');
+            const destPathVibe = path.join(destDir, "vibe", 'vibe-core');
+            const destPathWarp = path.join(destDir, "warp", 'warp-core');
 
-            if (!fs.existsSync(destPathVibe.replace("vibe-core",''))) fs.mkdirSync(destPathVibe.replace("vibe-core",""), { recursive: true });
-            if (!fs.existsSync(destPathWarp.replace("warp-core",''))) fs.mkdirSync(destPathWarp.replace("warp-core",""), { recursive: true });
+            if (!fs.existsSync(destPathVibe.replace("vibe-core", ''))) fs.mkdirSync(destPathVibe.replace("vibe-core", ""), { recursive: true });
+            if (!fs.existsSync(destPathWarp.replace("warp-core", ''))) fs.mkdirSync(destPathWarp.replace("warp-core", ""), { recursive: true });
 
             if (!fs.existsSync(destPathVibe)) {
                 fs.copyFileSync(this.coresPath + "vibe/vibe-core", destPathVibe);
@@ -987,7 +987,16 @@ class test extends publicSet { // Not ready - Intended for testing configuration
 class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freedom Link)
     constructor() {
         this.exec = require("child_process").exec;
+        this.https = require('https');
         this.Winreg = require("winreg");
+        this.coresPath = path.join(
+            __dirname.replace('app.asar', ''),
+            '..', '..',
+            'src', 'main', 'cores',
+            process.platform === 'darwin'
+                ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
+                : "/" + process.platform + "/"
+        );
     };
     LOGLOG(text = "", type = 'log') {
         if (type == "clear") {
@@ -1432,36 +1441,86 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
         }
 
         if (platform === "linux") {
-            const desktopEnv = process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION || process.env.GDMSESSION;
+            try {
+                const sessionBins = execSync("ls /usr/bin/*session", { stdio: "pipe" }).toString().toLowerCase();
 
-            if (desktopEnv) {
-                const normalizedEnv = desktopEnv.toLowerCase();
-
-                if (normalizedEnv.includes("gnome")) return "GNOME";
-                if (normalizedEnv.includes("kde")) return "KDE";
-                if (normalizedEnv.includes("xfce")) return "XFCE";
-                if (normalizedEnv.includes("cinnamon")) return "CINNAMON";
-                if (normalizedEnv.includes("mate")) return "MATE";
-                if (normalizedEnv.includes("lxqt")) return "LXQT";
-                if (normalizedEnv.includes("budgie")) return "BUDGIE";
-                if (normalizedEnv.includes("deepin")) return "DEEPIN";
-                if (normalizedEnv.includes("enlightenment")) return "ENLIGHTENMENT";
-                if (normalizedEnv.includes("pantheon")) return "PANTHEON";
-                if (normalizedEnv.includes("trinity")) return "TRINITY";
-            }
+                if (sessionBins.includes("gnome-session")) return "GNOME";
+                if (sessionBins.includes("kde-session")) return "KDE";
+                if (sessionBins.includes("xfce4-session")) return "XFCE";
+                if (sessionBins.includes("cinnamon-session")) return "CINNAMON";
+                if (sessionBins.includes("mate-session")) return "MATE";
+                if (sessionBins.includes("lxqt-session")) return "LXQT";
+                if (sessionBins.includes("budgie-session")) return "BUDGIE";
+                if (sessionBins.includes("deepin-session")) return "DEEPIN";
+                if (sessionBins.includes("enlightenment_start")) return "ENLIGHTENMENT";
+                if (sessionBins.includes("pantheon-session")) return "PANTHEON";
+                if (sessionBins.includes("trinity-session")) return "TRINITY";
+            } catch (err) { }
 
             try {
                 const runningProcesses = execSync("ps aux").toString().toLowerCase();
                 if (runningProcesses.includes("i3")) return "I3WM";
                 if (runningProcesses.includes("openbox")) return "OPENBOX";
-            } catch (error) {
-                console.error("Error detecting running processes:", error);
-            }
+            } catch (err) { }
 
             return "linux-unknown";
         }
 
         return "unknown";
+    };
+    async downloadFile(url, destPath) {
+        return new Promise((resolve, reject) => {
+            const file = fs.createWriteStream(destPath);
+            const request = this.https.get(url, (response) => {
+                if (response.statusCode !== 200) {
+                    reject(new Error(`Failed to get '${url}' (${response.statusCode})`));
+                    return;
+                }
+
+                response.pipe(file);
+
+                file.on("finish", () => {
+                    file.close(() => {
+                        fs.chmodSync(destPath, 0o755);
+                        resolve();
+                    });
+                });
+            });
+
+            request.on("error", (err) => {
+                fs.unlink(destPath, () => reject(err));
+            });
+
+            file.on("error", (err) => {
+                fs.unlink(destPath, () => reject(err));
+            });
+        });
+    }
+    async fetchAndInstallCores() {
+
+        const baseURL = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/refs/heads/main/src/main/cores/" + process.platform;
+        const destDir = process.platform == "win32" ? this.coresPath : getConfigPath();
+
+        const vibePath = path.join(destDir, "vibe", "vibe-core");
+        const warpPath = path.join(destDir, "warp", "warp-core");
+
+        const vibeURL = `${baseURL}/vibe/vibe-core`;
+        const warpURL = `${baseURL}/warp/warp-core`;
+
+        try {
+            if (!fs.existsSync(path.dirname(vibePath))) fs.mkdirSync(path.dirname(vibePath), { recursive: true });
+            if (!fs.existsSync(path.dirname(warpPath))) fs.mkdirSync(path.dirname(warpPath), { recursive: true });
+
+            window.showMessageUI("📥 Downloading warp-core...");
+            await this.downloadFile(warpURL, warpPath);
+
+            window.showMessageUI("📥 Downloading vibe-core...", 7500);
+            await this.downloadFile(vibeURL, vibePath);
+
+            window.showMessageUI("✅ Core files installed successfully.");
+        } catch (err) {
+            window.showMessageUI("❌ Error downloading core files: \n" + err.message);
+        }
     };
     donateCONFIG(config) {
         window.donateCONFIG(config);

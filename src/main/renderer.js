@@ -11,7 +11,7 @@ const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 const { platform } = require('os');
 window.$ = $;
-const vesrionApp = "7.2.0";
+const vesrionApp = "7.3.0";
 let LOGS = [];
 // #endregion
 // #region components
@@ -558,6 +558,9 @@ class main {
             this.publicSet.saveSettings();
             this.setSettings();
         });
+        $("#tool-update-cores").on("click", () => {
+            this.Tools.fetchAndInstallCores();
+        });
         $("#tool-close-box").on("click", () => {
             $("#tool-box").toggle();
         });
@@ -967,6 +970,7 @@ window.startNewUser = () => {
 };
 window.showMessageUI = (message, duration = 3000) => {
     window.messageQueue.push({ message, duration });
+    window.LogLOG(message.toString());
     processMessageQueue();
 };
 function processMessageQueue() {
