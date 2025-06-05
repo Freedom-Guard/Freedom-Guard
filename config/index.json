@@ -45,6 +45,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,vless://0d0782a3-2c62-4936-b893-5790188778ea@www.speedtest.net:443?path=%2F&security=tls&encryption=none&alpn=h3,h2&host=XbU10cS9vT.gIgA1.oRg&fp=chrome&type=ws&sni=XbU10cS9vT.gIgA1.oRg#FG",
         "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@95.164.45.90:8880?encryption=none&security=none&type=grpc#vless-FR",
         "vibe,;,trojan://vpn@109.120.132.80:2025?type=ws&host=vkvd127.mycdn.me&path=%2F#trojan-SE",
         "vibe,;,trojan://2734c14b-e4ce-48b3-b3de-f80788cb4c47@104.21.84.58:443?security=tls&sni=XXXcddDe.IRaN2035.dpdNs.orG&alpn=http/1.1&fp=chrome&type=ws&path=/bdtuD5eD7Q29WxRG8DqNAB&host=xxxcddde.iran2035.dpdns.org#Server-28434",
