@@ -1060,14 +1060,15 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
             const exec = require('child_process').exec;
 
             const setGnomeProxy = (proxy) => {
-                exec(`gsettings set org.gnome.system.proxy mode 'manual'`, (err) => {
+                const [host, port] = proxy.split(':');
+                exec(`gsettings set org.gnome.system.proxy mode 'manual'`, err => {
                     if (err) this.LOGLOG('Error setting GNOME proxy mode:', err);
                 });
-                exec(`gsettings set org.gnome.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting GNOME proxy host:', err);
+                exec(`gsettings set org.gnome.system.proxy.socks host '${host}'`, err => {
+                    if (err) this.LOGLOG('Error setting GNOME SOCKS host:', err);
                 });
-                exec(`gsettings set org.gnome.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting GNOME proxy port:', err);
+                exec(`gsettings set org.gnome.system.proxy.socks port ${port}`, err => {
+                    if (err) this.LOGLOG('Error setting GNOME SOCKS port:', err);
                 });
             };
 
