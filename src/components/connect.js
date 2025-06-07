@@ -1061,14 +1061,25 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
 
             const setGnomeProxy = (proxy) => {
                 const [host, port] = proxy.split(':');
-                exec(`gsettings set org.gnome.system.proxy mode 'manual'`, err => {
-                    if (err) this.LOGLOG('Error setting GNOME proxy mode:', err);
-                });
-                exec(`gsettings set org.gnome.system.proxy.socks host '${host}'`, err => {
-                    if (err) this.LOGLOG('Error setting GNOME SOCKS host:', err);
-                });
-                exec(`gsettings set org.gnome.system.proxy.socks port ${port}`, err => {
-                    if (err) this.LOGLOG('Error setting GNOME SOCKS port:', err);
+
+                const commands = [
+                    `gsettings set org.gnome.system.proxy mode 'manual'`,
+                    `gsettings set org.gnome.system.proxy.http host ''`,
+                    `gsettings set org.gnome.system.proxy.http port 0`,
+                    `gsettings set org.gnome.system.proxy.https host ''`,
+                    `gsettings set org.gnome.system.proxy.https port 0`,
+                    `gsettings set org.gnome.system.proxy.ftp host ''`,
+                    `gsettings set org.gnome.system.proxy.ftp port 0`,
+                    `gsettings set org.gnome.system.proxy.socks host '${host}'`,
+                    `gsettings set org.gnome.system.proxy.socks port ${port}`
+                ];
+
+                commands.forEach(cmd => {
+                    exec(cmd, (err) => {
+                        if (err) {
+                            console.error(`Error executing: ${cmd}`, err);
+                        }
+                    });
                 });
             };
 
