@@ -344,10 +344,10 @@ class publicSet {
         else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
             this.settingsALL["public"]["core"] = "warp";
             typeConfig = "warp";
-            let optionsWarp = config.replace("warp://", "").split("&");
+            let optionsWarp = config.split("#")[0].replace("warp://", "").split("&");
             optionsWarp.forEach(option => {
                 try {
-                    this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1] == "true" | option.split("=")[1] == "false" ? JSON.parse(option.split("=")[1]) : option.split("=")[1];
+                    this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1];
                 }
                 catch { };
             });
@@ -459,7 +459,8 @@ class publicSet {
     killGrid() {
         this.KILLALLCORES("grid");
     };
-    KILLALLCORES(core) {// Terminates a process with the given core name on both Windows and Unix-based systems.
+    KILLALLCORES(core) {
+        // Terminates a process with the given core name on both Windows and Unix-based systems.
         core = core.toString().toLowerCase() + "-core";
         this.LOGLOG(`Killing ${core}...`);
         if (process.platform == "win32") {
@@ -522,7 +523,8 @@ class publicSet {
         };
     };
 }
-class connectAuto extends publicSet {// Connects automatically using ISP config mode (ispServers) == Auto MODE
+class connectAuto extends publicSet {
+    // Connects automatically using ISP config mode (ispServers) == Auto MODE
     constructor() {
         super();
         this.processWarp = null;
@@ -673,8 +675,8 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
                 this.argsWarp.push("--bind");
                 this.argsWarp.push(this.settingsALL["public"]["proxy"]);
             };
-            if (settingWarp["ipv"] != "IPV4" && settingWarp["ipv"]) {
-                this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
+            if (settingWarp["ipv"] == "IPV6") {
+                this.argsWarp.push("-6");
             };
             if (settingWarp["gool"]) {
                 this.argsWarp.push("--gool");
@@ -701,7 +703,7 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
             if (settingWarp["cfon"]) {
                 this.argsWarp.push("--cfon");
                 this.argsWarp.push("--country");
-                this.argsWarp.push(this.Tools.getRandomCountryCode());
+                this.argsWarp.push(settingWarp["cfon"] == "true" ? this.Tools.getRandomCountryCode() : settingWarp["cfon"] );
             };
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsWarp.push("");
@@ -755,7 +757,8 @@ class connectAuto extends publicSet {// Connects automatically using ISP config 
         }
     };
 };
-class connect extends publicSet {// Connects using custom mode(settings) or config mode
+class connect extends publicSet {
+    // Connects using custom mode(settings) or config mode
     constructor() {
         super();
         this.processWarp = null;
@@ -857,8 +860,8 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
                 this.argsWarp.push("--bind");
                 this.argsWarp.push(this.settingsALL["public"]["proxy"]);
             };
-            if (settingWarp["ipv"] != "IPV4") {
-                this.argsWarp.push("-" + settingWarp["ipv"] ? settingWarp["ipv"].split("")[-1] : "4")
+            if (settingWarp["ipv"] == "IPV6") {
+                this.argsWarp.push("-6");
             };
             if (settingWarp["gool"]) {
                 this.argsWarp.push("--gool");
@@ -885,7 +888,7 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
             if (settingWarp["cfon"]) {
                 this.argsWarp.push("--cfon");
                 this.argsWarp.push("--country");
-                this.argsWarp.push(this.Tools.getRandomCountryCode());
+                this.argsWarp.push(settingWarp["cfon"] == "true" ? this.Tools.getRandomCountryCode() : settingWarp["cfon"] );
             };
             if (this.settingsALL["public"]["type"] == "tun") {
                 this.argsWarp.push("");
@@ -962,7 +965,8 @@ class connect extends publicSet {// Connects using custom mode(settings) or conf
         }
     };
 };
-class test extends publicSet { // Not ready - Intended for testing configurations in the servers list.
+class test extends publicSet { 
+    // Not ready - Intended for testing configurations in the servers list.
     constructor() {
         super();
         this.settings = {
@@ -984,7 +988,8 @@ class test extends publicSet { // Not ready - Intended for testing configuration
     testAll() {
     };
 };
-class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freedom Link)
+class Tools { 
+    // Tools -> Proxy off/on, set DNS, return OS, Donate config (freedom Link)
     constructor() {
         this.exec = require("child_process").exec;
         this.https = require('https');
@@ -1507,7 +1512,7 @@ class Tools { // Tools -> Proxy off/on, set DNS, return OS, Donate config (freed
                 fs.unlink(destPath, () => reject(err));
             });
         });
-    }
+    };
     async fetchAndInstallCores() {
 
         const baseURL = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/refs/heads/main/src/main/cores/" + process.platform;

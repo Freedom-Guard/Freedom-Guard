@@ -704,7 +704,7 @@ img {
 }
 
 #menu>div:hover i {
-    color: #6a11cb;
+    color: var(--color-primary);
     transform: scale(1.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -802,104 +802,125 @@ img {
 
 /*#endregion*/
 /* #region other div */
-
 #Logs {
+    position: fixed;
+    inset: 0;
     display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 999;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    color: white;
-    font-size: 0.5em;
-    overflow-y: auto;
+    justify-content: space-between;
+    background: radial-gradient(circle at center, #000 60%, #0f0 200%);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px) saturate(120%);
+    z-index: 99999;
+    font-family: 'Courier New', monospace;
+    color: #00ff9c;
+    animation: fadeInLogs 0.5s ease-out forwards;
+    width: 100%;
+    max-height: 100%;
 }
 
 #Logs #OptionsLogs {
-    position: fixed;
-    top: 1vw;
-    left: 1vw;
-    margin: 5px;
-    font-size: 25px;
-    color: white;
-    border: none;
-    background-color: transparent;
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
     display: flex;
-    flex-direction: row;
-    width: fit-content;
-    height: fit-content;
+    gap: 12px;
+    z-index: 10000;
 }
 
-#Logs #OptionsLogs button {
-    margin: 5px;
-    font-size: 25px;
-    color: white;
+#Logs button {
+    font-size: 1.5em;
+    background: transparent;
+    color: #00ff9c;
+    border-radius: 6px;
     border: none;
-    background-color: transparent;
-    transition: 0.1s;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
 
 #Logs #OptionsLogs button:hover {
-    color: #00a8ff;
-}
-
-#Logs .command-line-fg {
-    width: 100%;
-    height: fit-content;
-    color: white;
-    font-size: 1.5em;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    display: flex;
-    gap: 10px;
-    position: fixed;
-    bottom: 1vh;
-    left: 0;
-}
-
-#Logs .command-line-fg>* {
-    background-color: rgba(15, 255, 15, 0.1);
-    color: #0f0;
-    border: none;
-    border-bottom: 2px solid #0f0;
-    width: 91vw;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-#Logs .command-line-fg>*:hover {
-    background-color: rgba(15, 255, 15, 0.2);
-}
-
-#Logs .command-line-fg>*:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(15, 255, 15, 0.5);
-    transition: box-shadow 0.3s;
+    background-color: #00ff9c;
+    color: #000;
+    box-shadow: 0 0 10px #00ff9c;
 }
 
 #Logs #LogsContent {
+    margin-top: 10vh;
     max-height: 80%;
-    overflow-y: auto;
+    padding: 2vh 3vw;
+    overflow: auto;
 }
 
 #Logs #LogsContent p {
-    font-size: 1.2em;
-    color: white;
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    color: #0f0;
+    margin: 10px 0;
+    padding: 12px 18px;
+    background: rgba(0, 255, 155, 0.05);
+    border-left: 3px solid #00ff9c;
+    font-size: 1.1em;
+    color: #00ff9c;
+    border-radius: 6px;
+    animation: logDrop 0.4s ease;
+    word-wrap: break-word;
+    backdrop-filter: blur(2px);
 }
+
+#Logs .command-line-fg {
+    position: fixed;
+    backdrop-filter: blur(15px);
+    bottom: 1vh;
+    left: 4%;
+    display: flex;
+    width: 92%;
+    background: rgba(0, 255, 155, 0.05);
+    border: 1px solid #00ff9c;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 255, 155, 0.3);
+    padding: 8px;
+    gap: 10px;
+}
+
+#Logs .command-line-fg input,
+#Logs .command-line-fg textarea {
+    flex: 1;
+    background: transparent;
+    color: #00ff9c;
+    border: none;
+    font-size: 1.1em;
+    padding: 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    resize: none;
+    outline: none;
+}
+
+@keyframes fadeInLogs {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes logDrop {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 
 .modal-backdrop {
     z-index: -1;
@@ -1114,11 +1135,14 @@ img {
 
 .btn:hover {
     transform: scale(1.1);
-    background-color: var(--primary-color);
+    background-color: var(--color-primary);
 }
 
 .btn {
     width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
     min-height: fit-content;
     transition: 0.5s;

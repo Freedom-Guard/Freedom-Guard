@@ -11,11 +11,11 @@ const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 const { platform } = require('os');
 window.$ = $;
-const vesrionApp = "7.3.0";
+const vesrionApp = "7.4.0";
 let LOGS = [];
 // #endregion
 // #region components
-window.LogLOG = (log = "", type = "info") => {
+window.LogLOG = (log = "", type = "info", ac = "text") => {
     LOGS.push(log);
     const timestamp = new Date().toLocaleString("en-US", {
         year: "numeric",
@@ -27,7 +27,8 @@ window.LogLOG = (log = "", type = "info") => {
         hour12: false,
     });
     log = timestamp + (type != "null" ? " --" + type + "--> " : "") + log;
-    $("#LogsContent").append(`<p class="log-item">${log}</p>`);
+    $("#LogsContent").append(`<p class="log-item" id="log-item-${LOGS.length + 1}"></p>`);
+    ac == "html" ? $(`#log-item-${LOGS.length + 1}`).html(log) : $(`#log-item-${LOGS.length + 1}`).text(log);
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
     $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
 };
@@ -156,7 +157,7 @@ class main {
 
     };
     async loadBox() {
-        
+
     }
     async loadLang() {
         // Load lang -> set HTML with key, json
@@ -796,24 +797,38 @@ class fgCLI extends main {
     };
     init = async () => {
         $("#submit-command-line").on("click", () => {
-            let command = $("#command-line").val();
-            this.enterCommand(command);
+            let commands = $("#command-line").val();
+            commands.split("&&").forEach(command => {
+                this.enterCommand(command);
+            });
         });
         $("#command-line").on("keypress", (event) => {
             if (event.which === 13) {
-                let command = $("#command-line").val();
-                this.enterCommand(command);
+                let commands = $("#command-line").val();
+                commands.split("&&").forEach(command => {
+                    this.enterCommand(command);
+                });
             };
         });
         $("#HelpLogs").on("click", () => {
             this.enterCommand("help");
         });
     };
+    async loadLang() {
+        this.publicSet.ReloadSettings();
+        const response = await fetch(`../components/locales/${this.publicSet.settingsALL["public"]["lang"]}.json`);
+        const translations = await response.json();
+        return translations;
+    }
     async enterCommand(command) {// Executes various user commands from Logs
         $("#command-line").val("");
+        command = command.trimStart();
         let commandSplit = command.split(" ");
         let commandName = commandSplit[0];
         let commandArgs = commandSplit.slice(1);
+        this.publicSet.ReloadSettings();
+        this.publicSet.settingsALL["lang"] = await this.loadLang();
+        window.LogLOG("$ "+command, "command");
         switch (commandName.toString().toLowerCase()) {
             case "connect":
                 commandArgs.length > 0 ? this.publicSet.settingsALL["public"]["core"] = commandArgs[0] : this.publicSet.settingsALL["public"]["core"] = "auto";
@@ -834,6 +849,9 @@ class fgCLI extends main {
             case "clear":
                 window.LogLOG("", "clear");
                 break;
+            case "cls":
+                window.LogLOG("", "clear");
+                break;
             case "exit":
                 ipcRenderer.send("exit-app");
                 break;
@@ -842,6 +860,7 @@ class fgCLI extends main {
                 break;
             case "set":
                 if (commandArgs.length > 1) {
+                    this.publicSet.ReloadSettings();
                     let sect = commandArgs[0];
                     let key = commandArgs[1];
                     let value = commandArgs[2];
@@ -855,6 +874,7 @@ class fgCLI extends main {
                 }
                 break;
             case "show":
+                this.publicSet.ReloadSettings();
                 window.LogLOG("Showing settings->" + commandArgs[0] ?? "" + "...");
                 if (commandArgs.length > 0) {
                     let sect = commandArgs[0];
@@ -903,9 +923,12 @@ class fgCLI extends main {
             case "proxy":
                 let proxy = commandArgs[0];
                 this.publicSet.setProxy(proxy);
-                if (!proxy) {
+                if (proxy == "off") {
                     this.publicSet.offProxy(proxy);
                 }
+                break;
+            case "about":
+                window.LogLOG(this.publicSet.settingsALL["lang"]["about_app_html"], "info", "html");
                 break;
             case "refresh":
                 this.publicSet.ReloadSettings();
@@ -1001,7 +1024,7 @@ window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btn
         $("#box-notif").css("display", "none");
     });
 };
-window.showBox = (text="") => {
+window.showBox = (text = "") => {
     $("#box").css("display", "flex");
     $("#text-box").html(text);
     $("#close-box").on("click", () => {
