@@ -147,18 +147,10 @@ class main {
             window.showModal(response.data["messText"], response.data["url"]);
         };
     };
-    connectVPN() {
-
-    };
-    killVPN() {
-
-    };
-    onConnect() {
-
-    };
-    async loadBox() {
-
-    }
+    connectVPN() {};
+    killVPN() {};
+    onConnect() {};
+    async loadBox() {}
     async loadLang() {
         // Load lang -> set HTML with key, json
         this.publicSet.ReloadSettings();
@@ -193,9 +185,7 @@ class main {
             this.openLink(href);
         });
     };
-    async isAdmin() {
-
-    };
+    async isAdmin() {};
     openLink(href) {
         shell.openExternal(href);
     };
@@ -214,6 +204,11 @@ class main {
         });
         $('#menu-dns, #close-dns').on('click', () => {
             $('#dns-set').toggle();
+        });
+        $("#selector-dns").on("change", () => {
+            const dnsValues = $("#selector-dns").val().split(",");
+            $("#dns1-text").val(dnsValues[0]); 
+            $("#dns2-text").val(dnsValues[1]);
         });
         $("#submit-donate-config").on("click", () => {
             const config = $("#donate-config-text").val();
@@ -267,6 +262,7 @@ class main {
         });
         $("#menu-freedom-logs, #CloseLogs").on("click", () => {
             $("#Logs").toggle();
+            $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
         });
         $("#ClearLogs").on("click", () => {
             window.LogLOG("", "clear");
@@ -828,7 +824,7 @@ class fgCLI extends main {
         let commandArgs = commandSplit.slice(1);
         this.publicSet.ReloadSettings();
         this.publicSet.settingsALL["lang"] = await this.loadLang();
-        window.LogLOG("$ "+command, "command");
+        window.LogLOG("$ " + command, "command");
         switch (commandName.toString().toLowerCase()) {
             case "connect":
                 commandArgs.length > 0 ? this.publicSet.settingsALL["public"]["core"] = commandArgs[0] : this.publicSet.settingsALL["public"]["core"] = "auto";

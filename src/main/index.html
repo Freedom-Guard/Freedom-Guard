@@ -338,7 +338,9 @@
         <button id="tool-update-cores" class="btn" type="button">
             🔁 Update Cores
         </button>
-        <i id="tool-close-box" class="bx bx-x btn close-btn"></i>
+        <button id="tool-close-box" class="btn close-btn">
+            <i class="bx bx-x"></i>
+        </button>
     </div>
     <div id="menu">
         <div id="menu-exit" style="width: fit-content;margin-left: auto;height: fit-content;padding: 0.5em;">
@@ -381,12 +383,6 @@
         <input type="text" class="input" id="dns1-text" placeholder=" IP DNS 1: 1.1.1.1">
         <input type="text" class="input" id="dns2-text" placeholder=" IP DNS 2: 8.8.8.8">
         <button id="submit-dns" class="btn"><i class="bx bx-check" style="font-size: 1.5em;"></i></button>
-        <script>
-            document.getElementById("selector-dns").onchange = function () {
-                document.getElementById("dns1-text").value = document.getElementById("selector-dns").value.split(",")[0];
-                document.getElementById("dns2-text").value = document.getElementById("selector-dns").value.split(",")[1];
-            }
-        </script>
     </div>
     <div id="about-app" class="box">
         <button id="close-about" class="btn close-btn"><i class='bx bx-x'></i></button>
@@ -444,7 +440,7 @@
         <button id="submit-start" class="btn" style="margin-top: auto;margin-bottom: 1em;">شروع</button>
     </div>
     <div id="donate-box" class="box" style="display: none;">
-        <i class="bx bx-x btn close-btn" id="close-donate-box"></i>
+        <button id="close-donate-box" class="btn close-btn"><i class='bx bx-x'></i></button>
         <h2 style="width: 100%; text-align: center; margin-bottom: 1em;">Donate Config | اهدای کانفیگ</h2>
         <p style="text-align: center; margin-bottom: 1em;">با اهدای کانفیگ به گارد آزادی به پایداری آن کمک کنید</p>
         <textarea id="donate-config-text" placeholder="Paste your config here..."
