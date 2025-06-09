@@ -84,7 +84,7 @@
             "license": "./LICENSE"
         },
         "linux": {
-            "icon": "src/assets/icon/ico.ico",
+            "icon": "src/assets/icon/ico.png",
             "target": [
                 "deb",
                 "tar.gz",
