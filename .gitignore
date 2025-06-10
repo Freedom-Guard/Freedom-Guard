@@ -4,8 +4,6 @@ tmp
 out
 dist
 .vscode
-warp.json
-vibe.json
 assets/result.csv
 freedom-guard.json
 assets/bestendpoint.txt

@@ -1,0 +1,9 @@
+{
+    "PUBLIC": [
+        "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
+        "warp,;,cfon=true&scan=true#WARP | CFON RANDOM",
+        "warp,;,endpoint=188.114.97.139:7152#WARP | 188.114.97.139:7152",
+        "warp,;,endpoint=188.114.98.61:955#WARP | 188.114.98.61:955",
+        "warp,;,endpoint=162.159.192.149:903#WARP | 162.159.192.149:903"
+    ]
+}
