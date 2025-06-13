@@ -41,7 +41,7 @@
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_Sub.txt#RAND | FREEDOM",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
-    ],
+    ],86.54.11.12
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
@@ -62,7 +62,6 @@
         "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@94.131.9.172:8880?encryption=none&security=none&type=grpc#Server-772203",
         "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.161:8880?encryption=none&security=none&sni=pqh34v7.bloger34art.shop&type=grpc#Server-137518",
         "vibe,;,https://raw.githubusercontent.com/4n0nymou3/ss-config-updater/refs/heads/main/configs.txt#👽 | ss FG",
-        "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
         "vibe,;,https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt#RAND | FREEDOM"
     ]
