@@ -41,7 +41,7 @@
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_Sub.txt#RAND | FREEDOM",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
-    ],86.54.11.12
+    ],
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
