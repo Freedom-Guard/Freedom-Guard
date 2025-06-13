@@ -45,6 +45,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@45.87.175.28:8080#Server-337660",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNToxUld3WGh3ZkFCNWdBRW96VTRHMlBn@45.87.175.166:8080#Server-69013",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpjdklJODVUclc2bjBPR3lmcEhWUzF1@45.158.171.141:8080#Server-826422",
@@ -52,6 +53,7 @@
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTp1MTdUM0J2cFlhYWl1VzJj@api.namasha.co:443#Server-140277",
         "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.151:8880?encryption=none&security=none&sni=pqh33v5.cinema33.shop&type=grpc#Server-484881",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpXc3R1U25sdTRpZUE5TTBM@admin.c2.webramz.co:443#Server-578047",
+        "vibe,;,https://raw.githubusercontent.com/sarvari1378/GPTscripts/refs/heads/main/SUB/BackUp-VIP#BACKUP ",
         "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.146:8880?encryption=none&security=none&type=grpc#Server-620254",
         "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.166:8880?encryption=none&security=none&sni=pqh35v4.gym35fit.shop&type=grpc#Server-381915",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNToxUld3WGh3ZkFCNWdBRW96VTRHMlBn@45.158.171.146:8080#Server-793920",
