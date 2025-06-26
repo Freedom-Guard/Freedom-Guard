@@ -105,6 +105,11 @@ img {
     border: none;
     padding: 0;
     margin: 0;
+    transition: 0.5s;
+}
+
+.header button:hover {
+    color: var(--color-primary);
 }
 
 .connection {

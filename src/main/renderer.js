@@ -11,7 +11,7 @@ const { exec, execFile, spawn } = require('child_process');
 const { on } = require('events');
 const { platform } = require('os');
 window.$ = $;
-const vesrionApp = "7.4.0";
+const vesrionApp = "7.5.0";
 let LOGS = [];
 // #endregion
 // #region components
