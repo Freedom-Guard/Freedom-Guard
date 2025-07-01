@@ -19,7 +19,7 @@
     --icon-color: #e0e0e0;
 
     /* Glassmorphism/Transparency */
-    --glass-background: rgba(30, 30, 30, 0.6);
+    --glass-background: rgba(30, 30, 30, 0.8);
     --glass-border: rgba(189, 189, 189, 0.2);
     --glass-shadow: rgba(0, 0, 0, 0.4);
     --glass-item-background: rgba(189, 189, 189, 0.05);
