@@ -8,9 +8,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freedom Guard 7.5.0 (latest-release)</title>
+    <title>Freedom Guard 8.0.0 (latest-release)</title>
     <link href="../assets/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" id="theme-css">
     <link rel="icon" href="../assets/icon/ico.png" type="image/png">
     <!-- #endregion Head -->
 </head>
@@ -165,6 +166,22 @@
                     <option value="cn">Chinese</option>
                 </select>
             </div>
+            <b data-lang="theme-selection">Theme Selection</b>
+            <div id="theme-app">
+                <select id="theme-app-value" value="Dark">
+                    <option value="Dark">Dark mode</option>
+                    <option value="Light">Light mode</option>
+                    <option value="Matrix">Matrix mode</option>
+                    <option value="Neon">Neon mode</option>
+                    <option value="CIA">CIA mode</option>
+                    <option value="OceanDeep">Ocean Deep mode</option>
+                    <option value="ForestGreen">Forest Green mode</option>
+                    <option value="SunsetGlow">Sunset Glow mode</option>
+                    <option value="MidnightSilver">Midnight Silver mode</option>
+                    <option value="CosmicDust">Cosmic Dust mode</option>
+                    <option value="Volcanic">Volcanic Ash mode</option>
+                </select>
+            </div>
         </section>
         <section id="auto">
             <h3 data-lang="auto-mode">Auto mode</h3>
@@ -180,6 +197,13 @@
                     <option value="SHATEL">Shatel</option>
                     <option value="TCI">TCI</option>
                 </select>
+            </div>
+            <b data-lang="quick_connect">Quick Connect</b>
+            <div id="quick-connect">
+                <label class="switch">
+                    <input type="checkbox" id="quick-connect-status" />
+                    <span class="slider"></span>
+                </label>
             </div>
         </section>
         <section id="warp">

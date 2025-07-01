@@ -13,6 +13,7 @@
     "freedom_link": "Freedom Link (Support others by sharing your config after connection)",
     "auto-mode": "Auto Mode",
     "your_isp": "Your ISP",
+    "quick_connect": "Quick Connect",
     "options": "Options",
     "config_freedom_guard": "config",
     "import": "Import",
@@ -69,5 +70,6 @@
     "copied": "Copy operation completed successfully! 🎉📋",
     "docs_fg": "Freedom Guard Documentation",
     "repo_fg": "Freedom Guard repository on GitHub",
+    "theme-selection": "Theme Selection",
     "tool_box": "Tool Box"
 }

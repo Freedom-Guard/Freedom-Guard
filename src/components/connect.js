@@ -1,20 +1,18 @@
-// #region lib/init
-const { rejects } = require('assert');
-const { spawn, exec, execSync, execFile } = require('child_process');
-const { protocol } = require('electron');
+const { spawn, exec, execFile, execSync } = require('child_process');
 const fs = require('fs');
-const { notify } = require('node-notifier');
-const { type } = require('os');
 const os = require('os');
 const path = require('path');
-const { resolve } = require('path');
+const { notify } = require('node-notifier');
+const axios = require('axios');
+const geoip = require('geoip-lite');
+const Winreg = require('winreg');
 const { trackEvent } = require("@aptabase/electron/renderer");
-trackEvent("app_started");
 const { app } = require('@electron/remote');
-// #endregion
+
+trackEvent("app_started");
+
 function getConfigPath() {
     let baseDir;
-
     if (process.platform === "win32") {
         baseDir = path.join(process.env.APPDATA, "Freedom Guard");
     } else if (process.platform === "darwin") {
@@ -26,48 +24,34 @@ function getConfigPath() {
     if (!fs.existsSync(baseDir)) {
         fs.mkdirSync(baseDir, { recursive: true });
     }
-
-    return (baseDir);
+    return baseDir;
 }
-read_file = function (pathFile, type = "file") {
-    if (type == "file") {
-        return fs.readFileSync(pathFile, 'utf8');
-    }
-    else {
-        return fs.readFileSync(path.join(getConfigPath(), pathFile), 'utf8')
-    };
+
+const readFile = (filePath, type = "file") => {
+    const fullPath = type === "file" ? filePath : path.join(getConfigPath(), filePath);
+    return fs.readFileSync(fullPath, 'utf8');
 };
-write_file = function (pathFile, output, type = 'file') {
-    if (type == "file") {
-        fs.writeFileSync(pathFile, output);
-    }
-    else {
-        fs.writeFileSync(path.join(getConfigPath(), pathFile), output);
-    };
+
+const writeFile = (filePath, output, type = 'file') => {
+    const fullPath = type === "file" ? filePath : path.join(getConfigPath(), filePath);
+    fs.writeFileSync(fullPath, output);
 };
-class publicSet {
-    // Main functions for connect(Class), connectAuto(class), and managing settings, ...
+
+class PublicSet {
     constructor() {
-        this.axios = require('axios');
-        this.geoip = require('geoip-lite');
-        this.path = require('path');
-        this.setTimeout = require('timers').setTimeout;
-        this.Winreg = require('winreg');
+        this.axios = axios;
+        this.geoip = geoip;
+        this.path = path;
+        this.setTimeout = setTimeout;
+        this.Winreg = Winreg;
         this.status = false;
         this.connected = false;
         this.Process = {
-            "vibe": function kill() { },
-            "flex": function kill() { },
-            "grid": function kill() { },
-            "warp": function kill() { },
-            "vibeAuto": function kill() { },
-            "flexAuto": function kill() { },
-            "gridAuto": function kill() { },
-            "warpAuto": function kill() { },
-            "setupAuto": function kill() { },
-            "setup": function kill() { }
+            "vibe": null, "flex": null, "grid": null, "warp": null,
+            "vibeAuto": null, "flexAuto": null, "gridAuto": null, "warpAuto": null,
+            "setupAuto": null, "setup": null
         };
-        this.mainDir = this.path.join(__dirname + "/../../");
+        this.mainDir = path.join(__dirname, "/../../");
         this.coresPath = '';
         this.settingsALL = {
             "flex": {},
@@ -114,11 +98,11 @@ class publicSet {
                 ispServers: [],
                 timeout: 60000,
                 freedomLink: false,
+                quickConnect: false,
+                quickConnectC: "",
                 lang: "en",
             },
-            "lang": {
-
-            }
+            "lang": {}
         };
         this.supported = {
             vibe: ["ss", "http", "vless", "vmess", "trojan", "hysteria", "shadowtls", "tuic", "socks", "wireguard", "hy2"],
@@ -129,122 +113,141 @@ class publicSet {
         };
         this.Tools = new Tools();
         this.init();
-    };
-    init = async () => {
+    }
+
+    async init() {
         this.prepareCores();
-    };
+        await this.reloadSettings();
+    }
+
     prepareCores() {
-        const platformDir =
-            process.platform === 'darwin'
-                ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
-                : "/" + process.platform + "/";
-        this.coresPath = path.join(
-            __dirname.replace('app.asar', ''),
-            '..', '..',
-            'src', 'main', 'cores',
-            platformDir
+        const platformDir = process.platform === 'darwin'
+            ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
+            : `/${process.platform}/`;
+
+        let baseCorePath = path.join(
+            __dirname.includes('app.asar') ? __dirname.replace('app.asar', '') : __dirname,
+            '..', '..', 'src', 'main', 'cores', platformDir
         );
-        if (process.platform == "linux" || process.platform == "darwin") {
-            const destDir = path.join(getConfigPath());
-            const destPathVibe = path.join(destDir, "vibe", 'vibe-core');
-            const destPathWarp = path.join(destDir, "warp", 'warp-core');
 
-            if (!fs.existsSync(destPathVibe.replace("vibe-core", ''))) fs.mkdirSync(destPathVibe.replace("vibe-core", ""), { recursive: true });
-            if (!fs.existsSync(destPathWarp.replace("warp-core", ''))) fs.mkdirSync(destPathWarp.replace("warp-core", ""), { recursive: true });
+        if (process.platform === "linux" || process.platform === "darwin") {
+            const destDir = getConfigPath();
+            const vibeDestPath = path.join(destDir, "vibe", 'vibe-core');
+            const warpDestPath = path.join(destDir, "warp", 'warp-core');
 
-            if (!fs.existsSync(destPathVibe)) {
-                fs.copyFileSync(this.coresPath + "vibe/vibe-core", destPathVibe);
-                fs.chmodSync(destPathVibe, 0o755);
-            };
-            if (!fs.existsSync(destPathWarp)) {
-                fs.copyFileSync(this.coresPath + "warp/warp-core", destPathWarp);
-                fs.chmodSync(destPathWarp, 0o755);
-            };
-            this.coresPath = destDir;
-        };
-    };
-    saveSettings(settingsSave = this.settingsALL) {
-        write_file('freedom-guard.json', JSON.stringify(settingsSave), "cache");
-        this.settingsALL = settingsSave;
-    };
-    async ReloadSettings() {
-        try {
-            this.settingsALL = JSON.parse(read_file('freedom-guard.json', "cache"));
-        } catch (error) { this.saveSettings(); this.LOGLOG("settings file not found: saveSettings" + error) }
-    };
-    async getIP_Ping() {
-        // Retrieves the current IP, country, and ping of the user.
-        let responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
-        try {
-            const time = Date.now();
-            const response = await this.axios.get("https://api.ipify.org?format=json", { timeout: 3000 });
+            fs.mkdirSync(path.dirname(vibeDestPath), { recursive: true });
+            fs.mkdirSync(path.dirname(warpDestPath), { recursive: true });
 
-            responseFunc.ip = response.data.ip;
-            responseFunc.ping = Date.now() - time;
-            responseFunc.country = this.geoip.lookup(response.data.ip)?.country || "unknown";
-            try {
-                const testResponse = await this.axios.get(this.settingsALL["public"]["testUrl"], { timeout: 3000 });
-                responseFunc.filternet = false;
-                this.LOGLOG("filternet is not active!");
-            } catch (err) {
-                this.LOGLOG("filternet check failed, assuming active!");
+            const vibeSourcePath = path.join(baseCorePath, "vibe", "vibe-core");
+            const warpSourcePath = path.join(baseCorePath, "warp", "warp-core");
+
+            if (!fs.existsSync(vibeDestPath)) {
+                fs.copyFileSync(vibeSourcePath, vibeDestPath);
+                fs.chmodSync(vibeDestPath, 0o755);
             }
+            if (!fs.existsSync(warpDestPath)) {
+                fs.copyFileSync(warpSourcePath, warpDestPath);
+                fs.chmodSync(warpDestPath, 0o755);
+            }
+            this.coresPath = destDir;
+        } else {
+            this.coresPath = baseCorePath;
+        }
+    }
 
+    saveSettings(settingsSave = this.settingsALL) {
+        writeFile('freedom-guard.json', JSON.stringify(settingsSave), "cache");
+        this.settingsALL = settingsSave;
+    }
+
+    async reloadSettings() {
+        try {
+            this.settingsALL = JSON.parse(readFile('freedom-guard.json', "cache"));
         } catch (error) {
-            this.LOGLOG("خطا در دریافت IP:", error);
+            this.saveSettings();
+            this.log(`Settings file not found or corrupted, resetting to default: ${error}`);
+        }
+    }
+
+    async getIP_Ping() {
+        const responseFunc = { ip: "", ping: "", country: "unknown", filternet: true };
+        try {
+            const startTime = Date.now();
+            const ipResponse = await this.axios.get("https://api.ipify.org?format=json", { timeout: 3000 });
+            responseFunc.ip = ipResponse.data.ip;
+            responseFunc.ping = Date.now() - startTime;
+            responseFunc.country = this.geoip.lookup(ipResponse.data.ip)?.country || "unknown";
+
+            try {
+                await this.axios.get(this.settingsALL.public.testUrl, { timeout: 3000 });
+                responseFunc.filternet = false;
+                this.log("Filternet is not active.");
+            } catch (err) {
+                this.log("Filternet check failed, assuming active.");
+            }
+        } catch (error) {
+            this.log(`Error retrieving IP and ping: ${error}`);
         }
         return responseFunc;
-    };
-    LOGLOG(text = "", type = 'log') {
-        if (type == "clear") {
-            window.LogLOG("", "clear");
-            console.clear();
-        }
-        else if (type == "showmess") {
-            window.showMessageUI(text);
-            window.LogLOG(text);
+    }
+
+    log(text = "", type = 'log') {
+        if (typeof window !== 'undefined' && window.LogLOG) {
+            if (type === "clear") {
+                window.LogLOG("", "clear");
+                console.clear();
+            } else if (type === "showmess") {
+                window.showMessageUI(text);
+                window.LogLOG(text);
+                console.log(text);
+            } else {
+                window.LogLOG(text);
+                console.log(text);
+            }
+        } else {
             console.log(text);
         }
-        else {
-            window.LogLOG(text);
-            console.log(text);
-        }
-    };
+    }
+
     connectedVPN(core) {
-        this.LOGLOG("connected " + core);
+        this.log(`Connected to ${core}.`);
         notify({
             title: 'Connected!',
-            message: this.settingsALL["lang"]["connected_mess_notif"].replace("[core]", core),
-            icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
+            message: (this.settingsALL.lang.connected_mess_notif || "Connected to [core]").replace("[core]", core),
+            icon: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
             appID: 'Freedom Guard'
         });
         trackEvent("connected", {
-            core: this.settingsALL["public"]["core"],
-            isp: this.settingsALL["public"]["isp"]
+            core: this.settingsALL.public.core,
+            isp: this.settingsALL.public.isp
         });
-        window.connectedUI();
-    };
+        if (typeof window !== 'undefined' && window.connectedUI) {
+            window.connectedUI();
+        }
+    }
+
     setProxy(proxy, type = "socks5") {
-        this.LOGLOG(`[Proxy] Setting proxy...`);
-        this.LOGLOG(`[Proxy] Type: ${type}, Address: ${proxy}`);
-
+        this.log(`[Proxy] Setting proxy: Type: ${type}, Address: ${proxy}`);
         this.Tools.setProxy(this.Tools.returnOS(), proxy);
+        this.log("[Proxy] Proxy set successfully.");
+    }
 
-        this.LOGLOG(`[Proxy] Proxy set successfully.`);
-    };
     offProxy() {
         this.Tools.offProxy(this.Tools.returnOS());
-    };
-    async sleep(time) {
-        return new Promise((resolve) => {
-            this.setTimeout(resolve, time);
-        });
-    };
-    diconnectedUI() {
-        window.diconnectedUI();
-    };
+    }
+
+    sleep(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    disconnectedUI() {
+        if (typeof window !== 'undefined' && window.disconnectedUI) {
+            window.disconnectedUI();
+        }
+    }
+
     async resetSettings() {
         this.settingsALL = {
             "flex": {},
@@ -291,240 +294,263 @@ class publicSet {
                 ispServers: [],
                 timeout: 45000,
                 freedomLink: false,
+                quickConnect: false,
+                quickConnectC: "",
                 lang: "en",
             },
-            "lang": {
-
-            }
+            "lang": {}
         };
         this.saveSettings();
-        window.showMessageUI("⚙️ Settings have been restored to default. Restarting the application... ✅", 5000);
+        if (typeof window !== 'undefined' && window.showMessageUI) {
+            window.showMessageUI("⚙️ Settings have been restored to default. Restarting the application... ✅", 5000);
+        }
         await this.sleep(5000);
-        location.reload();
-    };
-    isValidJSON = (str) => {
+        if (typeof location !== 'undefined') {
+            location.reload();
+        }
+    }
+
+    isValidJSON(str) {
         try {
             const parsed = JSON.parse(str);
             return typeof parsed === "object" && parsed !== null;
         } catch (e) {
             return false;
         }
-    };
+    }
+
     async importConfig(config) {
-        try { config = config.toString() } catch { if (config == "") { window.showMessageUI(this.settingsALL["lang"]["config_empty"]); return; } };
-        this.LOGLOG(config);
-        let typeConfig = "warp";
-        if (config == '') {
-            this.settingsALL["public"]["configManual"] = config;
-            this.saveSettings();
-            window.setHTML("#textOfServer", this.settingsALL["public"]["core"] + " Server + Customized");
-            return;
-        };
-        this.settingsALL["public"]["configManual"] = config;
-        if (!(this.settingsALL["public"]["importedServers"].some(server => config == server))) {
-            this.settingsALL["public"]["importedServers"].push(config)
-        };
-        if (this.isValidJSON(config)) {
-            this.settingsALL["public"]["core"] = "vibe";
-            typeConfig = "vibe";
-            write_file(this.path.join(this.coresPath, "vibe", "config.json"), (JSON.stringify(config)));
-            this.settingsALL["vibe"]["config"] = '"' + this.path.join(this.coresPath, "vibe", "config.json") + '"';
+        try {
+            config = String(config);
+        } catch (e) {
+            if (config === "") {
+                if (typeof window !== 'undefined' && window.showMessageUI) {
+                    window.showMessageUI(this.settingsALL.lang.config_empty);
+                }
+                return;
+            }
         }
-        else if (this.supported["vibe"].some(protocol => config.startsWith(protocol))) {
-            this.settingsALL["public"]["core"] = "vibe";
+
+        this.log(config);
+        let typeConfig = "warp";
+
+        if (config === '') {
+            this.settingsALL.public.configManual = config;
+            this.saveSettings();
+            if (typeof window !== 'undefined' && window.setHTML) {
+                window.setHTML("#textOfServer", this.settingsALL.public.core + " Server + Customized");
+            }
+            return;
+        }
+
+        this.settingsALL.public.configManual = config;
+        if (!this.settingsALL.public.importedServers.includes(config)) {
+            this.settingsALL.public.importedServers.push(config);
+        }
+
+        if (this.isValidJSON(config)) {
+            this.settingsALL.public.core = "vibe";
+            typeConfig = "vibe";
+            const vibeConfigPath = path.join(this.coresPath, "vibe", "config.json");
+            writeFile(vibeConfigPath, JSON.stringify(JSON.parse(config)));
+            this.settingsALL.vibe.config = `"${vibeConfigPath}"`;
+        } else if (this.supported.vibe.some(protocol => config.startsWith(protocol))) {
+            this.settingsALL.public.core = "vibe";
             typeConfig = "vibe";
             if (config.startsWith("http")) {
-                this.settingsALL["vibe"]["config"] = config;
+                this.settingsALL.vibe.config = config;
+            } else {
+                const vibeTxtConfigPath = path.join(this.coresPath, "vibe", "config.txt");
+                writeFile(vibeTxtConfigPath, config);
+                this.settingsALL.vibe.config = vibeTxtConfigPath;
             }
-            else {
-                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (config));
-                this.settingsALL["vibe"]["config"] = '' + this.path.join(this.coresPath, "vibe", "config.txt") + '';
-            }
-        }
-        else if (this.supported["warp"].some(protocol => config.toString().startsWith(protocol))) {
-            this.settingsALL["public"]["core"] = "warp";
+        } else if (this.supported.warp.some(protocol => config.startsWith(protocol))) {
+            this.settingsALL.public.core = "warp";
             typeConfig = "warp";
-            let optionsWarp = config.split("#")[0].replace("warp://", "").split("&");
+            const optionsWarp = config.split("#")[0].replace("warp://", "").split("&");
             optionsWarp.forEach(option => {
-                try {
-                    this.settingsALL["warp"][option.split("=")[0]] = option.split("=")[1];
+                const [key, value] = option.split("=");
+                if (key && value !== undefined) {
+                    this.settingsALL.warp[key] = value;
                 }
-                catch { };
             });
             this.saveSettings();
-            window.setSettings();
-        }
-        else if (this.supported["flex"].some(protocol => config.toString().startsWith(protocol))) {
-
-        }
-        else if (this.supported["grid"].some(protocol => config.toString().startsWith(protocol))) {
-
-        }
-        else if (this.supported["other"].some(protocol => config.toString().startsWith(protocol))) {
-            let optionsFreedomGuard = config.replace("freedom-guard://", "").split("#")[0].split("&");
+            if (typeof window !== 'undefined' && window.setSettings) {
+                window.setSettings();
+            }
+        } else if (this.supported.flex.some(protocol => config.startsWith(protocol))) {
+        } else if (this.supported.grid.some(protocol => config.startsWith(protocol))) {
+        } else if (this.supported.other.some(protocol => config.startsWith(protocol))) {
+            const optionsFreedomGuard = config.replace("freedom-guard://", "").split("#")[0].split("&");
             typeConfig = "other";
             optionsFreedomGuard.forEach(option => {
-                this.settingsALL["public"][option.split("=")[0]] = option.split("=")[1];
+                const [key, value] = option.split("=");
+                if (key && value !== undefined) {
+                    this.settingsALL.public[key] = value;
+                }
             });
             this.saveSettings();
-            window.setSettings();
-        }
-        else {
-            this.LOGLOG("config -> not supported");
-            window.showMessageUI(this.settingsALL["lang"]["config_not_supported"]);
+            if (typeof window !== 'undefined' && window.setSettings) {
+                window.setSettings();
+            }
+        } else {
+            this.log("Config not supported.");
+            if (typeof window !== 'undefined' && window.showMessageUI) {
+                window.showMessageUI(this.settingsALL.lang.config_not_supported);
+            }
             return;
-        };
-        window.setATTR("#imgServerSelected", "src", "../svgs/" + (typeConfig == "warp" ? "warp.webp" : typeConfig == "vibe" ? "vibe.png" : "ir.svg"));
-        window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
+        }
+
+        if (typeof window !== 'undefined' && window.setATTR && window.setHTML) {
+            window.setATTR("#imgServerSelected", "src", `../svgs/${typeConfig === "warp" ? "warp.webp" : typeConfig === "vibe" ? "vibe.png" : "ir.svg"}`);
+            window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
+        }
         this.saveSettings();
-    };
+    }
+
     async deleteConfig(config) {
-        this.settingsALL["public"]["importedServers"] = this.settingsALL["public"]["importedServers"].filter(item => item !== config);
+        this.settingsALL.public.importedServers = this.settingsALL.public.importedServers.filter(item => item !== config);
         this.saveSettings();
-        window.setHTML("#textOfServer", "Auto Server");
-    };
-    async updateISPServers(isp = this.settingsALL["public"]["isp"]) {
+        if (typeof window !== 'undefined' && window.setHTML) {
+            window.setHTML("#textOfServer", "Auto Server");
+        }
+    }
+
+    async updateISPServers(isp = this.settingsALL.public.isp) {
         try {
-            await this.ReloadSettings();
-            if (this.settingsALL["public"]["configAutoMode"] === "local") {
-                this.settingsALL["public"]["ispServers"] = this.settingsALL["public"]["configAuto"][isp];
+            await this.reloadSettings();
+            if (this.settingsALL.public.configAutoMode === "local") {
+                this.settingsALL.public.ispServers = this.settingsALL.public.configAuto[isp];
                 this.saveSettings();
                 return true;
-            };
-            let serverISP = this.settingsALL["public"]["configAuto"].toString();
-            this.LOGLOG("serverISP URL: " + serverISP);
-            let response = await this.axios.get(serverISP, { timeout: 10000 });
-            let responseServerISP = [];
-            let responseServerPublic = [];
-            await this.sleep(500);
+            }
+
+            const serverISPUrl = this.settingsALL.public.configAuto;
+            this.log(`Fetching ISP servers from URL: ${serverISPUrl}`);
+            const response = await this.axios.get(serverISPUrl, { timeout: 10000 });
+
+            let ispServers = [];
+            let publicServers = [];
             try {
-                responseServerISP = response.data[isp];
-                responseServerPublic = response.data["PUBLIC"];
+                ispServers = response.data[isp] || [];
+                publicServers = response.data.PUBLIC || [];
             } catch (error) {
-                this.LOGLOG("Error parsing JSON: " + error + response);
-                alert("Invalid response format from server.");
+                this.log(`Error parsing ISP server JSON: ${error}`);
+                if (typeof window !== 'undefined' && window.showMessageUI) {
+                    window.showMessageUI("Invalid response format from server.");
+                }
                 return false;
             }
 
-            if (!responseServerISP || typeof responseServerISP !== "object") {
-                alert("Invalid ISP data received.");
-                this.LOGLOG("Invalid ISP data received.");
-                return false;
-            }
-            this.LOGLOG("ISP SELECTED: " + isp);
-            this.settingsALL["public"]["ispServers"] = responseServerISP?.length ? responseServerISP.concat(responseServerPublic || []) : responseServerPublic || [];
-            this.LOGLOG("isp servers updated: " + JSON.stringify(this.settingsALL["public"]["ispServers"]));
-            if (!this.settingsALL["public"]["ispServers"] || this.settingsALL["public"]["ispServers"].length === 0) {
-                window.showMessageUI(this.settingsALL["lang"]["mess_not_found_isp_in_servers"]);
-                this.LOGLOG("ISP not found: " + isp);
+            this.log(`ISP selected: ${isp}`);
+            this.settingsALL.public.ispServers = [...ispServers, ...publicServers];
+            this.log(`ISP servers updated: ${JSON.stringify(this.settingsALL.public.ispServers)}`);
+
+            if (this.settingsALL.public.ispServers.length === 0) {
+                if (typeof window !== 'undefined' && window.showMessageUI) {
+                    window.showMessageUI(this.settingsALL.lang.mess_not_found_isp_in_servers);
+                }
+                this.log(`ISP not found or no servers for: ${isp}`);
                 return false;
             }
             this.saveSettings();
             return true;
         } catch (error) {
-            this.LOGLOG("Network or server error:", error);
-            window.showMessageUI(this.settingsALL["lang"]["message_repo_access_error"]);
-            if (this.settingsALL["public"]["ispServers"] != []) {
+            this.log(`Network or server error updating ISP servers: ${error}`);
+            if (typeof window !== 'undefined' && window.showMessageUI) {
+                window.showMessageUI(this.settingsALL.lang.message_repo_access_error);
+            }
+            if (this.settingsALL.public.ispServers && this.settingsALL.public.ispServers.length > 0) {
                 return true;
+            } else {
+                this.log("Backup ISP servers are empty!");
+                if (typeof window !== 'undefined' && window.showMessageUI) {
+                    window.showMessageUI("Backup ISP servers are empty, cannot connect.");
+                }
+                return false;
             }
-            else {
-                this.LOGLOG("backup is empty!");
-                alert("backup is empty!");
-            }
-            this.saveSettings();
-            return false;
         }
-    };
+    }
+
     notConnected(core = "") {
-        this.LOGLOG("not connected " + core);
+        this.log(`Failed to connect to ${core}.`);
         notify({
             title: 'Connection Failed',
             message: `Failed to connect to ${core}`,
-            icon: this.path.join(this.mainDir, 'src/assets/icon/ico.png'),
+            icon: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
             appID: 'Freedom Guard'
         });
-        if (core == "auto") {
+        if (core === "Auto") {
             trackEvent("not_connected_auto", {
-                isp: this.settingsALL["public"]["isp"]
+                isp: this.settingsALL.public.isp
             });
+        } else {
+            this.disconnectedUI();
         }
-        this.diconnectedUI();
         this.offProxy();
-    };
+    }
+
     addExt(name) {
-        return process.platform == "win32" ? name + ".exe" : name;
-    };
-    killGrid() {
-        this.KILLALLCORES("grid");
-    };
-    KILLALLCORES(core) {
-        // Terminates a process with the given core name on both Windows and Unix-based systems.
-        core = core.toString().toLowerCase() + "-core";
-        this.LOGLOG(`Killing ${core}...`);
-        if (process.platform == "win32") {
-            if (!core || typeof core !== "string") {
-                this.LOGLOG("Error: Invalid process name.");
-            } else {
-                execFile("taskkill", ["/f", "/im", `${core}.exe`], (error, stdout, stderr) => {
-                    if (error) {
-                        this.LOGLOG(`Error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        this.LOGLOG(`stderr: ${stderr}`);
-                        return;
-                    }
-                    this.LOGLOG(`stdout: ${stdout}`);
-                });
-            };
-            exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
-                if (killError) {
-                    this.LOGLOG(`Error killing reg.exe: ${killError.message}`);
-                    return;
+        return process.platform === "win32" ? `${name}.exe` : name;
+    }
+
+    killAllCores(core) {
+        const processName = `${core.toLowerCase()}-core`;
+        this.log(`Killing ${processName}...`);
+
+        if (process.platform === "win32") {
+            execFile("taskkill", ["/f", "/im", `${processName}.exe`], (error) => {
+                if (error) {
+                    this.log(`Error killing ${processName}.exe: ${error.message}`);
+                } else {
+                    this.log(`${processName}.exe killed successfully.`);
                 }
-                this.LOGLOG("All reg.exe processes closed.");
+            });
+            exec("taskkill /F /IM reg.exe", (error) => {
+                if (error) {
+                    this.log(`Error killing reg.exe: ${error.message}`);
+                } else {
+                    this.log("All reg.exe processes closed.");
+                }
+            });
+        } else if (process.platform === "linux" || process.platform === "darwin") {
+            execFile("killall", [processName], (error) => {
+                if (error) {
+                    this.log(`Error killing ${processName}: ${error.message}`);
+                } else {
+                    this.log(`${processName} killed successfully.`);
+                }
             });
         }
-        else if (process.platform == "linux") {
-            if (!core || typeof core !== "string") {
-                this.LOGLOG("Error: Invalid process name.");
-            } else {
-                execFile("killall", [core], (error, stdout, stderr) => {
-                    if (error) {
-                        this.LOGLOG(`Error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        this.LOGLOG(`stderr: ${stderr}`);
-                        return;
-                    }
-                    this.LOGLOG(`stdout: ${stdout}`);
-                });
+    }
+
+    killGrid() {
+        this.killAllCores("grid");
+    }
+
+    setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
+        if (type === "tun") {
+        } else if (type === 'system') {
+            this.setProxy(proxy, typeProxy);
+        }
+    }
+
+    startINIT() {
+        const flagFilePath = path.join(getConfigPath(), "one.one");
+        try {
+            readFile("one.one", "cache");
+        } catch {
+            writeFile("one.one", "is not new user.", "cache");
+            if (typeof window !== 'undefined' && window.startNewUser) {
+                window.startNewUser();
             }
         }
-    };
-    setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
-        if (type == "tun") {
-
-        }
-        else if (type = 'system') {
-            this.setProxy(proxy);
-        }
-    };
-    startINIT() {
-        try {
-            let test = read_file("one.one");
-        }
-        catch {
-            write_file("one.one", "is not new user.");
-            window.startNewUser();
-        };
-    };
+    }
 }
-class connectAuto extends publicSet {
-    // Connects automatically using ISP config mode (ispServers) == Auto MODE
+
+class ConnectAuto extends PublicSet {
     constructor() {
         super();
         this.processWarp = null;
@@ -542,223 +568,275 @@ class connectAuto extends publicSet {
             "grid": {},
             "vibe": {},
             "warp": {},
-            "public": this.settingsALL["public"]
+            "public": { ...this.settingsALL.public }
         };
-    };
+    }
+
     async connect() {
-        this.LOGLOG("I'm still alive ;)");
-        this.ReloadSettings();
-        if (!(await this.updateISPServers(this.settingsALL["public"]["isp"]))) {
-            this.LOGLOG("not connected auto -> isp servers");
+        this.log("Auto-connect sequence initiated.");
+        await this.reloadSettings();
+        this.settings.public = { ...this.settingsALL.public };
+
+        if (!(await this.updateISPServers(this.settingsALL.public.isp))) {
+            this.log("Auto-connect failed: Could not update ISP servers.");
             this.notConnected("Auto");
             return;
         }
-        this.LOGLOG("starting Auto...");
-        try {
-            this.LOGLOG("isp servers: " + this.settingsALL["public"]["ispServers"]);
-            let indexServers = 0;
-            for (let server of this.settingsALL["public"]["ispServers"]) {
-                let mode = server.split(",;,")[0];
-                server = server.split(",;,")[1].split("#")[0];
-                if (this.connected) {
-                    this.connectedVPN("auto");
-                    this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(this.settingsALL["public"]["ispServers"][indexServers - 1]) : ("");
-                    return;
-                }
-                else {
-                    this.LOGLOG("not connected -> next server...");
-                };
-                this.LOGLOG(mode + " -> " + server);
-                if (mode == "warp") {
-                    server.split("&").forEach(option => {
-                        this.settings["warp"][option.split("=")[0]] = option.split("=")[1];
-                    });
-                    await this.connectWarp();
-                }
-                else if (mode == "vibe") {
-                    this.settings["vibe"]["config"] = server;
-                    await this.connectVibe();
-                };
-                indexServers++;
-            };
-            if (!this.connected) {
-                this.LOGLOG("not connected auto -> isp servers");
-                this.notConnected("auto");
-                return;
-            };
-        }
-        catch {
-            this.LOGLOG("not connected auto -> isp servers");
-            this.notConnected("auto");
-            return;
-        };
-    };
-    async connectWarp() {
-        this.LOGLOG("starting warp on Auto...");
-        this.ResetArgs("warp");
-        await this.sleep(3000);
-        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + " " + this.argsWarp);
-        this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
-        this.processWarp.stderr.on("data", (data) => {
-            this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processWarp.stdout.on("data", (data) => {
-            this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processWarp.on("close", () => {
-            this.killVPN("warp");
-            this.LOGLOG("warp Auto closed!");
-            this.offProxy();
-        });
-        await this.sleep(this.settingsALL["warp"]["timeout"]);
-        this.connected = !((await this.getIP_Ping())["filternet"]);
-        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
-        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
-        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
-        if (!this.connected) {
-            this.killVPN("warp");
-            this.LOGLOG("warp Auto not connected!");
-            this.offProxy();
-        };
-    };
-    async connectVibe() {
-        this.LOGLOG("starting vibe on Auto...");
-        this.ResetArgs("vibe");
-        this.processVibe = spawn(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")).replace("arm64", "amd64"), this.argsVibe); // is universal
-        this.processVibe.stderr.on("data", (data) => {
-            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processVibe.stdout.on("data", (data) => {
-            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processVibe.on("close", () => {
-            this.killVPN("vibe");
-            this.LOGLOG("vibe Auto closed!");
-            this.offProxy();
-        });
-        await this.sleep(this.settingsALL["vibe"]["timeout"]);
-        this.connected = !((await this.getIP_Ping())["filternet"]);
-        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
-        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
-        this.connected = this.connected != true ? !((await this.getIP_Ping())["filternet"]) : true;
-        if (!this.connected) {
-            this.killVPN("vibe");
-            this.LOGLOG("vibe Auto not connected!");
-            this.offProxy();
-        };
-        await this.sleep(3000);
-    };
-    async ResetArgs(core) {
-        if (core == "vibe") {
-            this.argsVibe = [];
-            this.argsVibe.push("run");
-            this.argsVibe.push("--config");
-            if (this.settings["vibe"]["config"].startsWith("http")) {
 
+        this.log("Starting Auto-connect process...");
+        let quickConnectConfig = "";
+        if (this.settingsALL.public.quickConnect && this.settingsALL.public.quickConnectC) {
+            quickConnectConfig = this.settingsALL.public.quickConnectC;
+        }
+
+        if (quickConnectConfig && !this.settingsALL.public.ispServers.includes(quickConnectConfig)) {
+            this.settingsALL.public.ispServers.unshift(quickConnectConfig);
+        }
+
+        this.log(`Available ISP servers for auto-connect: ${JSON.stringify(this.settingsALL.public.ispServers)}`);
+
+        for (const server of this.settingsALL.public.ispServers) {
+            if (this.connected) {
+                this.connectedVPN("auto");
+                this.settingsALL.public.quickConnectC = server;
+                if (this.settingsALL.public.freedomLink) {
+                    this.Tools.donateCONFIG(server);
+                }
+                this.saveSettings();
+                return;
             }
-            else {
-                write_file(this.path.join(this.coresPath, "vibe", "config.txt"), (this.settings["vibe"]["config"]));
-                this.settings["vibe"]["config"] = this.path.join(this.coresPath, "vibe", "config.txt");
-            };
-            this.argsVibe.push(this.settings["vibe"]["config"]);
-            if (this.settingsALL["public"]["type"] == "tun") {
-                this.argsVibe.push("--tun");
+
+            this.log("Attempting next server...");
+            const [mode, configString] = server.split(",;,");
+            if (!mode || !configString) {
+                this.log(`Invalid server format: ${server}`);
+                continue;
             }
-            else {
-                this.argsVibe.push("--system-proxy");
+            const cleanConfigString = configString.split("#")[0];
+
+            this.log(`Trying mode: ${mode}, config: ${cleanConfigString}`);
+
+            if (mode === "warp") {
+                const options = cleanConfigString.replace("warp://", "").split("&");
+                this.settings.warp = {};
+                options.forEach(option => {
+                    const [key, value] = option.split("=");
+                    if (key && value !== undefined) {
+                        this.settings.warp[key] = value;
+                    }
+                });
+                await this.connectWarp();
+            } else if (mode === "vibe") {
+                this.settings.vibe.config = cleanConfigString;
+                await this.connectVibe();
             }
         }
-        else if (core == "warp") {
-            this.argsWarp = [];
-            let settingWarp = this.settings["warp"];
-            if (this.settingsALL["public"]["proxy"] != "127.0.0.1:8086") {
-                this.argsWarp.push("--bind");
-                this.argsWarp.push(this.settingsALL["public"]["proxy"]);
-            };
-            if (settingWarp["ipv"] == "IPV6") {
-                this.argsWarp.push("-6");
-            };
-            if (settingWarp["gool"]) {
-                this.argsWarp.push("--gool");
-            };
-            if (settingWarp["scan"]) {
-                this.argsWarp.push("--scan");
-                if (settingWarp["scanrtt"]) {
-                    this.argsWarp.push("--rtt");
-                    this.argsWarp.push(settingWarp["scanrtt"] ?? "1s");
-                }
-            };
-            if (settingWarp["endpoint"] != "") {
-                this.argsWarp.push("--endpoint");
-                this.argsWarp.push(settingWarp["endpoint"]);
-            };
-            if (settingWarp["key"]) {
-                this.argsWarp.push("--key");
-                this.argsWarp.push(settingWarp["key"]);
-            };
-            if (settingWarp["dns"]) {
-                this.argsWarp.push("--dns");
-                this.argsWarp.push(settingWarp["dns"]);
-            };
-            if (settingWarp["cfon"]) {
-                this.argsWarp.push("--cfon");
-                this.argsWarp.push("--country");
-                this.argsWarp.push(settingWarp["cfon"] == "true" ? this.Tools.getRandomCountryCode() : settingWarp["cfon"] );
-            };
-            if (this.settingsALL["public"]["type"] == "tun") {
-                this.argsWarp.push("");
-            };
-            if (settingWarp["reserved"]) {
-                this.argsWarp.push("--reserved");
-                this.argsWarp.push("0,0,0");
-            };
-            if (settingWarp["verbose"]) {
-                this.argsWarp.push("--verbose");
-            };
-            if (settingWarp["testUrl"]) {
-                this.argsWarp.push("--test-url");
-                this.argsWarp.push(this.settingsALL["public"]["testUrl"]);
-            };
+
+        if (!this.connected) {
+            this.log("Auto-connect failed: All ISP servers attempted, no connection established.");
+            this.notConnected("Auto");
         }
     }
-    connectFlex() {
-    };
-    connectGrid() {
-    };
-    killVPN(core) {
-        this.LOGLOG("disconnecting... -> " + core);
-        try {
-            core == "warp" ? this.processWarp.kill() : '';
-            core == "vibe" ? this.processVibe.kill() : '';
-            core == "grid" ? this.processGrid.kill() : '';
-            core == "flex" ? this.processFlex.kill() : '';
+
+    async connectWarp() {
+        this.log("Starting warp for Auto-connect...");
+        this.resetArgs("warp");
+        await this.sleep(1000);
+
+        const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
+        this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+
+        this.processWarp = spawn(corePath, this.argsWarp);
+        this.Process.warpAuto = this.processWarp;
+
+        this.processWarp.stderr.on("data", (data) => this.dataOutWarp(data.toString()));
+        this.processWarp.stdout.on("data", (data) => this.dataOutWarp(data.toString()));
+        this.processWarp.on("close", (code) => {
+            this.log(`Warp Auto process exited with code ${code}.`);
+            this.killVPN("warpAuto");
+            this.offProxy();
+        });
+
+        await this.sleep(this.settingsALL.warp.timeout);
+        for (let i = 0; i < 3 && !this.connected; i++) {
+            this.connected = !(await this.getIP_Ping()).filternet;
+            if (this.connected) break;
+            await this.sleep(1000);
         }
-        catch (error) {
-            this.LOGLOG("error in killVPN: " + error);
-        };
+
+        if (!this.connected) {
+            this.log("Warp Auto-connect failed after multiple checks.");
+            this.killVPN("warpAuto");
+            this.offProxy();
+        }
+    }
+
+    async connectVibe() {
+        this.log("Starting vibe for Auto-connect...");
+        this.resetArgs("vibe");
+        await this.sleep(1000);
+
+        const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
+        const effectiveCorePath = process.platform === 'darwin' && process.arch === 'arm64'
+            ? corePath.replace('/amd64/', '/arm64/')
+            : corePath;
+
+        this.log(`Spawning Vibe process: ${effectiveCorePath} ${this.argsVibe.join(' ')}`);
+
+        this.processVibe = spawn(effectiveCorePath, this.argsVibe);
+        this.Process.vibeAuto = this.processVibe;
+
+        this.processVibe.stderr.on("data", (data) => this.dataOutVibe(data.toString()));
+        this.processVibe.stdout.on("data", (data) => this.dataOutVibe(data.toString()));
+        this.processVibe.on("close", (code) => {
+            this.log(`Vibe Auto process exited with code ${code}.`);
+            this.killVPN("vibeAuto");
+            this.offProxy();
+        });
+
+        await this.sleep(this.settingsALL.vibe.timeout);
+        for (let i = 0; i < 3 && !this.connected; i++) {
+            this.connected = !(await this.getIP_Ping()).filternet;
+            if (this.connected) break;
+            await this.sleep(1000);
+        }
+
+        if (!this.connected) {
+            this.log("Vibe Auto-connect failed after multiple checks.");
+            this.killVPN("vibeAuto");
+            this.offProxy();
+        }
+    }
+
+    connectFlex() {
+    }
+
+    connectGrid() {
+    }
+
+    resetArgs(core) {
+        if (core === "vibe") {
+            this.argsVibe = ["run", "--config"];
+            let vibeConfig = this.settings.vibe.config;
+            if (!vibeConfig.startsWith("http")) {
+                const vibeConfigPath = path.join(this.coresPath, "vibe", "config.txt");
+                writeFile(vibeConfigPath, vibeConfig);
+                vibeConfig = vibeConfigPath;
+            }
+            this.argsVibe.push(vibeConfig);
+
+            if (this.settingsALL.public.type === "tun") {
+                this.argsVibe.push("--tun");
+            } else {
+                this.argsVibe.push("--system-proxy");
+            }
+
+            if (this.settingsALL.vibe.hiddifyConfigJSON) {
+                const hiddifyConfigPath = path.join(this.coresPath, "vibe", "hiddify.json");
+                writeFile(hiddifyConfigPath, JSON.stringify(this.settingsALL.vibe.hiddifyConfigJSON));
+                this.argsVibe.push("--hiddify", hiddifyConfigPath);
+            }
+
+        } else if (core === "warp") {
+            this.argsWarp = [];
+            const warpSettings = this.settings.warp;
+
+            if (this.settingsALL.public.proxy !== "127.0.0.1:8086") {
+                this.argsWarp.push("--bind", this.settingsALL.public.proxy);
+            }
+            if (warpSettings.ipv === "IPV6") {
+                this.argsWarp.push("-6");
+            }
+            if (warpSettings.gool) {
+                this.argsWarp.push("--gool");
+            }
+            if (warpSettings.scan) {
+                this.argsWarp.push("--scan");
+                if (warpSettings.scanrtt) {
+                    this.argsWarp.push("--rtt", warpSettings.scanrtt || "1s");
+                }
+            }
+            if (warpSettings.endpoint) {
+                this.argsWarp.push("--endpoint", warpSettings.endpoint);
+            }
+            if (warpSettings.key) {
+                this.argsWarp.push("--key", warpSettings.key);
+            }
+            if (warpSettings.dns) {
+                this.argsWarp.push("--dns", warpSettings.dns);
+            }
+            if (warpSettings.cfon) {
+                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === "true" ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
+            }
+            if (this.settingsALL.public.type === "tun") {
+            }
+            if (warpSettings.reserved) {
+                this.argsWarp.push("--reserved", "0,0,0");
+            }
+            if (warpSettings.verbose) {
+                this.argsWarp.push("--verbose");
+            }
+            if (warpSettings.testUrl) {
+                this.argsWarp.push("--test-url", this.settingsALL.public.testUrl);
+            }
+        }
+    }
+
+    killVPN(core) {
+        this.log(`Disconnecting from: ${core}...`);
+        try {
+            if (core === "warpAuto" && this.processWarp) {
+                this.processWarp.kill();
+                this.processWarp = null;
+            } else if (core === "vibeAuto" && this.processVibe) {
+                this.processVibe.kill();
+                this.processVibe = null;
+            } else if (core === "gridAuto" && this.processGrid) {
+                this.processGrid.kill();
+                this.processGrid = null;
+            } else if (core === "flexAuto" && this.processFlex) {
+                this.processFlex.kill();
+                this.processFlex = null;
+            }
+            else if (core === "auto") {
+                try {
+                    this.processVibe.kill();
+                } catch { };
+                try {
+                    this.processWarp.kill();
+                } catch { };
+            }
+        } catch (error) {
+            this.log(`Error in killVPN for ${core}: ${error}`);
+        }
         this.status = false;
         this.connected = false;
-        window.reloadPing();
-    };
-    connectFailed(from = "start") {
+        if (typeof window !== 'undefined' && window.reloadPing) {
+            window.reloadPing();
+        }
+    }
 
-    };
-    DataoutVibe(data) {
-        this.LOGLOG(data);
-    };
-    DataoutWarp(data = "") {
-        this.LOGLOG(data);
-        data = data.toString();
-        if (data.includes("serving")) {
-            this.ReloadSettings();
+    dataOutVibe(data) {
+        this.log(`Vibe Output: ${data}`);
+        if (data.includes("CORE STARTED")) {
+            this.reloadSettings();
             this.connectedVPN("auto");
             this.connected = true;
-            this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
         }
-    };
-};
-class connect extends publicSet {
-    // Connects using custom mode(settings) or config mode
+    }
+
+    dataOutWarp(data) {
+        this.log(`Warp Output: ${data}`);
+        if (data.includes("serving")) {
+            this.reloadSettings();
+            this.connectedVPN("auto");
+            this.connected = true;
+            this.setupGrid(this.settingsALL.public.proxy, this.settingsALL.public.type, "socks5");
+        }
+    }
+}
+
+class Connect extends PublicSet {
     constructor() {
         super();
         this.processWarp = null;
@@ -771,202 +849,235 @@ class connect extends publicSet {
         this.argsFlex = [];
         this.argsGrid = [];
         this.argsGridSetup = [];
-        this.settings = this.settingsALL;
     }
-    importAuto() {
 
-    };
-    connect() {
-        this.ReloadSettings();
-        this.LOGLOG("", 'clear');
-        this.LOGLOG("starting connect... -> " + this.settingsALL["public"]["core"]);
-        if (this.settingsALL["public"]["core"] == 'warp') {
-            this.connectWarp();
+    importAuto() {
+    }
+
+    async connect() {
+        await this.reloadSettings();
+        this.log("", 'clear');
+        this.log(`Starting manual connection for: ${this.settingsALL.public.core}`);
+
+        switch (this.settingsALL.public.core) {
+            case 'warp':
+                await this.connectWarp();
+                break;
+            case 'flex':
+                await this.connectFlex();
+                break;
+            case 'grid':
+                await this.connectGrid();
+                break;
+            case 'vibe':
+            default:
+                await this.connectVibe();
+                break;
         }
-        else if (this.settingsALL["public"]["core"] == 'flex') {
-            this.connectFlex();
-        }
-        else if (this.settingsALL["public"]["core"] == 'grid') {
-            this.connectGrid();
-        }
-        else {
-            this.connectVibe();
-        };
-    };
+    }
+
     async connectWarp() {
-        this.ResetArgs('warp');
+        await this.resetArgs('warp');
         await this.sleep(1000);
-        this.LOGLOG(this.path.join(this.coresPath, "warp", this.addExt("warp-core")) + " " + this.argsWarp);
-        this.processWarp = spawn(this.path.join(this.coresPath, "warp", this.addExt("warp-core")), this.argsWarp);
-        this.processWarp.stderr.on("data", (data) => {
-            this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processWarp.stdout.on("data", (data) => {
-            this.DataoutWarp(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processWarp.on("close", () => {
+
+        const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
+        this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+
+        this.processWarp = spawn(corePath, this.argsWarp);
+        this.Process.warp = this.processWarp;
+
+        this.processWarp.stderr.on("data", (data) => this.dataOutWarp(data.toString()));
+        this.processWarp.stdout.on("data", (data) => this.dataOutWarp(data.toString()));
+        this.processWarp.on("close", (code) => {
+            this.log(`Warp process exited with code ${code}.`);
             this.killVPN("warp");
             this.notConnected("warp");
-            this.LOGLOG("warp closed!");
             this.offProxy();
         });
-        await this.sleep(this.settingsALL["warp"]["timeout"]);
+
+        await this.sleep(this.settingsALL.warp.timeout);
         if (!this.connected) {
+            this.log("Warp manual connection failed after timeout.");
             this.killVPN("warp");
-            this.LOGLOG("warp not connected!");
             this.notConnected("warp");
             this.offProxy();
-        };
-    };
+        }
+    }
+
     async connectVibe() {
-        await this.ResetArgs("vibe");
+        await this.resetArgs("vibe");
         await this.sleep(1000);
-        this.LOGLOG(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")) + " " + this.argsVibe);
-        this.processVibe = spawn(this.path.join(this.coresPath, "vibe", this.addExt("vibe-core")).replace("arm64", "amd64"), this.argsVibe);
-        this.processVibe.stderr.on("data", (data) => {
-            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processVibe.stdout.on("data", (data) => {
-            this.DataoutVibe(data instanceof Buffer ? data.toString() : data);
-        });
-        this.processVibe.on("close", () => {
+
+        const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
+        const effectiveCorePath = process.platform === 'darwin' && process.arch === 'arm64'
+            ? corePath.replace('/amd64/', '/arm64/')
+            : corePath;
+
+        this.log(`Spawning Vibe process: ${effectiveCorePath} ${this.argsVibe.join(' ')}`);
+
+        this.processVibe = spawn(effectiveCorePath, this.argsVibe);
+        this.Process.vibe = this.processVibe;
+
+        this.processVibe.stderr.on("data", (data) => this.dataOutVibe(data.toString()));
+        this.processVibe.stdout.on("data", (data) => this.dataOutVibe(data.toString()));
+        this.processVibe.on("close", (code) => {
+            this.log(`Vibe process exited with code ${code}.`);
             this.killVPN("vibe");
             this.notConnected("vibe");
-            this.LOGLOG("vibe closed!");
             this.offProxy();
         });
-        await this.sleep(this.settingsALL["vibe"]["timeout"]);
+
+        await this.sleep(this.settingsALL.vibe.timeout);
         if (!this.connected) {
+            this.log("Vibe manual connection failed after timeout.");
             this.killVPN("vibe");
-            this.LOGLOG("vibe not connected!");
             this.notConnected("vibe");
             this.offProxy();
-        };
-    };
-    connectFlex() {
+        }
+    }
+
+    async connectFlex() {
         return new Promise((resolve, reject) => {
+            this.log("Flex connection initiated (not yet implemented).");
+            reject(new Error("Flex connection not implemented."));
         });
     }
-    connectGrid() {
+
+    async connectGrid() {
         return new Promise((resolve, reject) => {
+            this.log("Grid connection initiated (not yet implemented).");
+            reject(new Error("Grid connection not implemented."));
         });
     }
-    async ResetArgs(core = "warp") {
-        this.ReloadSettings();
-        if (core == "warp") {
+
+    async resetArgs(core = "warp") {
+        await this.reloadSettings();
+        if (core === "warp") {
             this.argsWarp = [];
-            let settingWarp = this.settingsALL["warp"];
-            if (this.settingsALL["public"]["proxy"] != "127.0.0.1:8086") {
-                this.argsWarp.push("--bind");
-                this.argsWarp.push(this.settingsALL["public"]["proxy"]);
-            };
-            if (settingWarp["ipv"] == "IPV6") {
-                this.argsWarp.push("-6");
-            };
-            if (settingWarp["gool"]) {
-                this.argsWarp.push("--gool");
-            };
-            if (settingWarp["scan"]) {
-                this.argsWarp.push("--scan");
-                if (settingWarp["scanrtt"]) {
-                    this.argsWarp.push("--rtt");
-                    this.argsWarp.push(settingWarp["scanrtt"] ?? "1s");
-                }
-            };
-            if (settingWarp["endpoint"] != "") {
-                this.argsWarp.push("--endpoint");
-                this.argsWarp.push(settingWarp["endpoint"]);
-            };
-            if (settingWarp["key"]) {
-                this.argsWarp.push("--key");
-                this.argsWarp.push(settingWarp["key"]);
-            };
-            if (settingWarp["dns"]) {
-                this.argsWarp.push("--dns");
-                this.argsWarp.push(settingWarp["dns"]);
-            };
-            if (settingWarp["cfon"]) {
-                this.argsWarp.push("--cfon");
-                this.argsWarp.push("--country");
-                this.argsWarp.push(settingWarp["cfon"] == "true" ? this.Tools.getRandomCountryCode() : settingWarp["cfon"] );
-            };
-            if (this.settingsALL["public"]["type"] == "tun") {
-                this.argsWarp.push("");
-            };
-            if (settingWarp["reserved"]) {
-                this.argsWarp.push("--reserved");
-                this.argsWarp.push("0,0,0");
-            };
-            if (settingWarp["verbose"]) {
-                this.argsWarp.push("--verbose");
-            };
-            if (settingWarp["testUrl"]) {
-                this.argsWarp.push("--test-url");
-                this.argsWarp.push(this.settingsALL["public"]["testUrl"]);
-            };
-        }
-        else if (core == "vibe") {
-            this.argsVibe = [];
-            let settingVibe = this.settingsALL["vibe"];
-            this.argsVibe.push("run")
-            this.argsVibe.push("--config");
-            this.argsVibe.push(settingVibe["config"]);
-            if (this.settingsALL["public"]["type"] == "tun") {
-                this.argsVibe.push("--tun");
+            const warpSettings = this.settingsALL.warp;
+
+            if (this.settingsALL.public.proxy !== "127.0.0.1:8086") {
+                this.argsWarp.push("--bind", this.settingsALL.public.proxy);
             }
-            else {
+            if (warpSettings.ipv === "IPV6") {
+                this.argsWarp.push("-6");
+            }
+            if (warpSettings.gool) {
+                this.argsWarp.push("--gool");
+            }
+            if (warpSettings.scan) {
+                this.argsWarp.push("--scan");
+                if (warpSettings.scanrtt) {
+                    this.argsWarp.push("--rtt", warpSettings.scanrtt || "1s");
+                }
+            }
+            if (warpSettings.endpoint) {
+                this.argsWarp.push("--endpoint", warpSettings.endpoint);
+            }
+            if (warpSettings.key) {
+                this.argsWarp.push("--key", warpSettings.key);
+            }
+            if (warpSettings.dns) {
+                this.argsWarp.push("--dns", warpSettings.dns);
+            }
+            if (warpSettings.cfon) {
+                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === "true" ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
+            }
+            if (this.settingsALL.public.type === "tun") {
+            }
+            if (warpSettings.reserved) {
+                this.argsWarp.push("--reserved", "0,0,0");
+            }
+            if (warpSettings.verbose) {
+                this.argsWarp.push("--verbose");
+            }
+            if (warpSettings.testUrl) {
+                this.argsWarp.push("--test-url", this.settingsALL.public.testUrl);
+            }
+        }
+        else if (core === "vibe") {
+            this.argsVibe = ["run", "--config"];
+            let vibeConfig = this.settingsALL.vibe.config;
+            if (!vibeConfig.startsWith("http") && !vibeConfig.startsWith('"') && !vibeConfig.startsWith("'")) {
+                const vibeConfigPath = path.join(this.coresPath, "vibe", "config.txt");
+                writeFile(vibeConfigPath, vibeConfig);
+                vibeConfig = vibeConfigPath;
+            }
+            this.argsVibe.push(vibeConfig.replace(/^"|"$/g, '').replace(/^'|'$/g, ''));
+
+            if (this.settingsALL.public.type === "tun") {
+                this.argsVibe.push("--tun");
+            } else {
                 this.argsVibe.push("--system-proxy");
-            };
-            if (this.settingsALL["vibe"]["hiddifyConfigJSON"] != null) {
-                write_file(this.path.join(this.coresPath, "vibe", "hiddify.json"), JSON.stringify(this.settingsALL["vibe"]["hiddifyConfigJSON"]));
-                this.argsVibe.push("--hiddify");
-                this.argsVibe.push(this.path.join(this.coresPath, "vibe", "hiddify.json"));
-            };
+            }
+
+            if (this.settingsALL.vibe.hiddifyConfigJSON) {
+                const hiddifyConfigPath = path.join(this.coresPath, "vibe", "hiddify.json");
+                writeFile(hiddifyConfigPath, JSON.stringify(this.settingsALL.vibe.hiddifyConfigJSON));
+                this.argsVibe.push("--hiddify", hiddifyConfigPath);
+            }
         }
-    };
+    }
+
     saveSettings() {
-        super.saveSettings(this.settings);
-    };
-    ReloadSettings() {
-        super.ReloadSettings();
-    };
+        super.saveSettings(this.settingsALL);
+    }
+
+    reloadSettings() {
+        super.reloadSettings();
+    }
+
     killVPN(core) {
-        this.LOGLOG(`[Connection] Disconnecting from: ${core}...`);
+        this.log(`[Connection] Disconnecting from: ${core}...`);
         try {
-            core == "warp" ? this.processWarp.kill() : '';
-            core == "vibe" ? this.processVibe.kill() : '';
-            core == "grid" ? this.processGrid.kill() : '';
-            core == "flex" ? this.processFlex.kill() : '';
+            if (core === "warp" && this.processWarp) {
+                this.processWarp.kill();
+                this.processWarp = null;
+            } else if (core === "vibe" && this.processVibe) {
+                this.processVibe.kill();
+                this.processVibe = null;
+            } else if (core === "grid" && this.processGrid) {
+                this.processGrid.kill();
+                this.processGrid = null;
+            } else if (core === "flex" && this.processFlex) {
+                this.processFlex.kill();
+                this.processFlex = null;
+            }
+        } catch (error) {
+            this.log(`[VPN] Error in killVPN: ${error}`);
         }
-        catch (error) {
-            this.LOGLOG(`[VPN] Error in killVPN: ${error}`);
-        };
-        window.reloadPing();
-    };
-    DataoutWarp(data = "") {
-        this.LOGLOG(data);
-        data = data.toString();
+        if (typeof window !== 'undefined' && window.reloadPing) {
+            window.reloadPing();
+        }
+    }
+
+    dataOutWarp(data) {
+        this.log(`Warp Output: ${data}`);
         if (data.includes("serving")) {
-            this.ReloadSettings();
+            this.reloadSettings();
+            if (this.settingsALL.public.freedomLink) {
+                this.Tools.donateCONFIG(JSON.stringify(this.settingsALL.warp));
+            }
             this.connectedVPN("warp");
-            this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(JSON.stringify(this.settingsALL["warp"])) : ("");
             this.connected = true;
-            this.setupGrid(this.settingsALL["public"]["proxy"], this.settingsALL["public"]["type"], "socks5");
+            this.setupGrid(this.settingsALL.public.proxy, this.settingsALL.public.type, "socks5");
         }
-    };
-    async DataoutVibe(data = "") {
-        this.LOGLOG(data)
-        data = data.toString();
+    }
+
+    async dataOutVibe(data) {
+        this.log(`Vibe Output: ${data}`);
         if (data.includes("CORE STARTED")) {
-            this.ReloadSettings();
-            this.settingsALL["public"]["freedomLink"] ? this.Tools.donateCONFIG(this.settingsALL["vibe"]["config"]) : ("");
+            await this.reloadSettings();
+            if (this.settingsALL.public.freedomLink) {
+                this.Tools.donateCONFIG(this.settingsALL.vibe.config);
+            }
             this.connectedVPN("vibe");
             this.connected = true;
         }
-    };
-};
-class test extends publicSet { 
-    // Not ready - Intended for testing configurations in the servers list.
+    }
+}
+
+class Test extends PublicSet {
     constructor() {
         super();
         this.settings = {
@@ -974,62 +1085,73 @@ class test extends publicSet {
             "grid": {},
             "vibe": {},
             "warp": {},
-            "public": publicSet.settingsALL
+            "public": { ...this.settingsALL.public }
         };
     }
     testWarp() {
+        this.log("Testing Warp (not implemented).");
     }
     testVibe() {
+        this.log("Testing Vibe (not implemented).");
     }
     testFlex() {
+        this.log("Testing Flex (not implemented).");
     }
     testGrid() {
+        this.log("Testing Grid (not implemented).");
     }
     testAll() {
-    };
-};
-class Tools { 
-    // Tools -> Proxy off/on, set DNS, return OS, Donate config (freedom Link)
+        this.log("Testing all configurations (not implemented).");
+    }
+}
+
+class Tools {
     constructor() {
-        this.exec = require("child_process").exec;
+        this.exec = exec;
+        this.execSync = execSync;
         this.https = require('https');
-        this.Winreg = require("winreg");
+        this.Winreg = Winreg;
+
         this.coresPath = path.join(
-            __dirname.replace('app.asar', ''),
-            '..', '..',
-            'src', 'main', 'cores',
+            __dirname.includes('app.asar') ? __dirname.replace('app.asar', '') : __dirname,
+            '..', '..', 'src', 'main', 'cores',
             process.platform === 'darwin'
                 ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
-                : "/" + process.platform + "/"
+                : `/${process.platform}/`
         );
-    };
-    LOGLOG(text = "", type = 'log') {
-        if (type == "clear") {
-            window.LogLOG("", "clear");
-            console.clear();
-        }
-        else {
-            window.LogLOG(text);
+    }
+
+    log(text = "", type = 'log') {
+        if (typeof window !== 'undefined' && window.LogLOG) {
+            if (type === "clear") {
+                window.LogLOG("", "clear");
+                console.clear();
+            } else {
+                window.LogLOG(text);
+                console.log(text);
+            }
+        } else {
             console.log(text);
         }
-    };
-    setProxy(os, proxy) {
-        if (os == "win32") {
+    }
+
+    setProxy(osType, proxy) {
+        if (osType === "win32") {
             const setRegistryValue = (key, name, type, value) => {
                 return new Promise((resolve, reject) => {
                     key.get(name, (err, item) => {
-                        if (!err && item.value === String(value)) {
+                        if (!err && String(item?.value) === String(value)) {
                             return resolve();
                         }
-                        key.set(name, type, value, (err) => {
-                            if (err) reject(err);
+                        key.set(name, type, value, (setErr) => {
+                            if (setErr) reject(setErr);
                             else resolve();
                         });
                     });
                 });
             };
 
-            const setProxy = async (proxy) => {
+            const applyWindowsProxy = async () => {
                 const regKey = new this.Winreg({
                     hive: this.Winreg.HKCU,
                     key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
@@ -1041,216 +1163,156 @@ class Tools {
 
                     exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
                         if (error) {
-                            this.LOGLOG('❌ Error applying proxy settings:', error.message);
+                            this.log(`❌ Error applying proxy settings: ${error.message}`);
                         } else {
-                            this.LOGLOG('✅ Proxy settings applied successfully.');
+                            this.log('✅ Proxy settings applied successfully.');
                         }
                     });
-                    exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
+                    exec("taskkill /F /IM reg.exe", (killError) => {
                         if (killError) {
-                            this.LOGLOG(`Error killing reg.exe: ${killError.message}`);
-                            return;
+                            this.log(`Error killing reg.exe: ${killError.message}`);
+                        } else {
+                            this.log("All reg.exe processes closed.");
                         }
-                        this.LOGLOG("All reg.exe processes closed.");
                     });
-
                 } catch (error) {
-                    this.LOGLOG('❌ Error setting proxy:', error);
+                    this.log(`❌ Error setting proxy on Windows: ${error}`);
                 }
             };
+            applyWindowsProxy();
 
-            setProxy(proxy);
-
-        } else {
-            const exec = require('child_process').exec;
-
-            const setGnomeProxy = (proxy) => {
-                const [host, port] = proxy.split(':');
-
-                const commands = [
-                    `gsettings set org.gnome.system.proxy mode 'manual'`,
-                    `gsettings set org.gnome.system.proxy.http host ''`,
-                    `gsettings set org.gnome.system.proxy.http port 0`,
-                    `gsettings set org.gnome.system.proxy.https host ''`,
-                    `gsettings set org.gnome.system.proxy.https port 0`,
-                    `gsettings set org.gnome.system.proxy.ftp host ''`,
-                    `gsettings set org.gnome.system.proxy.ftp port 0`,
-                    `gsettings set org.gnome.system.proxy.socks host '${host}'`,
-                    `gsettings set org.gnome.system.proxy.socks port ${port}`
-                ];
-
-                commands.forEach(cmd => {
-                    exec(cmd, (err) => {
-                        if (err) {
-                            console.error(`Error executing: ${cmd}`, err);
-                        }
-                    });
-                });
-            };
-
-            const setKdeProxy = (proxy) => {
-                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 1`, (err) => {
-                    if (err) this.LOGLOG('Error setting KDE proxy mode:', err);
-                });
-                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'httpProxy' '${proxy}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting KDE proxy:', err);
-                });
-            };
-
-            const setXfceProxy = (proxy) => {
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyMode -s manual`, (err) => {
-                    if (err) this.LOGLOG('Error setting XFCE proxy mode:', err);
-                });
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPHost -s '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting XFCE proxy host:', err);
-                });
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyHTTPPort -s ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting XFCE proxy port:', err);
-                });
-            };
-
-            const setCinnamonProxy = (proxy) => {
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'manual'`, (err) => {
-                    if (err) this.LOGLOG('Error setting Cinnamon proxy mode:', err);
-                });
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting Cinnamon proxy host:', err);
-                });
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy.http port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting Cinnamon proxy port:', err);
-                });
-            };
-
-            const setMateProxy = (proxy) => {
-                exec(`gsettings set org.mate.system.proxy mode 'manual'`, (err) => {
-                    if (err) this.LOGLOG('Error setting MATE proxy mode:', err);
-                });
-                exec(`gsettings set org.mate.system.proxy.http host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting MATE proxy host:', err);
-                });
-                exec(`gsettings set org.mate.system.proxy.http port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting MATE proxy port:', err);
-                });
-            };
-
-            const setDeepinProxy = (proxy) => {
-                exec(`dconf write /system/proxy/mode "'manual'"`, (err) => {
-                    if (err) this.LOGLOG('Error setting Deepin proxy mode:', err);
-                });
-                exec(`dconf write /system/proxy/http/host "'${proxy.split(':')[0]}'"`, (err) => {
-                    if (err) this.LOGLOG('Error setting Deepin proxy host:', err);
-                });
-                exec(`dconf write /system/proxy/http/port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting Deepin proxy port:', err);
-                });
-            };
-            const setMinimalWMProxy = (proxy) => {
-                exec(`echo "export http_proxy='http://${proxy}'" >> ~/.xprofile`, (err) => {
-                    if (err) this.LOGLOG('Error setting proxy for minimal window managers:', err);
-                });
-                exec(`echo "export https_proxy='http://${proxy}'" >> ~/.xprofile`, (err) => {
-                    if (err) this.LOGLOG('Error setting HTTPS proxy:', err);
-                });
-            };
-
-            const setBudgieProxy = (proxy) => {
-                exec(`gsettings set com.solus-project.budgie-panel proxy-mode 'manual'`, (err) => {
-                    if (err) this.LOGLOG('Error setting Budgie proxy mode:', err);
-                });
-                exec(`gsettings set com.solus-project.budgie-panel proxy-host '${proxy.split(':')[0]}'`, (err) => {
-                    if (err) this.LOGLOG('Error setting Budgie proxy host:', err);
-                });
-                exec(`gsettings set com.solus-project.budgie-panel proxy-port ${proxy.split(':')[1]}`, (err) => {
-                    if (err) this.LOGLOG('Error setting Budgie proxy port:', err);
-                });
-            };
-
-            const setLXQtProxy = (proxy) => {
-                exec(`lxqt-config-session set /network/proxy mode manual`, (err) => {
-                    if (err) this.LOGLOG('Error setting LXQt proxy mode:', err);
-                });
-                exec(`lxqt-config-session set /network/proxy/http ${proxy}`, (err) => {
-                    if (err) this.LOGLOG('Error setting LXQt proxy:', err);
-                });
-            };
-
-            switch (os) {
-                case "GNOME":
-                    setGnomeProxy(proxy);
-                    break;
-                case "KDE":
-                    setKdeProxy(proxy);
-                    break;
-                case "XFCE":
-                    setXfceProxy(proxy);
-                    break;
-                case "CINNAMON":
-                    setCinnamonProxy(proxy);
-                    break;
-                case "MATE":
-                    setMateProxy(proxy);
-                    break;
-                case "DEEPIN":
-                    setDeepinProxy(proxy);
-                    break;
-                case "LXQT":
-                    setLXQtProxy(proxy);
-                    break;
-                case "BUDGIE":
-                    setBudgieProxy(proxy);
-                    break;
-                case "OPENBOX":
-                case "I3WM":
-                    setMinimalWMProxy(proxy);
-                    break;
-                case "macOS":
-                    setMacProxy(proxy);
-                    break;
-                default:
-                    this.LOGLOG('Unsupported OS or desktop environment');
-                    window.showMessageUI("[Proxy] Unsupported OS or desktop environment. You need to set the proxy manually. A SOCKS5 proxy has been created: " + proxy, 15000);
-            }
-
-            function setMacProxy(proxy) {
+        } else if (osType === "macOS") {
+            const setMacProxy = (proxyAddr) => {
                 exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {
                     if (err) {
-                        this.LOGLOG('Error retrieving network services on macOS:', err);
+                        this.log(`Error retrieving network services on macOS: ${err.message}`);
                         return;
                     }
                     const services = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
                     services.forEach(service => {
-                        exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxy \\"${service}\\" ${proxy.split(':')[0]} ${proxy.split(':')[1]}" with administrator privileges'`, (err) => {
-                            if (err) this.LOGLOG(`Error setting SOCKS5 proxy on ${service}:`, err);
-                            else this.LOGLOG(`[Proxy] SOCKS5 proxy set successfully on ${service}.`);
+                        exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxy \\"${service}\\" ${proxyAddr.split(':')[0]} ${proxyAddr.split(':')[1]}" with administrator privileges'`, (err) => {
+                            if (err) this.log(`Error setting SOCKS5 proxy on ${service}: ${err.message}`);
+                            else this.log(`[Proxy] SOCKS5 proxy set successfully on ${service}.`);
                         });
                         exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxystate \\"${service}\\" on" with administrator privileges'`, (err) => {
-                            if (err) this.LOGLOG(`Error enabling SOCKS5 proxy on ${service}:`, err);
-                            else this.LOGLOG(`[Proxy] SOCKS5 proxy enabled successfully on ${service}.`);
+                            if (err) this.log(`Error enabling SOCKS5 proxy on ${service}: ${err.message}`);
+                            else this.log(`[Proxy] SOCKS5 proxy enabled successfully on ${service}.`);
                         });
                     });
                 });
             }
-        };
-    };
-    offProxy(os) {
-        this.LOGLOG("[Proxy] Disabling proxy...");
+            setMacProxy(proxy);
+        } else {
+            const [host, port] = proxy.split(':');
+            const commands = {
+                "GNOME": [
+                    `gsettings set org.gnome.system.proxy mode 'manual'`,
+                    `gsettings set org.gnome.system.proxy.http host '${host}'`,
+                    `gsettings set org.gnome.system.proxy.http port ${port}`,
+                    `gsettings set org.gnome.system.proxy.https host '${host}'`,
+                    `gsettings set org.gnome.system.proxy.https port ${port}`,
+                    `gsettings set org.gnome.system.proxy.ftp host '${host}'`,
+                    `gsettings set org.gnome.system.proxy.ftp port ${port}`,
+                    `gsettings set org.gnome.system.proxy.socks host '${host}'`,
+                    `gsettings set org.gnome.system.proxy.socks port ${port}`
+                ],
+                "KDE": [
+                    `kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 1`,
+                    `kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'httpProxy' 'socks5://${proxy}'`,
+                    `kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'httpsProxy' 'socks5://${proxy}'`,
+                    `kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ftpProxy' 'socks5://${proxy}'`,
+                    `kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'socksProxy' 'socks5://${proxy}'`
+                ],
+                "XFCE": [
+                    `xfconf-query -c xfce4-session -p /general/ProxyMode -s manual`,
+                    `xfconf-query -c xfce4-session -p /general/ProxyHTTPHost -s '${host}'`,
+                    `xfconf-query -c xfce4-session -p /general/ProxyHTTPPort -s ${port}`,
+                    `xfconf-query -c xfce4-session -p /general/ProxyHTTPSHost -s '${host}'`,
+                    `xfconf-query -c xfce4-session -p /general/ProxyHTTPSPort -s ${port}`,
+                    `xfconf-query -c xfce4-session -p /general/ProxySocksHost -s '${host}'`,
+                    `xfconf-query -c xfce4-session -p /general/ProxySocksPort -s ${port}`
+                ],
+                "CINNAMON": [
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'manual'`,
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy.http host '${host}'`,
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy.http port ${port}`,
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy.https host '${host}'`,
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy.https port ${port}`,
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy.socks host '${host}'`,
+                    `gsettings set org.cinnamon.settings-daemon.plugins.proxy.socks port ${port}`
+                ],
+                "MATE": [
+                    `gsettings set org.mate.system.proxy mode 'manual'`,
+                    `gsettings set org.mate.system.proxy.http host '${host}'`,
+                    `gsettings set org.mate.system.proxy.http port ${port}`,
+                    `gsettings set org.mate.system.proxy.https host '${host}'`,
+                    `gsettings set org.mate.system.proxy.https port ${port}`,
+                    `gsettings set org.mate.system.proxy.socks host '${host}'`,
+                    `gsettings set org.mate.system.proxy.socks port ${port}`
+                ],
+                "DEEPIN": [
+                    `dconf write /system/proxy/mode "'manual'"`,
+                    `dconf write /system/proxy/http/host "'${host}'"`,
+                    `dconf write /system/proxy/http/port ${port}`,
+                    `dconf write /system/proxy/https/host "'${host}'"`,
+                    `dconf write /system/proxy/https/port ${port}`,
+                    `dconf write /system/proxy/socks/host "'${host}'"`,
+                    `dconf write /system/proxy/socks/port ${port}`
+                ],
+                "LXQT": [
+                    `lxqt-config-session set /network/proxy mode manual`,
+                    `lxqt-config-session set /network/proxy/http ${proxy}`,
+                    `lxqt-config-session set /network/proxy/https ${proxy}`,
+                    `lxqt-config-session set /network/proxy/socks ${proxy}`
+                ],
+                "BUDGIE": [
+                    `gsettings set com.solus-project.budgie-panel proxy-mode 'manual'`,
+                    `gsettings set com.solus-project.budgie-panel proxy-host '${host}'`,
+                    `gsettings set com.solus-project.budgie-panel proxy-port ${port}`
+                ],
+                "OPENBOX": [`echo "export http_proxy='http://${proxy}'" >> ~/.xprofile`, `echo "export https_proxy='http://${proxy}'" >> ~/.xprofile`, `echo "export all_proxy='socks5://${proxy}'" >> ~/.xprofile`],
+                "I3WM": [`echo "export http_proxy='http://${proxy}'" >> ~/.xprofile`, `echo "export https_proxy='http://${proxy}'" >> ~/.xprofile`, `echo "export all_proxy='socks5://${proxy}'" >> ~/.xprofile`]
+            };
 
-        if (os === "win32") {
+            const desktopCommands = commands[osType];
+            if (desktopCommands) {
+                desktopCommands.forEach(cmd => {
+                    exec(cmd, (err) => {
+                        if (err) {
+                            this.log(`Error executing proxy command for ${osType}: ${cmd} - ${err.message}`);
+                        } else {
+                            this.log(`Proxy command executed for ${osType}: ${cmd}`);
+                        }
+                    });
+                });
+            } else {
+                this.log(`Unsupported Linux desktop environment: ${osType}. Please set proxy manually.`);
+                if (typeof window !== 'undefined' && window.showMessageUI) {
+                    window.showMessageUI(`[Proxy] Unsupported Linux desktop environment (${osType}). You need to set the proxy manually. A SOCKS5 proxy has been created: ${proxy}`, 15000);
+                }
+            }
+        }
+    }
+
+    offProxy(osType) {
+        this.log("[Proxy] Disabling proxy...");
+
+        if (osType === "win32") {
             const setRegistryValue = (key, name, type, value) => {
                 return new Promise((resolve, reject) => {
                     key.get(name, (err, item) => {
-                        if (!err && item.value === String(value)) {
+                        if (!err && String(item?.value) === String(value)) {
                             return resolve();
                         }
-                        key.set(name, type, value, (err) => {
-                            if (err) reject(err);
+                        key.set(name, type, value, (setErr) => {
+                            if (setErr) reject(setErr);
                             else resolve();
                         });
                     });
                 });
             };
 
-            const setProxy = async () => {
+            const disableWindowsProxy = async () => {
                 const regKey = new this.Winreg({
                     hive: this.Winreg.HKCU,
                     key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
@@ -1258,194 +1320,162 @@ class Tools {
 
                 try {
                     await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, "127.0.0.1:8086");
+                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, "");
 
                     exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
                         if (error) {
-                            this.LOGLOG('❌ Error applying proxy settings:', error.message);
+                            this.log(`❌ Error applying proxy settings (disable): ${error.message}`);
                         } else {
-                            this.LOGLOG('✅ Proxy settings applied successfully.');
+                            this.log('✅ Proxy settings disabled successfully.');
                         }
                     });
-                    exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
+                    exec("taskkill /F /IM reg.exe", (killError) => {
                         if (killError) {
-                            this.LOGLOG(`Error killing reg.exe: ${killError.message}`);
-                            return;
+                            this.log(`Error killing reg.exe: ${killError.message}`);
+                        } else {
+                            this.log("All reg.exe processes closed.");
                         }
-                        this.LOGLOG("All reg.exe processes closed.");
                     });
-
                 } catch (error) {
-                    this.LOGLOG('❌ Error setting proxy:', error);
+                    this.log(`❌ Error disabling proxy on Windows: ${error}`);
                 }
             };
+            disableWindowsProxy();
 
-            setProxy();
-
-        } else if (os === "macOS") {
+        } else if (osType === "macOS") {
             const disableMacProxy = () => {
                 exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {
                     if (err) {
-                        this.LOGLOG('Error retrieving network services on macOS:', err);
+                        this.log(`Error retrieving network services on macOS (disable proxy): ${err.message}`);
                         return;
                     }
                     const services = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
                     services.forEach(service => {
                         exec(`osascript -e 'do shell script "networksetup -setsocksfirewallproxystate \\"${service}\\" off" with administrator privileges'`, (err) => {
-                            if (err) this.LOGLOG(`Error disabling SOCKS5 proxy on ${service}:`, err);
-                            else this.LOGLOG(`[Proxy] SOCKS5 proxy disabled successfully on ${service}.`);
+                            if (err) this.log(`Error disabling SOCKS5 proxy on ${service}: ${err.message}`);
+                            else this.log(`[Proxy] SOCKS5 proxy disabled successfully on ${service}.`);
+                        });
+                        exec(`osascript -e 'do shell script "networksetup -setwebproxystate \\"${service}\\" off" with administrator privileges'`, (err) => {
+                            if (err) this.log(`Error disabling HTTP proxy on ${service}: ${err.message}`);
+                        });
+                        exec(`osascript -e 'do shell script "networksetup -setsecurewebproxystate \\"${service}\\" off" with administrator privileges'`, (err) => {
+                            if (err) this.log(`Error disabling HTTPS proxy on ${service}: ${err.message}`);
                         });
                     });
                 });
             };
-
             disableMacProxy();
-
         } else {
-            const exec = require('child_process').exec;
+            const disableCommands = {
+                "GNOME": [`gsettings set org.gnome.system.proxy mode 'none'`],
+                "KDE": [`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 0`],
+                "XFCE": [`xfconf-query -c xfce4-session -p /general/ProxyMode -s none`],
+                "CINNAMON": [`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'none'`],
+                "MATE": [`gsettings set org.mate.system.proxy mode 'none'`],
+                "DEEPIN": [`dconf write /system/proxy/mode "'none'"`],
+                "LXQT": [`lxqt-config-session set /network/proxy mode none`],
+                "BUDGIE": [`gsettings set com.solus-project.budgie-panel proxy-mode 'none'`],
+                "OPENBOX": [`sed -i '/http_proxy/d' ~/.xprofile`, `sed -i '/https_proxy/d' ~/.xprofile`, `sed -i '/all_proxy/d' ~/.xprofile`],
+                "I3WM": [`sed -i '/http_proxy/d' ~/.xprofile`, `sed -i '/https_proxy/d' ~/.xprofile`, `sed -i '/all_proxy/d' ~/.xprofile`]
+            };
 
-            const disableGnomeProxy = () => {
-                exec(`gsettings set org.gnome.system.proxy mode 'none'`, (err) => {
-                    if (err) this.LOGLOG('Error disabling GNOME proxy:', err);
-                    else this.LOGLOG("[Proxy] Proxy disabled successfully on GNOME.");
+            const desktopCommands = disableCommands[osType];
+            if (desktopCommands) {
+                desktopCommands.forEach(cmd => {
+                    exec(cmd, (err) => {
+                        if (err) {
+                            this.log(`Error executing proxy disable command for ${osType}: ${cmd} - ${err.message}`);
+                        } else {
+                            this.log(`Proxy disabled successfully on ${osType}.`);
+                        }
+                    });
                 });
-            };
+            } else {
+                this.log(`[Proxy] Unsupported OS or desktop environment for automatic proxy disable: ${osType}`);
+                if (typeof window !== 'undefined' && window.showMessageUI) {
+                    window.showMessageUI(`[Proxy] Your OS or desktop environment (${osType}) isn't supported for automatic proxy disabling. You'll need to disable the proxy manually.`, 15000);
+                }
+            }
+        }
+    }
 
-            const disableKdeProxy = () => {
-                exec(`kwriteconfig5 --file kioslaverc --group 'Proxy Settings' --key 'ProxyType' 0`, (err) => {
-                    if (err) this.LOGLOG('Error disabling KDE proxy:', err);
-                    else this.LOGLOG("[Proxy] Proxy disabled successfully on KDE.");
-                });
-            };
-
-            const disableXfceProxy = () => {
-                exec(`xfconf-query -c xfce4-session -p /general/ProxyMode -s none`, (err) => {
-                    if (err) this.LOGLOG('Error disabling XFCE proxy:', err);
-                    else this.LOGLOG("[Proxy] Proxy disabled successfully on XFCE.");
-                });
-            };
-
-            const disableCinnamonProxy = () => {
-                exec(`gsettings set org.cinnamon.settings-daemon.plugins.proxy mode 'none'`, (err) => {
-                    if (err) this.LOGLOG('Error disabling Cinnamon proxy:', err);
-                    else this.LOGLOG("[Proxy] Proxy disabled successfully on Cinnamon.");
-                });
-            };
-
-            const disableMateProxy = () => {
-                exec(`gsettings set org.mate.system.proxy mode 'none'`, (err) => {
-                    if (err) this.LOGLOG('Error disabling MATE proxy:', err);
-                    else this.LOGLOG("[Proxy] Proxy disabled successfully on MATE.");
-                });
-            };
-
-            switch (os) {
-                case "GNOME":
-                    disableGnomeProxy();
-                    break;
-                case "KDE":
-                    disableKdeProxy();
-                    break;
-                case "XFCE":
-                    disableXfceProxy();
-                    break;
-                case "CINNAMON":
-                    disableCinnamonProxy();
-                    break;
-                case "MATE":
-                    disableMateProxy();
-                    break;
-                default:
-                    this.LOGLOG('[Proxy] Unsupported OS or desktop environment');
-                    window.showMessageUI("[Proxy] Your OS or desktop environment isn't supported. You'll need to disable the proxy manually.", 15000);
-            };
-        };
-    };
-    setDNS(dns1, dns2, os) {
-        const exec = require('child_process').exec;
-        const setWindowsDNS = (dns1, dns2) => {
-            this.LOGLOG(`[DNS] Setting DNS for Windows: Primary -> ${dns1}, Secondary -> ${dns2}`);
-
+    setDNS(dns1, dns2, osType) {
+        if (osType === "win32") {
+            this.log(`[DNS] Setting DNS for Windows: Primary -> ${dns1}, Secondary -> ${dns2 || 'None'}`);
             exec(`netsh interface show interface`, (err, stdout) => {
                 if (err) {
-                    this.LOGLOG('Error retrieving interfaces on Windows:', err);
+                    this.log(`Error retrieving interfaces on Windows: ${err.message}`);
                     return;
                 }
-
                 const interfaces = stdout
                     .split('\n')
                     .slice(3)
                     .map(line => line.trim().match(/(?:\S+\s+){3}(.+)/))
-                    .filter(match => match)
-                    .map(match => match[1]);
+                    .filter(match => match && match[1])
+                    .map(match => match[1].replace(/\r$/, ''));
 
                 interfaces.forEach(iface => {
-                    if (!iface) return;
-
-                    exec(`netsh interface ip set dns "${iface}" static ${dns1}`, (err) => {
-                        if (err) this.LOGLOG(`Error setting primary DNS on ${iface}: ${err.message}`);
-                        else this.LOGLOG(`Primary DNS set on ${iface}`);
+                    exec(`netsh interface ip set dns "${iface}" static ${dns1} primary`, (err) => {
+                        if (err) this.log(`Error setting primary DNS on ${iface}: ${err.message}`);
+                        else this.log(`Primary DNS set on ${iface}`);
                     });
 
                     if (dns2) {
                         exec(`netsh interface ip add dns "${iface}" ${dns2} index=2`, (err) => {
-                            if (err) this.LOGLOG(`Error setting secondary DNS on ${iface}: ${err.message}`);
-                            else this.LOGLOG(`Secondary DNS set on ${iface}`);
+                            if (err) this.log(`Error setting secondary DNS on ${iface}: ${err.message}`);
+                            else this.log(`Secondary DNS set on ${iface}`);
+                        });
+                    } else {
+                        exec(`netsh interface ip delete dns "${iface}" ${dns1} all`, (err) => {
+                            if (err) this.log(`Error clearing DNS on ${iface}: ${err.message}`);
+                        });
+                        exec(`netsh interface ip set dns "${iface}" static ${dns1} primary`, (err) => {
+                            if (err) this.log(`Error resetting primary DNS on ${iface}: ${err.message}`);
                         });
                     }
                 });
             });
-        };
-        const setLinuxDNS = (dns1, dns2) => {
+        } else if (osType === "darwin") {
+            exec(`networksetup -listallnetworkservices`, (err, stdout) => {
+                if (err) {
+                    this.log(`Error retrieving interfaces on macOS: ${err.message}`);
+                    return;
+                }
+                const services = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
+                services.forEach(service => {
+                    exec(`networksetup -setdnsservers "${service}" ${dns1} ${dns2 || 'Empty'}`, (err) => {
+                        if (err) this.log(`Error setting DNS on ${service}: ${err.message}`);
+                        else this.log(`DNS set on ${service}.`);
+                    });
+                });
+            });
+        } else {
             exec(`nmcli device status | awk '{print $1}' | tail -n +2`, (err, stdout) => {
                 if (err) {
-                    this.LOGLOG('Error retrieving interfaces on Linux:', err);
+                    this.log(`Error retrieving interfaces on Linux: ${err.message}`);
                     return;
                 }
                 const interfaces = stdout.split('\n').filter(iface => iface.trim());
                 interfaces.forEach(iface => {
-                    exec(`nmcli con mod ${iface} ipv4.dns "${dns1} ${dns2 || ''}"`, (err) => {
-                        if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
+                    const dnsServers = [dns1, dns2].filter(Boolean).join(' ');
+                    exec(`nmcli con mod ${iface} ipv4.dns "${dnsServers}"`, (err) => {
+                        if (err) this.log(`Error setting DNS on ${iface}: ${err.message}`);
+                        else this.log(`DNS set for ${iface}.`);
                     });
                     exec(`nmcli con up ${iface}`, (err) => {
-                        if (err) this.LOGLOG(`Error applying DNS settings on ${iface}:`, err);
+                        if (err) this.log(`Error applying DNS settings on ${iface}: ${err.message}`);
                     });
                 });
             });
-        };
-
-        const setMacDNS = (dns1, dns2) => {
-            exec(`networksetup -listallnetworkservices`, (err, stdout) => {
-                if (err) {
-                    this.LOGLOG('Error retrieving interfaces on macOS:', err);
-                    return;
-                }
-                const interfaces = stdout.split('\n').slice(1);
-                interfaces.forEach(iface => {
-                    exec(`networksetup -setdnsservers "${iface}" ${dns1} ${dns2 || ''}`, (err) => {
-                        if (err) this.LOGLOG(`Error setting DNS on ${iface}:`, err);
-                    });
-                });
-            });
-        };
-
-        switch (os) {
-            case "win32":
-                setWindowsDNS(dns1, dns2);
-                break;
-            case "darwin":
-                setMacDNS(dns1, dns2);
-                break;
-            default:
-                setLinuxDNS(dns1, dns2);
-                break;
         }
-    };
+    }
+
     getRandomCountryCode() {
         const countryCodes = ["AT", "AU", "BE", "BG", "CA", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "HR", "HU", "IE", "IN", "IT", "JP", "LV", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SG", "SK", "US"];
         const randomIndex = Math.floor(Math.random() * countryCodes.length);
         return countryCodes[randomIndex];
-    };
+    }
+
     returnOS() {
         const platform = process.platform;
 
@@ -1459,43 +1489,42 @@ class Tools {
 
         if (platform === "linux") {
             try {
-                const sessionBins = execSync("ls /usr/bin/*session", { stdio: "pipe" }).toString().toLowerCase();
+                const desktopEnv = process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION;
+                if (desktopEnv) {
+                    if (desktopEnv.includes("GNOME")) return "GNOME";
+                    if (desktopEnv.includes("KDE")) return "KDE";
+                    if (desktopEnv.includes("XFCE")) return "XFCE";
+                    if (desktopEnv.includes("Cinnamon")) return "CINNAMON";
+                    if (desktopEnv.includes("MATE")) return "MATE";
+                    if (desktopEnv.includes("LXQt")) return "LXQT";
+                    if (desktopEnv.includes("Budgie")) return "BUDGIE";
+                    if (desktopEnv.includes("Deepin")) return "DEEPIN";
+                    if (desktopEnv.includes("Pantheon")) return "PANTHEON";
+                    if (desktopEnv.includes("Trinity")) return "TRINITY";
+                }
 
-                if (sessionBins.includes("gnome-session")) return "GNOME";
-                if (sessionBins.includes("kde-session")) return "KDE";
-                if (sessionBins.includes("xfce4-session")) return "XFCE";
-                if (sessionBins.includes("cinnamon-session")) return "CINNAMON";
-                if (sessionBins.includes("mate-session")) return "MATE";
-                if (sessionBins.includes("lxqt-session")) return "LXQT";
-                if (sessionBins.includes("budgie-session")) return "BUDGIE";
-                if (sessionBins.includes("deepin-session")) return "DEEPIN";
-                if (sessionBins.includes("enlightenment_start")) return "ENLIGHTENMENT";
-                if (sessionBins.includes("pantheon-session")) return "PANTHEON";
-                if (sessionBins.includes("trinity-session")) return "TRINITY";
-            } catch (err) { }
-
-            try {
-                const runningProcesses = execSync("ps aux").toString().toLowerCase();
+                const runningProcesses = this.execSync("ps aux").toString().toLowerCase();
                 if (runningProcesses.includes("i3")) return "I3WM";
                 if (runningProcesses.includes("openbox")) return "OPENBOX";
-            } catch (err) { }
 
+            } catch (err) {
+                this.log(`Error detecting Linux desktop environment: ${err.message}`);
+            }
             return "linux-unknown";
         }
 
         return "unknown";
-    };
+    }
+
     async downloadFile(url, destPath) {
         return new Promise((resolve, reject) => {
             const file = fs.createWriteStream(destPath);
             const request = this.https.get(url, (response) => {
                 if (response.statusCode !== 200) {
-                    reject(new Error(`Failed to get '${url}' (${response.statusCode})`));
+                    reject(new Error(`Failed to download '${url}'. Status: ${response.statusCode}`));
                     return;
                 }
-
                 response.pipe(file);
-
                 file.on("finish", () => {
                     file.close(() => {
                         fs.chmodSync(destPath, 0o755);
@@ -1503,45 +1532,61 @@ class Tools {
                     });
                 });
             });
-
             request.on("error", (err) => {
                 fs.unlink(destPath, () => reject(err));
             });
-
             file.on("error", (err) => {
                 fs.unlink(destPath, () => reject(err));
             });
         });
-    };
+    }
+
     async fetchAndInstallCores() {
+        const platformBaseURL = process.platform === "darwin"
+            ? (process.arch === 'arm64' ? 'mac/arm64' : 'mac/amd64')
+            : process.platform;
+        const baseURL = `https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/main/cores/${platformBaseURL}`;
 
-        const baseURL = "https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/refs/heads/main/src/main/cores/" + process.platform;
-        const destDir = process.platform == "win32" ? this.coresPath : getConfigPath();
+        const destDir = getConfigPath();
 
-        const vibePath = path.join(destDir, "vibe", "vibe-core");
-        const warpPath = path.join(destDir, "warp", "warp-core");
+        const vibeDestPath = path.join(destDir, "vibe", this.addExt("vibe-core"));
+        const warpDestPath = path.join(destDir, "warp", this.addExt("warp-core"));
 
-        const vibeURL = `${baseURL}/vibe/vibe-core`;
-        const warpURL = `${baseURL}/warp/warp-core`;
+        const vibeURL = `${baseURL}/vibe/${this.addExt("vibe-core")}`;
+        const warpURL = `${baseURL}/warp/${this.addExt("warp-core")}`;
 
         try {
-            if (!fs.existsSync(path.dirname(vibePath))) fs.mkdirSync(path.dirname(vibePath), { recursive: true });
-            if (!fs.existsSync(path.dirname(warpPath))) fs.mkdirSync(path.dirname(warpPath), { recursive: true });
+            fs.mkdirSync(path.dirname(vibeDestPath), { recursive: true });
+            fs.mkdirSync(path.dirname(warpDestPath), { recursive: true });
 
-            window.showMessageUI("📥 Downloading warp-core...");
-            await this.downloadFile(warpURL, warpPath);
+            if (typeof window !== 'undefined' && window.showMessageUI) {
+                window.showMessageUI("📥 Downloading warp-core...");
+            }
+            await this.downloadFile(warpURL, warpDestPath);
 
-            window.showMessageUI("📥 Downloading vibe-core...", 7500);
-            await this.downloadFile(vibeURL, vibePath);
+            if (typeof window !== 'undefined' && window.showMessageUI) {
+                window.showMessageUI("📥 Downloading vibe-core...", 7500);
+            }
+            await this.downloadFile(vibeURL, vibeDestPath);
 
-            window.showMessageUI("✅ Core files installed successfully.");
+            if (typeof window !== 'undefined' && window.showMessageUI) {
+                window.showMessageUI("✅ Core files installed successfully.");
+            }
         } catch (err) {
-            window.showMessageUI("❌ Error downloading core files: \n" + err.message);
+            this.log(`❌ Error downloading core files: ${err.message}`);
+            if (typeof window !== 'undefined' && window.showMessageUI) {
+                window.showMessageUI(`❌ Error downloading core files: \n${err.message}`);
+            }
         }
-    };
-    donateCONFIG(config) {
-        window.donateCONFIG(config);
-    };
-};
+    }
 
-module.exports = { connect, connectAuto, test, publicSet, Tools };
+    donateCONFIG(config) {
+        if (typeof window !== 'undefined' && window.donateCONFIG) {
+            window.donateCONFIG(config);
+        } else {
+            this.log("window.donateCONFIG is not defined.");
+        }
+    }
+}
+
+module.exports = { Connect, ConnectAuto, Test, PublicSet, Tools };

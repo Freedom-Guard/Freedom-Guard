@@ -13,6 +13,7 @@
     "freedom_link": "Freedom 链接（连接后通过共享您的配置支持他人）",
     "auto-mode": "自动模式",
     "your_isp": "您的 ISP",
+    "quick_connect": "快速连接",
     "options": "选项",
     "config_freedom_guard": "配置",
     "import": "导入",
@@ -69,5 +70,6 @@
     "copied": "复制操作已成功完成！🎉📋",
     "docs_fg": "Freedom Guard 文档",
     "repo_fg": "Freedom Guard GitHub 仓库",
+    "theme-selection": "主题选择",
     "tool_box": "工具箱"
 }

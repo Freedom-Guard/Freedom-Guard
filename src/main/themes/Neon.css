@@ -1,0 +1,109 @@
+/* Neon Mode */
+:root {
+    /* Primary Colors */
+    --primary-brand-color: #ff00ff;
+    --primary-brand-hover: #cc00cc;
+    --secondary-brand-color: #00ffff;
+    --accent-color: #ffff00;
+
+    /* Neutral Colors */
+    --background-dark: #100010;
+    --text-light: #ffffff;
+    --text-muted: #e0e0e0;
+    --icon-color: #ffffff;
+
+    /* Glassmorphism/Transparency */
+    --glass-background: rgba(50, 0, 50, 0.3);
+    --glass-border: rgba(255, 0, 255, 0.2);
+    --glass-shadow: rgba(255, 0, 255, 0.3);
+    --glass-item-background: rgba(255, 0, 255, 0.05);
+    --glass-item-border: rgba(255, 0, 255, 0.1);
+    --glass-item-hover: rgba(255, 0, 255, 0.15);
+    --dark-glass-background: linear-gradient(145deg, rgba(10, 0, 10, 0.8), rgba(30, 0, 30, 0.6));
+    --dark-glass-border: rgba(255, 0, 255, 0.15);
+
+    /* Danger Colors */
+    --danger-color: #ff6600;
+    --danger-hover: #cc5200;
+
+    /* Backgrounds */
+    --body-background: linear-gradient(145deg, #0a0a0a, #330033, #660066, #990099, #cc00cc, #ff00ff), black;
+    --connect-button-background: linear-gradient(135deg, #200020, #100010);
+    --connected-button-background: linear-gradient(135deg, #00ffcc, #009999);
+    --connected-button-hover-background: linear-gradient(135deg, #00ffff, #009999);
+    --connecting-button-shadow: rgba(255, 0, 255, 0.5);
+    --ip-ping-background: rgba(50, 0, 50, 0.6);
+    --setting-background: linear-gradient(135deg, #050005, #100010);
+    --menu-background: linear-gradient(145deg, rgba(25, 0, 25, 0.85), rgba(30, 0, 30, 0.85));
+    --menu-item-background: linear-gradient(145deg, rgba(45, 0, 45, 0.6), rgba(35, 0, 35, 0.8));
+    --menu-item-hover-background: linear-gradient(145deg, rgba(60, 0, 60, 0.8), rgba(50, 0, 50, 0.9));
+    --log-background: rgba(0, 0, 0, 0.9);
+    --log-item-background: rgba(0, 255, 255, 0.05);
+    --log-text-color: #00ffff;
+    --log-button-hover: #00ffff;
+    --log-command-background: rgba(0, 255, 255, 0.05);
+    --modal-background: #150015;
+    --prompt-background: #100010;
+    --prompt-content-background: #200020;
+    --button-default-background: #100010;
+    --dropdown-background: #100010;
+    --dropdown-hover-background: rgba(255, 0, 255, 0.5);
+    --select-background: #100010;
+    --select-hover-background: #150015;
+    --select-focus-background: #200020;
+    --select-option-background: #100010;
+    --select-option-hover-background: #150015;
+    --switch-off-background: #1a0a1a;
+    --switch-on-background: #00ffff;
+    --switch-thumb-off: linear-gradient(145deg, #ff00ff, #cc00cc);
+    --switch-thumb-on: #ffffff;
+
+    /* Shadows and Borders */
+    --box-shadow-medium: 0px 4px 20px rgba(255, 0, 255, 0.2);
+    --border-radius-default: 8px;
+    --header-button-hover-color: var(--primary-brand-color);
+    --connected-box-shadow: inset 0 2px 4px rgba(255, 0, 255, 0.1), 0 20px 50px rgba(255, 0, 255, 0.3);
+    --connected-item-hover-shadow: 0 4px 12px rgba(255, 0, 255, 0.2);
+    --change-status-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    --change-status-hover-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+    --change-status-connected-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
+    --server-select-shadow: 0 8px 20px rgba(255, 0, 255, 0.3);
+    --server-select-border-hover: rgba(255, 0, 255, 0.4);
+    --server-flag-border: rgba(255, 0, 255, 0.2);
+    --server-flag-hover-border: rgba(255, 0, 255, 0.4);
+    --server-flag-hover-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+    --server-mini-shadow: 0 4px 10px rgba(255, 0, 255, 0.25);
+    --server-mini-border: rgba(255, 0, 255, 0.15);
+    --setting-shadow: -10px 0 30px rgba(255, 0, 255, 0.6);
+    --setting-border-left: rgba(255, 0, 255, 0.08);
+    --setting-heading-shadow: 0px 0px 8px rgba(255, 0, 255, 0.5);
+    --setting-heading-line: var(--primary-brand-color);
+    --setting-button-shadow: 0 4px 10px rgba(255, 0, 255, 0.3);
+    --setting-button-hover-shadow: 0 6px 14px rgba(255, 0, 255, 0.4);
+    --content-image-border: #ff00ff;
+    --content-image-border-image: linear-gradient(45deg, #660066, #990099, #ff00ff) 1;
+    --content-image-shadow: 0px 0px 30px 6px rgba(255, 0, 255, 0.5);
+    --content-image-hover-shadow: 0px 0px 35px 7px rgba(255, 0, 255, 0.6);
+    --content-image-background: rgba(44, 0, 44, 0.2);
+    --log-background: rgba(0, 0, 0, 0.9);
+    --log-item-background: rgba(0, 255, 255, 0.05);
+    --log-text-color: #00ffff;
+    --log-button-hover: #00ffff;
+    --log-command-background: rgba(0, 255, 255, 0.05);
+    --log-command-border: #00ffff;
+    --log-command-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+    --message-shadow: 0px 5px 15px rgba(255, 0, 255, 0.2);
+    --prompt-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+    --button-shadow: 0 4px 10px rgba(255, 0, 255, 0.3);
+    --select-shadow: 0 4px 12px rgba(255, 0, 255, 0.25);
+    --select-hover-shadow: 0 6px 16px rgba(255, 0, 255, 0.3);
+    --select-focus-shadow: 0 0 5px 2px var(--primary-brand-color);
+    --dropdown-shadow: 0px 8px 16px rgba(255, 0, 255, 0.5);
+    --input-border: #ff00ff;
+    --switch-border: rgba(255, 0, 255, 0.15);
+    --switch-thumb-shadow: 2px 2px 5px rgba(255, 0, 255, 0.2);
+    --switch-checked-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+
+    /* Spacing */
+    --default-padding: 20px;
+}

@@ -13,6 +13,7 @@
     "freedom_link": "Freedom Bağlantısı (Bağlantıdan sonra yapılandırmanızı paylaşarak başkalarına destek olun)",
     "auto-mode": "Otomatik Mod",
     "your_isp": "İnternet Servis Sağlayıcınız",
+    "quick_connect": "Hızlı Bağlantı",
     "options": "Seçenekler",
     "config_freedom_guard": "Yapılandırma",
     "import": "İçe Aktar",
@@ -69,5 +70,6 @@
     "copied": "Kopyalama işlemi başarıyla tamamlandı! 🎉📋",
     "docs_fg": "Freedom Guard Dokümantasyonu",
     "repo_fg": "Freedom Guard GitHub Deposu",
+    "theme-selection": "Tema Seçimi",
     "tool_box": "Araç Kutusu"
 }

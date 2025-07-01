@@ -3,7 +3,7 @@ const { ipcRenderer, dialog, shell, clipboard } = require('electron');
 const { remote } = require('electron');
 const { path } = require('path');
 const { readFileSync } = require('fs');
-const { connect, connectAuto, test, publicSet, Tools } = require('../components/connect');
+const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 const $ = require('jquery');
 require("jquery.easing");
 const { count } = require('console');
@@ -32,7 +32,7 @@ window.LogLOG = (log = "", type = "info", ac = "text") => {
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
     $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
 };
-window.diconnectedUI = () => {
+window.disconnectedUI = () => {
     $("#ChangeStatus").removeClass("connecting");
     mainSTA.publicSet.status = false;
     mainSTA.publicSet.connected = false;
@@ -69,8 +69,8 @@ window.donateCONFIG = async (config) => {
         })
     })
         .then(response => response.json())
-        .then(data => mainSTA.publicSet.LOGLOG("✅ کانفیگ با موفقیت اهدا شد" + JSON.stringify(data), "showmess"))
-        .catch(error => mainSTA.publicSet.LOGLOG("❌ کانفیگ اهدا نشد:" + error, "showmess"));
+        .then(data => mainSTA.publicSet.log("✅ کانفیگ با موفقیت اهدا شد" + JSON.stringify(data), "showmess"))
+        .catch(error => mainSTA.publicSet.log("❌ کانفیگ اهدا نشد:" + error, "showmess"));
 
 };
 window.setHTML = (selector, text) => {
@@ -83,16 +83,16 @@ window.setATTR = (selector, attr, value) => {
 // #region main/classes
 class main {
     constructor() {
-        this.connect = new connect();
-        this.connectAuto = new connectAuto();
-        this.test = new test();
+        this.connect = new Connect();
+        this.connectAuto = new ConnectAuto();
+        this.test = new Test();
         this.path = require("path");
         this.axios = require("axios");
-        this.publicSet = new publicSet();
+        this.publicSet = new PublicSet();
         this.Tools = new Tools();
     };
     init = async () => {
-        this.publicSet.LOGLOG("App Started");
+        this.publicSet.log("App Started");
         await this.loading();
         this.addEvents();
         this.setSettings();
@@ -101,6 +101,7 @@ class main {
         this.publicSet.startINIT();
         this.checkUPDATE();
         this.loadLang();
+        this.loadTheme();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -147,13 +148,18 @@ class main {
             window.showModal(response.data["messText"], response.data["url"]);
         };
     };
-    connectVPN() {};
-    killVPN() {};
-    onConnect() {};
-    async loadBox() {}
+    connectVPN() { };
+    killVPN() { };
+    onConnect() { };
+    async loadBox() { }
+    async loadTheme() {
+        this.publicSet.reloadSettings();
+        let theme = this.publicSet.settingsALL["public"]["theme"] ?? "Dark";
+        $("#theme-css").attr("href", "./themes/" + theme + ".css");
+    }
     async loadLang() {
         // Load lang -> set HTML with key, json
-        this.publicSet.ReloadSettings();
+        this.publicSet.reloadSettings();
         let lang = this.publicSet.settingsALL["public"]["lang"];
         const response = await fetch(`../components/locales/${lang}.json`);
         const translations = await response.json();
@@ -185,7 +191,7 @@ class main {
             this.openLink(href);
         });
     };
-    async isAdmin() {};
+    async isAdmin() { };
     openLink(href) {
         shell.openExternal(href);
     };
@@ -207,7 +213,7 @@ class main {
         });
         $("#selector-dns").on("change", () => {
             const dnsValues = $("#selector-dns").val().split(",");
-            $("#dns1-text").val(dnsValues[0]); 
+            $("#dns1-text").val(dnsValues[0]);
             $("#dns2-text").val(dnsValues[1]);
         });
         $("#submit-donate-config").on("click", () => {
@@ -268,7 +274,7 @@ class main {
             window.LogLOG("", "clear");
         });
         $("#CopyLogs").on("click", () => {
-            this.publicSet.ReloadSettings();
+            this.publicSet.reloadSettings();
             let logs = LOGS.join("\n");
             logs += "\n ISP:" + this.publicSet.settingsALL["public"]["isp"] + " \n CORE:" + this.publicSet.settingsALL["public"]["core"];
             navigator.clipboard.writeText(logs);
@@ -282,6 +288,7 @@ class main {
             this.publicSet.offProxy();
             this.setPingBox();
             window.showMessageUI(this.publicSet.settingsALL["lang"]["killed_services"]);
+            window.disconnectedUI();
         });
         $("#menu-tool-box").on("click", () => {
             this.showToolBox();
@@ -302,7 +309,7 @@ class main {
             window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["core"] + " Server + Customized"));
         });
         $("#export-config").on("click", async () => {
-            this.publicSet.ReloadSettings();
+            this.publicSet.reloadSettings();
             ipcRenderer.send("export-settings", JSON.stringify(this.publicSet.settingsALL));
             ipcRenderer.on("save-status", (event, status) => {
                 if (status === "success") {
@@ -386,6 +393,11 @@ class main {
             window.showMessageUI(this.publicSet.settingsALL["lang"]["mess-change-lang"], 5000);
             this.loadLang();
         });
+        $("#theme-app-value").on("change", () => {
+            this.publicSet.settingsALL["public"]["theme"] = $("#theme-app-value").val();
+            this.publicSet.saveSettings();
+            this.loadTheme();
+        });
         $("#conn-test-text").on('input', () => {
             this.publicSet.settingsALL["public"]["testUrl"] = $("#conn-test-text").val(); this.publicSet.saveSettings();
         });
@@ -413,6 +425,10 @@ class main {
             this.publicSet.settingsALL["public"]["freedomLink"] = !this.publicSet.settingsALL["public"]["freedomLink"]
             this.publicSet.saveSettings();
         });
+        $("#quick-connect-status").on("click", () => {
+            this.publicSet.settingsALL["public"]["quickConnect"] = !this.publicSet.settingsALL["public"]["quickConnect"]
+            this.publicSet.saveSettings();
+        });
     };
     addEventSect(core) {
         // Add Event for sect settings
@@ -427,7 +443,7 @@ class main {
                     const version = this.publicSet.settingsALL["warp"]["ipv"].toLowerCase() ?? "ipv4";
                     const ipList = version === "ipv6" ? ipData.ipv6 : ipData.ipv4;
                     if (ipList.length === 0) {
-                        this.publicSet.LOGLOG("No available endpoints for the selected IP version.");
+                        this.publicSet.log("No available endpoints for the selected IP version.");
                         return;
                     }
                     const randomIP = ipList[Math.floor(Math.random() * ipList.length)];
@@ -436,7 +452,7 @@ class main {
                     this.publicSet.saveSettings();
                     window.showMessageUI(this.publicSet.settingsALL["lang"]["endpoint_retrieved"]);
                 } catch (error) {
-                    this.publicSet.LOGLOG("Error fetching endpoint data:", error);
+                    this.publicSet.log("Error fetching endpoint data:", error);
                 }
             });
             $("#Gool").on("click", () => {
@@ -467,7 +483,7 @@ class main {
                     this.publicSet.saveSettings();
                     window.showMessageUI(this.publicSet.settingsALL["lang"]["warp_key_applied"]);
                 } catch (error) {
-                    this.publicSet.LOGLOG("Error fetching WARP keys:", error);
+                    this.publicSet.log("Error fetching WARP keys:", error);
                 }
             });
             $("#warp-key-value").on("input", () => {
@@ -512,7 +528,7 @@ class main {
     };
     setSettings() {
         // Loads and applies saved settings to the UI elements
-        this.publicSet.ReloadSettings();
+        this.publicSet.reloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
         $("#vpn-type-selected").val(this.publicSet.settingsALL["public"]["type"]);
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
@@ -520,6 +536,7 @@ class main {
         $("#config-value").val(this.publicSet.settingsALL["public"]["configManual"]);
         $("#config-fg-value").val(this.publicSet.settingsALL["public"]["configAutoMode"] == "local" ? "LOCAL SOURCE (SERVERS)" : this.publicSet.settingsALL["public"]["configAuto"]);
         $("#lang-app-value").val(this.publicSet.settingsALL["public"]["lang"]);
+        $("#theme-app-value").val(this.publicSet.settingsALL["public"]["theme"] ?? "Dark");
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
         window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim() : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50)));
@@ -532,6 +549,7 @@ class main {
         $("#cfon").prop("checked", this.publicSet.settingsALL["warp"]["cfon"]);
         $("#Scan").prop("checked", this.publicSet.settingsALL["warp"]["scan"]);
         $("#freedom-link-status").prop("checked", this.publicSet.settingsALL["public"]["freedomLink"]);
+        $("#quick-connect-status").prop("checked", this.publicSet.settingsALL["public"]["quickConnect"] ?? false);
         $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
         $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
         $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
@@ -564,7 +582,7 @@ class main {
     };
     async reloadServers() {
         // Reloads server list, updates UI, and manages server selection and context menu interactions.
-        this.publicSet.ReloadSettings();
+        this.publicSet.reloadSettings();
         await this.publicSet.updateISPServers();
 
         let ispServers = [...this.publicSet.settingsALL["public"]["ispServers"]];
@@ -601,7 +619,7 @@ class main {
             target.style.backgroundColor = "rgba(105, 10, 255, 0.8)";
             target.id = "selected-server";
 
-            this.publicSet.LOGLOG(`🔵 Clicked on server: ${server} | Type: ${serverType}`);
+            this.publicSet.log(`🔵 Clicked on server: ${server} | Type: ${serverType}`);
 
             await this.publicSet.importConfig(server);
             this.setSettings();
@@ -690,7 +708,7 @@ class main {
 
             try {
                 await this.publicSet.deleteConfig(server);
-                await this.publicSet.ReloadSettings();
+                await this.publicSet.reloadSettings();
                 this.publicSet.settingsALL["public"]["core"] = "auto";
                 this.publicSet.settingsALL["public"]["configManual"] = "";
                 this.publicSet.saveSettings();
@@ -743,45 +761,45 @@ class main {
     };
     KILLALLCORES(core) { // Terminates a process with the given core name on both Windows and Unix-based systems.
         core = core.toString().toLowerCase() + "-core";
-        this.publicSet.LOGLOG(`Killing ${core}...`);
+        this.publicSet.log(`Killing ${core}...`);
         if (process.platform == "win32") {
             if (!core || typeof core !== "string") {
-                this.publicSet.LOGLOG("Error: Invalid process name.");
+                this.publicSet.log("Error: Invalid process name.");
             } else {
                 execFile("taskkill", ["/f", "/im", `${core}.exe`], (error, stdout, stderr) => {
                     if (error) {
-                        this.publicSet.LOGLOG(`Error: ${error.message}`);
+                        this.publicSet.log(`Error: ${error.message}`);
                         return;
                     }
                     if (stderr) {
-                        this.publicSet.LOGLOG(`stderr: ${stderr}`);
+                        this.publicSet.log(`stderr: ${stderr}`);
                         return;
                     }
-                    this.publicSet.LOGLOG(`stdout: ${stdout}`);
+                    this.publicSet.log(`stdout: ${stdout}`);
                 });
             };
             exec("taskkill /F /IM reg.exe", (killError, killStdout, killStderr) => {
                 if (killError) {
-                    this.publicSet.LOGLOG(`Error killing reg.exe: ${killError.message}`);
+                    this.publicSet.log(`Error killing reg.exe: ${killError.message}`);
                     return;
                 }
-                this.publicSet.LOGLOG("All reg.exe processes closed.");
+                this.publicSet.log("All reg.exe processes closed.");
             });
         }
         else if (process.platform) {
             if (!core || typeof core !== "string") {
-                this.publicSet.LOGLOG("Error: Invalid process name.");
+                this.publicSet.log("Error: Invalid process name.");
             } else {
                 execFile("killall", [core], (error, stdout, stderr) => {
                     if (error) {
-                        this.publicSet.LOGLOG(`Error: ${error.message}`);
+                        this.publicSet.log(`Error: ${error.message}`);
                         return;
                     }
                     if (stderr) {
-                        this.publicSet.LOGLOG(`stderr: ${stderr}`);
+                        this.publicSet.log(`stderr: ${stderr}`);
                         return;
                     }
-                    this.publicSet.LOGLOG(`stdout: ${stdout}`);
+                    this.publicSet.log(`stdout: ${stdout}`);
                 });
             }
         }
@@ -811,7 +829,7 @@ class fgCLI extends main {
         });
     };
     async loadLang() {
-        this.publicSet.ReloadSettings();
+        this.publicSet.reloadSettings();
         const response = await fetch(`../components/locales/${this.publicSet.settingsALL["public"]["lang"]}.json`);
         const translations = await response.json();
         return translations;
@@ -822,7 +840,7 @@ class fgCLI extends main {
         let commandSplit = command.split(" ");
         let commandName = commandSplit[0];
         let commandArgs = commandSplit.slice(1);
-        this.publicSet.ReloadSettings();
+        this.publicSet.reloadSettings();
         this.publicSet.settingsALL["lang"] = await this.loadLang();
         window.LogLOG("$ " + command, "command");
         switch (commandName.toString().toLowerCase()) {
@@ -856,7 +874,7 @@ class fgCLI extends main {
                 break;
             case "set":
                 if (commandArgs.length > 1) {
-                    this.publicSet.ReloadSettings();
+                    this.publicSet.reloadSettings();
                     let sect = commandArgs[0];
                     let key = commandArgs[1];
                     let value = commandArgs[2];
@@ -870,7 +888,7 @@ class fgCLI extends main {
                 }
                 break;
             case "show":
-                this.publicSet.ReloadSettings();
+                this.publicSet.reloadSettings();
                 window.LogLOG("Showing settings->" + commandArgs[0] ?? "" + "...");
                 if (commandArgs.length > 0) {
                     let sect = commandArgs[0];
@@ -927,7 +945,7 @@ class fgCLI extends main {
                 window.LogLOG(this.publicSet.settingsALL["lang"]["about_app_html"], "info", "html");
                 break;
             case "refresh":
-                this.publicSet.ReloadSettings();
+                this.publicSet.reloadSettings();
                 this.reloadServers();
                 this.setPingBox();
                 this.setSettings();
@@ -1144,7 +1162,7 @@ ipcRenderer.on("start-link", (event, link) => {
         }
     }
     try {
-        mainSTA.publicSet.LOGLOG("import config from deep link -> " + link.split("freedom-guard://")[1]);
+        mainSTA.publicSet.log("import config from deep link -> " + link.split("freedom-guard://")[1]);
 
         let rawLink = link.split("freedom-guard://")[1];
 
