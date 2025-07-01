@@ -277,7 +277,7 @@ img {
     font-size: 50px;
     color: white;
     background: var(--connect-button-background);
-    border: 4px solid var(--background-dark);
+    border: 4px solid var(--accent-color);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -465,7 +465,7 @@ img {
 }
 
 .box-select-server::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #2b1055, #6a11cb);
+    background: linear-gradient(135deg, #2b1055, var(--accent-color));
     border-radius: 0px;
 }
 
@@ -720,7 +720,7 @@ img {
 }
 
 #setting-app .btn:hover {
-    background: linear-gradient(135deg, #333, #444);
+    background: linear-gradient(135deg, var(--accent-color), var(--background-dark));
     transform: scale(1.08);
     box-shadow: var(--setting-button-hover-shadow);
 }
@@ -1292,7 +1292,7 @@ select::after {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #2b1055, #6a11cb);
+    background: linear-gradient(135deg, #2b1055, var(--accent-color));
     backdrop-filter: blur(8px);
     border-radius: 0px;
     transition: background 0.3s ease, transform 0.2s ease;
