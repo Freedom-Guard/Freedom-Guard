@@ -143,8 +143,7 @@
         "music-metadata-browser": "^2.5.11",
         "node-gyp": "^10.1.0",
         "node-notifier": "^10.0.1",
-        "sudo-prompt": "^9.2.1",
-        "winreg": "^1.2.5"
+        "sudo-prompt": "^9.2.1"
     },
     "devDependencies": {
         "electron": "^31.7.7",

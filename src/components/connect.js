@@ -5,7 +5,6 @@ const path = require('path');
 const { notify } = require('node-notifier');
 const axios = require('axios');
 const geoip = require('geoip-lite');
-const Winreg = require('winreg');
 const { trackEvent } = require("@aptabase/electron/renderer");
 const { app } = require('@electron/remote');
 
@@ -43,7 +42,6 @@ class PublicSet {
         this.geoip = geoip;
         this.path = path;
         this.setTimeout = setTimeout;
-        this.Winreg = Winreg;
         this.status = false;
         this.connected = false;
         this.Process = {
@@ -1110,7 +1108,6 @@ class Tools {
         this.exec = exec;
         this.execSync = execSync;
         this.https = require('https');
-        this.Winreg = Winreg;
 
         this.coresPath = path.join(
             __dirname.includes('app.asar') ? __dirname.replace('app.asar', '') : __dirname,
@@ -1137,48 +1134,39 @@ class Tools {
 
     setProxy(osType, proxy) {
         if (osType === "win32") {
-            const setRegistryValue = (key, name, type, value) => {
-                return new Promise((resolve, reject) => {
-                    key.get(name, (err, item) => {
-                        if (!err && String(item?.value) === String(value)) {
-                            return resolve();
+
+            const applyWindowsProxy = () => {
+                exec(`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f`, (err) => {
+                    if (err) {
+                        console.log(`❌ Error setting ProxyEnable: ${err.message}`);
+                        return;
+                    }
+
+                    exec(`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /t REG_SZ /d ${proxy} /f`, (err2) => {
+                        if (err2) {
+                            console.log(`❌ Error setting ProxyServer: ${err2.message}`);
+                            return;
                         }
-                        key.set(name, type, value, (setErr) => {
-                            if (setErr) reject(setErr);
-                            else resolve();
+
+                        exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
+                            if (error) {
+                                console.log(`❌ Error applying proxy settings: ${error.message}`);
+                            } else {
+                                console.log('✅ Proxy settings applied successfully.');
+                            }
+                        });
+
+                        exec("taskkill /F /IM reg.exe", (killError) => {
+                            if (killError) {
+                                console.log(`Error killing reg.exe: ${killError.message}`);
+                            } else {
+                                console.log("All reg.exe processes closed.");
+                            }
                         });
                     });
                 });
             };
 
-            const applyWindowsProxy = async () => {
-                const regKey = new this.Winreg({
-                    hive: this.Winreg.HKCU,
-                    key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
-                });
-
-                try {
-                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 1);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, proxy);
-
-                    exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
-                        if (error) {
-                            this.log(`❌ Error applying proxy settings: ${error.message}`);
-                        } else {
-                            this.log('✅ Proxy settings applied successfully.');
-                        }
-                    });
-                    exec("taskkill /F /IM reg.exe", (killError) => {
-                        if (killError) {
-                            this.log(`Error killing reg.exe: ${killError.message}`);
-                        } else {
-                            this.log("All reg.exe processes closed.");
-                        }
-                    });
-                } catch (error) {
-                    this.log(`❌ Error setting proxy on Windows: ${error}`);
-                }
-            };
             applyWindowsProxy();
 
         } else if (osType === "macOS") {
@@ -1298,50 +1286,31 @@ class Tools {
         this.log("[Proxy] Disabling proxy...");
 
         if (osType === "win32") {
-            const setRegistryValue = (key, name, type, value) => {
-                return new Promise((resolve, reject) => {
-                    key.get(name, (err, item) => {
-                        if (!err && String(item?.value) === String(value)) {
-                            return resolve();
+            const disableWindowsProxy = () => {
+                exec('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f', (err) => {
+                    if (err) {
+                        console.log(`❌ Error disabling ProxyEnable: ${err.message}`);
+                        return;
+                    }
+
+                    exec('reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /f', (err2) => {
+                        if (err2) {
+                            console.log(`❌ Error deleting ProxyServer: ${err2.message}`);
+                            return;
                         }
-                        key.set(name, type, value, (setErr) => {
-                            if (setErr) reject(setErr);
-                            else resolve();
+
+                        exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
+                            if (error) {
+                                console.log(`❌ Error applying proxy settings (disable): ${error.message}`);
+                            } else {
+                                console.log('✅ Proxy settings disabled successfully.');
+                            }
                         });
                     });
                 });
             };
 
-            const disableWindowsProxy = async () => {
-                const regKey = new this.Winreg({
-                    hive: this.Winreg.HKCU,
-                    key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'
-                });
-
-                try {
-                    await setRegistryValue(regKey, 'ProxyEnable', this.Winreg.REG_DWORD, 0);
-                    await setRegistryValue(regKey, 'ProxyServer', this.Winreg.REG_SZ, "");
-
-                    exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
-                        if (error) {
-                            this.log(`❌ Error applying proxy settings (disable): ${error.message}`);
-                        } else {
-                            this.log('✅ Proxy settings disabled successfully.');
-                        }
-                    });
-                    exec("taskkill /F /IM reg.exe", (killError) => {
-                        if (killError) {
-                            this.log(`Error killing reg.exe: ${killError.message}`);
-                        } else {
-                            this.log("All reg.exe processes closed.");
-                        }
-                    });
-                } catch (error) {
-                    this.log(`❌ Error disabling proxy on Windows: ${error}`);
-                }
-            };
             disableWindowsProxy();
-
         } else if (osType === "macOS") {
             const disableMacProxy = () => {
                 exec(`osascript -e 'do shell script "networksetup -listallnetworkservices" with administrator privileges'`, (err, stdout) => {

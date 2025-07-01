@@ -9,7 +9,6 @@ const { eventNames } = require('process');
 const ipc = require('electron').ipcMain;
 const { initialize } = require('@aptabase/electron/main');
 initialize("A-EU-5072151346");
-const { setInterval } = require('timers/promises');
 const { fileURLToPath } = require('url');
 const { notify } = require('node-notifier');
 const remoteMain = require('@electron/remote/main');
@@ -35,19 +34,24 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      allowFileAccess: true
+      allowFileAccess: true,
     },
     autoHideMenuBar: true,
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  remoteMain.enable(mainWindow.webContents); 
+  remoteMain.enable(mainWindow.webContents);
   mainWindow.loadFile(path.join(__dirnameFile, "src", "/main/index.html"));
-  mainWindow.on('resize', function () {
+  mainWindow.on('resize', () => {
     try {
-      ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
-    }
-    catch { };
+      const bounds = mainWindow.getBounds();
+      ViewBrowser.setBounds({
+        x: 0,
+        y: bounds.height / 5.8,
+        width: bounds.width,
+        height: bounds.height / 1.3
+      });
+    } catch { }
   });
   mainWindow.on('close', (event) => {
     event.preventDefault();
@@ -77,25 +81,6 @@ function isAdmin() {
     return false;
   }
 }
-// #endregion
-// #region Interval
-setInterval(() => { // Resize View Browser 
-  try {
-    ViewBrowser.setBounds({ x: 0, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
-  }
-  catch { };
-}, 5000)
-setInterval(() => {
-  try {
-    if (currentURL != ViewBrowser.webContents.getURL()) {
-      currentURL = ViewBrowser.webContents.getURL();
-      pageTitle = ViewBrowser.webContents.getTitle();
-      mainWindow.webContents.send('set-url', (currentURL));
-      mainWindow.webContents.send('set-title', (pageTitle));
-    }
-  }
-  catch { };
-}, 5000);
 // #endregion
 // #region Startup
 if (process.defaultApp) {
@@ -200,6 +185,7 @@ ipcMain.handle("submit-dialog", async (message) => {
 ipc.on("load-main-app", (event) => {
   mainWindow.loadFile(path.join("src", "main/index.html"));
   mainWindow.removeBrowserView(ViewBrowser);
+  ViewBrowser.webContents.destroy();
 });
 ipc.on('hide-browser', (event, url) => {
   mainWindow.removeBrowserView(ViewBrowser);
@@ -262,7 +248,8 @@ ipc.on('load-browser', (event) => {
   ViewBrowser.webContents.on("did-navigate", (event, url) => {
     currentURL = ViewBrowser.webContents.getURL();
     pageTitle = ViewBrowser.webContents.getTitle();
-    mainWindow.webContents.send('set-url', (url));
+    mainWindow.webContents.send('set-url', currentURL);
+    mainWindow.webContents.send('set-title', pageTitle);
   });
   mainWindow.maximize();
   ViewBrowser.setBounds({ x: 2, y: mainWindow.getBounds().height / 5.8, width: mainWindow.getBounds().width, height: mainWindow.getBounds().height / 1.3 });
