@@ -305,7 +305,7 @@ img {
 }
 
 #ChangeStatus:hover {
-    background: linear-gradient(135deg, #1e212e, #141722);
+    background: linear-gradient(135deg, var(--primary-brand-color), var(--secondary-brand-color));
     box-shadow: var(--change-status-hover-shadow);
     transform: scale(1.05);
 }
@@ -619,6 +619,18 @@ img {
     border-radius: 10px 0 0 10px;
 }
 
+#setting-app #nav-top {
+    position: sticky;
+    top: 0%;
+    left: 0%;
+    display: flex;
+    align-items: center;
+    background-color: var(--glass-background);
+    width: 100%;
+    min-height: 7.5vh;
+    z-index: 10;
+}
+
 #setting-app h3 {
     margin: 15px 20px;
     font-size: 1.6em;
@@ -655,7 +667,7 @@ img {
 }
 
 #setting-app b {
-    color: #ccc;
+    color: var(--text-light);
     margin: 5px 10px;
     font-size: 1.15em;
     font-weight: 500;
@@ -665,9 +677,9 @@ img {
     width: 50px;
     height: 50px;
     font-size: 24px;
-    background: var(--background-dark);
     border: none;
-    color: #fff;
+    background-color: transparent;
+    color: var(--text-light);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -978,7 +990,7 @@ img {
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #fff;
+    color: var(--text-light);
     font-size: 1.1rem;
     padding: 15px 20px;
     width: 30%;
@@ -1073,7 +1085,7 @@ img {
 /* #endregion */
 /* #region Components*/
 .input {
-    color: #fff;
+    color: var(--text-light);
     font-size: 0.9rem;
     background-color: transparent;
     width: 100%;
@@ -1162,10 +1174,6 @@ img {
     align-items: center;
 }
 
-.box:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
 .btn:hover {
     transform: scale(1.1);
     background-color: var(--accent-color);
@@ -1181,7 +1189,7 @@ img {
     transition: 0.5s;
     font-size: medium;
     background-color: var(--button-default-background);
-    color: white;
+    color: var(--text-light);
     border: none;
     border-radius: 7px;
 }

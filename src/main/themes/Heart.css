@@ -1,0 +1,134 @@
+:root {
+    --emoji-bg: #1C0B12;
+    --emoji-text-idle: #C0A8B1;
+    --emoji-text-active: #FFFFFF;
+    --emoji-glow-idle: rgba(255, 125, 150, 0.5);
+    --emoji-glow-connecting: rgba(255, 125, 150, 1);
+    --emoji-glow-connected: rgba(255, 180, 200, 1);
+}
+
+@keyframes emoji-pulse-idle {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes emoji-pulse-connecting {
+
+    0%,
+    100% {
+        transform: scale(1.05);
+        text-shadow: 0 0 15px var(--emoji-glow-connecting);
+    }
+
+    50% {
+        transform: scale(1.2);
+        text-shadow: 0 0 30px var(--emoji-glow-connecting);
+    }
+}
+
+body {
+    justify-content: center;
+    align-items: center;
+    background: var(--emoji-bg);
+    font-family: 'Vazir', sans-serif;
+    overflow: hidden;
+}
+
+#setting-app>div:not(#main),
+.box-select-server,
+.box-select-server-mini,
+#Logs,
+#ip-ping,
+.connected-box,
+h1 {
+    display: none !important;
+}
+
+#menu>div:nth-child(-n+6):not(#menu-exit) {
+    display: none !important;
+}
+
+.connection {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.connection::after {
+    content: "برای اتصال، قلب را لمس کنید";
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--emoji-text-idle);
+    transition: all 0.5s ease-in-out;
+    order: -1;
+}
+
+.connection:has(#ChangeStatus.connecting)::after {
+    content: "در حال اتصال...";
+    color: var(--emoji-glow-connecting);
+}
+
+.connection:has(#ChangeStatus.connected)::after {
+    content: "متصل شدید!";
+    color: var(--emoji-text-active);
+}
+
+#ChangeStatus {
+    background: transparent !important;
+    border: none;
+    box-shadow: none !important;
+    cursor: pointer;
+    padding: 50px;
+    border-radius: 0;
+}
+
+#ChangeStatus.connecting {
+    background: transparent !important;
+
+}
+
+#ChangeStatus i {
+    display: none;
+}
+
+#ChangeStatus::before {
+    background: transparent;
+}
+
+#ChangeStatus::after {
+    content: '❤️';
+    font-size: 120px;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    line-height: 1;
+    display: block;
+    transition: all 0.4s ease;
+    animation: emoji-pulse-idle 3s infinite ease-in-out;
+}
+
+#ChangeStatus::after:hover {
+    text-shadow: 0 0 10px var(--emoji-glow-idle);
+}
+
+#ChangeStatus.connecting::after {
+    animation: emoji-pulse-connecting 1s infinite ease-in-out;
+}
+
+#ChangeStatus.connected::after {
+    content: '💖';
+    animation: none;
+    transform: scale(1.2);
+    text-shadow: 0 0 30px var(--emoji-glow-connected);
+}

@@ -1,0 +1,138 @@
+:root {
+    --background: #1a1a2e;
+    --switch-off-bg: #2c3e50;
+    --switch-off-border: #34495e;
+    --switch-on-bg: linear-gradient(145deg, #00cec9, #00b894);
+    --switch-on-border: #00b894;
+    --switch-on-glow: rgba(0, 206, 201, 0.6);
+    --connecting-glow-1: #3498db;
+    --connecting-glow-2: #9b59b6;
+    --thumb-off-bg: linear-gradient(145deg, #555, #333);
+    --thumb-on-bg: linear-gradient(145deg, #ffffff, #f0f0f0);
+    --text-color-default: #a9a9a9;
+    --text-color-active: #ffffff;
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+    --shadow-light: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes connecting-pulse {
+    0% {
+        box-shadow: 0 0 15px var(--connecting-glow-1);
+        border-color: var(--connecting-glow-1);
+    }
+
+    50% {
+        box-shadow: 0 0 25px var(--connecting-glow-2);
+        border-color: var(--connecting-glow-2);
+    }
+
+    100% {
+        box-shadow: 0 0 15px var(--connecting-glow-1);
+        border-color: var(--connecting-glow-1);
+    }
+}
+
+body {
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    animation: none;
+    font-family: 'Vazir', sans-serif;
+}
+
+#setting-app>div:not(#main),
+.box-select-server,
+.box-select-server-mini,
+#Logs,
+#ip-ping,
+.connected-box,
+h1 {
+    display: none !important;
+}
+
+#menu>div:nth-child(-n+6):not(#menu-exit) {
+    display: none !important;
+}
+
+.connection {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.connection::after {
+    content: "برای اتصال کلیک کنید";
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-color-default);
+    transition: all 0.4s ease;
+    order: -1;
+}
+
+.connection:has(#ChangeStatus.connecting)::after {
+    content: "در حال اتصال...";
+    direction: rtl;
+    color: var(--text-color-active);
+}
+
+.connection:has(#ChangeStatus.connected)::after {
+    content: "شما با موفقیت متصل شدید";
+    color: var(--switch-on-border);
+    text-shadow: 0 0 10px var(--switch-on-glow);
+}
+
+#ChangeStatus {
+    width: 180px;
+    height: 80px;
+    background: var(--switch-off-bg);
+    border: 3px solid var(--switch-off-border);
+    border-radius: 40px;
+    box-shadow: inset 0 4px 12px var(--shadow-dark);
+    transform: none !important;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+#ChangeStatus:hover {
+    border-color: #4b6580;
+}
+
+#ChangeStatus i {
+    display: none;
+}
+
+#ChangeStatus::before {
+    content: "";
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    background: var(--thumb-off-bg);
+    border-radius: 50%;
+    top: 50%;
+    left: 6px;
+    transform: translateY(-50%);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: 0px 2px 8px var(--shadow-dark);
+}
+
+#ChangeStatus.connecting {
+    animation: connecting-pulse 2s infinite ease-in-out;
+}
+
+#ChangeStatus.connected {
+    background: var(--switch-on-bg);
+    border-color: var(--switch-on-border);
+    box-shadow: 0 0 25px var(--switch-on-glow);
+    animation: none;
+}
+
+#ChangeStatus.connected::before {
+    transform: translate(97px, -50%);
+    background: var(--thumb-on-bg);
+    box-shadow: 0px 4px 15px var(--shadow-light);
+}
