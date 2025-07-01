@@ -216,7 +216,6 @@ img {
     justify-content: center;
     align-items: center;
     background: var(--dark-glass-background);
-    backdrop-filter: blur(20px) saturate(150%);
     border-radius: 20px;
     border: 1px solid var(--dark-glass-border);
     box-shadow: var(--connected-box-shadow);
@@ -242,7 +241,6 @@ img {
     align-items: center;
     gap: 10px;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
 }
 
 .connected-item:hover {
@@ -392,7 +390,6 @@ img {
     box-sizing: border-box;
     border-radius: var(--border-radius-default);
     background-color: var(--ip-ping-background);
-    backdrop-filter: blur(8px);
 }
 
 #ip-ping:hover {
@@ -424,7 +421,7 @@ img {
     background: var(--glass-background);
     color: white;
     z-index: 999;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(5px);
     box-shadow: var(--box-shadow-medium);
     border: 1px solid var(--glass-border);
     padding: var(--default-padding);
@@ -523,6 +520,11 @@ img {
     letter-spacing: 0.4px;
 }
 
+.box-select-server #selected-server {
+    background-color: var(--accent-color);
+    color: white;
+}
+
 .box-select-server #selected-server::before {
     content: "";
     position: absolute;
@@ -564,7 +566,6 @@ img {
     background: rgba(20, 20, 35, 0.75);
     position: fixed;
     bottom: 3vh;
-    backdrop-filter: blur(12px);
     border-radius: 10px;
     width: 80vw;
     max-width: 450px;
@@ -605,14 +606,12 @@ img {
 /*#endregion */
 /* #region Setting */
 #setting-app {
-    display: none;
     position: fixed;
-    right: -100%;
+    display: none;
+    right: 0;
     top: 0;
-    transition: right 0.4s ease-out;
     width: 75%;
     height: 100%;
-    flex-direction: column;
     background: var(--setting-background);
     overflow-y: auto;
     z-index: 999;
@@ -624,11 +623,10 @@ img {
 #setting-app h3 {
     margin: 15px 20px;
     font-size: 1.6em;
-    color: #fff;
+    color: var(--text-light);
     font-weight: 600;
     position: relative;
     padding-bottom: 10px;
-    text-shadow: var(--setting-heading-shadow);
 }
 
 #setting-app h3::after {
@@ -640,7 +638,6 @@ img {
     height: 4px;
     background: var(--setting-heading-line);
     border-radius: 3px;
-    box-shadow: 0px 0px 10px var(--setting-heading-line);
 }
 
 #setting-app h3.right::after {
@@ -665,26 +662,22 @@ img {
     font-weight: 500;
 }
 
-#close-setting,
-#close-setting-vibe {
+#close-setting {
     width: 50px;
     height: 50px;
     font-size: 24px;
-    background: linear-gradient(135deg, #1a132b, #251b3c);
+    background: var(--background-dark);
     border: none;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
     cursor: pointer;
-    box-shadow: var(--setting-button-shadow);
 }
 
-#close-setting:hover,
-#close-setting-vibe:hover {
-    background: linear-gradient(135deg, #251b3c, #2f1d4d);
+#close-setting:hover {
     transform: scale(1.1);
 }
 
@@ -692,21 +685,20 @@ img {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 1.2em;
-    outline: none;
     color: var(--text-light);
     width: 70%;
     padding: 10px 14px;
     border-radius: 8px;
-    transition: all 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
 }
 
 #setting-app input[type="text"]:focus {
     border-color: var(--primary-brand-color);
-    box-shadow: 0px 0px 10px var(--primary-brand-color);
+    box-shadow: 0 0 10px var(--primary-brand-color);
 }
 
 #setting-app .btn {
-    height: fit-content;
     background: var(--button-default-background);
     color: var(--text-light);
     padding: 12px 20px;
@@ -714,27 +706,14 @@ img {
     cursor: pointer;
     font-size: 1em;
     font-weight: 500;
-    text-decoration: none !important;
+    text-decoration: none;
     transition: all 0.3s ease-in-out;
     box-shadow: var(--setting-button-shadow);
 }
 
 #setting-app .btn:hover {
-    background: linear-gradient(135deg, var(--accent-color), var(--background-dark));
+    background: var(--setting-button-hover-shadow);
     transform: scale(1.08);
-    box-shadow: var(--setting-button-hover-shadow);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
 }
 
 /* #endregion */
@@ -746,7 +725,7 @@ img {
     top: 1vh;
     width: 30vw;
     height: 98vh;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(5px);
     background: var(--menu-background);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -808,7 +787,7 @@ img {
     align-items: center;
     flex-direction: column;
     z-index: 15;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
 }
 
@@ -837,7 +816,6 @@ img {
     object-fit: cover;
     transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
     background: var(--content-image-background);
-    backdrop-filter: blur(10px);
 }
 
 .content img:hover {
@@ -899,7 +877,7 @@ img {
     z-index: 99999;
     font-family: 'Courier New', monospace;
     color: var(--log-text-color);
-    animation: fadeInLogs 0.5s ease-out forwards;
+    animation: fadeInZoom 0.5s ease-out forwards;
     width: 100%;
     max-height: 100%;
 }
@@ -950,12 +928,11 @@ img {
     border-radius: 6px;
     animation: logDrop 0.4s ease;
     word-wrap: break-word;
-    backdrop-filter: blur(2px);
 }
 
 #Logs .command-line-fg {
     position: fixed;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(5px);
     bottom: 1vh;
     left: 4%;
     display: flex;
@@ -982,7 +959,7 @@ img {
     outline: none;
 }
 
-@keyframes fadeInLogs {
+@keyframes fadeInZoom {
     0% {
         opacity: 0;
         transform: scale(0.95);
@@ -1124,41 +1101,31 @@ img {
 }
 
 .box {
-    color: white;
+    color: var(--text-light);
     display: none;
     width: 80%;
     max-width: 600px;
     text-align: center;
     height: auto;
-    left: 50%;
-    top: 50%;
     position: absolute;
-    transform: translate(-50%, -50%);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(145deg, rgba(25, 25, 35, 0.85), rgba(30, 30, 40, 0.85));
+    background: var(--modal-background);
     flex-direction: column;
-    backdrop-filter: blur(15px);
     z-index: 99999;
     border-radius: 20px;
     gap: 15px;
     padding: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.box {
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 1.2em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .box .close-btn {
     font-size: 1.5em;
     position: absolute;
-    color: rgb(255, 0, 0);
+    color: var(--danger-color);
     font-weight: bolder;
     height: fit-content;
     padding: 0.3em 0.3em;
@@ -1175,24 +1142,16 @@ img {
 }
 
 .box div {
-    background-color: var(--modal-background);
     border-radius: 12px;
     padding: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0.1em;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .box div {
     cursor: pointer;
-}
-
-.box div:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .box.flex-col {
@@ -1226,12 +1185,11 @@ img {
 
 select {
     background: var(--select-background);
-    backdrop-filter: blur(12px);
     color: #fff;
     padding: 12px 16px;
     width: 100%;
     max-width: 260px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--modal-background);
     font-size: 1em;
     border-radius: 8px;
     box-shadow: var(--select-shadow);
@@ -1293,7 +1251,6 @@ select::after {
 
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #2b1055, var(--accent-color));
-    backdrop-filter: blur(8px);
     border-radius: 0px;
     transition: background 0.3s ease, transform 0.2s ease;
 }

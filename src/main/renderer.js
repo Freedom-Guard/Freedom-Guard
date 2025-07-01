@@ -1,15 +1,9 @@
 // #region Libraries 
 const { ipcRenderer, dialog, shell, clipboard } = require('electron');
-const { remote } = require('electron');
-const { path } = require('path');
-const { readFileSync } = require('fs');
 const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 const $ = require('jquery');
 require("jquery.easing");
-const { count } = require('console');
 const { exec, execFile, spawn } = require('child_process');
-const { on } = require('events');
-const { platform } = require('os');
 window.$ = $;
 const vesrionApp = "8.0.0";
 let LOGS = [];
@@ -236,13 +230,7 @@ class main {
             $("#about-app").attr("style", "display:flex;");
         });
         $("#setting-show, #close-setting").on('click', () => {
-            let settingApp = $("#setting-app");
-
-            if (settingApp.is(":visible")) {
-                settingApp.animate({ right: "-1300px" }, 1000, () => settingApp.hide());
-            } else {
-                settingApp.show().animate({ right: "0px" }, 700);
-            };
+            $("#setting-app").toggle();
         });
         $("#open-drop-setting").on("click", () => {
             $("#more-options-content").toggleClass("active");
@@ -616,7 +604,6 @@ class main {
                 el.id = "";
             });
 
-            target.style.backgroundColor = "rgba(105, 10, 255, 0.8)";
             target.id = "selected-server";
 
             this.publicSet.log(`🔵 Clicked on server: ${server} | Type: ${serverType}`);
@@ -656,7 +643,6 @@ class main {
             div.setAttribute("data-server", server);
             div.innerHTML = `<img src="../svgs/${imgServer}" alt="${name}"><p>${name}</p>`;
             if (server == this.publicSet.settingsALL["public"]["configManual"] && $("#selected-server").html() == undefined) {
-                div.style.backgroundColor = "rgba(105, 10, 255, 0.8)";
                 div.id = "selected-server";
             }
             container.appendChild(div);
