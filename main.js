@@ -16,7 +16,6 @@ var mainWindow = null
 var ViewBrowser = null;
 var pageTitle = "";
 const gotTheLock = app.requestSingleInstanceLock()
-
 // #endregion
 // #region functions
 

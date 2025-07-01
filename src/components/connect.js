@@ -1508,14 +1508,16 @@ class Tools {
             });
         });
     }
-
+    addExt(name) {
+        return process.platform === "win32" ? `${name}.exe` : name;
+    }
     async fetchAndInstallCores() {
         const platformBaseURL = process.platform === "darwin"
             ? (process.arch === 'arm64' ? 'mac/arm64' : 'mac/amd64')
             : process.platform;
         const baseURL = `https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/src/main/cores/${platformBaseURL}`;
 
-        const destDir = getConfigPath();
+        const destDir = process.platform == "win32" ? this.coresPath : getConfigPath();
 
         const vibeDestPath = path.join(destDir, "vibe", this.addExt("vibe-core"));
         const warpDestPath = path.join(destDir, "warp", this.addExt("warp-core"));

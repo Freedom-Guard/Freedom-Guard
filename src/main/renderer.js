@@ -990,30 +990,40 @@ window.startNewUser = () => {
         trackEvent("new_user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
 
     });
-};
+}; window.messageQueue = [];
+window.isMessageShowing = false;
+
 window.showMessageUI = (message, duration = 3000) => {
     window.messageQueue.push({ message, duration });
-    window.LogLOG(message.toString());
+    if (typeof window.LogLOG === "function") window.LogLOG(message.toString());
     processMessageQueue();
 };
+
 function processMessageQueue() {
     if (window.isMessageShowing || window.messageQueue.length === 0) return;
+
     const { message, duration } = window.messageQueue.shift();
-    const messageBox = document.getElementById("message");
-    const messageText = document.getElementById("messageText");
-    if (!messageBox || !messageText) return;
+    const $box = $("#message");
+    const $text = $("#messageText");
+
+    if ($box.length === 0 || $text.length === 0) {
+        window.isMessageShowing = false;
+        return;
+    }
+
+    $text.html(message);
+    $box.addClass("show-message").fadeIn(200);
     window.isMessageShowing = true;
-    messageText.innerHTML = message;
-    messageBox.classList.add("show-message");
+
     setTimeout(() => {
-        $("#message").slideToggle("slow", () => {
-            messageBox.classList.remove("show-message");
-            $("#message").show();
+        $box.fadeOut(300, () => {
+            $box.removeClass("show-message");
             window.isMessageShowing = false;
             processMessageQueue();
         });
     }, duration);
-};
+}
+
 window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
     $("#text-box-notif").html(mess);
     $("#box-notif").css("display", "flex");

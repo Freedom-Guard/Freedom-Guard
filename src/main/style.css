@@ -15,7 +15,7 @@
     --icon-color: #ffffff;
 
     /* Glassmorphism/Transparency */
-    --glass-background: rgba(50, 50, 65, 0.3);
+    --glass-background: rgba(50, 50, 65, 1);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: rgba(0, 0, 0, 0.3);
     --glass-item-background: rgba(255, 255, 255, 0.05);
@@ -385,7 +385,7 @@ img {
     align-items: center;
     flex-direction: column;
     margin-bottom: auto;
-    transition: all 0.4s ease;
+    transition: transform 0.4s ease;
     padding: 0.5em 1em;
     box-sizing: border-box;
     border-radius: var(--border-radius-default);
@@ -421,7 +421,6 @@ img {
     background: var(--glass-background);
     color: white;
     z-index: 999;
-    backdrop-filter: blur(5px);
     box-shadow: var(--box-shadow-medium);
     border: 1px solid var(--glass-border);
     padding: var(--default-padding);
@@ -873,7 +872,6 @@ img {
     justify-content: space-between;
     background: radial-gradient(circle at center, #000 60%, #0f0 200%);
     background: var(--log-background);
-    backdrop-filter: blur(12px) saturate(120%);
     z-index: 99999;
     font-family: 'Courier New', monospace;
     color: var(--log-text-color);
@@ -982,27 +980,27 @@ img {
     text-align: center;
     color: #fff;
     font-size: 1.1rem;
-    padding: 15px;
+    padding: 15px 20px;
     width: 30%;
     min-width: 250px;
-    height: auto;
+    max-width: 400px;
     background: var(--modal-background);
     position: fixed;
-    top: 5%;
-    right: 5%;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    border-radius: 10px;
+    bottom: 2%;
+    right: 2%;
+    border-radius: 10px 10px 0 10px;
     box-shadow: var(--message-shadow);
     z-index: 1000;
     flex-direction: column;
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(20px);
+    transition: all 0.3s ease-in-out;
 }
 
-.show-message {
-    display: flex !important;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+#message.show-message {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #HelpMess {
@@ -1120,6 +1118,11 @@ img {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.box.flex-row {
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .box .close-btn {
