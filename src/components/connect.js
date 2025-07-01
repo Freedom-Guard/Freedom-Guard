@@ -6,7 +6,6 @@ const { notify } = require('node-notifier');
 const axios = require('axios');
 const geoip = require('geoip-lite');
 const { trackEvent } = require("@aptabase/electron/renderer");
-const { app } = require('@electron/remote');
 
 trackEvent("app_started");
 

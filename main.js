@@ -1,18 +1,13 @@
 // Start Code
 // #region Libraries
 ;
-const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, net, protocol, session, BrowserView, ipcRenderer } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, BrowserView } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require("child_process");
-const { eventNames } = require('process');
 const ipc = require('electron').ipcMain;
 const { initialize } = require('@aptabase/electron/main');
 initialize("A-EU-5072151346");
-const { fileURLToPath } = require('url');
-const { notify } = require('node-notifier');
-const remoteMain = require('@electron/remote/main');
-;
 __dirnameFile = __dirname;
 // #endregion
 // #region Vars
@@ -22,7 +17,6 @@ var ViewBrowser = null;
 var pageTitle = "";
 const gotTheLock = app.requestSingleInstanceLock()
 
-remoteMain.initialize();
 // #endregion
 // #region functions
 
@@ -40,7 +34,6 @@ function createWindow() {
     titleBarOverlay: "Freedom Guard",
     title: "Freedom Guard",
   });
-  remoteMain.enable(mainWindow.webContents);
   mainWindow.loadFile(path.join(__dirnameFile, "src", "/main/index.html"));
   mainWindow.on('resize', () => {
     try {
