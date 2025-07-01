@@ -218,6 +218,9 @@ class main {
             } else {
                 window.showMessageUI("Please enter a valid config.");
             }
+            window.showMessageUI("از قلب بزرگ و سخاوتمند شما بی‌نهایت سپاسگزاریم! ❤️ با کمک شما، افراد بیشتری به اینترنت آزاد دسترسی پیدا می‌کنند. به پاس این همراهی ارزشمند، تم «تپش قلب» برایتان فعال شد. البته هر زمان که بخواهید، می‌توانید آن را از تنظیمات تغییر دهید.", 10000);
+            this.publicSet.settingsALL["public"]["theme"] = "Heart"; this.publicSet.saveSettings();
+            this.loadTheme();
         });
 
         $("#close-donate-box, #show-donate-box").on("click", () => {

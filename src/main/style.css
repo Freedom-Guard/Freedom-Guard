@@ -1002,7 +1002,7 @@ img {
     right: 2%;
     border-radius: 10px 10px 0 10px;
     box-shadow: var(--message-shadow);
-    z-index: 1000;
+    z-index: 100000;
     flex-direction: column;
     opacity: 0;
     transform: translateY(20px);

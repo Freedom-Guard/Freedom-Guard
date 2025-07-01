@@ -28,7 +28,7 @@
     }
 
     50% {
-        transform: scale(1.2);
+        transform: scale(1.1);
         text-shadow: 0 0 30px var(--emoji-glow-connecting);
     }
 }
@@ -76,6 +76,7 @@ h1 {
 
 .connection:has(#ChangeStatus.connecting)::after {
     content: "در حال اتصال...";
+    direction: rtl;
     color: var(--emoji-glow-connecting);
 }
 
@@ -89,13 +90,12 @@ h1 {
     border: none;
     box-shadow: none !important;
     cursor: pointer;
-    padding: 50px;
+    padding: 100px;
     border-radius: 0;
 }
 
 #ChangeStatus.connecting {
     background: transparent !important;
-
 }
 
 #ChangeStatus i {
