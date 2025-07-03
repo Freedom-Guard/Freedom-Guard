@@ -1,18 +1,21 @@
 :root {
-    --background: #1a1a2e;
-    --switch-off-bg: #2c3e50;
-    --switch-off-border: #34495e;
-    --switch-on-bg: linear-gradient(145deg, #00cec9, #00b894);
-    --switch-on-border: #00b894;
-    --switch-on-glow: rgba(0, 206, 201, 0.6);
-    --connecting-glow-1: #3498db;
-    --connecting-glow-2: #9b59b6;
-    --thumb-off-bg: linear-gradient(145deg, #555, #333);
-    --thumb-on-bg: linear-gradient(145deg, #ffffff, #f0f0f0);
-    --text-color-default: #a9a9a9;
-    --text-color-active: #ffffff;
+    --primary-brand-color: #ff3d00;
+    --primary-brand-hover: #dd2c00;
+    --accent-color: #ff9100;
+    --background: #1a1a1a;
+    --switch-off-bg: #263238;
+    --switch-off-border: #37474f;
+    --switch-on-bg: linear-gradient(145deg, #ff3d00, #dd2c00);
+    --switch-on-border: #ff3d00;
+    --switch-on-glow: rgba(255, 61, 0, 0.6);
+    --thumb-off-bg: linear-gradient(145deg, #eceff1, #cfd8dc);
+    --thumb-on-bg: #ffffff;
+    --text-color-default: #90a4ae;
+    --text-color-active: #eceff1;
     --shadow-dark: rgba(0, 0, 0, 0.4);
-    --shadow-light: rgba(255, 255, 255, 0.4);
+    --shadow-light: rgba(255, 255, 255, 0.2);
+    --connecting-glow-1: #ff3d00;
+    --connecting-glow-2: #ff9100;
 }
 
 @keyframes connecting-pulse {
@@ -20,12 +23,10 @@
         box-shadow: 0 0 15px var(--connecting-glow-1);
         border-color: var(--connecting-glow-1);
     }
-
     50% {
         box-shadow: 0 0 25px var(--connecting-glow-2);
         border-color: var(--connecting-glow-2);
     }
-
     100% {
         box-shadow: 0 0 15px var(--connecting-glow-1);
         border-color: var(--connecting-glow-1);
@@ -36,13 +37,12 @@ body {
     justify-content: center;
     align-items: center;
     background: var(--background);
-    animation: none;
     font-family: 'Vazir', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-#setting-app>div:not(#main),
-.box-select-server,
-.box-select-server-mini,
+#setting-app > div:not(#main),
 #Logs,
 #ip-ping,
 .connected-box,
@@ -50,7 +50,7 @@ h1 {
     display: none !important;
 }
 
-#menu>div:nth-child(-n+4):not(#menu-exit) {
+#menu > div:nth-child(-n+5):not(#menu-exit) {
     display: none !important;
 }
 
@@ -92,14 +92,14 @@ h1 {
     border: 3px solid var(--switch-off-border);
     border-radius: 40px;
     box-shadow: inset 0 4px 12px var(--shadow-dark);
-    transform: none !important;
     transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
     position: relative;
 }
 
 #ChangeStatus:hover {
-    border-color: #4b6580;
+    border-color: var(--primary-brand-hover);
+    box-shadow: var(--change-status-hover-shadow, 0 0 15px rgba(255, 61, 0, 0.7));
 }
 
 #ChangeStatus i {
@@ -127,7 +127,7 @@ h1 {
 #ChangeStatus.connected {
     background: var(--switch-on-bg);
     border-color: var(--switch-on-border);
-    box-shadow: 0 0 25px var(--switch-on-glow);
+    box-shadow: var(--change-status-connected-shadow, 0 0 25px rgba(255, 61, 0, 0.6));
     animation: none;
 }
 
