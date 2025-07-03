@@ -1069,11 +1069,6 @@ class Connect extends PublicSet {
         else if (core === "vibe") {
             this.argsVibe = ["run", "--config"];
             let vibeConfig = this.settingsALL.vibe.config;
-            if (!vibeConfig.startsWith("http") && !vibeConfig.startsWith('"') && !vibeConfig.startsWith("'")) {
-                const vibeConfigPath = path.join(this.coresPath, "vibe", "config.txt");
-                writeFile(vibeConfigPath, vibeConfig);
-                vibeConfig = vibeConfigPath;
-            }
             this.argsVibe.push(vibeConfig.replace(/^"|"$/g, '').replace(/^'|'$/g, ''));
 
             if (this.settingsALL.public.type === "tun") {

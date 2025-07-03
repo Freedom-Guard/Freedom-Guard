@@ -513,16 +513,17 @@ class main {
                 that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).prop('checked');
                 that.publicSet.saveSettings();
             });
-            $(".vibe-option-value").on("click", function () {
-                if (!that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"]) {
-                    that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = {};
+            $(".vibe-option-value").on("change", function () {
+                if (!that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
+                    that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = that.publicSet.resetVibeSettings();
                 }
-                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).val();
+                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).prop("value");
                 that.publicSet.saveSettings();
             });
             $("#hiddify-reset-vibe").on("click", async () => {
                 this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = null;
                 this.publicSet.saveSettings();
+                this.setSettings();
             });
         }
         else if (core == "grid") {
@@ -569,6 +570,17 @@ class main {
             if (hiddifyConfigJSON.hasOwnProperty(optionName)) {
                 const savedValue = hiddifyConfigJSON[optionName];
                 element.prop('checked', savedValue);
+            }
+        });
+        $(".vibe-option-value").each(function () {
+            const element = $(this);
+            const optionName = element.attr("optionVibe");
+            if (!hiddifyConfigJSON) {
+                return;
+            }
+            if (hiddifyConfigJSON.hasOwnProperty(optionName)) {
+                const savedValue = hiddifyConfigJSON[optionName];
+                element.prop('value', savedValue);
             }
         });
         $("#dns-warp-value").val(this.publicSet.settingsALL["warp"]["dns"]);
