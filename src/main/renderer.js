@@ -11,6 +11,7 @@ let LOGS = [];
 // #region components
 window.LogLOG = (log = "", type = "info", ac = "text") => {
     LOGS.push(log);
+    console.log(log);
     const timestamp = new Date().toLocaleString("en-US", {
         year: "numeric",
         month: "2-digit",
@@ -30,6 +31,9 @@ window.disconnectedUI = () => {
     $("#ChangeStatus").removeClass("connecting");
     mainSTA.publicSet.status = false;
     mainSTA.publicSet.connected = false;
+    mainSTA.publicSet.killAllCores("vibe");
+    mainSTA.publicSet.killAllCores("vibe");
+    mainSTA.publicSet.killAllCores("warp");
     mainSTA.connect.killVPN(mainSTA.publicSet.settingsALL["public"]["core"]);
     mainSTA.connectAuto.killVPN();
     ipcRenderer.send("set-off-fg");
@@ -363,14 +367,7 @@ class main {
             }
         });
         $("#vpn-type-selected").on('change', async () => {
-            if (this.publicSet.settingsALL["public"]["core"] == "warp" && $("#vpn-type-selected").val() == "tun") {
-                window.showMessageUI(this.publicSet.settingsALL["lang"]["tun_not_supported"]);
-                $("#vpn-type-selected").val("system");
-                return;
-            }
-            else {
-                this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
-            }
+            this.publicSet.settingsALL["public"]["type"] = $("#vpn-type-selected").val(); this.publicSet.saveSettings();
         });
         $("#bind-address-text").on('change', () => {
             this.publicSet.settingsALL["public"]["proxy"] = $("#bind-address-text").val(); this.publicSet.saveSettings();
@@ -591,12 +588,12 @@ class main {
     showToolBox() {
         $("#tool-box").toggle();
         $("#tool-off-proxy").on("click", () => {
-            this.Tools.offProxy(this.Tools.returnOS());
-            window.showMessageUI("OFF");
+            this.publicSet.offGrid(this.publicSet.settingsALL["public"]["type"]);
+            window.showMessageUI("OFF GRID");
         });
-        $("#tool-set-proxy").on("click", () => {
-            this.Tools.setProxy(this.Tools.returnOS(), this.publicSet.settingsALL["public"]["proxy"]);
-            window.showMessageUI("ON");
+        $("#tool-set-grid").on("click", () => {
+            this.publicSet.setupGrid(this.publicSet.settingsALL["public"]["proxy"], this.publicSet.settingsALL["public"]["type"]);
+            window.showMessageUI("ON GRID");
         });
         $("#tool-auto-mode").on("click", () => {
             this.publicSet.settingsALL["public"]["configManual"] = "freedom-guard://core=auto#Auto Server";

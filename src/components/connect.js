@@ -49,6 +49,7 @@ class PublicSet {
             "setupAuto": null, "setup": null
         };
         this.mainDir = path.join(__dirname, "/../../");
+        this.coresDir = path.join(__dirname, "/../../", "src", "main", "cores")
         this.coresPath = '';
         this.settingsALL = {
             "flex": {},
@@ -526,12 +527,44 @@ class PublicSet {
     killGrid() {
         this.killAllCores("grid");
     }
-
-    setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
+    offGrid(type) {
+        if (type == "tun") {
+            try {
+                this.Process.grid.kill();
+            }
+            catch { }
+        }
+        else {
+            this.offProxy();
+        }
+    }
+    async setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
         if (type === "tun") {
+            const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
+            const configGridPath = path.join(this.coresDir, "grid", "config.json");
+            let configGrid = JSON.parse(readFile(configGridPath, "file"));
+            this.log("grid started with:" + configGrid.toString());
+            configGrid["outbounds"][0]["server_port"] = parseInt(proxy.split(":")[1]);
+            writeFile(configGridPath, JSON.stringify(configGrid), "file");
+
+            this.Process.grid = spawn(corePath, ["run", "-c", configGridPath]);
+            this.Process.grid.on("close", (code) => {
+                this.log(`GRID Tun exited with code ${code}.`);
+                this.killVPN("grid");
+                this.offProxy();
+            });
+            this.Process.grid.stderr.on("data", (data) => this.log("Grid output: " + data.toString()));
+            this.Process.grid.stdout.on("data", (data) => this.log("Grid output: " + data.toString()));
+            this.log("grid started with:" + configGrid);
         } else if (type === 'system') {
             this.setProxy(proxy, typeProxy);
         }
+    }
+    killVPN(core) {
+        try {
+            this.Process[core].kill();
+        }
+        catch { }
     }
     resetVibeSettings() {
         return {
@@ -1006,7 +1039,6 @@ class Connect extends PublicSet {
             this.offProxy();
         }
     }
-
     async connectFlex() {
         return new Promise((resolve, reject) => {
             this.log("Flex connection initiated (not yet implemented).");

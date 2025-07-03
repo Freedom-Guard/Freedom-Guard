@@ -128,7 +128,6 @@
             <div id="core-guard" class="form-control-c">
                 <select value="auto" id="core-guard-selected">
                     <option value="auto" data-lang="auto-core-select">Automatic</option>
-                    <!-- <option value="flex">Freedom Flex</option> -->
                     <option value="vibe">Freedom Vibe</option>
                     <option value="warp">Freedom Warp</option>
                 </select>
@@ -136,6 +135,7 @@
             <b data-lang="vpn-type">VPN Type</b>
             <div id="vpn-type">
                 <select value="system" id="vpn-type-selected">
+                    <option value="none" data-lang="none-proxy">None</option>
                     <option value="system" data-lang="system-proxy">System Proxy</option>
                     <option value="tun" data-lang="tun">VPN Mode (Tun)</option>
                 </select>
@@ -391,8 +391,8 @@
     </div>
     <div id="tool-box" class="box flex-row" style="display: none;">
         <h2 style="margin-bottom: auto;width: 100%;">Tool Box</h2>
-        <button id="tool-off-proxy" class="btn">Off Proxy</button>
-        <button id="tool-set-proxy" class="btn">Set Proxy</button>
+        <button id="tool-off-proxy" class="btn">Off GRID</button>
+        <button id="tool-set-grid" class="btn">Set GRID</button>
         <button id="tool-auto-mode" class="btn">Turn on Auto Mode</button>
         <button id="tool-update-cores" class="btn" type="button">
             🔁 Update Cores
