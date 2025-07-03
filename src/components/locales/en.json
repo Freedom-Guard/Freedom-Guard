@@ -71,5 +71,11 @@
     "docs_fg": "Freedom Guard Documentation",
     "repo_fg": "Freedom Guard repository on GitHub",
     "theme-selection": "Theme Selection",
-    "tool_box": "Tool Box"
+    "tool_box": "Tool Box",
+    "bypass-lan-state-vibe": "Bypass LAN",
+    "allow-lan-state-vibe": "Allow connection from LAN",
+    "block-ads-state-vibe": "Block Ads",
+    "remote_dns": "Remote DNS",
+    "vibe_mode": "Vibe Mode",
+    "direct_dns": "Direct DNS"
 }

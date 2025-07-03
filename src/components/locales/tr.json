@@ -71,5 +71,11 @@
     "docs_fg": "Freedom Guard Dokümantasyonu",
     "repo_fg": "Freedom Guard GitHub Deposu",
     "theme-selection": "Tema Seçimi",
-    "tool_box": "Araç Kutusu"
+    "tool_box": "Araç Kutusu",
+    "bypass-lan-state-vibe": "LAN'ı Atla",
+    "allow-lan-state-vibe": "LAN'dan Bağlantıya İzin Ver",
+    "block-ads-state-vibe": "Reklamları Engelle",
+    "remote_dns": "Uzak DNS",
+    "vibe_mode": "Vibe Modu",
+    "direct_dns": "Doğrudan DNS"
 }

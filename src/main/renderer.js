@@ -521,7 +521,7 @@ class main {
                 that.publicSet.saveSettings();
             });
             $("#hiddify-reset-vibe").on("click", async () => {
-                this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = null;
+                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = that.publicSet.resetVibeSettings();
                 this.publicSet.saveSettings();
                 this.setSettings();
             });

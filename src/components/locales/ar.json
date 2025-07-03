@@ -71,5 +71,11 @@
     "docs_fg": "وثائق Freedom Guard",
     "repo_fg": "مستودع Freedom Guard على GitHub",
     "theme-selection": "اختيار السمة",
-    "tool_box": "صندوق الأدوات"
+    "tool_box": "صندوق الأدوات",
+    "bypass-lan-state-vibe": "تجاوز LAN",
+    "allow-lan-state-vibe": "السماح بالاتصال من LAN",
+    "block-ads-state-vibe": "حظر الإعلانات",
+    "remote_dns": "DNS عن بعد",
+    "vibe_mode": "وضع Vibe",
+    "direct_dns": "DNS مباشر"
 }

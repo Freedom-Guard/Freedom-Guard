@@ -71,5 +71,11 @@
     "docs_fg": "مستندات گارد آزادی",
     "repo_fg": "مخزن Freedom Guard در GitHub",
     "theme-selection": "انتخاب تم",
-    "tool_box": "جعبه ابزار"
+    "tool_box": "جعبه ابزار",
+    "bypass-lan-state-vibe": "دور زدن LAN",
+    "allow-lan-state-vibe": "اجازه اتصال از LAN",
+    "block-ads-state-vibe": "مسدود کردن تبلیغات",
+    "remote_dns": "DNS ریموت",
+    "vibe_mode": "حالت Vibe",
+    "direct_dns": "DNS مستقیم"
 }

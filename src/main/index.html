@@ -290,12 +290,20 @@
             </div>
         </section>
         <section id="vibe">
-            <h3>Vibe Mode</h3>
-            <b data-lang="bypass-lan-state-vibe">Allow connection from LAN</b>
+            <h3 data-lang="vibe_mode">Vibe Mode</h3>
+            <b data-lang="bypass-lan-state-vibe">Bypass LAN</b>
             <div id="bypass-lan-vibe">
                 <label class="switch">
-                    <input type="checkbox" class="vibe-option-state" optionVibe="allow-connection-from-lan"
+                    <input type="checkbox" class="vibe-option-state" optionVibe="bypass-lan"
                         id="bypass-lan-state-vibe" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <b data-lang="allow-lan-state-vibe">Allow connection from LAN</b>
+            <div id="allow-lan-vibe">
+                <label class="switch">
+                    <input type="checkbox" class="vibe-option-state" optionVibe="allow-connection-from-lan"
+                        id="allow-lan-state-vibe" />
                     <span class="slider"></span>
                 </label>
             </div>
@@ -310,6 +318,11 @@
             <div id="remote-dns-vibe" class="form-control-c">
                 <input type="text" class="input input-alt vibe-option-value" placeholder="udp://1.1.1.1"
                     id="remote-dns-vibe-value" optionVibe="remote-dns-address">
+            </div>
+            <b data-lang="direct_dns">Direct DNS</b>
+            <div id="direct-dns-vibe" class="form-control-c">
+                <input type="text" class="input input-alt vibe-option-value" placeholder="8.8.8.8"
+                    id="direct-dns-vibe-value" optionVibe="direct-dns-address">
             </div>
             <b>Hiddify Config</b>
             <div>

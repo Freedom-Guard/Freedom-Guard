@@ -71,5 +71,11 @@
     "docs_fg": "Freedom Guard 文档",
     "repo_fg": "Freedom Guard GitHub 仓库",
     "theme-selection": "主题选择",
-    "tool_box": "工具箱"
+    "tool_box": "工具箱",
+    "bypass-lan-state-vibe": "绕过局域网",
+    "allow-lan-state-vibe": "允许来自局域网的连接",
+    "block-ads-state-vibe": "拦截广告",
+    "remote_dns": "远程 DNS",
+    "vibe_mode": "Vibe 模式",
+    "direct_dns": "直接 DNS"
 }
