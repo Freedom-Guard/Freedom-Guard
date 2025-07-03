@@ -870,7 +870,7 @@ class ConnectAuto extends PublicSet {
                 this.argsWarp.push("--dns", warpSettings.dns);
             }
             if (warpSettings.cfon) {
-                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === "true" ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
+                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === true ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
             }
             if (this.settingsALL.public.type === "tun") {
             }
@@ -1084,7 +1084,7 @@ class Connect extends PublicSet {
                 this.argsWarp.push("--dns", warpSettings.dns);
             }
             if (warpSettings.cfon) {
-                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === "true" ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
+                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === true ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
             }
             if (this.settingsALL.public.type === "tun") {
             }
