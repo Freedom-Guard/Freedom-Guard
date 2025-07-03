@@ -500,10 +500,25 @@ class main {
             });
         }
         else if (core == "vibe") {
+            var that = this;
             $("#hiddify-config-vibe").on("click", async () => {
                 const response = await ipcRenderer.invoke("import-config");
                 this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = response["data"];
                 this.publicSet.saveSettings();
+            });
+            $(".vibe-option-state").on("click", function () {
+                if (!that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
+                    that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = that.publicSet.resetVibeSettings();
+                }
+                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).prop('checked');
+                that.publicSet.saveSettings();
+            });
+            $(".vibe-option-value").on("click", function () {
+                if (!that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"]) {
+                    that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = {};
+                }
+                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).val();
+                that.publicSet.saveSettings();
             });
             $("#hiddify-reset-vibe").on("click", async () => {
                 this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = null;
@@ -544,6 +559,18 @@ class main {
         $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
         $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
         $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
+        let hiddifyConfigJSON = this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+        $(".vibe-option-state").each(function () {
+            const element = $(this);
+            const optionName = element.attr("optionVibe");
+            if (!hiddifyConfigJSON) {
+                return;
+            }
+            if (hiddifyConfigJSON.hasOwnProperty(optionName)) {
+                const savedValue = hiddifyConfigJSON[optionName];
+                element.prop('checked', savedValue);
+            }
+        });
         $("#dns-warp-value").val(this.publicSet.settingsALL["warp"]["dns"]);
         $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
@@ -740,7 +767,7 @@ class main {
             $(".connection, #ip-ping").addClass("connected");
             $("#connected-country").html(`Country: <b style="display:flex;gap:8px;">${countryEmoji}</b>`);
             $("#connected-ping").html(`Ping: <b>${connectedInfo.ping || "N/A"} ms</b>`);
-            $("#connected-status").html(`Status: <b>${isConnected ? "Connected" : "Disconnected"}</b>`);
+            $("#connected-status").html(`Status: <b>${connectedInfo.ping ? "Connected" : "Disconnected"}</b>`);
             $("#connected-bypass").html(`Bypass: <b>${isConnected ? "On" : "Off"}</b>`);
         } else {
             $("#ip-ping").attr("style", connectedInfo.ping > 1000 ? "color:red;" : "color:green;");
