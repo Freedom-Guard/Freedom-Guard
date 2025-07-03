@@ -547,7 +547,7 @@ class PublicSet {
             configGrid["outbounds"][0]["server_port"] = parseInt(proxy.split(":")[1]);
             writeFile(configGridPath, JSON.stringify(configGrid), "file");
 
-            this.Process.grid = spawn(corePath, ["run", "-c", configGridPath]);
+            this.Process.grid = spawn(corePath, ["run", "-c", configGridPath, "--tun"]);
             this.Process.grid.on("close", (code) => {
                 this.log(`GRID Tun exited with code ${code}.`);
                 this.killVPN("grid");
