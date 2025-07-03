@@ -52,6 +52,13 @@
                     "filter": [
                         "**/*"
                     ]
+                },
+                {
+                    "from": "src/main/cores/grid/",
+                    "to": "src/main/cores/grid/",
+                    "filter": [
+                        "**/*"
+                    ]
                 }
             ],
             "files": [
@@ -69,6 +76,13 @@
                 {
                     "from": "src/main/cores/mac/",
                     "to": "src/main/cores/mac/",
+                    "filter": [
+                        "**/*"
+                    ]
+                },
+                {
+                    "from": "src/main/cores/grid/",
+                    "to": "src/main/cores/grid/",
                     "filter": [
                         "**/*"
                     ]
@@ -97,6 +111,13 @@
                 {
                     "from": "src/main/cores/linux/",
                     "to": "src/main/cores/linux/",
+                    "filter": [
+                        "**/*"
+                    ]
+                },
+                {
+                    "from": "src/main/cores/grid/",
+                    "to": "src/main/cores/grid/",
                     "filter": [
                         "**/*"
                     ]

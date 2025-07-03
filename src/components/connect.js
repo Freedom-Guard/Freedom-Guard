@@ -49,7 +49,7 @@ class PublicSet {
             "setupAuto": null, "setup": null
         };
         this.mainDir = path.join(__dirname, "/../../");
-        this.coresDir = path.join(__dirname, "/../../", "src", "main", "cores")
+        this.coresDir = path.join(__dirname, "/../../", "src", "main", "cores").replace("app.asar", "");
         this.coresPath = '';
         this.settingsALL = {
             "flex": {},
