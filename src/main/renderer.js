@@ -285,8 +285,11 @@ class main {
             window.showMessageUI(this.publicSet.settingsALL["lang"]["killed_services"]);
             window.disconnectedUI();
         });
-        $("#menu-tool-box").on("click", () => {
+        $("#menu-tool-box, #tool-close-box").on("click", () => {
             this.showToolBox();
+        })
+        $("#close-sys-check").on("click", () => {
+            $("#system-check-result").toggle();
         })
         process.nextTick(() => this.addEventsSetting());
     };
@@ -603,8 +606,8 @@ class main {
         $("#tool-update-cores").on("click", () => {
             this.Tools.fetchAndInstallCores();
         });
-        $("#tool-close-box").on("click", () => {
-            $("#tool-box").toggle();
+        $("#run-system-check").on("click", () => {
+            window.showTestResultUI();
         });
     };
     async reloadServers() {
@@ -1181,6 +1184,26 @@ window.promptMulti = ({
             });
         });
     });
+};
+window.showTestResultUI = async () => {
+    window.showMessageUI("TESTING...");
+    const result = await mainSTA.Tools.testSystemCompatibility();
+    let html = `
+        <h3 style="text-align:center;">🧪 نتیجه تست سیستم و هسته‌ها</h3>
+        <p>🖥️ سیستم عامل: <b>${result.os}</b> | معماری: <b>${result.arch}</b></p>
+        <p>📁 مسیر هسته‌ها: <code>${result.coresPath}</code></p>
+        <p>⚙️ پشتیبانی از پراکسی سیستمی: <b>${result.proxyTest.success}</b></p>
+        <p>📡 DNS ست شده: <b style="color:${result.dnsTest.success ? 'green' : 'red'}">${result.dnsTest.success}</b></p>
+        <p>🧩 پراکسی ست شده: <b style="color:${result.proxyTest.success ? 'green' : 'red'}">${result.proxyTest.success}</b></p>
+        <h4>🌀 Vibe-Core</h4>
+        <p>📦 وجود فایل: <b style="color:${result.coresExist.vibe ? 'green' : 'red'}">${result.coresExist.vibe}</b></p>
+        <p>▶️ اجرای واقعی:${result.runTest.vibe.success} | کد خروج: ${result.runTest.vibe.exitCode}</p>
+        <h4>🌐 Warp-Core</h4>
+        <p>📦 وجود فایل: <b style="color:${result.coresExist.warp ? 'green' : 'red'}">${result.coresExist.warp}</b></p>
+        <p>▶️ اجرای واقعی: ${result.runTest.warp.success} | کد خروج: ${result.runTest.warp.exitCode}</p>
+`;
+    $("#system-check-result-value").html(html);
+    $("#system-check-result").toggle();
 };
 
 // #endregion

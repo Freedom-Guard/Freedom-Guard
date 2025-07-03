@@ -1650,6 +1650,100 @@ class Tools {
             }
         }
     }
+    async testSystemCompatibility() {
+        const vibePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
+        const warpPath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
+        const report = {
+            os: process.platform,
+            arch: process.arch,
+            coresPath: this.coresPath,
+            coresExist: {
+                vibe: fs.existsSync(vibePath),
+                warp: fs.existsSync(warpPath)
+            },
+            execTest: {
+                vibe: { success: false, output: "", error: "" },
+                warp: { success: false, output: "", error: "" }
+            },
+            runTest: {
+                vibe: { success: false, exitCode: null, output: "", error: "" },
+                warp: { success: false, exitCode: null, output: "", error: "" }
+            },
+            dnsTest: { success: false },
+            proxyTest: { success: false },
+            proxyOS: this.returnOS(),
+            timestamp: Date.now()
+        };
+
+        if (report.coresExist.vibe) {
+            try {
+                const out = this.execSync(`"${vibePath}" -v`, { timeout: 3000 }).toString();
+                report.execTest.vibe.success = true;
+                report.execTest.vibe.output = out.trim();
+            } catch (err) {
+                report.execTest.vibe.error = err.message;
+            }
+            try {
+                const vibeProcess = spawn(vibePath, ["run", "--config", vibePath], { timeout: 5000 });
+                let output = "", error = "";
+                vibeProcess.stdout.on("data", (data) => output += data.toString());
+                vibeProcess.stderr.on("data", (data) => error += data.toString());
+                const exitCode = await new Promise((resolve) => {
+                    vibeProcess.on("close", (code) => resolve(code));
+                    setTimeout(() => { try { vibeProcess.kill(); } catch { } }, 5000);
+                });
+                report.runTest.vibe.success = true;
+                report.runTest.vibe.output = output.trim();
+                report.runTest.vibe.error = error.trim();
+                report.runTest.vibe.exitCode = exitCode;
+            } catch (err) {
+                report.runTest.vibe.error = err.message;
+            }
+        }
+
+        if (report.coresExist.warp) {
+            try {
+                const out = this.execSync(`"${warpPath}" --version`, { timeout: 3000 }).toString();
+                report.execTest.warp.success = true;
+                report.execTest.warp.output = out.trim();
+            } catch (err) {
+                report.execTest.warp.error = err.message;
+            }
+            try {
+                const warpProcess = spawn(warpPath, [], { timeout: 5000 });
+                let output = "", error = "";
+                warpProcess.stdout.on("data", (data) => output += data.toString());
+                warpProcess.stderr.on("data", (data) => error += data.toString());
+                const exitCode = await new Promise((resolve) => {
+                    warpProcess.on("close", (code) => resolve(code));
+                    setTimeout(() => { try { warpProcess.kill(); } catch { } }, 5000);
+                });
+                report.runTest.warp.success = true;
+                report.runTest.warp.output = output.trim();
+                report.runTest.warp.error = error.trim();
+                report.runTest.warp.exitCode = exitCode;
+            } catch (err) {
+                report.runTest.warp.error = err.message;
+            }
+        }
+
+        try {
+            this.setDNS("1.1.1.1", "8.8.8.8", report.proxyOS);
+            this.setDNS("", "", report.proxyOS);
+            report.dnsTest.success = true;
+        } catch (e) {
+            report.dnsTest.success = false;
+        }
+        try {
+            this.setProxy(report.proxyOS, "127.0.0.1:8086");
+            this.offProxy(report.proxyOS);
+            report.proxyTest.success = true;
+        } catch (e) {
+            report.proxyTest.success = false;
+        }
+
+        return report;
+    }
 
     donateCONFIG(config) {
         if (typeof window !== 'undefined' && window.donateCONFIG) {
