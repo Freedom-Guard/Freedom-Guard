@@ -829,7 +829,12 @@ class ConnectAuto extends PublicSet {
             }
             this.argsVibe.push(vibeConfig);
 
+
             if (this.settingsALL.public.type === "tun") {
+                if (!this.settingsALL.vibe.hiddifyConfigJSON || this.settingsALL.vibe.hiddifyConfigJSON == "null") {
+                    this.settingsALL.vibe.hiddifyConfigJSON = this.resetVibeSettings();
+                }
+                this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = true;
                 this.argsVibe.push("--tun");
             } else {
                 this.argsVibe.push("--system-proxy");
@@ -1104,11 +1109,14 @@ class Connect extends PublicSet {
             this.argsVibe.push(vibeConfig.replace(/^"|"$/g, '').replace(/^'|'$/g, ''));
 
             if (this.settingsALL.public.type === "tun") {
+                if (!this.settingsALL.vibe.hiddifyConfigJSON || this.settingsALL.vibe.hiddifyConfigJSON == "null") {
+                    this.settingsALL.vibe.hiddifyConfigJSON = this.resetVibeSettings();
+                }
+                this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = true;
                 this.argsVibe.push("--tun");
             } else {
                 this.argsVibe.push("--system-proxy");
             }
-
             if (this.settingsALL.vibe.hiddifyConfigJSON && this.settingsALL.vibe.hiddifyConfigJSON != "null") {
                 const hiddifyConfigPath = path.join(this.coresPath, "vibe", "hiddify.json");
                 writeFile(hiddifyConfigPath, JSON.stringify(this.settingsALL.vibe.hiddifyConfigJSON));

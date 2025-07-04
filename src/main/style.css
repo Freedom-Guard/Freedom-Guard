@@ -447,7 +447,7 @@ img {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    color: var(--accent-color)
+    color: var(--text-light)
 }
 
 .box-select-server.show {
