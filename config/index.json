@@ -52,8 +52,12 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpjdklJODVUclc2bjBPR3lmcEhWUzF1@45.158.171.132:8080#FG FAST",
         "vibe,;,vless://2ebdc8ed-7b96-4839-b32f-b5d21a11f320@181.214.99.36:443?encryption=none&security=reality&sni=docker.com&fp=chrome&pbk=zguKemuiateh9w_YrRsbWEwm94KaNd-fAUxuZMR1p2c&sid=781c&type=tcp&headerType=none",
         "vibe,;,vless://b55ec078-3b17-4ed1-a697-71f464cdcaaa@172.67.11.138:80?encryption=none&security=none&sni=kssepa.sabzipolobamahi.dpdns.org&type=ws&host=kssepa.sabzipolobamahi.dpdns.org&path=%2F%3Fed%3D2560#FG",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpjdklJODVUclc2bjBPR3lmcEhWUzF1@45.87.175.171:8080#FG 1",
+        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@45.87.175.10:8080#FG 2",
+        "vibe,;,vless://4e4768df-0fbb-4cc1-8fd3-7c6fea95742a@104.17.148.22:443?encryption=none&security=tls&sni=rayan-07.parastoo.dpdns.org&fp=chrome&allowInsecure=1&type=ws&host=rayan-07.parastoo.dpdns.org&path=%2F%40Rayan_Config#FG 3",
         "vibe,;,vless://53fa8faf-ba4b-4322-9c69-a3e5b1555049@www.speedtest.net:80?encryption=none&security=none&type=ws&host=redfree8mahsang6.redfree8.ir&path=%2F%3Fed%3D2560#3",
         "vibe,;,vless://2ebdc8ed-7b96-4839-b32f-b5d21a11f320@181.214.99.36:443?encryption=none&security=reality&sni=docker.com&fp=chrome&pbk=zguKemuiateh9w_YrRsbWEwm94KaNd-fAUxuZMR1p2c&sid=781c&type=tcp&headerType=none",
         "vibe,;,vless://53fa8faf-ba4b-4322-9c69-a3e5b1555049@www.speedtest.net:80?encryption=none&security=none&type=ws&host=redfree8mahsang6.redfree8.ir&path=%2F%3Fed%3D2560#FG",
