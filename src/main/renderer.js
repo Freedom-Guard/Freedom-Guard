@@ -596,7 +596,7 @@ class main {
         });
         $("#tool-set-grid").on("click", () => {
             this.publicSet.setupGrid(this.publicSet.settingsALL["public"]["proxy"], this.publicSet.settingsALL["public"]["type"]);
-            window.showMessageUI("ON GRID");
+            window.showMessageUI("SET GRID ON: " + this.publicSet.settingsALL["public"]["proxy"]);
         });
         $("#tool-auto-mode").on("click", () => {
             this.publicSet.settingsALL["public"]["configManual"] = "freedom-guard://core=auto#Auto Server";

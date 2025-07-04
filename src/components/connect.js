@@ -538,6 +538,12 @@ class PublicSet {
             this.offProxy();
         }
     }
+    dataOutGrid(data) {
+        this.log(data);
+        if (data.includes("CORE STARTED")) {
+            window.showMessageUI("Grid mode is now enabled 🔐🟢🛰️");
+        }
+    }
     async setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
         if (type === "tun") {
             const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
@@ -553,9 +559,9 @@ class PublicSet {
                 this.killVPN("grid");
                 this.offProxy();
             });
-            this.Process.grid.stderr.on("data", (data) => this.log("Grid output: " + data.toString()));
-            this.Process.grid.stdout.on("data", (data) => this.log("Grid output: " + data.toString()));
-            this.log("grid started with:" + configGrid);
+            this.Process.grid.stderr.on("data", (data) => this.dataOutGrid("Grid output: " + data.toString()));
+            this.Process.grid.stdout.on("data", (data) => this.dataOutGrid("Grid output: " + data.toString()));
+            this.log("Grid started with config: " + JSON.stringify(configGrid, null, 2));
         } else if (type === 'system') {
             this.setProxy(proxy, typeProxy);
         }
