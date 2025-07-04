@@ -652,6 +652,7 @@ class main {
 
             await this.publicSet.importConfig(server);
             this.setSettings();
+            this.reloadServers();
         });
 
 
@@ -700,54 +701,56 @@ class main {
         menu.style.top = `${event.clientY}px`;
         menu.style.left = `${event.clientX}px`;
 
-        menu.innerHTML = `
+        menu.innerHTML = (type != "isp" ? `
             <button class="edit-server"><i class='bx bxs-pencil'></i> ویرایش</button>
             <button class="delete-server"><i class='bx bxs-trash'></i> حذف</button>
+            `: `<span style="padding: 0.5em;">برای ویرایش ابتدا با ضربه زدن بر روی سرور آن را اضافه کنید</span>`) + `
             <button class="share-server"><i class='bx bxs-share'></i> اشتراک‌ گذاری</button>
         `;
+        if (type != "isp") {
+            menu.querySelector(".edit-server").addEventListener("click", async () => {
+                let newServer = await window.promptMulti({
+                    title: this.publicSet.settingsALL["lang"]["edit_config"],
+                    fields: [
+                        { label: this.publicSet.settingsALL["lang"]["config_name"], defaultValue: this.publicSet.settingsALL["public"][type == "isp" ? "ispServers" : "importedServers"][index].split("#")[1] == "" ? "no name" : this.publicSet.settingsALL["public"][type == "isp" ? "ispServers" : "importedServers"][index].split("#")[1], name: "name" },
+                        { label: this.publicSet.settingsALL["lang"]["config"], defaultValue: this.publicSet.settingsALL["public"][type == "isp" ? "ispServers" : "importedServers"][index].split("#")[0], name: "server" }
+                    ],
+                    returnName: true
+                });
+                if (newServer) {
+                    newServer = newServer["server"] + "#" + newServer["name"];
+                    if (type === "imported") {
+                        this.publicSet.settingsALL["public"]["importedServers"][index] = newServer;
+                    } else if (type === "isp") {
+                        this.publicSet.settingsALL["public"]["ispServers"][index] = newServer;
+                    }
 
-        menu.querySelector(".edit-server").addEventListener("click", async () => {
-            let newServer = await window.promptMulti({
-                title: this.publicSet.settingsALL["lang"]["edit_config"],
-                fields: [
-                    { label: this.publicSet.settingsALL["lang"]["config_name"], defaultValue: this.publicSet.settingsALL["public"]["importedServers"][index].split("#")[1] == "" ? "no name" : this.publicSet.settingsALL["public"]["importedServers"][index].split("#")[1], name: "name" },
-                    { label: this.publicSet.settingsALL["lang"]["config"], defaultValue: this.publicSet.settingsALL["public"]["importedServers"][index].split("#")[0], name: "server" }
-                ],
-                returnName: true
+                    await this.publicSet.saveSettings();
+                    this.setSettings();
+                    this.reloadServers();
+                }
+                menu.remove();
             });
-            if (newServer) {
-                newServer = newServer["server"] + "#" + newServer["name"];
-                if (type === "imported") {
-                    this.publicSet.settingsALL["public"]["importedServers"][index] = newServer;
-                } else if (type === "isp") {
-                    this.publicSet.settingsALL["public"]["ispServers"][index] = newServer;
+
+            menu.querySelector(".delete-server").addEventListener("click", async () => {
+                const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید این کانفیگ را حذف کنید؟");
+                if (!userConfirmed) return;
+
+                try {
+                    await this.publicSet.deleteConfig(server);
+                    await this.publicSet.reloadSettings();
+                    this.publicSet.settingsALL["public"]["core"] = "auto";
+                    this.publicSet.settingsALL["public"]["configManual"] = "";
+                    this.publicSet.saveSettings();
+                    this.setSettings();
+                    this.reloadServers();
+                } catch (error) {
+                    console.error("خطا:", error);
                 }
 
-                await this.publicSet.saveSettings();
-                this.setSettings();
-                this.reloadServers();
-            }
-            menu.remove();
-        });
-
-        menu.querySelector(".delete-server").addEventListener("click", async () => {
-            const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید این کانفیگ را حذف کنید؟");
-            if (!userConfirmed) return;
-
-            try {
-                await this.publicSet.deleteConfig(server);
-                await this.publicSet.reloadSettings();
-                this.publicSet.settingsALL["public"]["core"] = "auto";
-                this.publicSet.settingsALL["public"]["configManual"] = "";
-                this.publicSet.saveSettings();
-                this.setSettings();
-                this.reloadServers();
-            } catch (error) {
-                console.error("خطا:", error);
-            }
-
-            menu.remove();
-        });
+                menu.remove();
+            });
+        }
         menu.querySelector(".share-server").addEventListener("click", async () => {
             try {
                 const serverConfig = server.replace(",;,", "://");
