@@ -57,6 +57,8 @@
         "vibe,;,vless://80d1fe59-60f4-4272-a280-820e1ef0a754@104.18.26.90:443?encryption=none&security=tls&sni=pages.dev&type=ws&host=tfs733.pages.dev&path=%2FTelegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray---Telegram-XV2ray%3Fed%3D2048#FG%203",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpXc3R1U25sdTRpZUE5TTBM@admin.c2.webramz.co:443#@FG_Link",
+        "vibe,;,vless://007554fb-8488-4caf-8955-f17e561f4495@23.27.49.212:2321?encryption=none&security=none&type=tcp&headerType=none#FG FAST 5",
+        "vibe,;,vless://7455e612-b2b3-4092-af2f-679e039c64d8@109.207.171.107:8443?encryption=none&security=none&type=tcp&headerType=http&host=zula.ir#FG FAST 6",
         "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
         "vibe,;,vless://16eb47f3-f741-4f2a-92ec-7b846f8103ba@a.de.maviks.ru:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.microsoft.com&fp=chrome&pbk=lyLhdojpACv6B3tHViJvPjNGATedXYRMnpAt4n4Siyo&sid=f203719d3ff9a5f5&type=tcp&headerType=none#FG 3",
         "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNToxeE8yY3FQYXpxakdmQ2Zk@freakconfig13.felafel.org:443#FG",
