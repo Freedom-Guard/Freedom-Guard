@@ -1,5 +1,6 @@
 {
     "PUBLIC": [
+        "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://drive.google.com/uc?id=1qUt9w0TzocLzQ5fikHxpS90T3Sg5S3DU#@SiNAVM.json#FG",
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
