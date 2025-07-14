@@ -323,6 +323,7 @@ class main {
             this.setPingBox();
             window.showMessageUI(this.publicSet.settingsALL["lang"]["killed_services"]);
             window.disconnectedUI();
+            location.reload();
         });
         $("#menu-tool-box, #tool-close-box").on("click", () => {
             this.showToolBox();
