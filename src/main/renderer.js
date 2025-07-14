@@ -27,6 +27,36 @@ window.LogLOG = (log = "", type = "info", ac = "text") => {
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
     $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
 };
+window.confirm = (mess = "") => {
+    return new Promise((resolve) => {
+        const box = document.getElementById("confirmation-box");
+        const messageEl = document.getElementById("confirmation-box-mess");
+        const yesBtn = document.getElementById("confirmation-box-yes");
+        const noBtn = document.getElementById("confirmation-box-no");
+
+        messageEl.textContent = mess;
+        box.style.display = "block";
+
+        const cleanup = () => {
+            box.style.display = "none";
+            yesBtn.removeEventListener("click", onYes);
+            noBtn.removeEventListener("click", onNo);
+        };
+
+        const onYes = () => {
+            cleanup();
+            resolve(true);
+        };
+
+        const onNo = () => {
+            cleanup();
+            resolve(false);
+        };
+
+        yesBtn.addEventListener("click", onYes);
+        noBtn.addEventListener("click", onNo);
+    });
+};
 window.disconnectedUI = () => {
     $("#ChangeStatus").removeClass("connecting");
     mainSTA.publicSet.status = false;
@@ -100,6 +130,7 @@ class main {
         this.checkUPDATE();
         this.loadLang();
         this.loadTheme();
+        this.initCompo();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -193,6 +224,14 @@ class main {
     openLink(href) {
         shell.openExternal(href);
     };
+    async initCompo() {
+        $(".close-btn").on("click", function (event) {
+            const targetClose = $(event.target).attr("targetclose");
+            if (targetClose) {
+                $(targetClose).hide();
+            }
+        })
+    }
     addEvents() {
         // Add Events for settings, menu, connect, ....
         $("a").on('click', (e) => {
@@ -733,7 +772,7 @@ class main {
             });
 
             menu.querySelector(".delete-server").addEventListener("click", async () => {
-                const userConfirmed = await ipcRenderer.invoke("submit-dialog", "آیا مطمئن هستید که می‌خواهید این کانفیگ را حذف کنید؟");
+                const userConfirmed = await window.confirm("آیا مطمئن هستید که می‌خواهید این کانفیگ را حذف کنید؟");
                 if (!userConfirmed) return;
 
                 try {
