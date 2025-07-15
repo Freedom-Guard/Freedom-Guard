@@ -709,10 +709,16 @@ class ConnectAuto extends PublicSet {
                         this.settings.warp[key] = value;
                     }
                 });
-                await this.connectWarp();
+                try {
+                    await this.connectWarp();
+                }
+                catch { }
             } else if (mode === "vibe") {
                 this.settings.vibe.config = cleanConfigString;
-                await this.connectVibe();
+                try {
+                    await this.connectVibe();
+
+                } catch { }
             }
         }
 
@@ -722,75 +728,103 @@ class ConnectAuto extends PublicSet {
         }
     }
 
-    async connectWarp() {
-        this.log("Starting warp for Auto-connect...");
-        this.resetArgs("warp");
-        await this.sleep(1000);
+    connectWarp() {
+        return new Promise((resolve, reject) => {
+            this.log("Starting warp for Auto-connect...");
+            this.resetArgs("warp");
 
-        const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
-        this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+            setTimeout(async () => {
+                try {
+                    const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
+                    this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
 
-        this.processWarp = spawn(corePath, this.argsWarp);
-        this.Process.warpAuto = this.processWarp;
+                    this.processWarp = spawn(corePath, this.argsWarp);
+                    this.Process.warpAuto = this.processWarp;
 
-        this.processWarp.stderr.on("data", (data) => this.dataOutWarp(data.toString()));
-        this.processWarp.stdout.on("data", (data) => this.dataOutWarp(data.toString()));
-        this.processWarp.on("close", (code) => {
-            this.log(`Warp Auto process exited with code ${code}.`);
-            this.killVPN("warpAuto");
-            this.offProxy();
+                    this.processWarp.stderr.on("data", (data) => this.dataOutWarp(data.toString()));
+                    this.processWarp.stdout.on("data", (data) => this.dataOutWarp(data.toString()));
+                    this.processWarp.on("close", (code) => {
+                        this.log(`Warp Auto process exited with code ${code}.`);
+                        this.killVPN("warpAuto");
+                        this.offProxy();
+                        reject(false);
+                    });
+
+                    await this.sleep(this.settingsALL.warp.timeout);
+                    for (let i = 0; i < 3 && !this.connected; i++) {
+                        this.connected = !(await this.getIP_Ping()).filternet;
+                        if (this.connected) break;
+                        await this.sleep(1000);
+                    }
+
+                    if (this.connected) {
+                        resolve(true);
+                    } else {
+                        this.log("Warp Auto-connect failed after multiple checks.");
+                        this.killVPN("warpAuto");
+                        this.offProxy();
+                        reject(false);
+                    }
+                } catch (error) {
+                    this.log(`Error in Warp Auto-connect: ${error.message}`);
+                    this.killVPN("warpAuto");
+                    this.offProxy();
+                    reject(false);
+                }
+            }, 1000);
         });
-
-        await this.sleep(this.settingsALL.warp.timeout);
-        for (let i = 0; i < 3 && !this.connected; i++) {
-            this.connected = !(await this.getIP_Ping()).filternet;
-            if (this.connected) break;
-            await this.sleep(1000);
-        }
-
-        if (!this.connected) {
-            this.log("Warp Auto-connect failed after multiple checks.");
-            this.killVPN("warpAuto");
-            this.offProxy();
-        }
     }
 
-    async connectVibe() {
-        this.log("Starting vibe for Auto-connect...");
-        this.resetArgs("vibe");
-        await this.sleep(1000);
+    connectVibe() {
+        return new Promise((resolve, reject) => {
+            this.log("Starting vibe for Auto-connect...");
+            this.resetArgs("vibe");
 
-        const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
-        const effectiveCorePath = process.platform === 'darwin' && process.arch === 'arm64'
-            ? corePath.replace('/amd64/', '/arm64/')
-            : corePath;
+            setTimeout(async () => {
+                try {
+                    const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
+                    const effectiveCorePath = process.platform === 'darwin' && process.arch === 'arm64'
+                        ? corePath.replace('/amd64/', '/arm64/')
+                        : corePath;
 
-        this.log(`Spawning Vibe process: ${effectiveCorePath} ${this.argsVibe.join(' ')}`);
+                    this.log(`Spawning Vibe process: ${effectiveCorePath} ${this.argsVibe.join(' ')}`);
 
-        this.processVibe = spawn(effectiveCorePath, this.argsVibe);
-        this.Process.vibeAuto = this.processVibe;
+                    this.processVibe = spawn(effectiveCorePath, this.argsVibe);
+                    this.Process.vibeAuto = this.processVibe;
 
-        this.processVibe.stderr.on("data", (data) => this.dataOutVibe(data.toString()));
-        this.processVibe.stdout.on("data", (data) => this.dataOutVibe(data.toString()));
-        this.processVibe.on("close", (code) => {
-            this.log(`Vibe Auto process exited with code ${code}.`);
-            this.killVPN("vibeAuto");
-            this.offProxy();
+                    this.processVibe.stderr.on("data", (data) => this.dataOutVibe(data.toString()));
+                    this.processVibe.stdout.on("data", (data) => this.dataOutVibe(data.toString()));
+                    this.processVibe.on("close", (code) => {
+                        this.log(`Vibe Auto process exited with code ${code}.`);
+                        this.killVPN("vibeAuto");
+                        this.offProxy();
+                        reject(false);
+                    });
+
+                    for (let i = 0; i < 3 && !this.connected; i++) {
+                        this.connected = !(await this.getIP_Ping()).filternet;
+                        if (this.connected) break;
+                        await this.sleep(1000);
+                    }
+
+                    if (this.connected) {
+                        resolve(true);
+                    } else {
+                        this.log("Vibe Auto-connect failed after 60 seconds.");
+                        this.killVPN("vibeAuto");
+                        this.offProxy();
+                        reject(false);
+                    }
+                } catch (error) {
+                    this.log(`Error in Vibe Auto-connect: ${error.message}`);
+                    this.killVPN("vibeAuto");
+                    this.offProxy();
+                    reject(false);
+                }
+            }, 1000);
         });
-
-        await this.sleep(this.settingsALL.vibe.timeout);
-        for (let i = 0; i < 3 && !this.connected; i++) {
-            this.connected = !(await this.getIP_Ping()).filternet;
-            if (this.connected) break;
-            await this.sleep(1000);
-        }
-
-        if (!this.connected) {
-            this.log("Vibe Auto-connect failed after multiple checks.");
-            this.killVPN("vibeAuto");
-            this.offProxy();
-        }
     }
+
 
     connectFlex() {
     }
