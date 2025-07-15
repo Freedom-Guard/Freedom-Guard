@@ -446,9 +446,6 @@ class main {
             await this.reloadServers(); this.publicSet.saveSettings(); window.showMessageUI(this.publicSet.settingsALL["lang"]["refreshed_isp_servers"]);
         });
         $("#submit-dns").on("click", async () => {
-            if ((!await this.isAdmin())) {
-                return;
-            };
             this.Tools.setDNS($("#dns1-text").val(), $("#dns2-text").val(), this.Tools.returnOS());
             window.showMessageUI(this.publicSet.settingsALL["lang"]["dns_set_success"])
         });
