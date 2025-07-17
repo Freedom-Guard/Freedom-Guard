@@ -255,9 +255,9 @@ img {
 }
 
 #ChangeStatus {
-    width: 140px;
-    height: 140px;
-    font-size: 50px;
+    width: 160px;
+    height: 160px;
+    font-size: 52px;
     color: white;
     background: var(--connect-button-background);
     border: 4px solid var(--accent-color);
@@ -272,17 +272,19 @@ img {
     font-weight: bold;
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 #ChangeStatus::before {
     content: "";
     position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
-    top: -50%;
-    left: -50%;
+    width: 220%;
+    height: 220%;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+    top: -60%;
+    left: -60%;
     transition: transform 0.4s ease-in-out;
+    pointer-events: none;
 }
 
 #ChangeStatus:hover::before {
@@ -296,7 +298,7 @@ img {
 }
 
 #ChangeStatus i {
-    font-size: 60px;
+    font-size: 64px;
     transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
@@ -304,27 +306,15 @@ img {
     color: var(--accent-color);
 }
 
-@keyframes glowPulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 10px rgba(47, 53, 66, 0.5);
-    }
-
-    50% {
-        box-shadow: 0 0 20px rgba(0, 168, 255, 0.6);
-    }
-}
-
 #ChangeStatus.connected {
     background: var(--connected-button-background);
     border-color: var(--primary-brand-color);
     animation: glowPulse 2s infinite ease-in-out;
+    box-shadow: var(--change-status-connected-shadow);
 }
 
 #ChangeStatus.connected:hover {
     background: var(--connected-button-hover-background);
-    box-shadow: var(--change-status-connected-shadow);
 }
 
 #ChangeStatus.connected i {
@@ -335,6 +325,44 @@ img {
 #ChangeStatus.connected:hover i {
     color: #fffa65;
     transform: rotate(360deg) scale(1.2);
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(0, 255, 157, 0.8);
+    }
+}
+
+#ChangeStatus.connecting {
+    background: radial-gradient(circle at center, #0a0f17, #05070a);
+    border: 3px solid transparent;
+    animation: spinGlow 1.8s linear infinite, rotateBorder 1.8s linear infinite;
+    position: relative;
+    box-shadow: 0 0 45px var(--connecting-button-shadow);
+}
+
+#ChangeStatus.connecting::after {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background: linear-gradient(240deg,
+            var(--primary-brand-color),
+            var(--accent-color),
+            #000,
+            var(--primary-brand-color));
+    background-size: 300% 300%;
+    background-position: 0% 0%;
+    animation: fillFlow 60s ease infinite;
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.6;
 }
 
 @keyframes rotateBorder {
@@ -359,9 +387,28 @@ img {
     }
 }
 
-#ChangeStatus.connecting {
-    animation: rotateBorder 2s infinite linear;
-    box-shadow: 0 0 25px var(--connecting-button-shadow);
+@keyframes fillFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    40% {
+        background-position: 75% 150%;
+    }
+}
+
+@keyframes spinGlow {
+    0% {
+        box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 50px rgba(127, 0, 255, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+    }
 }
 
 #ip-ping {
