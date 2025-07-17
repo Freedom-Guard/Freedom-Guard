@@ -5,7 +5,7 @@ const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
-const vesrionApp = "8.2.0";
+const vesrionApp = "8.2.1";
 let LOGS = [];
 // #endregion
 // #region components
