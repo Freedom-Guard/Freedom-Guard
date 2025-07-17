@@ -73,6 +73,7 @@ class PublicSet {
                 quickConnect: false,
                 quickConnectC: "",
                 lang: "en",
+                auto_conn_after_runs: false
             },
             "lang": {}
         };
@@ -269,6 +270,7 @@ class PublicSet {
                 quickConnect: false,
                 quickConnectC: "",
                 lang: "en",
+                auto_conn_after_runs: false
             },
             "lang": {}
         };

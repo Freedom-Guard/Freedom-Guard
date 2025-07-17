@@ -77,5 +77,6 @@
     "block-ads-state-vibe": "Block Ads",
     "remote_dns": "Remote DNS",
     "vibe_mode": "Vibe Mode",
-    "direct_dns": "Direct DNS"
+    "direct_dns": "Direct DNS",
+    "auto_conn_after_runs": "Auto Connect After Runs"
 }

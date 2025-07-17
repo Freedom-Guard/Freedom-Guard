@@ -77,5 +77,6 @@
     "block-ads-state-vibe": "حظر الإعلانات",
     "remote_dns": "DNS عن بعد",
     "vibe_mode": "وضع Vibe",
-    "direct_dns": "DNS مباشر"
+    "direct_dns": "DNS مباشر",
+    "auto_conn_after_runs": "الاتصال التلقائي بعد التشغيل"
 }

@@ -131,6 +131,7 @@ class main {
         this.loadLang();
         this.loadTheme();
         this.initCompo();
+        this.initApp();
     };
     connectFG() {
         $("#ChangeStatus").removeClass("connected");
@@ -230,7 +231,13 @@ class main {
             if (targetClose) {
                 $(targetClose).hide();
             }
-        })
+        });
+    }
+    async initApp() {
+        this.publicSet.reloadSettings();
+        if (this.publicSet.settingsALL["public"]["auto_conn_after_runs"]) {
+            this.connectFG();
+        };
     }
     addEvents() {
         // Add Events for settings, menu, connect, ....
@@ -345,6 +352,10 @@ class main {
             this.publicSet.importConfig("");
             window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
             window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["core"] + " Server + Customized"));
+        });
+        $("#auto-conn-status").on("change", () => {
+            this.publicSet.settingsALL["public"]["auto_conn_after_runs"] = $("#auto-conn-status").is(":checked");
+            this.publicSet.saveSettings();
         });
         $("#export-config").on("click", async () => {
             this.publicSet.reloadSettings();
@@ -574,6 +585,7 @@ class main {
         // Loads and applies saved settings to the UI elements
         this.publicSet.reloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
+        $("#auto-conn-status").prop("checked", this.publicSet.settingsALL["public"]["auto_conn_after_runs"]);
         $("#vpn-type-selected").val(this.publicSet.settingsALL["public"]["type"]);
         $("#isp-guard-selected").val(this.publicSet.settingsALL["public"]["isp"]);
         $("#bind-address-text").val(this.publicSet.settingsALL["public"]["proxy"]);

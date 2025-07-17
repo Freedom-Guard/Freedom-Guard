@@ -77,5 +77,6 @@
     "block-ads-state-vibe": "拦截广告",
     "remote_dns": "远程 DNS",
     "vibe_mode": "Vibe 模式",
-    "direct_dns": "直接 DNS"
+    "direct_dns": "直接 DNS",
+    "auto_conn_after_runs": "运行后自动连接"
 }

@@ -77,5 +77,6 @@
     "block-ads-state-vibe": "Reklamları Engelle",
     "remote_dns": "Uzak DNS",
     "vibe_mode": "Vibe Modu",
-    "direct_dns": "Doğrudan DNS"
+    "direct_dns": "Doğrudan DNS",
+    "auto_conn_after_runs": "Otomatik Bağlantı"
 }

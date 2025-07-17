@@ -77,5 +77,6 @@
     "block-ads-state-vibe": "مسدود کردن تبلیغات",
     "remote_dns": "DNS ریموت",
     "vibe_mode": "حالت Vibe",
-    "direct_dns": "DNS مستقیم"
+    "direct_dns": "DNS مستقیم",
+    "auto_conn_after_runs": "اتصال خودکار پس از اجرا"
 }
