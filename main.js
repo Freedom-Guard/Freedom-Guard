@@ -46,8 +46,10 @@ function createWindow() {
     } catch { }
   });
   mainWindow.on('close', (event) => {
-    event.preventDefault();
-    app.exit();
+    if (!app.isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
   });
 };
 function CreateViewBrowser(url) {
