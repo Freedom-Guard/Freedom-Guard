@@ -42,7 +42,10 @@
         },
         "win": {
             "icon": "src/assets/icon/ico.png",
-            "target": "nsis",
+            "target": [
+                "nsis",
+                "portable"
+            ],
             "requestedExecutionLevel": "requireAdministrator",
             "legalTrademarks": "(c) 2025 freedom-guard.github.io/Freedom",
             "extraResources": [
