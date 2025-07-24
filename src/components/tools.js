@@ -17,6 +17,40 @@ class Tools {
         );
     }
 
+    prepareCores() {
+        const platformDir = process.platform === 'darwin'
+            ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
+            : `/${process.platform}/`;
+
+        let baseCorePath = path.join(
+            __dirname.includes('app.asar') ? __dirname.replace('app.asar', '') : __dirname,
+            '..', '..', 'src', 'main', 'cores', platformDir
+        );
+
+        if (process.platform === "linux" || process.platform === "darwin") {
+            const destDir = getConfigPath();
+            const vibeDestPath = path.join(destDir, "vibe", 'vibe-core');
+            const warpDestPath = path.join(destDir, "warp", 'warp-core');
+
+            fs.mkdirSync(path.dirname(vibeDestPath), { recursive: true });
+            fs.mkdirSync(path.dirname(warpDestPath), { recursive: true });
+
+            const vibeSourcePath = path.join(baseCorePath, "vibe", "vibe-core");
+            const warpSourcePath = path.join(baseCorePath, "warp", "warp-core");
+
+            if (!fs.existsSync(vibeDestPath)) {
+                fs.copyFileSync(vibeSourcePath, vibeDestPath);
+                fs.chmodSync(vibeDestPath, 0o755);
+            }
+            if (!fs.existsSync(warpDestPath)) {
+                fs.copyFileSync(warpSourcePath, warpDestPath);
+                fs.chmodSync(warpDestPath, 0o755);
+            }
+            this.coresPath = destDir;
+        } else {
+            this.coresPath = baseCorePath;
+        }
+    }
     log(text = "", type = 'log') {
         if (typeof window !== 'undefined' && window.LogLOG) {
             if (type === "clear") {
@@ -447,6 +481,7 @@ class Tools {
             if (typeof window !== 'undefined' && window.showMessageUI) {
                 window.showMessageUI(`❌ Error downloading core files: \n${err.message}`);
             }
+            this.prepareCores();
         }
     }
     async testSystemCompatibility() {

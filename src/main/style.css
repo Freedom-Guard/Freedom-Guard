@@ -788,7 +788,7 @@ img {
     align-items: center;
     gap: 16px;
     z-index: 100;
-    transition: all 10s;
+    transition: all 0.3s;
     border-radius: 0 20px 20px 0;
     box-shadow: var(--box-shadow-medium);
     animation: glowSpin 5s ease;
@@ -809,6 +809,7 @@ img {
     width: 100%;
     gap: 15px;
     font-size: 1.1em;
+    padding: 0.5em 1.5em;
 }
 
 #menu span {
