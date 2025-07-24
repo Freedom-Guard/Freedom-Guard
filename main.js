@@ -218,7 +218,7 @@ ipc.on('show-browser', (event, url) => {
   mainWindow.setBrowserView(ViewBrowser);
 });
 ipc.on('load-browser', (event) => {
-  CreateViewBrowser("https://fwldom.github.io/freedom-site-browser/index.html");
+  CreateViewBrowser("https://google.com/");
   mainWindow.loadFile(path.join("src", "browser/index.html"));
   ViewBrowser.webContents.on("did-finish-load", (event) => {
     currentURL = ViewBrowser.webContents.getURL();

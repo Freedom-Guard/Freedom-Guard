@@ -32,7 +32,10 @@
     <!-- #region Freedom Guard => setting & main  -->
     <div class="connection">
         <button id="ChangeStatus">
-            <i class="bx bx-power-off"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#e3e3e3">
+                <path
+                    d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-84 32-156.5T198-763l42 42q-47 46-73.5 108T140-480q0 141 99.5 240.5T480-140q142 0 241-99.5T820-480q0-71-26-133t-73-108l42-42q54 54 85.5 126.5T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Zm-30-360v-440h60v440h-60Z" />
+            </svg>
         </button>
         <div class="connected-box">
             <i class="bx bx-refresh bx-spin-hover"
@@ -47,12 +50,7 @@
     </div>
     <p id="ip-ping"></p>
     <div class="header">
-        <button class="menu-show" id="menu-show" style="margin-right: auto;padding: 2px 7px;">
-            <i class="bx bx-menu"></i>
-        </button>
-        <button class="setting-show bx" id="setting-show" style="margin-left: auto;padding: 7px;">
-            <i class="bx bx-cog"></i>
-        </button>
+
     </div>
     <div class="box-select-server" id="box-select-server">
         <section style='display:flex;padding: 0.3em;' class="header-box-select-server">
@@ -423,7 +421,7 @@
         </button>
     </div>
     <div id="menu">
-        <div id="menu-exit" style="width: fit-content;margin-left: auto;height: fit-content;padding: 0.5em;">
+        <div id="menu-expand" style="width: fit-content;margin-left: auto;height: fit-content;padding: 0.5em;">
             <i class='bx bx-menu'></i>
         </div>
         <div id="menu-dns">
@@ -440,6 +438,9 @@
         </div>
         <div id="menu-tool-box">
             <i class="bx bxs-box"></i> <span data-lang="tool_box">Tool Box</span>
+        </div>
+        <div id="setting-show">
+            <i class="bx bx-cog"></i> <span data-lang="vpn-settings">Settings</span>
         </div>
         <div id="menu-exit-app">
             <i class='bx bx-power-off'></i> <span data-lang="exit_app">Exit App</span>

@@ -246,8 +246,7 @@ class main {
             let href = $(e.target).attr("href");
             this.openLink(href);
         });
-        $('#menu-show, #menu-exit').on('click', () => {
-            $('#menu').css('display') === 'none' ? $('#menu').css('display', 'flex') : $('#menu').css('display', 'none');
+        $(' #menu-expand').on('click', () => {
             global.setTimeout(() => {
                 $('#menu').toggleClass('show');
             }, 100);

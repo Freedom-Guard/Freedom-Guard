@@ -255,96 +255,95 @@ img {
 }
 
 #ChangeStatus {
-    width: 160px;
-    height: 160px;
-    font-size: 52px;
-    color: white;
-    background: var(--connect-button-background);
-    border: 4px solid var(--accent-color);
+    width: 150px;
+    height: 150px;
+    border: none;
     border-radius: 50%;
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(6px);
+    color: var(--accent-color, #00ffd0);
+    font-size: 75px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--change-status-shadow);
-    transition: all 0.3s ease-in-out;
     cursor: pointer;
     user-select: none;
-    font-weight: bold;
     position: relative;
-    overflow: hidden;
     z-index: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+#ChangeStatus i {
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 #ChangeStatus::before {
     content: "";
     position: absolute;
-    width: 220%;
-    height: 220%;
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
-    top: -60%;
-    left: -60%;
-    transition: transform 0.4s ease-in-out;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-color, #00ffd0) 0%, transparent 70%);
+    opacity: 0;
+    z-index: -1;
     pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 #ChangeStatus:hover::before {
-    transform: scale(1.2);
+    opacity: 0.2;
 }
 
 #ChangeStatus:hover {
-    background: linear-gradient(135deg, var(--primary-brand-color), var(--secondary-brand-color));
-    box-shadow: var(--change-status-hover-shadow);
+    background: linear-gradient(135deg, var(--primary-brand-color, #00c6ff), var(--secondary-brand-color, #0072ff));
+    color: white;
     transform: scale(1.05);
-}
-
-#ChangeStatus i {
-    font-size: 64px;
-    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 #ChangeStatus:hover i {
-    color: var(--accent-color);
+    color: #ffffff;
 }
 
 #ChangeStatus.connected {
-    background: var(--connected-button-background);
-    border-color: var(--primary-brand-color);
-    animation: glowPulse 2s infinite ease-in-out;
-    box-shadow: var(--change-status-connected-shadow);
+    background: var(--connected-button-background, #00c99c);
+    color: white;
+    animation: pulseConnected 2.4s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
 }
 
 #ChangeStatus.connected:hover {
-    background: var(--connected-button-hover-background);
+    background: var(--connected-button-hover-background, #00a97c);
 }
 
 #ChangeStatus.connected i {
+    transform: scale(1.15);
     color: #ffffff;
-    transform: scale(1.1);
 }
 
 #ChangeStatus.connected:hover i {
-    color: #fffa65;
     transform: rotate(360deg) scale(1.2);
+    color: #fff987;
 }
 
-@keyframes glowPulse {
+@keyframes pulseConnected {
 
     0%,
     100% {
-        box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+        box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
     }
 
     50% {
-        box-shadow: 0 0 40px rgba(0, 255, 157, 0.8);
+        box-shadow: 0 0 30px rgba(0, 255, 157, 0.8);
     }
 }
 
 #ChangeStatus.connecting {
-    background: radial-gradient(circle at center, #0a0f17, #05070a);
-    border: 3px solid transparent;
-    animation: spinGlow 1.8s linear infinite, rotateBorder 1.8s linear infinite;
+    background: #0c0f14;
+    animation: glowSpin 2s linear infinite, shimmerPulse 4s ease-in-out infinite;
+    color: var(--accent-color, #00ffd0);
     position: relative;
-    box-shadow: 0 0 45px var(--connecting-button-shadow);
+    box-shadow: 0 0 28px var(--connecting-button-shadow, rgba(0, 217, 255, 0.3));
 }
 
 #ChangeStatus.connecting::after {
@@ -352,62 +351,62 @@ img {
     position: absolute;
     inset: -10px;
     border-radius: 50%;
-    background: linear-gradient(240deg,
-            var(--primary-brand-color),
-            var(--accent-color),
-            #000,
-            var(--primary-brand-color));
-    background-size: 300% 300%;
-    background-position: 0% 0%;
-    animation: fillFlow 60s ease infinite;
+    background: conic-gradient(from 0deg, var(--primary-brand-color, #00c6ff), var(--accent-color, #00ffd0), var(--primary-brand-color, #00c6ff));
+    animation: rotateRing 1.8s linear infinite;
     z-index: -1;
-    filter: blur(10px);
-    opacity: 0.6;
+    filter: blur(8px);
+    opacity: 0.4;
+    pointer-events: none;
 }
 
-@keyframes rotateBorder {
+#ChangeStatus.connecting i {
+    animation: pulseIcon 1.6s ease-in-out infinite;
+}
+
+@keyframes rotateRing {
     0% {
-        border-color: #1abc9c;
-    }
-
-    25% {
-        border-color: #3498db;
-    }
-
-    50% {
-        border-color: #9b59b6;
-    }
-
-    75% {
-        border-color: #e74c3c;
+        transform: rotate(0deg);
     }
 
     100% {
-        border-color: #1abc9c;
+        transform: rotate(360deg);
     }
 }
 
-@keyframes fillFlow {
-    0% {
-        background-position: 0% 0%;
-    }
+@keyframes glowSpin {
 
-    40% {
-        background-position: 75% 150%;
-    }
-}
-
-@keyframes spinGlow {
-    0% {
-        box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+    0%,
+    100% {
+        z-index: 0;
+        box-shadow: 0 0 0px var(--accent-color);
     }
 
     50% {
-        box-shadow: 0 0 50px rgba(127, 0, 255, 0.6);
+        box-shadow: 0 0 30px var(--accent-color);
+    }
+}
+
+@keyframes shimmerPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 25px rgba(127, 0, 255, 0.3);
     }
 
+    50% {
+        box-shadow: 0 0 45px rgba(127, 0, 255, 0.6);
+    }
+}
+
+@keyframes pulseIcon {
+
+    0%,
     100% {
-        box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.25);
     }
 }
 
@@ -443,8 +442,8 @@ img {
     position: fixed;
     box-sizing: border-box;
     top: 10vh !important;
-    right: 5%;
-    width: 90%;
+    right: 4%;
+    width: 88%;
     height: 77%;
     overflow-y: auto;
     border-radius: var(--border-radius-default);
@@ -455,7 +454,6 @@ img {
     z-index: 999;
     box-shadow: var(--box-shadow-medium);
     border: 1px solid var(--glass-border);
-    padding: var(--default-padding);
 }
 
 .box-select-server>.header-box-select-server {
@@ -464,18 +462,26 @@ img {
     top: 0;
     left: 0;
     width: 100%;
-    border-radius: var(--border-radius-default);
     z-index: 1000;
+    font-size: 1.3em;
     background: var(--glass-background);
+    box-shadow: var(--box-shadow-medium);
     color: var(--accent-color);
 }
 
 .box-select-server>.header-box-select-server b {
     display: flex;
     align-items: center;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.box-select-server>.header-box-select-server b:hover {
+    background-color: var(--button-default-background);
 }
 
 .box-select-server>.box-select-servers {
+    padding: var(--default-padding);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -587,6 +593,9 @@ img {
     cursor: pointer;
     text-align: left;
     width: 100%;
+    display: flex;
+    gap: 1.5vw;
+    border-radius: var(--border-radius-default);
 }
 
 .server-menu button:hover {
@@ -602,7 +611,7 @@ img {
     max-width: 450px;
     height: auto;
     margin-top: 1.5vh;
-    padding: 12px;
+    padding: 6px 12px;
     font-size: 16px;
     align-items: center;
     box-shadow: var(--server-mini-shadow);
@@ -622,6 +631,7 @@ img {
     width: 100%;
     align-items: center;
     gap: 10px;
+    border-radius: var(--border-radius-default);
 }
 
 .box-select-server-mini #flagOfServer img {
@@ -762,41 +772,59 @@ img {
 /* #endregion */
 /* #region Menu */
 #menu {
-    display: none;
     position: fixed;
-    left: 1vw;
-    top: 1vh;
-    width: 30vw;
-    height: 98vh;
-    backdrop-filter: blur(5px);
+    left: 0;
+    width: fit-content;
+    margin: auto;
+    height: fit-content;
+    backdrop-filter: blur(10px);
     background: var(--menu-background);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 25px;
-    transform: scale(0.95) translateX(-10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
+    padding: 20px 10px;
+    display: flex;
     flex-direction: column;
-    gap: 12px;
+    align-items: center;
+    gap: 16px;
     z-index: 100;
-    opacity: 0;
+    transition: all 0.4s;
+    border-radius: 0 20px 20px 0;
+    box-shadow: var(--box-shadow-medium);
+    animation: glowSpin 5s ease;
 }
 
 #menu.show {
-    transform: scale(1) translateX(0);
-    opacity: 1;
+    align-items: start;
+}
+
+#menu.show span {
+    width: fit-content;
+    display: inline;
+}
+
+#menu.show>div {
+    border-radius: var(--border-radius-default);
+    justify-content: start;
+    width: 100%;
+    gap: 15px;
+    padding: 15px 20px;
+    font-size: 1.1em;
+}
+
+#menu span {
+    display: none;
 }
 
 #menu>div {
     background: var(--menu-item-background);
     color: var(--text-light);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-    padding: 15px 20px;
+    border-radius: 50%;
+    padding: 0.5em;
     display: flex;
     align-items: center;
-    gap: 15px;
-    font-size: 1.1em;
+    justify-content: center;
+    font-size: 1.3em;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -813,8 +841,6 @@ img {
 
 #menu>div:hover i {
     color: var(--accent-color);
-    transform: scale(1.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*#endregion
