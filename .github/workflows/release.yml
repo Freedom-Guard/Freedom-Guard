@@ -55,7 +55,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: freedom-guard-win-portable
-                  path: dist/*portable.exe
+                  path: dist/*portable.zip
 
             - name: Upload Artifact (Windows EXE)
               if: matrix.os == 'windows-latest'
