@@ -5,7 +5,7 @@ const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
-const vesrionApp = "8.5.0";
+const vesrionApp = "8.5.2";
 let LOGS = [];
 // #endregion
 // #region components
@@ -246,10 +246,8 @@ class main {
             let href = $(e.target).attr("href");
             this.openLink(href);
         });
-        $(' #menu-expand').on('click', () => {
-            global.setTimeout(() => {
-                $('#menu').toggleClass('show');
-            }, 100);
+        $('#menu-expand').on('click', () => {
+            $('#menu').toggleClass('show');
         });
         $('#menu-dns, #close-dns').on('click', () => {
             $('#dns-set').toggle();
@@ -1037,16 +1035,16 @@ class fgCLI extends main {
     };
     helpCommand() {
         window.LogLOG("Available commands:");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;connect - Connect to VPN with core selected(setting)");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;start - start [core] [args]");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;disconnect - Disconnect from VPN");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;ping - Get IP information");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;set - settings->set public core warp");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;show - settings->show public core");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;kill - only core selected mode->kill warp (/f)");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;refresh - refresh(isp servers, settings, ping, ...)");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;clear - Clear logs");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;exit - Exit application");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;connect - Connect to VPN with core selected(setting)", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;start - start [core] [args]", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;disconnect - Disconnect from VPN", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;ping - Get IP information", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;set - settings->set public core warp", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;show - settings->show public core", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;kill - only core selected mode->kill warp (/f)", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;refresh - refresh(isp servers, settings, ping, ...)", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;clear - Clear logs", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;exit - Exit application", "info", "html");
     };
 };
 // #endregion

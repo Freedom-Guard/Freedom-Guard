@@ -15,7 +15,7 @@
     --icon-color: #ffffff;
 
     /* Glassmorphism/Transparency */
-    --glass-background: rgba(50, 50, 65, 1);
+    --glass-background: rgba(50, 50, 65, 0.6);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: rgba(0, 0, 0, 0.3);
     --glass-item-background: rgba(255, 255, 255, 0.05);
@@ -454,6 +454,7 @@ img {
     z-index: 999;
     box-shadow: var(--box-shadow-medium);
     border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
 }
 
 .box-select-server>.header-box-select-server {
@@ -787,7 +788,7 @@ img {
     align-items: center;
     gap: 16px;
     z-index: 100;
-    transition: all 0.4s;
+    transition: all 10s;
     border-radius: 0 20px 20px 0;
     box-shadow: var(--box-shadow-medium);
     animation: glowSpin 5s ease;
@@ -807,7 +808,6 @@ img {
     justify-content: start;
     width: 100%;
     gap: 15px;
-    padding: 15px 20px;
     font-size: 1.1em;
 }
 
@@ -827,7 +827,7 @@ img {
     font-size: 1.3em;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s;
     position: relative;
     overflow: hidden;
 }
@@ -1521,11 +1521,6 @@ select::after {
 
     #setting-app {
         width: 100%;
-    }
-
-    #menu {
-        width: 97vw;
-        box-sizing: border-box;
     }
 }
 
