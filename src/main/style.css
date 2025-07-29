@@ -535,8 +535,8 @@ img {
 }
 
 .box-select-server>.box-select-servers>div>img {
-    width: 2em;
-    height: 2em;
+    width: 2.7em;
+    height: 2.7em;
     margin-right: 12px;
     border-radius: 50%;
     border: 2px solid var(--server-flag-border);
