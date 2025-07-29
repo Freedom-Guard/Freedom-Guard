@@ -396,12 +396,12 @@ class main {
         $("#reset-setting-btn").on("click", () => {
             this.publicSet.resetSettings();
         });
-        $("#config-fg-value").on("input", () => {
+        $("#config-fg-value").on("change", () => {
             this.publicSet.settingsALL["public"]["configAuto"] = $("#config-fg-value").val();
             this.publicSet.settingsALL["public"]["configAutoMode"] = "remote";
             this.publicSet.settingsALL["public"]["core"] = "auto";
-            this.setSettings();
             this.publicSet.saveSettings();
+            this.setSettings();
         });
         $("#submit-config").on("click", async () => {
             await this.publicSet.importConfig($("#config-value").val());
@@ -748,7 +748,7 @@ class main {
             let query = server.split("***")[1] ?? "";
             let flag = query.split("&").map(p => p.split("=")).find(p => p[0] === "flag")?.[1];
             let imgServer =
-                pre.split("://")[0] === "warp" ? (flag ? `${flag}.svg` : "warp.webp")  :
+                pre.split("://")[0] === "warp" ? (flag ? `${flag}.svg` : "warp.webp") :
                     true ? (flag ? `${flag}.svg` : "vibe.png") :
                         "vibe.png";
             imgServer = imgServer.replaceAll("/", "").replaceAll("\\", "");
