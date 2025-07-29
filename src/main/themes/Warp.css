@@ -23,10 +23,12 @@
         box-shadow: 0 0 15px var(--connecting-glow-1);
         border-color: var(--connecting-glow-1);
     }
+
     50% {
         box-shadow: 0 0 25px var(--connecting-glow-2);
         border-color: var(--connecting-glow-2);
     }
+
     100% {
         box-shadow: 0 0 15px var(--connecting-glow-1);
         border-color: var(--connecting-glow-1);
@@ -42,7 +44,7 @@ body {
     padding: 0;
 }
 
-#setting-app > div:not(#main),
+#setting-app>div:not(#main),
 #Logs,
 #ip-ping,
 .connected-box,
@@ -50,7 +52,7 @@ h1 {
     display: none !important;
 }
 
-#menu > div:nth-child(-n+5):not(#menu-exit) {
+#menu>div:nth-child(-n+5):not(#menu-exit) {
     display: none !important;
 }
 
@@ -99,29 +101,40 @@ h1 {
 
 #ChangeStatus:hover {
     border-color: var(--primary-brand-hover);
-    box-shadow: var(--change-status-hover-shadow, 0 0 15px rgba(255, 61, 0, 0.7));
 }
 
-#ChangeStatus i {
+#ChangeStatus svg {
     display: none;
 }
 
 #ChangeStatus::before {
     content: "";
     position: absolute;
-    width: 68px;
-    height: 68px;
+    width: 70px;
+    height: 70px;
     background: var(--thumb-off-bg);
     border-radius: 50%;
     top: 50%;
-    left: 6px;
+    z-index: 2;
+    left: 1%;
     transform: translateY(-50%);
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     box-shadow: 0px 2px 8px var(--shadow-dark);
+    opacity: 1;
+}
+
+#ChangeStatus.connecting::before {
+    left: calc(100% - 70px);
 }
 
 #ChangeStatus.connecting {
     animation: connecting-pulse 2s infinite ease-in-out;
+}
+
+#ChangeStatus.connecting::after {
+    animation: none;
+    border-radius: 25px;
+    inset: 0;
 }
 
 #ChangeStatus.connected {

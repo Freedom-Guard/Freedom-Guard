@@ -226,11 +226,35 @@ class main {
         shell.openExternal(href);
     };
     async initCompo() {
+        let that = this;
         $(".close-btn").on("click", function (event) {
             const targetClose = $(event.target).attr("targetclose");
             if (targetClose) {
                 $(targetClose).hide();
             }
+        });
+        const $tooltip = $('.tooltip-box');
+        $('#menu div').on('mousemove', function (e) {
+            if ($(this).parent().hasClass('show')) {
+                return;
+            };
+            const text = $(this).find('span').text();
+            $tooltip.text(text).css({
+                top: e.pageY + 0,
+                left: e.pageX + 15
+            }).fadeIn(300);
+        }).on('mouseleave', function () {
+            $tooltip.hide(100);
+        });
+        $(".has-tooltip").on("mousemove", function (e) {
+            const $tooltip = $('.tooltip-box');
+            const text = $(this).attr('data-tooltip').startsWith("tr") ? that.publicSet.settingsALL["lang"][$(this).attr('data-tooltip').replace("tr(", "").replace(")", "")] ?? $(this).attr('data-tooltip') : $(this).attr('data-tooltip');
+            $tooltip.text(text).css({
+                top: e.pageY + 10,
+                left: e.pageX + 15
+            }).fadeIn(300);
+        }).on('mouseleave', function () {
+            $('.tooltip-box').hide(100);
         });
     }
     async initApp() {
@@ -720,9 +744,16 @@ class main {
         container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
 
         servers.forEach((server, index) => {
-            let imgServer = server.split(",;,")[0] == "warp" ? "warp.webp" : server.split(",;,")[0] == "vibe" ? "vibe.png" : server.split("://")[0] == "warp" ? "warp.webp" : "vibe.png";
+            let pre = server.split(",;,")[0];
+            let query = server.split("***")[1] ?? "";
+            let flag = query.split("&").map(p => p.split("=")).find(p => p[0] === "flag")?.[1];
+            let imgServer =
+                pre.split("://")[0] === "warp" ? (flag ? `${flag}.svg` : "warp.webp")  :
+                    true ? (flag ? `${flag}.svg` : "vibe.png") :
+                        "vibe.png";
+            imgServer = imgServer.replaceAll("/", "").replaceAll("\\", "");
             server = decodeURIComponent(server.replace("vibe,;,", "").replace(",;,", "://"));
-            let name = server.includes("#") ? server.split("#").pop().trim() : server.substring(0, 50);
+            let name = server.includes("#") ? server.split("#").pop().trim().split("***")[0] : server.substring(0, 50);
 
             let div = document.createElement("div");
             div.className = "country-option";

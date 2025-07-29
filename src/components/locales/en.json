@@ -2,6 +2,7 @@
     "lang-selection": "Application Language",
     "mess-change-lang": "The application language has been changed",
     "connected_mess_notif": "You are connected to the free internet!",
+    "change-status": "Change Status",
     "vpn-type": "VPN Type",
     "system-proxy": "System Proxy",
     "tun": "TUN",
@@ -78,5 +79,6 @@
     "remote_dns": "Remote DNS",
     "vibe_mode": "Vibe Mode",
     "direct_dns": "Direct DNS",
-    "auto_conn_after_runs": "Auto Connect After Runs"
+    "auto_conn_after_runs": "Auto Connect After Runs",
+    "servers-section": "Servers Section"
 }

@@ -2,6 +2,7 @@
     "lang-selection": "Uygulama Dili",
     "mess-change-lang": "Uygulama dili değiştirildi",
     "connected_mess_notif": "Ücretsiz internete bağlandınız!",
+    "change-status": "Durumu Değiştir",
     "vpn-type": "VPN Türü",
     "system-proxy": "Sistem Proxy",
     "tun": "TUN",
@@ -78,5 +79,6 @@
     "remote_dns": "Uzak DNS",
     "vibe_mode": "Vibe Modu",
     "direct_dns": "Doğrudan DNS",
-    "auto_conn_after_runs": "Otomatik Bağlantı"
+    "auto_conn_after_runs": "Otomatik Bağlantı",
+    "servers-section": "Sunucular Bölümü"
 }

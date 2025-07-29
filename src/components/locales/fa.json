@@ -2,6 +2,7 @@
     "lang-selection": "زبان برنامه",
     "mess-change-lang": "زبان برنامه عوض شد",
     "connected_mess_notif": "شما به اینترنت آزاد متصل شدید!",
+    "change-status": "تغییر وضعیت",
     "vpn-type": "حالت وی پی ان",
     "system-proxy": "پروکسی سیستم",
     "tun": "TUN",
@@ -78,5 +79,6 @@
     "remote_dns": "DNS ریموت",
     "vibe_mode": "حالت Vibe",
     "direct_dns": "DNS مستقیم",
-    "auto_conn_after_runs": "اتصال خودکار پس از اجرا"
+    "auto_conn_after_runs": "اتصال خودکار پس از اجرا",
+    "servers-section": "بخش سرورها"
 }

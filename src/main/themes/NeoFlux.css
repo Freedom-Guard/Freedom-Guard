@@ -50,14 +50,22 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 @keyframes pulseRing {
     0% {
         box-shadow: 0 0 0 0 var(--color-ring);
     }
+
     100% {
         box-shadow: 0 0 0 25px transparent;
     }
@@ -116,7 +124,7 @@ body {
     transform: scale(1.08);
 }
 
-#ChangeStatus i {
+#ChangeStatus svg {
     display: none;
 }
 
@@ -133,7 +141,13 @@ body {
     content: "Connected";
 }
 
-#setting-app > div:not(#main),
+#ChangeStatus.connecting::after {
+    animation: none;
+    border-radius: 25px;
+    inset: 0;
+}
+
+#setting-app>div:not(#main),
 .box-select-server,
 .box-select-server-mini,
 #Logs,
@@ -143,6 +157,6 @@ h1 {
     display: none !important;
 }
 
-#menu > div:nth-child(-n+4):not(#menu-exit) {
+#menu>div:nth-child(-n+4):not(#menu-exit) {
     display: none !important;
 }

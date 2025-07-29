@@ -2,6 +2,7 @@
     "lang-selection": "لغة التطبيق",
     "mess-change-lang": "تم تغيير لغة التطبيق",
     "connected_mess_notif": "أنت متصل بالإنترنت المجاني!",
+    "change-status": "تغيير الحالة",
     "vpn-type": "نوع VPN",
     "system-proxy": "system proxy",
     "tun": "TUN",
@@ -78,5 +79,6 @@
     "remote_dns": "DNS عن بعد",
     "vibe_mode": "وضع Vibe",
     "direct_dns": "DNS مباشر",
-    "auto_conn_after_runs": "الاتصال التلقائي بعد التشغيل"
+    "auto_conn_after_runs": "الاتصال التلقائي بعد التشغيل",
+    "servers-section": "قسم سرورها"
 }

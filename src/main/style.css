@@ -740,7 +740,7 @@ img {
     border: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 1.2em;
     color: var(--text-light);
-    width: 70%;
+    width: 100%;
     padding: 10px 14px;
     border-radius: 8px;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -753,7 +753,7 @@ img {
 }
 
 #setting-app .btn {
-    background: var(--button-default-background);
+    background: var(--accent-color);
     color: var(--text-light);
     padding: 12px 20px;
     border-radius: 8px;
@@ -766,7 +766,7 @@ img {
 }
 
 #setting-app .btn:hover {
-    background: var(--setting-button-hover-shadow);
+    background: var(--button-default-background);
     transform: scale(1.08);
 }
 
@@ -859,6 +859,18 @@ img {
     z-index: 15;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+}
+
+.tooltip-box {
+    position: absolute;
+    background: var(--modal-background);
+    color: var(--text-light);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 9999;
+    display: none;
 }
 
 .content {

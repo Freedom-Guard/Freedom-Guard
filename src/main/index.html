@@ -29,7 +29,7 @@
         </div>
     </div>
     <!-- #endregion Loading -->
-    <!-- #region Freedom Guard => setting & main  -->
+    <!-- #region Freedom Guard => widget & main  -->
     <div class="connection">
         <button id="ChangeStatus">
             <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#e3e3e3">
@@ -49,9 +49,7 @@
         </div>
     </div>
     <p id="ip-ping"></p>
-    <div class="header">
-
-    </div>
+    <div class="header"></div>
     <div class="box-select-server" id="box-select-server">
         <section style='display:flex;padding: 0.3em;' class="header-box-select-server">
             <b id="add-server-btn" title="Add Server">
@@ -67,7 +65,7 @@
         <section id="box-select-servers" class="box-select-servers">
         </section>
     </div>
-    <div class="box-select-server-mini" id="box-select-server-mini">
+    <div class="box-select-server-mini has-tooltip" id="box-select-server-mini" data-tooltip="tr(servers-section)">
         <div id="flagOfServer">
             <img src="../svgs/ir.svg" id="imgServerSelected" width="25px" height="25px">
             <div id="textOfServer" style="padding-top: 0.3em;">Auto Server</div>
@@ -381,8 +379,6 @@
         </div>
     </div>
     <!-- #endregion -->
-    <!-- #region Freedom Vibe => main & setting-->
-    <!-- #endregion Freedom Vibe -->
     <!-- #region Menu & Options -->
     <div style="display: none;" id="Logs">
         <div id="LogsContent" style="margin-top: 10vh;"></div>
@@ -479,6 +475,7 @@
             <button id="confirmation-box-no" class="btn">❌ لغو</button>
         </div>
     </div>
+    <div class="tooltip-box"></div>
     <div id="prompt" class="hidden" dir="auto">
         <div id="prompt-box">
             <h2 id="prompt-title">عنوان ورودی</h2>

@@ -2,7 +2,7 @@
     --aurora-bg: #0D0E1B;
     --aurora-track: rgba(0, 0, 0, 0.25);
     --aurora-track-border: rgba(255, 255, 255, 0.1);
-    --aurora-thumb: #EAEAEA;
+    --aurora-thumb: linear-gradient(135deg, #cf008a, #e6007e);
     --aurora-text-idle: #7D8799;
     --aurora-text-active: #FFFFFF;
     --aurora-active-glow: #00A2FF;
@@ -94,7 +94,7 @@ h1 {
     border-color: var(--aurora-active-glow);
 }
 
-#ChangeStatus i {
+#ChangeStatus svg {
     display: none;
 }
 
@@ -126,10 +126,18 @@ h1 {
     transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
     z-index: 2;
+    opacity: 1;
 }
 
 #ChangeStatus.connecting {
     animation: aurora-charging 1.5s infinite ease-in-out;
+    rotate: 0deg !important;
+}
+
+#ChangeStatus.connecting::after {
+    animation: none;
+    border-radius: 25px;
+    inset: 0;
 }
 
 #ChangeStatus.connected {
