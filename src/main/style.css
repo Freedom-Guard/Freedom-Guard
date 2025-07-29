@@ -680,33 +680,33 @@ img {
     color: var(--text-light);
     font-weight: 600;
     position: relative;
-    padding-bottom: 10px;
+    padding: 0 20px 10px 0;
 }
 
-#setting-app h3::after {
+#setting-app h3::before {
     content: "";
     position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 50px;
-    height: 4px;
+    left: -5px;
+    width: 5px;
+    top: 0%;
+    height: 75%;
     background: var(--setting-heading-line);
     border-radius: 3px;
 }
 
-#setting-app h3.right::after {
+#setting-app h3.right::before {
     right: 0;
 }
 
 #setting-app>div,
 #setting-app>section>div {
     width: 95%;
-    padding: 14px;
+    padding: 1em;
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    border-radius: 8px;
+
 }
 
 #setting-app b {
