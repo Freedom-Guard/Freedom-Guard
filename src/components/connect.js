@@ -377,7 +377,7 @@ class PublicSet {
 
         if (typeof window !== 'undefined' && window.setATTR && window.setHTML) {
             window.setATTR("#imgServerSelected", "src", `../svgs/${typeConfig === "warp" ? "warp.webp" : typeConfig === "vibe" ? "vibe.png" : "ir.svg"}`);
-            window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim() : config.substring(0, 50));
+            window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim().split("***")[0] : config.substring(0, 50));
         }
         this.saveSettings();
     }
@@ -1132,7 +1132,7 @@ class Connect extends PublicSet {
                 this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = true;
                 this.argsVibe.push("--tun");
             } else {
-                this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = false;
+                try { this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = false; } catch { };
                 this.argsVibe.push("--system-proxy");
             }
             if (this.settingsALL.vibe.hiddifyConfigJSON && this.settingsALL.vibe.hiddifyConfigJSON != "null") {
