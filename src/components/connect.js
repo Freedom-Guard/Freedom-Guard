@@ -853,7 +853,7 @@ class ConnectAuto extends PublicSet {
                 this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = true;
                 this.argsVibe.push("--tun");
             } else {
-                this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = false;
+                try { this.settingsALL.vibe.hiddifyConfigJSON["enable-tun"] = false; } catch { };
                 this.argsVibe.push("--system-proxy");
             }
 
