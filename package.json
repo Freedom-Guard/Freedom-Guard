@@ -69,7 +69,7 @@
             ]
         },
         "mac": {
-            "icon": "src/assets/icon/ico.png",
+            "icon": "src/assets/icon/ico.ico",
             "target": [
                 "dmg",
                 "zip"
