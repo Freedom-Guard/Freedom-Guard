@@ -23,7 +23,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirnameFile, "src", "assets", "icon", process.platform == "linux" ? 'ico.png' : "ico.ico"),
+    icon: path.join(__dirnameFile, "src", "assets", "icon", "ico.png"),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -106,7 +106,7 @@ function setSystemTray(status = "off") {
   tray = new Tray(icon);
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: (status == "off" ? 'Connect to Freedom Guard' : 'Disconnect Freedom Guard'),
+      label: (status == "off" ? 'Connect' : 'Disconnect'),
       type: 'normal',
       click: () => {
         mainWindow.removeBrowserView(ViewBrowser);
@@ -116,21 +116,54 @@ function setSystemTray(status = "off") {
     },
     { type: 'separator' },
     {
-      label: 'Show Application',
+      label: 'Open',
+      submenu: [
+        {
+          label: 'Home',
+          click: () => {
+            mainWindow.webContents.send('open-section', 'home');
+            mainWindow.show();
+          }
+        },
+        {
+          label: 'Servers',
+          click: () => {
+            mainWindow.webContents.send('open-section', 'servers');
+            mainWindow.show();
+          }
+        },
+        {
+          label: 'Settings',
+          click: () => {
+            mainWindow.webContents.send('open-section', 'settings');
+            mainWindow.show();
+          }
+        },
+        {
+          label: 'Freedom Browser',
+          click: () => {
+            mainWindow.webContents.send('open-section', 'browser');
+            mainWindow.show();
+          }
+        }
+      ]
+    },
+    {
+      label: 'Show',
       type: 'normal',
       click: () => {
         mainWindow.show();
       }
     },
     {
-      label: 'Hide Application',
+      label: 'Hide',
       type: 'normal',
       click: () => {
         mainWindow.hide();
       }
     },
     {
-      label: 'Close Application',
+      label: 'Quit',
       type: 'normal',
       click: () => {
         mainWindow.close();
@@ -140,7 +173,7 @@ function setSystemTray(status = "off") {
   ]);
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Freedom Guard')
-  tray.setTitle('VPN (Warp, Vibe , Psiphon)')
+  tray.setTitle('VPN (Warp, Vibe)')
 }
 app.whenReady().then(() => {
   setSystemTray("off");

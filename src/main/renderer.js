@@ -671,7 +671,7 @@ class main {
             window.showMessageUI("SET GRID ON: " + this.publicSet.settingsALL["public"]["proxy"]);
         });
         $("#tool-auto-mode").on("click", () => {
-            this.publicSet.settingsALL["public"]["configManual"] = "freedom-guard://core=auto#Auto Server";
+            this.publicSet.settingsALL["public"]["configManual"] = "freedom-guard://core=auto#Auto Server***flag=ir";
             this.publicSet.saveSettings();
             this.setSettings();
         });
@@ -1114,42 +1114,38 @@ window.startNewUser = () => {
         trackEvent("new_user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
 
     });
-}; window.messageQueue = [];
-window.isMessageShowing = false;
-
+};
 window.showMessageUI = (message, duration = 3000) => {
     window.messageQueue.push({ message, duration });
     if (typeof window.LogLOG === "function") window.LogLOG(message.toString());
     processMessageQueue();
-};
+    function processMessageQueue() {
+        if (window.isMessageShowing || window.messageQueue.length === 0) return;
 
-function processMessageQueue() {
-    if (window.isMessageShowing || window.messageQueue.length === 0) return;
+        const { message, duration } = window.messageQueue.shift();
+        const $box = $("#message");
+        const $text = $("#messageText");
 
-    const { message, duration } = window.messageQueue.shift();
-    const $box = $("#message");
-    const $text = $("#messageText");
-
-    if ($box.length === 0 || $text.length === 0) {
-        window.isMessageShowing = false;
-        return;
-    }
-
-    $text.html(message);
-    $box.addClass("show-message").fadeIn(200);
-    window.isMessageShowing = true;
-
-    setTimeout(() => {
-        $box.fadeOut(300, () => {
-            $box.removeClass("show-message");
+        if ($box.length === 0 || $text.length === 0) {
             window.isMessageShowing = false;
-            processMessageQueue();
-        });
-    }, duration);
-}
+            return;
+        }
 
+        $text.html(message);
+        $box.addClass("show-message").fadeIn(200);
+        window.isMessageShowing = true;
+
+        setTimeout(() => {
+            $box.fadeOut(300, () => {
+                $box.removeClass("show-message");
+                window.isMessageShowing = false;
+                processMessageQueue();
+            });
+        }, duration);
+    };
+};
 window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
-    $("#text-box-notif").html(mess);
+    $("#text-box-notif").html(mess.replaceAll("\n","<br />"));
     $("#box-notif").css("display", "flex");
     $("#href-box-notif").attr("href", link);
     $("#href-box-notif").html(btnOpenLinkHTML);
@@ -1163,37 +1159,6 @@ window.showBox = (text = "") => {
     $("#text-box").html(text);
     $("#close-box").on("click", () => {
         $("#box").css("display", "none");
-    });
-};
-window.prompt = (message = "لطفاً مقدار موردنظر را وارد کنید:", defaultValue = "") => {
-    return new Promise((resolve) => {
-        const promptBox = document.getElementById("prompt");
-        const promptMessage = document.getElementById("prompt-message");
-        const promptInput = document.getElementById("prompt-input");
-        const confirmBtn = document.getElementById("confirm-prompt");
-        const cancelBtn = document.getElementById("cancel-prompt");
-
-        promptMessage.innerText = message;
-        promptInput.value = defaultValue;
-
-        promptBox.classList.remove("hidden");
-        promptInput.focus();
-
-        confirmBtn.onclick = () => {
-            resolve(promptInput.value);
-            promptBox.classList.add("hidden");
-        };
-
-        cancelBtn.onclick = () => {
-            resolve(null);
-            promptBox.classList.add("hidden");
-        };
-
-        promptInput.onkeydown = (event) => {
-            if (event.key === "Enter") {
-                confirmBtn.click();
-            }
-        };
     });
 };
 window.promptMulti = ({
@@ -1287,7 +1252,6 @@ window.showTestResultUI = async () => {
     $("#system-check-result-value").html(html);
     $("#system-check-result").toggle();
 };
-
 // #endregion
 // #region IPC 
 ipcRenderer.on("start-fg", (event) => {
@@ -1316,5 +1280,20 @@ ipcRenderer.on("start-link", (event, link) => {
     } catch (error) {
     }
     window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["config_imported"] + link.split("://")[0]);
+});
+ipcRenderer.on("open-section", (event, section) => {
+    if (section == "home") {
+        $("#box-select-server").hide();
+        $("#setting-app").hide();
+    }
+    if (section == "settings") {
+        $("#setting-app").toggle();
+    }
+    else if (section == "browser") {
+        ipcRenderer.send("load-browser");
+    }
+    else if (section == "servers") {
+        $("#box-select-server").toggle();
+    }
 });
 // #endregion

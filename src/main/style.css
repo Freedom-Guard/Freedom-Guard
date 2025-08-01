@@ -15,7 +15,7 @@
     --icon-color: #ffffff;
 
     /* Glassmorphism/Transparency */
-    --glass-background: rgba(50, 50, 65, 0.6);
+    --glass-background: rgba(50, 50, 65, 0.8);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: rgba(0, 0, 0, 0.3);
     --glass-item-background: rgba(255, 255, 255, 0.05);
@@ -668,7 +668,7 @@ img {
     left: 0%;
     display: flex;
     align-items: center;
-    background-color: var(--glass-background);
+    background-color: var(--modal-background);
     width: 100%;
     min-height: 7.5vh;
     z-index: 10;
@@ -1169,6 +1169,10 @@ img {
     outline: none;
 }
 
+a {
+    text-decoration: none;
+}
+
 .form-control-c {
     position: relative;
     --width-of-input: 300px;
@@ -1203,9 +1207,11 @@ img {
     transform: translate(-50%, -50%);
 }
 
-.box.flex-row {
+.box.flex-row,
+.flex-row {
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 5vw;
 }
 
 .box .close-btn {

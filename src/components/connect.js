@@ -199,27 +199,27 @@ class PublicSet {
         if (typeof window !== 'undefined' && window.connectedUI) {
             window.connectedUI();
         }
-    }
+    };
 
     setProxy(proxy, type = "socks5") {
         this.log(`[Proxy] Setting proxy: Type: ${type}, Address: ${proxy}`);
         this.Tools.setProxy(this.Tools.returnOS(), proxy);
         this.log("[Proxy] Proxy set successfully.");
-    }
+    };
 
     offProxy() {
         this.Tools.offProxy(this.Tools.returnOS());
-    }
+    };
 
     sleep(time) {
         return new Promise(resolve => setTimeout(resolve, time));
-    }
+    };
 
     disconnectedUI() {
         if (typeof window !== 'undefined' && window.disconnectedUI) {
             window.disconnectedUI();
         }
-    }
+    };
 
     async resetSettings() {
         this.settingsALL = {
@@ -282,7 +282,7 @@ class PublicSet {
         if (typeof location !== 'undefined') {
             location.reload();
         }
-    }
+    };
 
     isValidJSON(str) {
         try {
@@ -291,7 +291,7 @@ class PublicSet {
         } catch (e) {
             return false;
         }
-    }
+    };
 
     async importConfig(config) {
         try {
