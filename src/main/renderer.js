@@ -5,7 +5,7 @@ const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
-const vesrionApp = "8.5.3";
+const vesrionApp = "8.5.4";
 let LOGS = [];
 // #endregion
 // #region components
@@ -371,6 +371,7 @@ class main {
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
             $("#config-value").val("");
             this.publicSet.importConfig("");
+
             window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
             window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["core"] + " Server + Customized"));
         });
@@ -615,7 +616,8 @@ class main {
         $("#lang-app-value").val(this.publicSet.settingsALL["public"]["lang"]);
         $("#theme-app-value").val(this.publicSet.settingsALL["public"]["theme"] ?? "Dark");
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
-        window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
+        let imgServer = ((s => { let p = s.split(",;,")[0], q = s.split("***")[1] ?? "", f = q.split("&").map(x => x.split("=")).find(x => x[0] === "flag")?.[1]; return (p.split("://")[0] === "warp" ? (f ? `${f}.svg` : "warp.webp") : (f ? `${f}.svg` : "vibe.png")).replaceAll("/", "").replaceAll("\\", ""); })(this.publicSet.settingsALL["public"]["configManual"]));
+        window.setATTR("#imgServerSelected", "src", "../svgs/" + (imgServer));
         window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim().split("***")[0] : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50)));
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
         $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
