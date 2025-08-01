@@ -23,7 +23,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirnameFile, "src", "assets", "icon", "ico.png"),
+    icon: path.join(__dirnameFile, "src", "assets", "icon", process.platform == "linux" ? "ico.png" : "ico.ico"),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
