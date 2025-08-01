@@ -104,7 +104,7 @@
             "artifactName": "freedom-guard-win-portable.exe"
         },
         "linux": {
-            "icon": "src/assets/icon/ico.png",
+            "icon": "src/assets/icon/mac.png",
             "target": [
                 "deb",
                 "tar.gz",
