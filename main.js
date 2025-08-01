@@ -102,7 +102,7 @@ function setSystemTray(status = "off") {
     tray.destroy();
     tray = null;
   }
-  icon = nativeImage.createFromPath(path.join(__dirnameFile, "src", "assets", "icon", 'ico.png'))
+  icon = nativeImage.createFromPath(path.join(__dirnameFile, "src", "assets", "icon", 'ico.ico'))
   tray = new Tray(icon);
   const contextMenu = Menu.buildFromTemplate([
     {
