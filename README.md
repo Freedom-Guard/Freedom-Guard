@@ -30,15 +30,16 @@
         <tr>
             <td>Windows</td>
             <td>
-                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-win.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-win-x64.exe"><img src="https://img.shields.io/badge/Setup-x64-2d7d9a.svg?logo=windows"></a><br>
             </td>
         </tr>
         <tr>
             <td>Linux</td>
             <td>
-                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.deb"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=linux"> </a><br>
-                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.AppImage"><img src="https://img.shields.io/badge/AppImage-x64-2d7d9a.svg?logo=linux"></a><br>
-                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux.rpm"><img src="https://img.shields.io/badge/rpm-x64-f84e29.svg?logo=rpm"></a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux-amd64.deb"><img src="https://img.shields.io/badge/deb-x64-f84e29.svg?logo=linux"> </a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux-x86_64.AppImage"><img src="https://img.shields.io/badge/AppImage-x64-2d7d9a.svg?logo=linux"></a><br>
+                <a href="https://github.com/Freedom-Guard/Freedom-Guard/releases/latest/download/freedom-guard-linux-x86_64.rpm
+"><img src="https://img.shields.io/badge/rpm-x64-f84e29.svg?logo=rpm"></a><br>
             </td>
         </tr>
         </tr>
