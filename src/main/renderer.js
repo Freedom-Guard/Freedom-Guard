@@ -256,6 +256,12 @@ class main {
         }).on('mouseleave', function () {
             $('.tooltip-box').hide(100);
         });
+        $('#setting-app h3:not(.not-sect)').on("click", function () {
+            var content = $(this).attr("openSection");
+
+            $("#" + content).slideToggle();
+            $(this).toggleClass("active");
+        });
     }
     async initApp() {
         this.publicSet.reloadSettings();
@@ -366,6 +372,7 @@ class main {
         $("#core-guard-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
             $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
+            $(`#${this.publicSet.settingsALL["public"]["core"]}-settings`).slideDown().addClass("active");
             $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
             this.publicSet.settingsALL["public"]["core"] == "warp" ? $("#vpn-type-selected").val("system") : '';
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
@@ -1145,7 +1152,7 @@ window.showMessageUI = (message, duration = 3000) => {
     };
 };
 window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
-    $("#text-box-notif").html(mess.replaceAll("\n","<br />"));
+    $("#text-box-notif").html(mess.replaceAll("\n", "<br />"));
     $("#box-notif").css("display", "flex");
     $("#href-box-notif").attr("href", link);
     $("#href-box-notif").html(btnOpenLinkHTML);

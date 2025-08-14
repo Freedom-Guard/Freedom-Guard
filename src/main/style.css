@@ -647,6 +647,15 @@ img {
 
 /*#endregion */
 /* #region Setting */
+
+.divider {
+    height: 1px;
+    padding: 0 !important;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    margin: 8px 0;
+    border: none;
+}
+
 #setting-app {
     position: fixed;
     display: none;
@@ -660,27 +669,57 @@ img {
     box-shadow: var(--setting-shadow);
     border-left: 2px solid var(--setting-border-left);
     border-radius: 10px 0 0 10px;
+    padding: 20px 10px;
+    box-sizing: border-box;
 }
 
 #setting-app #nav-top {
     position: sticky;
-    top: 0%;
-    left: 0%;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: var(--modal-background);
     width: 100%;
-    min-height: 7.5vh;
+    min-height: 8vh;
+    padding: 0 20px;
     z-index: 10;
 }
 
 #setting-app h3 {
-    margin: 15px 20px;
-    font-size: 1.6em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
     color: var(--text-light);
     font-weight: 600;
+    transition: color 0.3s;
+    padding: 0.3em;
+}
+
+#setting-app h3:hover {
+    color: var(--accent-color);
+}
+
+
+#setting-app h3:not(.not-sect)::after {
+    content: "";
     position: relative;
-    padding: 0 20px 10px 0;
+    margin: 0.1em;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+    transform: translateY(-50%) rotate(45deg);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.3s ease;
+}
+
+#setting-app h3.active::after {
+    transform: translateY(-50%) rotate(225deg);
+    border-color: var(--accent-color);
 }
 
 #setting-app h3::before {
@@ -688,30 +727,31 @@ img {
     position: absolute;
     left: -10px;
     width: 5px;
-    top: 0%;
+    top: 5%;
     height: 75%;
     background: var(--setting-heading-line);
     border-radius: 3px;
 }
 
 #setting-app h3.right::before {
-    right: 0;
+    right: -5px;
 }
 
 #setting-app>div,
-#setting-app>section>div {
+#setting-app section>div {
     width: 95%;
-    padding: 1em;
+    padding: 0.4em;
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-
+    margin: 6px ;
+    box-sizing: border-box;
 }
 
 #setting-app b {
     color: var(--text-light);
-    margin: 5px 10px;
+    margin: 0 10px;
     font-size: 1.15em;
     font-weight: 500;
 }
@@ -738,13 +778,14 @@ img {
 #setting-app input[type="text"] {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 1.2em;
+    font-size: 1.15em;
     color: var(--text-light);
     width: 100%;
-    padding: 10px 14px;
+    padding: 12px 14px;
     border-radius: 8px;
     transition: border-color 0.3s, box-shadow 0.3s;
     outline: none;
+    box-sizing: border-box;
 }
 
 #setting-app input[type="text"]:focus {
@@ -755,7 +796,7 @@ img {
 #setting-app .btn {
     background: var(--accent-color);
     color: var(--text-light);
-    padding: 12px 20px;
+    padding: 12px 22px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
@@ -1246,7 +1287,7 @@ a {
     cursor: pointer;
 }
 
-.box.flex-col {
+.box.flex-col, .flex-col {
     flex-direction: column !important;
     align-items: center;
 }
@@ -1477,7 +1518,7 @@ select::after {
 .switch {
     font-size: 16px;
     position: relative;
-    display: inline-block;
+    display: block;
     width: 3.8em;
     height: 2em;
 }

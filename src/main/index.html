@@ -78,11 +78,10 @@
             <button id="close-setting">
                 <i class='bx bx-arrow-back'></i>
             </button>
-            <b style="color: #db8522;margin-left: 2vw;font-weight: bold;" data-lang="settings_fg">Settings
-                Freedom Guard</b>
+            <b style="color: #db8522;margin-left: 2vw;font-weight: bold;" data-lang="settings_fg">Settings Freedom
+                Guard</b>
             <div id="show-donate-box" style="margin-left: auto;"><i class="bx bxs-donate-heart"
-                    style="font-size: 1.5em;color:red"></i>
-            </div>
+                    style="font-size: 1.5em;color:red"></i></div>
             <div class="dropdown" id="more-options" style="padding: 10px;">
                 <i class="bx bx-dots-vertical-rounded" style="font-size: 2em;" id="open-drop-setting"></i>
                 <div class="dropdown-content" id="more-options-content">
@@ -101,8 +100,10 @@
                 </div>
             </div>
         </nav>
+
         <section id="main">
             <div style="margin: 0;padding: 5px;"></div>
+
             <b data-lang="config_freedom_guard">Config Freedom Guard</b>
             <div id="config" class="form-control-c">
                 <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
@@ -111,13 +112,17 @@
                 <button id="submit-config-clipboard" class="btn"><i class='bx bxs-paste'></i></button>
                 <button id="submit-config-file" class="btn"><i class='bx bxs-folder-open'></i></button>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="config_fg_auto">Config Freedom Guard for auto mode</b>
             <div id="config-fg" class="form-control-c">
                 <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
                     id="config-fg-value">
                 <button id="config-fg-file" class="btn"><i class='bx bxs-folder-open'></i></button>
             </div>
-            <h3 data-lang="vpn-settings">VPN Settings</h3>
+            <div class="divider"></div>
+
+            <h3 data-lang="vpn-settings" class="not-sect">VPN Settings</h3>
             <b data-lang="vpn-core">VPN Core</b>
             <div id="core-guard" class="form-control-c">
                 <select value="auto" id="core-guard-selected">
@@ -126,6 +131,8 @@
                     <option value="warp">Freedom Warp</option>
                 </select>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="vpn-type">VPN Type</b>
             <div id="vpn-type">
                 <select value="system" id="vpn-type-selected">
@@ -134,15 +141,21 @@
                     <option value="tun" data-lang="tun">VPN Mode (Tun)</option>
                 </select>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="bind-address">Bind Address</b>
             <div id="bind-address" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
             </div>
+            <div class="divider"></div>
+
             <b data-lang="connection_test_url">Connection Test URL</b>
             <div id="conn-test" class="form-control-c">
                 <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
                     id="conn-test-text">
             </div>
+            <div class="divider"></div>
+
             <b data-lang="freedom_link">Freedom Link (Support others by sharing your config after connection)</b>
             <div id="freedom-link">
                 <label class="switch">
@@ -150,6 +163,8 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="auto_conn_after_runs">Auto Connect After Runs</b>
             <div id="auto-conn">
                 <label class="switch">
@@ -157,6 +172,8 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="lang-selection">Language Selection</b>
             <div id="lang-app">
                 <select id="lang-app-value" value="en">
@@ -167,6 +184,8 @@
                     <option value="cn">Chinese</option>
                 </select>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="theme-selection">Theme Selection</b>
             <div id="theme-app">
                 <select id="theme-app-value" value="Dark">
@@ -187,9 +206,11 @@
                     <option value="Volcanic">Volcanic Ash mode</option>
                 </select>
             </div>
+            <div class="divider"></div>
         </section>
+
+        <h3 data-lang="auto-mode" id="auto-settings" openSection="auto">Auto mode</h3>
         <section id="auto">
-            <h3 data-lang="auto-mode">Auto mode</h3>
             <b data-lang="your_isp">Your ISP</b>
             <div id="isp-guard" class="form-control-c">
                 <select value="other" id="isp-guard-selected">
@@ -203,6 +224,8 @@
                     <option value="TCI">TCI</option>
                 </select>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="quick_connect">Quick Connect</b>
             <div id="quick-connect">
                 <label class="switch">
@@ -210,90 +233,112 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="divider"></div>
         </section>
+
+        <h3 data-lang="warp_mode" openSection="warp">Warp mode</h3>
         <section id="warp">
-            <h3 data-lang="warp_mode">Warp mode</h3>
             <b data-lang="warp_key">Warp Key</b>
             <div id="warp-key" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="key: xxxxxxxxxxxxx" id="warp-key-value">
                 <button class="btn btn-primary" id="get-key-warp">Get Key</button>
             </div>
+            <div class="divider"></div>
 
             <b data-lang="dns_warp">DNS Warp</b>
             <div id="dns-warp" class="form-control-c">
                 <input type="text" class="input input-alt" placeholder="dns: 8.8.8.8" id="dns-warp-value">
             </div>
+            <div class="divider"></div>
 
-            <h3 data-lang="network_settings_warp">Network Settings Warp</h3>
-            <b data-lang="ip_version">IP Version</b>
-            <div id="ip-version">
-                <select id="selector-ip-version-warp">
-                    <option value="IPV4">IP Version 4</option>
-                    <option value="IPV6">IP Version 6</option>
-                </select>
-            </div>
+            <h3 data-lang="network_settings_warp" openSection="network-settings-warp">
+                Network Settings
+                Warp</h3>
+            <section id="network-settings-warp">
+                <b data-lang="ip_version" id="ip-version-label">IP Version</b>
+                <div id="ip-version">
+                    <select id="selector-ip-version-warp">
+                        <option value="IPV4">IP Version 4</option>
+                        <option value="IPV6">IP Version 6</option>
+                    </select>
+                </div>
+                <div class="divider"></div>
 
-            <b>CFON Mode</b>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="cfon" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <b data-lang="gool_warp">Gool Warp</b>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="Gool" />
-                    <span class="slider"></span>
-                </label>
-            </div>
+                <b>CFON Mode</b>
+                <div id="cfon-mode">
+                    <label class="switch">
+                        <input type="checkbox" id="cfon" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="scan_warp">Scan Warp</b>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="Scan" />
-                    <span class="slider"></span>
-                </label>
-            </div>
+                <b data-lang="gool_warp">Gool Warp</b>
+                <div id="gool-mode">
+                    <label class="switch">
+                        <input type="checkbox" id="Gool" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="endpoint">Endpoint</b>
-            <div id="endpoint-warp" class="form-control-c">
-                <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
-                <button class="btn btn-primary" id="get-endpoint-warp">Get Endpoint</button>
-            </div>
+                <b data-lang="scan_warp">Scan Warp</b>
+                <div id="scan-mode">
+                    <label class="switch">
+                        <input type="checkbox" id="Scan" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="scan_rtt">Scanner RTT Limit</b>
-            <div id="scan-rtt" class="form-control-c">
-                <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-value">
-            </div>
+                <b data-lang="endpoint" id="endpoint-warp-label">Endpoint</b>
+                <div id="endpoint-warp" class="form-control-c">
+                    <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
+                    <button class="btn btn-primary" id="get-endpoint-warp">Get Endpoint</button>
+                </div>
+                <div class="divider"></div>
 
-            <h3 data-lang="advanced_settings_warp">Advanced Settings Warp</h3>
-            <b data-lang="verbose">Verbose</b>
-            <div id="verbose">
-                <label class="switch">
-                    <input type="checkbox" id="verbose-status" />
-                    <span class="slider"></span>
-                </label>
-            </div>
+                <b data-lang="scan_rtt" id="scan-rtt-label">Scanner RTT Limit</b>
+                <div id="scan-rtt" class="form-control-c">
+                    <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-value">
+                </div>
+                <div class="divider"></div>
+            </section>
+            <h3 data-lang="advanced_settings_warp" openSection="advanced-settings-warp">Advanced Settings
+                Warp</h3>
+            <section id="advanced-settings-warp">
+                <b data-lang="verbose">Verbose</b>
+                <div id="verbose">
+                    <br>
+                    <label class="switch">
+                        <input type="checkbox" id="verbose-status" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="reserved">Reserved</b>
-            <div id="reserved">
-                <label class="switch">
-                    <input type="checkbox" id="reserved-status" />
-                    <span class="slider"></span>
-                </label>
-            </div>
+                <b data-lang="reserved">Reserved</b>
+                <div id="reserved">
+                    <label class="switch">
+                        <input type="checkbox" id="reserved-status" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="test_url_warp">Test URL Warp</b>
-            <div id="test-url-warp">
-                <label class="switch">
-                    <input type="checkbox" id="test-url-warp-status" />
-                    <span class="slider"></span>
-                </label>
-            </div>
+                <b data-lang="test_url_warp">Test URL Warp</b>
+                <div id="test-url-warp">
+                    <label class="switch">
+                        <input type="checkbox" id="test-url-warp-status" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
+            </section>
         </section>
+
+        <h3 data-lang="vibe_mode" openSection="vibe">Vibe Mode</h3>
         <section id="vibe">
-            <h3 data-lang="vibe_mode">Vibe Mode</h3>
             <b data-lang="bypass-lan-state-vibe">Bypass LAN</b>
             <div id="bypass-lan-vibe">
                 <label class="switch">
@@ -302,6 +347,8 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="allow-lan-state-vibe">Allow connection from LAN</b>
             <div id="allow-lan-vibe">
                 <label class="switch">
@@ -310,6 +357,8 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="block-ads-state-vibe">Block Ads</b>
             <div id="block-ads-vibe">
                 <label class="switch">
@@ -317,6 +366,8 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="region">Region</b>
             <div id="region-vibe" class="form-control-c">
                 <select id="region-vibe-value" class="vibe-option-value" optionVibe="region" value="other">
@@ -328,40 +379,49 @@
                     <option value="other">Other</option>
                 </select>
             </div>
+            <div class="divider"></div>
+
             <b data-lang="remote_dns">Remote DNS</b>
             <div id="remote-dns-vibe" class="form-control-c">
                 <input type="text" class="input input-alt vibe-option-value" placeholder="udp://1.1.1.1"
                     id="remote-dns-vibe-value" optionVibe="remote-dns-address">
             </div>
+            <div class="divider"></div>
+
             <b data-lang="direct_dns">Direct DNS</b>
             <div id="direct-dns-vibe" class="form-control-c">
                 <input type="text" class="input input-alt vibe-option-value" placeholder="8.8.8.8"
                     id="direct-dns-vibe-value" optionVibe="direct-dns-address">
             </div>
+            <div class="divider"></div>
+
             <b>Hiddify Config</b>
             <div>
                 <button id="hiddify-config-vibe" class="btn">Select File</button>
                 <button id="hiddify-reset-vibe" class="btn">reset config</button>
             </div>
+            <div class="divider"></div>
         </section>
+
         <section id="flex">
             <h3>Flex Mode</h3>
+            <div class="divider"></div>
         </section>
+
         <section id="grid">
             <h3>Grid Mode</h3>
+            <div class="divider"></div>
         </section>
-        <h3 data-lang="options">Options</h3>
+
+        <h3 data-lang="options" openSection="options-setting-warp">Options</h3>
         <div id="options-setting-warp" style="display: flex;gap: 10px;padding: 1em 2em;box-sizing: border-box;">
             <button id="change-background-btn" class="btn" data-lang="change_background">Change Background</button>
             <button id="refresh-servers-btn" class="btn" data-lang="refresh_isp">Refresh ISP Servers</button>
             <div style="width: 100%;"></div>
             <button id="x-contact" class="btn">X Freedom Guard</button>
             <a class="btn" href="https://freedom-guard.github.io/privacy-terms.html" data-lang="privacy_terms">Privacy
-                Policy and Terms of
-                Use</a>
-            <a class="btn" href="https://filtershekan.sbs/Freedom_Guard/" data-lang="docs_fg">
-
-            </a>
+                Policy and Terms of Use</a>
+            <a class="btn" href="https://filtershekan.sbs/Freedom_Guard/" data-lang="docs_fg"></a>
             <a class="btn" href="https://github.com/Freedom-Guard/Freedom-Guard" data-lang="repo_fg">Repository Freedom
                 Guard on Github</a>
             <button id="telegram-contact" class="btn">Telegram Freedom Guard</button>
