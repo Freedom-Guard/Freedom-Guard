@@ -683,8 +683,10 @@ img {
     background-color: var(--modal-background);
     width: 100%;
     min-height: 8vh;
-    padding: 0 20px;
+    padding: 5px;
     z-index: 10;
+    border-radius: 999px;
+    box-shadow: 0px 0px 8px var(--accent-color);
 }
 
 #setting-app h3 {
@@ -745,7 +747,7 @@ img {
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin: 6px ;
+    margin: 6px;
     box-sizing: border-box;
 }
 
@@ -876,9 +878,8 @@ img {
 
 #menu>div:hover {
     background: var(--menu-item-hover-background);
-    transform: translateX(8px);
+    transform: translateX(6px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.2);
 }
 
 #menu>div:hover i {
@@ -1287,11 +1288,15 @@ a {
     cursor: pointer;
 }
 
-.box.flex-col, .flex-col {
+.box.flex-col,
+.flex-col {
     flex-direction: column !important;
     align-items: center;
 }
-
+.flex-center {
+    display: flex;
+    align-items: center;
+}
 .btn-box {
     display: flex;
     gap: 1rem;
