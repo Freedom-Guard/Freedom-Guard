@@ -664,6 +664,7 @@ class main {
         });
         $("#dns-warp-value").val(this.publicSet.settingsALL["warp"]["dns"]);
         $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
+        $(`#${this.publicSet.settingsALL["public"]["core"]}-settings`).addClass("active");
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };

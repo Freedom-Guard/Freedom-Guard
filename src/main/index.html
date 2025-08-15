@@ -122,91 +122,93 @@
             </div>
             <div class="divider"></div>
 
-            <h3 data-lang="vpn-settings" class="not-sect">VPN Settings</h3>
-            <b data-lang="vpn-core">VPN Core</b>
-            <div id="core-guard" class="form-control-c">
-                <select value="auto" id="core-guard-selected">
-                    <option value="auto" data-lang="auto-core-select">Automatic</option>
-                    <option value="vibe">Freedom Vibe</option>
-                    <option value="warp">Freedom Warp</option>
-                </select>
-            </div>
-            <div class="divider"></div>
+            <h3 data-lang="vpn-settings" class="active" openSection="vpn-settings">VPN Settings</h3>
+            <section id="vpn-settings">
+                <b data-lang="vpn-core">VPN Core</b>
+                <div id="core-guard" class="form-control-c">
+                    <select value="auto" id="core-guard-selected">
+                        <option value="auto" data-lang="auto-core-select">Automatic</option>
+                        <option value="vibe">Freedom Vibe</option>
+                        <option value="warp">Freedom Warp</option>
+                    </select>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="vpn-type">VPN Type</b>
-            <div id="vpn-type">
-                <select value="system" id="vpn-type-selected">
-                    <option value="none" data-lang="none-proxy">None</option>
-                    <option value="system" data-lang="system-proxy">System Proxy</option>
-                    <option value="tun" data-lang="tun">VPN Mode (Tun)</option>
-                </select>
-            </div>
-            <div class="divider"></div>
+                <b data-lang="vpn-type">VPN Type</b>
+                <div id="vpn-type">
+                    <select value="system" id="vpn-type-selected">
+                        <option value="none" data-lang="none-proxy">None</option>
+                        <option value="system" data-lang="system-proxy">System Proxy</option>
+                        <option value="tun" data-lang="tun">VPN Mode (Tun)</option>
+                    </select>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="bind-address">Bind Address</b>
-            <div id="bind-address" class="form-control-c">
-                <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
-            </div>
-            <div class="divider"></div>
+                <b data-lang="bind-address">Bind Address</b>
+                <div id="bind-address" class="form-control-c">
+                    <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="connection_test_url">Connection Test URL</b>
-            <div id="conn-test" class="form-control-c">
-                <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
-                    id="conn-test-text">
-            </div>
-            <div class="divider"></div>
+                <b data-lang="connection_test_url">Connection Test URL</b>
+                <div id="conn-test" class="form-control-c">
+                    <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
+                        id="conn-test-text">
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="freedom_link">Freedom Link (Support others by sharing your config after connection)</b>
-            <div id="freedom-link">
-                <label class="switch">
-                    <input type="checkbox" id="freedom-link-status" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="divider"></div>
+                <b data-lang="freedom_link">Freedom Link (Support others by sharing your config after connection)</b>
+                <div id="freedom-link">
+                    <label class="switch">
+                        <input type="checkbox" id="freedom-link-status" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="auto_conn_after_runs">Auto Connect After Runs</b>
-            <div id="auto-conn">
-                <label class="switch">
-                    <input type="checkbox" id="auto-conn-status" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="divider"></div>
+                <b data-lang="auto_conn_after_runs">Auto Connect After Runs</b>
+                <div id="auto-conn">
+                    <label class="switch">
+                        <input type="checkbox" id="auto-conn-status" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="lang-selection">Language Selection</b>
-            <div id="lang-app">
-                <select id="lang-app-value" value="en">
-                    <option value="en">English</option>
-                    <option value="fa">فارسی</option>
-                    <option value="ar">عربی</option>
-                    <option value="tr">Turkish</option>
-                    <option value="cn">Chinese</option>
-                </select>
-            </div>
-            <div class="divider"></div>
+                <b data-lang="lang-selection">Language Selection</b>
+                <div id="lang-app">
+                    <select id="lang-app-value" value="en">
+                        <option value="en">English</option>
+                        <option value="fa">فارسی</option>
+                        <option value="ar">عربی</option>
+                        <option value="tr">Turkish</option>
+                        <option value="cn">Chinese</option>
+                    </select>
+                </div>
+                <div class="divider"></div>
 
-            <b data-lang="theme-selection">Theme Selection</b>
-            <div id="theme-app">
-                <select id="theme-app-value" value="Dark">
-                    <option value="Dark">Dark mode</option>
-                    <option value="Light">Light mode</option>
-                    <option value="ZEN">Zen mode</option>
-                    <option value="Ahura">Ahura mode</option>
-                    <option value="Warp">Warp mode</option>
-                    <option value="NeoFlux">NeoFlux mode</option>
-                    <option value="Matrix">Matrix mode</option>
-                    <option value="Neon">Neon mode</option>
-                    <option value="CIA">CIA mode</option>
-                    <option value="OceanDeep">Ocean Deep mode</option>
-                    <option value="ForestGreen">Forest Green mode</option>
-                    <option value="SunsetGlow">Sunset Glow mode</option>
-                    <option value="MidnightSilver">Midnight Silver mode</option>
-                    <option value="CosmicDust">Cosmic Dust mode</option>
-                    <option value="Volcanic">Volcanic Ash mode</option>
-                </select>
-            </div>
-            <div class="divider"></div>
+                <b data-lang="theme-selection">Theme Selection</b>
+                <div id="theme-app">
+                    <select id="theme-app-value" value="Dark">
+                        <option value="Dark">Dark mode</option>
+                        <option value="Light">Light mode</option>
+                        <option value="ZEN">Zen mode</option>
+                        <option value="Ahura">Ahura mode</option>
+                        <option value="Warp">Warp mode</option>
+                        <option value="NeoFlux">NeoFlux mode</option>
+                        <option value="Matrix">Matrix mode</option>
+                        <option value="Neon">Neon mode</option>
+                        <option value="CIA">CIA mode</option>
+                        <option value="OceanDeep">Ocean Deep mode</option>
+                        <option value="ForestGreen">Forest Green mode</option>
+                        <option value="SunsetGlow">Sunset Glow mode</option>
+                        <option value="MidnightSilver">Midnight Silver mode</option>
+                        <option value="CosmicDust">Cosmic Dust mode</option>
+                        <option value="Volcanic">Volcanic Ash mode</option>
+                    </select>
+                </div>
+                <div class="divider"></div>
+            </section>
         </section>
 
         <h3 data-lang="auto-mode" id="auto-settings" openSection="auto">Auto mode</h3>
@@ -413,7 +415,7 @@
             <div class="divider"></div>
         </section>
 
-        <h3 data-lang="options" openSection="options-setting-warp">Options</h3>
+        <h3 data-lang="options" class="active" openSection="options-setting-warp">Options</h3>
         <div id="options-setting-warp" style="display: flex;gap: 10px;padding: 1em 2em;box-sizing: border-box;">
             <button id="change-background-btn" class="btn" data-lang="change_background">Change Background</button>
             <button id="refresh-servers-btn" class="btn" data-lang="refresh_isp">Refresh ISP Servers</button>
