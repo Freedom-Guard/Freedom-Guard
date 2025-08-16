@@ -1,6 +1,7 @@
 const { spawn, exec, execFile, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const os = require("os");
 
 class Tools {
     constructor() {
@@ -58,7 +59,6 @@ class Tools {
                 console.clear();
             } else {
                 window.LogLOG(text);
-                console.log(text);
             }
         } else {
             console.log(text);
@@ -446,6 +446,10 @@ class Tools {
         return process.platform === "win32" ? `${name}.exe` : name;
     }
     async fetchAndInstallCores() {
+        if (process.platform == "win32") {
+            window.showMessageUI("This feature is not supported on Windows.");
+            return;
+        }
         const platformBaseURL = process.platform === "darwin"
             ? (process.arch === 'arm64' ? 'mac/arm64' : 'mac/amd64')
             : process.platform;

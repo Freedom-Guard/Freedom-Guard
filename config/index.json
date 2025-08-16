@@ -9,24 +9,21 @@
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MTN",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MCI",
         "vibe,;,https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub#FG | Freedom Link (best)",
-        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/configs-vibe/warp-power.ext#VIBE | WARP SERVER m4",
+        "vibe,;,https://raw.githubusercontent.com/hiddify/hiddify-next/main/test.configs/warp#%F0%9F%94%A5%20WARP%20%F0%9F%94%A5#VIBE | WARP SERVER",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",
         "vibe,;,https://raw.githubusercontent.com/AzadNetCH/Clash/main/AzadNet_META_IRAN-Direct.yml#FREENET | زن زندگی آزادی",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
     ],
     "MCI": [
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL"
     ],
     "IRANCELL": [
-        "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
+        "warp,;,gool=true&scan=true#WARP | GOOL"
     ],
     "RIGHTEL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL"
     ],
     "PISHGAMAN": [
@@ -35,15 +32,13 @@
         "warp,;,scan=true#WARP | SCAN"
     ],
     "TCI": [
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
         "warp,;,scan=true#WARP | SCAN"
     ],
     "SHATEL": [],
     "PARSONLINE": [],
     "other": [
         "warp,;,scan=true#WARP | SCAN",
-        "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_Sub.txt#RAND | FREEDOM",
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
+        "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_Sub.txt#RAND | FREEDOM"
     ],
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",

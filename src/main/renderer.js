@@ -416,6 +416,11 @@ class main {
             this.setSettings();
             this.reloadServers();
         });
+        $("#add-warp-config").on("click", async () => {
+            await this.publicSet.importConfig("https://raw.githubusercontent.com/hiddify/hiddify-next/main/test.configs/warp#%F0%9F%94%A5%20WARP%20%F0%9F%94%A5");
+            this.setSettings();
+            this.reloadServers();
+        });
         $("#submit-config-clipboard").on("click", async () => {
             $("#config-value").val(clipboard.readText());
             await this.publicSet.importConfig($("#config-value").val());

@@ -1273,6 +1273,7 @@ a {
 
 .box[style="display: block;"] {
     display: flex !important;
+    gap: 0.5em;
 }
 
 .box div {

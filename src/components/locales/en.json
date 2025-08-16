@@ -41,6 +41,7 @@
     "dns_set_success": "✅ DNS successfully set",
     "endpoint_retrieved": "✅ Endpoint retrieved and pasted into the input.",
     "warp_key_applied": "✅ Warp key retrieved and applied successfully.",
+    "add_warp": "Add Warp",
     "config_imported": "✅ Configuration imported successfully from deep link (protocol): ",
     "warp_mode": "Warp mode",
     "warp_key": "Warp Key",
