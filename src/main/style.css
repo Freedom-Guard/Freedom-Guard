@@ -1256,6 +1256,10 @@ a {
     gap: 5vw;
 }
 
+.flex {
+    display: flex;
+}
+
 .box .close-btn {
     font-size: 1.5em;
     position: absolute;
@@ -1294,10 +1298,12 @@ a {
     flex-direction: column !important;
     align-items: center;
 }
+
 .flex-center {
     display: flex;
     align-items: center;
 }
+
 .btn-box {
     display: flex;
     gap: 1rem;

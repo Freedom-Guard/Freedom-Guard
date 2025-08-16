@@ -1034,6 +1034,8 @@ class Connect extends PublicSet {
     async connectVibe() {
         await this.resetArgs("vibe");
         await this.sleep(1000);
+        this.settingsALL.public.quickConnectC = this.settingsALL.vibe.config;
+        this.saveSettings();
 
         const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
         const effectiveCorePath = process.platform === 'darwin' && process.arch === 'arm64'

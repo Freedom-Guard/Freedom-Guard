@@ -81,5 +81,7 @@
     "vibe_mode": "Vibe Mode",
     "direct_dns": "Direct DNS",
     "auto_conn_after_runs": "Auto Connect After Runs",
-    "servers-section": "Servers Section"
+    "servers-section": "Servers Section",
+    "share-conn": "You can share your current connected config using the buttons below",
+    "copy": "Copy"
 }

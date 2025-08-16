@@ -876,6 +876,22 @@ class main {
             $("#connected-ping").html(`Ping: <b>${connectedInfo.ping || "N/A"} ms</b>`);
             $("#connected-status").html(`Status: <b>${connectedInfo.ping ? "Connected" : "Disconnected"}</b>`);
             $("#connected-bypass").html(`Bypass: <b>${isConnected ? "On" : "Off"}</b>`);
+            this.publicSet.settingsALL.public.core == "warp" ? $("#share-connection").hide() :
+                $("#share-connection").on("click", async () => {
+                    await this.publicSet.reloadSettings();
+                    $("#text-box-notif").html(this.publicSet.settingsALL["lang"]["share-conn"] ?? "You can share your current connected config using the buttons below");
+                    $("#box-notif").css("display", "flex");
+                    $("#href-box-notif").on("click", () => {
+                        navigator.clipboard.writeText(this.publicSet.settingsALL["public"]["quickConnectC"].replace("vibe,;,", "").replace(",;,", "://"));
+                        window.showMessageUI(this.publicSet.settingsALL["lang"]["copied"])
+                    });
+                    $("#href-box-notif").html(this.publicSet.settingsALL["lang"]["copy"] ?? "Copy");
+                    $("#close-box-notif").html(this.publicSet.settingsALL["lang"]["cancel"]);
+
+                    $("#href-box-notif, #close-box-notif").on("click", () => {
+                        $("#box-notif").css("display", "none");
+                    });
+                });
         } else {
             $("#ip-ping").attr("style", connectedInfo.ping > 1000 ? "color:red;" : "color:green;");
             $("#ip-ping").html(`${connectedInfo.ping}ms`);
