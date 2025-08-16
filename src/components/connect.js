@@ -803,6 +803,7 @@ class ConnectAuto extends PublicSet {
                         reject(false);
                     });
 
+                    await this.sleep(this.settingsALL.vibe.timeout);
                     for (let i = 0; i < 3 && !this.connected; i++) {
                         this.connected = !(await this.getIP_Ping()).filternet;
                         if (this.connected) break;

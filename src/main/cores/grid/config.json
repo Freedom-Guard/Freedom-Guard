@@ -1,1 +1,49 @@
-{"log":{"level":"info","timestamp":true},"inbounds":[{"type":"tun","tag":"tun-in","interface_name":"tun0","inet4_address":"172.19.0.1/30","auto_route":true,"strict_route":true,"sniff":true}],"outbounds":[{"type":"socks","tag":"socks-out","server":"127.0.0.1","server_port":8086,"version":"5"},{"type":"direct","tag":"direct-out"},{"type":"block","tag":"block-out"}],"route":{"rules":[{"inbound":["tun-in"],"outbound":"socks-out"}]},"dns":{"servers":[{"address":"8.8.8.8","detour":"direct-out"}]}}
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "tun",
+            "tag": "tun-in",
+            "interface_name": "tun0",
+            "mtu": 1500,
+            "sniff": true,
+            "address": [
+                "172.18.0.1/30",
+                "fdfe:dcba:9876::1/126"
+            ],
+            "auto_route": true,
+            "strict_route": true,
+            "route_address": [
+                "0.0.0.0/1",
+                "::/1"
+            ],
+            "route_exclude_address": [
+                "192.168.0.0/16",
+                "fc00::/7"
+            ],
+            "udp_timeout": "5m0s",
+            "stack": "mixed"
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "socks",
+            "tag": "proxy",
+            "server": "127.0.0.1",
+            "server_port": 10808,
+            "version": "5"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        }
+    ],
+    "route": {
+        "rules": [],
+        "final": "proxy",
+        "auto_detect_interface": true
+    }
+}

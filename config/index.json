@@ -1,9 +1,9 @@
 {
     "PUBLIC": [
+        "vibe,;,https://raw.githubusercontent.com/darkvpnapp/CloudflarePlus/refs/heads/main/proxy#Dark Servers (PC)",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
-        "vibe,;,https://drive.google.com/uc?id=1qUt9w0TzocLzQ5fikHxpS90T3Sg5S3DU#@SiNAVM.json#FG",
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/sinabigo/Xray/main/@sinavm#VIBE FAST",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MTN",
@@ -18,7 +18,7 @@
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
-        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL"
+        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL"
     ],
     "IRANCELL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
@@ -34,7 +34,7 @@
     ],
     "PISHGAMAN": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt#VIBE | SERVER FULL",
+        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "warp,;,scan=true#WARP | SCAN"
     ],
@@ -55,12 +55,12 @@
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_1.txt#MCI",
+        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#IRANCELL",
         "vibe,;,vless://826f524a-cea1-4e44-9b49-3381d13b7593@172.66.45.9:443?encryption=none&security=tls&sni=fk31LnDm4W8uj0yP1dRwLTDTdKo6Y-cu.pAGES.dEv&alpn=http%2F1.1&fp=randomized&type=ws&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&path=%2FgL8gLANdh881Nj22#FG%201",
         "vibe,;,vless://826f524a-cea1-4e44-9b49-3381d13b7593@www.speedtest.net:443?encryption=none&security=tls&sni=FK31lnDM4w8UJ0YP1dRWLtdtDKO6Y-cu.pages.dEv&alpn=http%2F1.1&fp=randomized&type=ws&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&path=%2FkDPocrIW3Ice02v4#%F0%9F%87%A9%F0%9F%87%AA%20FG%202",
         "vibe,;,vless://4d794980-54c0-4fcb-8def-c2beaecadbad@172.66.47.175:2083?encryption=none&security=tls&sni=azadnet05.pages.dev&type=ws&host=azadnet05.pages.dev&path=%2FlZU7WqWIDqC1jRn6%3Fed%3D2560#FG%203",
-        "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,vless://032a21d1-140a-5f18-ac02-0e23b5b4650d@45.12.132.142:443?encryption=none&security=tls&sni=zula.ir&fp=chrome&allowInsecure=1&type=ws&host=45.12.132.142&path=%2Fvless#FG%20FAST%201",
         "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.58:8880?encryption=none&security=none&type=grpc#FG (USA)",
         "vibe,;,vless://7e948e09-fa6f-4b8e-8c5d-181fa15fbec5@172.67.141.140:8880?encryption=none&security=none&type=ws&host=v2ngsupply2.ip-ddns.com&path=%2FQaaLdIiGgWNoIxOF%3Fed%3D2560#FG%20FAST%203",
