@@ -1,9 +1,9 @@
 {
     "PUBLIC": [
+        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://raw.githubusercontent.com/darkvpnapp/CloudflarePlus/refs/heads/main/proxy#Dark Servers (PC)",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/sinabigo/Xray/main/@sinavm#VIBE FAST",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MTN",
@@ -22,25 +22,20 @@
     ],
     "IRANCELL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA"
+        "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
     ],
     "RIGHTEL": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
-        "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
-        "warp,;,scan=true#WARP | SCAN"
+        "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL"
     ],
     "PISHGAMAN": [
         "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "warp,;,scan=true#WARP | SCAN"
     ],
     "TCI": [
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "warp,;,scan=true#WARP | SCAN"
     ],
     "SHATEL": [],
@@ -48,7 +43,6 @@
     "other": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_Sub.txt#RAND | FREEDOM",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity#VIBE | SERVER SUB 1"
     ],
     "MOBILE": [
