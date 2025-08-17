@@ -25,7 +25,7 @@ window.LogLOG = (log = "", type = "info", ac = "text") => {
     $("#LogsContent").append(`<p class="log-item" id="log-item-${LOGS.length + 1}"></p>`);
     ac == "html" ? $(`#log-item-${LOGS.length + 1}`).html(log) : $(`#log-item-${LOGS.length + 1}`).text(log);
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
-    $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
+    (window.scrollLogs ?? false) == true ? $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight) : '';
 };
 window.confirm = (mess = "") => {
     return new Promise((resolve) => {
@@ -688,7 +688,7 @@ class main {
             if (!thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
                 thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = thatHi.publicSet.resetVibeSettings();
             }
-            
+
             let value = thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
             keysToSync.forEach((key) => {
                 value = value[key];
@@ -999,8 +999,10 @@ class fgCLI extends main {
             this.enterCommand("help");
         });
         $("#ScrollLogs").on("click", () => {
-            this.scrollLogs = $("#ScrollLogs").attr("state");
             $("#ScrollLogs").attr("state", $("#ScrollLogs").attr("state") == "true" ? "false" : "true");
+            this.scrollLogs = ($("#ScrollLogs").attr("state") === "true");
+            window.scrollLogs = ($("#ScrollLogs").attr("state") === "true");
+            window.scrollLogs == true ? $("#ScrollLogs").html("<i class='bx bx-pause'></i>") : $("#ScrollLogs").html("<i class='bx bx-play'></i>");
         });
     };
     async loadLang() {
