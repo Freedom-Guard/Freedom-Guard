@@ -258,7 +258,7 @@ class main {
         });
         $('#setting-app h3:not(.not-sect)').on("click", function () {
             var content = $(this).attr("openSection");
-
+            that.addEventSect(content == "vibe" ? "vibe" : "warp")
             $("#" + content).slideToggle();
             $(this).toggleClass("active");
         });
@@ -613,10 +613,11 @@ class main {
 
                 keys.reduce((acc, key, index) => {
                     if (index === keys.length - 1) {
-                        acc[key] = $(this).prop("value");
+                        acc[key] = $(this).prop("type") == "number" ? parseInt($(this).prop("value")) : $(this).prop("value");
                     }
                     return acc[key];
                 }, that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"]);
+
                 that.publicSet.saveSettings();
             });
             $("#hiddify-reset-vibe").on("click", async () => {
@@ -661,13 +662,17 @@ class main {
         $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
         $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
         $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
-        let that = this;
+        let thatHi = this;
+
         $(".vibe-option-state").each(function () {
             const element = $(this);
             const optionName = element.attr("optionVibe");
             const keysToSync = optionName.split(".");
+            if (!thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
+                thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = thatHi.publicSet.resetVibeSettings();
+            }
 
-            let value = that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+            let value = thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
             keysToSync.forEach((key) => {
                 value = value[key];
             });
@@ -680,8 +685,11 @@ class main {
             const element = $(this);
             const optionName = element.attr("optionVibe");
             const keysToSync = optionName.split(".");
-
-            let value = that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+            if (!thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
+                thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = thatHi.publicSet.resetVibeSettings();
+            }
+            
+            let value = thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
             keysToSync.forEach((key) => {
                 value = value[key];
             });
@@ -970,6 +978,7 @@ class main {
 class fgCLI extends main {
     constructor() {
         super();
+        this.scrollLogs = false;
     };
     init = async () => {
         $("#submit-command-line").on("click", () => {
@@ -988,6 +997,10 @@ class fgCLI extends main {
         });
         $("#HelpLogs").on("click", () => {
             this.enterCommand("help");
+        });
+        $("#ScrollLogs").on("click", () => {
+            this.scrollLogs = $("#ScrollLogs").attr("state");
+            $("#ScrollLogs").attr("state", $("#ScrollLogs").attr("state") == "true" ? "false" : "true");
         });
     };
     async loadLang() {
@@ -1115,7 +1128,7 @@ class fgCLI extends main {
                 window.LogLOG("Command not found");
                 break;
         }
-        $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight);
+        this.scrollLogs == true ? $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight) : '';
         $("#command-line").focus();
     };
     helpCommand() {
