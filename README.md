@@ -81,7 +81,6 @@
 * **👌 Freedom Browser**: Fast, secure, and private.
 * **🤖 Regular Updates**: Auto-updating configurations to ensure stability.
 
----
 
 ## 🚀 Sections of Freedom Guard
 
@@ -90,7 +89,6 @@
 * **🚀 Freedom Warp**: A tool for connecting to the free internet using **Warp Plus** and other protocols with advanced configuration options.
 * **🔒 Freedom Browser**: A secure, fast, and private browser with an integrated VPN to access the internet without restrictions.
 
----
 
 ## 📸 Screenshots
 
@@ -127,17 +125,12 @@
 
 Freedom Guard’s automatic configuration system gathers configurations from public sources, including Telegram channels and user contributions. Configurations are updated daily for different ISPs, providing the best ways and configurations for connecting to the internet.
 
----
-
 ## 📬 Contact
 
 * **Twitter**: [@Freedom\_Guard\_N](https://x.com/Freedom_Guard_N)
-
----
 
 ## 👇 Acknowledgements
 
 * **Hiddify-Core** from Hiddify
 * **Warp-Plus** from bepass-org
 
----
