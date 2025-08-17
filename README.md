@@ -1,20 +1,25 @@
-# Freedom Guard | گارد آزادی
 
-> Freedom Guard is a tool for bypassing internet censorship.<br> Woman Life Freedom
-
----
-
-## نرم افزار گارد آزادی
-
-> نرم افزار گارد آزادی یک نرم‌افزار برای دور زدن سانسور اینترنت است که بهترین روش‌های اتصال به اینترنت آزاد را یکجا ارائه می‌دهد.<br> زن، زندگی، آزادی
-
----
+# Freedom Guard
 
 <div align="center">
-  <p>📱 نسخه موبایل رو امتحان کنید 
-  <br />
+    <p>
+        <a href="README-fa.md">
+            <small>فارسی</small>
+            <img src='./src/svgs/ir.svg' alt='persian' style='width: 20px;height: 15px;border-radius: 3px;' />
+        </a>
+        | 
+       <img src='./src/svgs/gb.svg' alt='English' style='width: 20px;height: 15px;border-radius: 3px;' />
+        <small>English</small>
+    </p>
+</div>
+
+<div align="center">
   <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases">Freedom Guard Mobile</a></p>
 </div>
+
+**Freedom Guard** is a tool designed for bypassing internet censorship, providing the best methods for connecting to a free internet. It enhances your security, speed, and privacy while ensuring an unrestricted browsing experience.
+
+**Woman, Life, Freedom**
 
 ## <div align="center">Download the latest version <br> دانلود آخرین نسخه</div>
 
@@ -61,75 +66,78 @@
 </table>
 </div>
 
----
+## Software Overview
 
-## متمایزترین قابلیت‌های نرم‌افزار گارد آزادی:
+**Freedom Guard** is an open-source tool designed to help you easily bypass internet censorship. It includes the best protocols and methods for connecting to the free internet.
 
-**💶 کاملاً رایگان:** دسترسی آزاد برای همه کاربران.
 
-**😶‍🌫️ متن باز:** تضمین شفافیت و امنیت.
+## 🚀 Key Features of Freedom Guard
 
-**✔️ پشتیبانی از تمامی کانفیگ‌ها:** شامل Trojan, SSH, Vmess, Vless, WireGuard, Warp-Plus و...
-
-**🚀 کانفیگ خودکار:** دسترسی آسان به اینترنت آزاد با تنظیمات خودکار.
-
-**👩‍💻 تست کانفیگ بر اساس ISP:** امکان آزمایش چندین کانفیگ برای پیدا کردن بهترین عملکرد.
-
-**👌 مرورگر آزادی:** سریع، ایمن و خصوصی.
-
-**🤖 آپدیت منظم:** به‌روزرسانی خودکار کانفیگ‌ها برای تضمین پایداری.
-
-## بخش های گارد آزادی
-
-<div dir="rtl" align="right">
-
-<p dir="rtl">
-  <span>📡 DNS Changer:</span> ابزاری برای تغییر سریع و آسان DNS به منظور بهبود امنیت و افزایش سرعت اتصال.
-</p>
-
-<p dir="rtl">
-  <span>🌐 Freedom Vibe:</span> ابزاری پیشرفته برای پنهان‌سازی ترافیک با استفاده از Hiddify Core، مناسب برای دور زدن سانسور.
-</p>
-
-<p dir="rtl">
-  <span>🚀 Freedom Warp:</span> ابزاری برای اتصال به اینترنت آزاد با استفاده از Warp Plus و سایر پروتکل‌ها، همراه با قابلیت تنظیمات پیشرفته.
-</p>
-
-<p dir="rtl">
-  <span>🔒 Freedom Browser:</span> مرورگری ایمن، سریع و خصوصی که با VPN داخلی ارائه می‌شود و امکان مرور اینترنت بدون محدودیت را فراهم می‌کند.
-</p>
-
-</div>
-
-## Screenshots
-
-### Freedom Guard
-
-![image](https://github.com/user-attachments/assets/dbc34ef6-1dcf-4ae7-945b-7a5a494f1345)
-
-![image](https://github.com/user-attachments/assets/1eef8768-f030-4d7c-b5b2-bfa83a9e56cc)
-
-![image](https://github.com/user-attachments/assets/a3787139-c775-4703-835c-a67ed46b4923)
-
-## تامین کانفیگ خودکار
-
-کانفیگ خودکار گارد آزادی از کانفیگ های عمومی جمع آوری شده از کانال های تلگرامی یا کانفیگ های اهدا شده و ... تامین میشود. کانفیگ خودکار روزانه برای ISP های مختلف آپدیت میشود و بهترین روش ها و کانفیگ ها را برای اتصال ارائه میدهد. همچنین شما میتوانید کانفیگ خودکار خود را بسازید و همچنین میتوانید کانفیگ های دستی وارد برنامه کنید.
+* **💶 Completely Free**: Free access for all users.
+* **😶‍🌫️ Open-Source**: Guarantees transparency and security.
+* **✔️ Supports Multiple Configurations**: Including Trojan, SSH, Vmess, Vless, WireGuard, Warp-Plus, and more.
+* **🚀 Automatic Configurations**: Easy access to free internet with auto-setup.
+* **👩‍💻 ISP Config Testing**: Test various configurations to find the best performance.
+* **👌 Freedom Browser**: Fast, secure, and private.
+* **🤖 Regular Updates**: Auto-updating configurations to ensure stability.
 
 ---
 
-## Contact
+## 🚀 Sections of Freedom Guard
 
-X (Twitter): [@Freedom_Guard_N](https://x.com/Freedom_Guard_N)
-
----
-
-## 👇 Acknowledgements 👇
-
--   **Hiddify-Core** from Hiddify<br>
--   **Warp-Plus** from bepass-org<br>
+* **📡 DNS Changer**: A tool to quickly and easily change DNS to improve security and boost connection speed.
+* **🌐 Freedom Vibe**: An advanced tool for traffic obfuscation using **Hiddify Core**, ideal for bypassing censorship.
+* **🚀 Freedom Warp**: A tool for connecting to the free internet using **Warp Plus** and other protocols with advanced configuration options.
+* **🔒 Freedom Browser**: A secure, fast, and private browser with an integrated VPN to access the internet without restrictions.
 
 ---
 
-## Visitors
+## 📸 Screenshots
 
-![Visitor Count](https://profile-counter.glitch.me/Freedom-Guard-Electron/count.svg)
+### Freedom Guard Interface
+
+![Screenshot 1](./screenshots/1.png)
+
+![Screenshot 2](./screenshots/2.png)
+
+![Screenshot 3](./screenshots/3.png)
+
+
+## ⚡ Installation Guide
+
+### **Windows**
+
+1. Download the latest Windows installer or portable version from the [Releases page](https://github.com/Freedom-Guard/Freedom-Guard/releases).
+2. Run the installer or extract the portable version.
+3. Launch the application.
+
+### **macOS**
+
+1. Download the latest macOS DMG or ZIP from the [Releases page](https://github.com/Freedom-Guard/Freedom-Guard/releases).
+2. Open the DMG and drag the application to your **Applications** folder, or extract the ZIP file.
+3. Launch the application.
+
+### **Linux**
+
+1. Download the latest Linux package (DEB, RPM, AppImage, or tar.gz) from the [Releases page](https://github.com/Freedom-Guard/Freedom-Guard/releases).
+2. Install the package using your package manager or extract the archive.
+3. Launch the application.
+
+## ⚡ Automatic Configuration
+
+Freedom Guard’s automatic configuration system gathers configurations from public sources, including Telegram channels and user contributions. Configurations are updated daily for different ISPs, providing the best ways and configurations for connecting to the internet.
+
+---
+
+## 📬 Contact
+
+* **Twitter**: [@Freedom\_Guard\_N](https://x.com/Freedom_Guard_N)
+
+---
+
+## 👇 Acknowledgements
+
+* **Hiddify-Core** from Hiddify
+* **Warp-Plus** from bepass-org
+
+---

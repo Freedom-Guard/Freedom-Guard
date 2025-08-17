@@ -143,6 +143,7 @@
             "!src/main/cores",
             "!src/plus/apps",
             "!dist/",
+            "!screenshots/",
             "node_modules/**/*",
             "package.json",
             "main.js",
