@@ -1,20 +1,28 @@
+<div align="center">
 
 # Freedom Guard
 
-<div align="center">
-    <p>
-        <a href="README-fa.md">
-            <small>فارسی</small>
-            <img src='./src/svgs/ir.svg' alt='persian' style='width: 20px;height: 15px;border-radius: 3px;' />
-        </a>
+[![Version](https://img.shields.io/github/v/release/Freedom-Guard/Freedom-Guard?label=Version&color=blue)](https://github.com/Freedom-Guard/Freedom-Guard/releases/latest)
+[![Download](https://img.shields.io/github/downloads/Freedom-Guard/Freedom-Guard/total?label=Downloads)](https://github.com/Freedom-Guard/Freedom-Guard/releases/latest)
+[![Stars](https://img.shields.io/github/stars/Freedom-Guard/Freedom-Guard?style=flat&label=Stars&color=tomato
+)](https://github.com/Freedom-Guard/Freedom-Guard)
+<a href="https://github.com/Freedom-Guard/FG_MOBILE/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Freedom-Guard/FG_MOBILE?style=flat-square&color=blue" alt="License"></a>
+
+
+<p>
+    <a href="README-fa.md">
+    <small>فارسی</small>
+    <img src='./src/svgs/ir.svg' alt='persian' style='width: 20px;height: 15px;border-radius: 3px;' />
+    </a>
         | 
-       <img src='./src/svgs/gb.svg' alt='English' style='width: 20px;height: 15px;border-radius: 3px;' />
-        <small>English</small>
-    </p>
+    <img src='./src/svgs/gb.svg' alt='English' style='width: 20px;height: 15px; border-radius: 3px;' />
+    <small>English</small>
+</p>
+
 </div>
 
 <div align="center">
-  <a href="https://github.com/Freedom-Guard/FG_MOBILE/releases">Freedom Guard Mobile</a></p>
+  <a href="https://github.com/Freedom-Guard/FG_MOBILE/">Freedom Guard Mobile</a></p>
 </div>
 
 **Freedom Guard** is a tool designed for bypassing internet censorship, providing the best methods for connecting to a free internet. It enhances your security, speed, and privacy while ensuring an unrestricted browsing experience.
