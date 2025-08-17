@@ -80,5 +80,15 @@
     "vibe_mode": "Vibe Modu",
     "direct_dns": "Doğrudan DNS",
     "auto_conn_after_runs": "Otomatik Bağlantı",
-    "servers-section": "Sunucular Bölümü"
+    "servers-section": "Sunucular Bölümü",
+    "enable-fragment-state-vibe": "TLS Parçalama",
+    "fragment_size": "TLS Parça Boyutu",
+    "fragment_sleep": "TLS Parça Uyku",
+    "mixed-sni-case": "TLS Karışık SNI Durumu",
+    "enable-padding": "TLS Padding Aktifleştir",
+    "padding-size": "Padding Boyutu",
+    "mux-enable": "Mux Etkinleştir",
+    "mux-padding": "Mux Padding",
+    "mux-max-streams": "Mux Maksimum Akışlar",
+    "mux-protocol": "Mux Protokolü"
 }

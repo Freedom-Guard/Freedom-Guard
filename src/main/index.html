@@ -38,9 +38,9 @@
         </button>
         <div class="connected-box">
             <div class="flex flex-row" style="width: 100%">
-                <i class="bx bx-share" style="font-size: 2em;margin: 0.2em;"
-                    id="share-connection"></i>
-                <i class=" bx bx-refresh bx-spin-hover" style="font-size: 2em;margin: 0.2em;margin-left: auto;" id="reload-ping"></i>
+                <i class="bx bx-share" style="font-size: 2em;margin: 0.2em;" id="share-connection"></i>
+                <i class=" bx bx-refresh bx-spin-hover" style="font-size: 2em;margin: 0.2em;margin-left: auto;"
+                    id="reload-ping"></i>
             </div>
             <div id="connected-info">
                 <div class="connected-item" id="connected-country"></div>
@@ -401,6 +401,97 @@
             </div>
             <div class="divider"></div>
 
+            <h3 data-lang="enable-fragment-state-vibe" openSection="fragment">Fragment</h3>
+            <section id="fragment">
+                <b data-lang="enable-fragment-state-vibe">TLS Fragment</b>
+                <div id="fragment-vibe">
+                    <label class="switch">
+                        <input type="checkbox" class="vibe-option-state" optionVibe="tls-tricks.enable-fragment"
+                            id="fragment-state-vibe" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="fragment_size">TLS Fragment Size</b>
+                <div id="fragment-size-vibe" class="form-control-c">
+                    <input type="text" class="input input-alt vibe-option-value" placeholder="10-30"
+                        id="fragment-size-vibe-value" optionVibe="tls-tricks.fragment-size">
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="fragment_sleep">TLS Fragment Sleep</b>
+                <div id="fragment-sleep-vibe" class="form-control-c">
+                    <input type="text" class="input input-alt vibe-option-value" placeholder="2-8"
+                        id="fragment-sleep-vibe-value" optionVibe="tls-tricks.fragment-sleep">
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="mixed-sni-case">TLS Mixed SNI Case</b>
+                <div id="mixed-sni-case-vibe">
+                    <label class="switch">
+                        <input type="checkbox" class="vibe-option-state" optionVibe="tls-tricks.mixed-sni-case"
+                            id="mixed-sni-case-state-vibe" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="enable-padding">Enable TLS Padding</b>
+                <div id="enable-padding-vibe">
+                    <label class="switch">
+                        <input type="checkbox" class="vibe-option-state" optionVibe="tls-tricks.enable-padding"
+                            id="enable-padding-state-vibe" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="padding-size">Padding Size</b>
+                <div id="padding-size-vibe" class="form-control-c">
+                    <input type="text" class="input input-alt vibe-option-value" placeholder="1-1500"
+                        id="padding-size-vibe-value" optionVibe="tls-tricks.padding-size">
+                </div>
+                <div class="divider"></div>
+            </section>
+
+            <h3 openSection="mux-vibe">Mux</h3>
+            <section id="mux-vibe">
+                <b data-lang="mux-enable">Mux Enable</b>
+                <div id="mux-enable-vibe">
+                    <label class="switch">
+                        <input type="checkbox" class="vibe-option-state" optionVibe="mux.enable"
+                            id="mux-enable-state-vibe" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="mux-padding">Mux Padding</b>
+                <div id="mux-padding-vibe">
+                    <label class="switch">
+                        <input type="checkbox" class="vibe-option-state" optionVibe="mux.padding"
+                            id="mux-padding-state-vibe" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="mux-max-streams">Mux Max Streams</b>
+                <div id="mux-max-streams-vibe" class="form-control-c">
+                    <input type="number" class="input input-alt vibe-option-value" placeholder="8"
+                        id="mux-max-streams-vibe-value" optionVibe="mux.max-streams" />
+                </div>
+                <div class="divider"></div>
+
+                <b data-lang="mux-protocol">Mux Protocol</b>
+                <div id="mux-protocol-vibe" class="form-control-c">
+                    <input type="text" class="input input-alt vibe-option-value" placeholder="h2mux"
+                        id="mux-protocol-vibe-value" optionVibe="mux.protocol" />
+                </div>
+                <div class="divider"></div>
+            </section>
+            
             <b>Hiddify Config</b>
             <div>
                 <button id="hiddify-config-vibe" class="btn">Select File</button>

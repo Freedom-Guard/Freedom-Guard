@@ -2,7 +2,7 @@
     "lang-selection": "应用语言",
     "mess-change-lang": "应用语言已更改",
     "connected_mess_notif": "您已连接到免费互联网！",
-    "change-status":"更改状态",
+    "change-status": "更改状态",
     "vpn-type": "VPN 类型",
     "system-proxy": "系统代理",
     "tun": "TUN",
@@ -80,5 +80,15 @@
     "vibe_mode": "Vibe 模式",
     "direct_dns": "直接 DNS",
     "auto_conn_after_runs": "运行后自动连接",
-    "servers-section": "服务器部分"
+    "servers-section": "服务器部分",
+    "enable-fragment-state-vibe": "TLS 分片",
+    "fragment_size": "TLS 分片大小",
+    "fragment_sleep": "TLS 分片睡眠",
+    "mixed-sni-case": "TLS 混合 SNI 情况",
+    "enable-padding": "启用 TLS 填充",
+    "padding-size": "填充大小",
+    "mux-enable": "启用 Mux",
+    "mux-padding": "Mux 填充",
+    "mux-max-streams": "Mux 最大流",
+    "mux-protocol": "Mux 协议"
 }

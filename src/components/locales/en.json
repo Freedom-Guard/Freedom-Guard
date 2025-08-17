@@ -83,5 +83,15 @@
     "auto_conn_after_runs": "Auto Connect After Runs",
     "servers-section": "Servers Section",
     "share-conn": "You can share your current connected config using the buttons below",
-    "copy": "Copy"
+    "copy": "Copy",
+    "enable-fragment-state-vibe": "TLS Fragment",
+    "fragment_size": "TLS Fragment Size",
+    "fragment_sleep": "TLS Fragment Sleep",
+    "mixed-sni-case": "TLS Mixed SNI Case",
+    "enable-padding": "Enable TLS Padding",
+    "padding-size": "Padding Size",
+    "mux-enable": "Mux Enable",
+    "mux-padding": "Mux Padding",
+    "mux-max-streams": "Mux Max Streams",
+    "mux-protocol": "Mux Protocol"
 }

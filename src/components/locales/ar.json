@@ -80,5 +80,15 @@
     "vibe_mode": "وضع Vibe",
     "direct_dns": "DNS مباشر",
     "auto_conn_after_runs": "الاتصال التلقائي بعد التشغيل",
-    "servers-section": "قسم سرورها"
+    "servers-section": "قسم سرورها",
+    "enable-fragment-state-vibe": "تقسيم TLS",
+    "fragment_size": "حجم شظايا TLS",
+    "fragment_sleep": "نوم شظايا TLS",
+    "mixed-sni-case": "حالة SNI مختلطة TLS",
+    "enable-padding": "تفعيل Padding TLS",
+    "padding-size": "حجم Padding",
+    "mux-enable": "تمكين Mux",
+    "mux-padding": "Padding Mux",
+    "mux-max-streams": "أقصى تدفقات Mux",
+    "mux-protocol": "بروتوكول Mux"
 }

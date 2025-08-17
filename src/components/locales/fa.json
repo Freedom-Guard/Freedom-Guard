@@ -83,5 +83,16 @@
     "auto_conn_after_runs": "اتصال خودکار پس از اجرا",
     "servers-section": "بخش سرورها",
     "share-conn": "شما می‌توانید کانفیگ فعلی که بهش متصل شدید را به اشتراک بگذارید از دکمه‌های زیر استفاده کنید",
-    "copy": "کپی کانفیگ"
+    "copy": "کپی کانفیگ",
+    "enable-fragment-state-vibe": "فرگمنت TLS",
+    "fragment_size": "اندازه فرگمنت TLS",
+    "fragment_sleep": "TLS Fragment Sleep",
+    "mixed-sni-case": "حالت SNI ترکیبی TLS",
+    "enable-padding": "فعال‌سازی Padding TLS",
+    "padding-size": "اندازه Padding",
+    "mux-enable": "فعال‌سازی Mux",
+    "mux-padding": "Padding Mux",
+    "mux-max-streams": "حداکثر جریان‌های Mux",
+    "mux-protocol": "پروتکل Mux",
+    "region": "منطقه"
 }

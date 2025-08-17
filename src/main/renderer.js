@@ -592,14 +592,31 @@ class main {
                 if (!that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
                     that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = that.publicSet.resetVibeSettings();
                 }
-                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).prop('checked');
+                let optionVibe = $(this).attr("optionVibe");
+                const keys = optionVibe.split(".");
+
+                keys.reduce((acc, key, index) => {
+                    if (index === keys.length - 1) {
+                        acc[key] = $(this).prop('checked');
+                    }
+                    return acc[key];
+                }, that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"]);
+
                 that.publicSet.saveSettings();
             });
             $(".vibe-option-value").on("change", function () {
                 if (!that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] || that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] == "null") {
                     that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"] = that.publicSet.resetVibeSettings();
                 }
-                that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"][$(this).attr("optionVibe")] = $(this).prop("value");
+                let optionVibe = $(this).attr("optionVibe");
+                const keys = optionVibe.split(".");
+
+                keys.reduce((acc, key, index) => {
+                    if (index === keys.length - 1) {
+                        acc[key] = $(this).prop("value");
+                    }
+                    return acc[key];
+                }, that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"]);
                 that.publicSet.saveSettings();
             });
             $("#hiddify-reset-vibe").on("click", async () => {
@@ -616,7 +633,7 @@ class main {
         }
     };
     setSettings() {
-        // Loads and applies saved settings to the UI elements
+        // Loads and applies saved  settings to the UI elements
         this.publicSet.reloadSettings();
         $("#core-guard-selected").val(this.publicSet.settingsALL["public"]["core"]);
         $("#auto-conn-status").prop("checked", this.publicSet.settingsALL["public"]["auto_conn_after_runs"]);
@@ -644,27 +661,33 @@ class main {
         $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
         $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
         $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
-        let hiddifyConfigJSON = this.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+        let that = this;
         $(".vibe-option-state").each(function () {
             const element = $(this);
             const optionName = element.attr("optionVibe");
-            if (!hiddifyConfigJSON) {
-                return;
-            }
-            if (hiddifyConfigJSON.hasOwnProperty(optionName)) {
-                const savedValue = hiddifyConfigJSON[optionName];
-                element.prop('checked', savedValue);
+            const keysToSync = optionName.split(".");
+
+            let value = that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+            keysToSync.forEach((key) => {
+                value = value[key];
+            });
+
+            if (value !== undefined) {
+                element.prop('checked', value);
             }
         });
         $(".vibe-option-value").each(function () {
             const element = $(this);
             const optionName = element.attr("optionVibe");
-            if (!hiddifyConfigJSON) {
-                return;
-            }
-            if (hiddifyConfigJSON.hasOwnProperty(optionName)) {
-                const savedValue = hiddifyConfigJSON[optionName];
-                element.prop('value', savedValue);
+            const keysToSync = optionName.split(".");
+
+            let value = that.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+            keysToSync.forEach((key) => {
+                value = value[key];
+            });
+
+            if (value !== undefined) {
+                element.prop('value', value);
             }
         });
         $("#dns-warp-value").val(this.publicSet.settingsALL["warp"]["dns"]);
