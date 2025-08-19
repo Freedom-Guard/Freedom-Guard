@@ -1,4 +1,5 @@
 <div align="center">
+<img src="https://raw.githubusercontent.com/Freedom-Guard/FG_MOBILE/refs/heads/main/assets/icon/ico.png" alt="Freedom Guard Mobile Logo" width="150" />
 
 # Freedom Guard
 
@@ -21,8 +22,10 @@
 
 </div>
 
+
 <div align="center">
-  <a href="https://github.com/Freedom-Guard/FG_MOBILE/">Freedom Guard Mobile</a></p>
+  <p>🖥️ Looking for Mobile? <br>
+  👉 <a href="https://github.com/Freedom-Guard/FG_MOBILE">Freedom Guard Mobile</a></p>
 </div>
 
 **Freedom Guard** is a tool designed for bypassing internet censorship, providing the best methods for connecting to a free internet. It enhances your security, speed, and privacy while ensuring an unrestricted browsing experience.
