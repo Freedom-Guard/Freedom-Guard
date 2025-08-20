@@ -132,7 +132,7 @@
 2. Install the package using your package manager or extract the archive.
 3. Launch the application.
 
-## Troubleshooting
+## 🔧 Troubleshooting
 For solutions to common issues on macOS, Linux, and Windows, refer to our [Troubleshooting Guide](./README/freedom-guard-troubleshooting.md).
 
 ## ⚡ Automatic Configuration
