@@ -155,7 +155,8 @@
             "!one.one",
             "*.bat",
             "!freedom-guard.json",
-            "!data/**/*"
+            "!data/**/*",
+            "!README/**/*"
         ]
     },
     "dependencies": {
