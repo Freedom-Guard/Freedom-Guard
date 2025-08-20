@@ -1,6 +1,7 @@
 {
     "PUBLIC": [
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
+        "vibe,;,https://raw.githubusercontent.com/Mahdi0024/ProxyCollector/master/sub/proxies.txt#Red Servers (PC) Beta",
         "vibe,;,https://raw.githubusercontent.com/darkvpnapp/CloudflarePlus/refs/heads/main/proxy#Dark Servers (PC)",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
@@ -43,8 +44,9 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
-        "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_1.txt#MCI",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
+        "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_1.txt#MCI",
+        "vibe,;,https://raw.githubusercontent.com/Mahdi0024/ProxyCollector/master/sub/proxies.txt#Red Servers (PC) Beta",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#IRANCELL",
         "vibe,;,vless://826f524a-cea1-4e44-9b49-3381d13b7593@172.66.45.9:443?encryption=none&security=tls&sni=fk31LnDm4W8uj0yP1dRwLTDTdKo6Y-cu.pAGES.dEv&alpn=http%2F1.1&fp=randomized&type=ws&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&path=%2FgL8gLANdh881Nj22#FG%201",
