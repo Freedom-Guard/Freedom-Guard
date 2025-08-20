@@ -132,6 +132,9 @@
 2. Install the package using your package manager or extract the archive.
 3. Launch the application.
 
+## Troubleshooting
+For solutions to common issues on macOS, Linux, and Windows, refer to our [Troubleshooting Guide](./README/freedom-guard-troubleshooting.md).
+
 ## ⚡ Automatic Configuration
 
 Freedom Guard’s automatic configuration system gathers configurations from public sources, including Telegram channels and user contributions. Configurations are updated daily for different ISPs, providing the best ways and configurations for connecting to the internet.
