@@ -22,11 +22,31 @@ window.LogLOG = (log = "", type = "info", ac = "text") => {
         hour12: false,
     });
     log = timestamp + (type != "null" ? " --" + type + "--> " : "") + log;
-    $("#LogsContent").append(`<p class="log-item" id="log-item-${LOGS.length + 1}"></p>`);
-    ac == "html" ? $(`#log-item-${LOGS.length + 1}`).html(log) : $(`#log-item-${LOGS.length + 1}`).text(log);
-    if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; };
+    const logLength = log.length;
+    const logId = `log-item-${LOGS.length}`;
+    const isLongLog = logLength > 200;
+    const shortLog = isLongLog ? log.substring(0, 200) + "..." : log;
+    const htmlContent = isLongLog
+        ? `<p class="log-item" id="${logId}">${ac == "html" ? shortLog : shortLog}</p><button class="btn" onclick="window.toggleLog('${logId}', \`${encodeURIComponent(log)}\`, '${ac}')" style="font-size: 0.7em;">View More</button>`
+        : `<p class="log-item" id="${logId}">${ac == "html" ? log : log}</p>`;
+    $("#LogsContent").append(htmlContent);
+    if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; }
     (window.scrollLogs ?? false) == true ? $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight) : '';
 };
+
+window.toggleLog = (logId, fullLog, ac) => {
+    const $logItem = $(`#${logId}`);
+    const $button = $logItem.next(".btn");
+    if ($logItem.hasClass("expanded")) {
+        $logItem.html(ac == "html" ? fullLog.substring(0, 200) + "..." : fullLog.substring(0, 200) + "...");
+        $logItem.removeClass("expanded");
+        $button.text("View More");
+    } else {
+        $logItem.html(decodeURIComponent(fullLog));
+        $logItem.addClass("expanded");
+        $button.text("View Less");
+    }
+}
 window.confirm = (mess = "") => {
     return new Promise((resolve) => {
         const box = document.getElementById("confirmation-box");
