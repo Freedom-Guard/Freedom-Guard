@@ -7,7 +7,6 @@ const axios = require('axios');
 const geoip = require('geoip-lite');
 const { trackEvent } = require("@aptabase/electron/renderer");
 const { Tools, getConfigPath, writeFile, readFile } = require("./tools");
-trackEvent("app_started");
 
 class PublicSet {
     constructor() {
