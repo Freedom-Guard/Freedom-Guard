@@ -44,6 +44,7 @@
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
         "vibe,;,#Auto Server",
+        "vibe,;,https://config-fl.freedomguard.workers.dev/ok#FG LINK",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_1.txt#MCI",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#IRANCELL",
         "vibe,;,https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt#VIBE | POWER",

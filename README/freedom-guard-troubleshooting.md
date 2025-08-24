@@ -57,18 +57,7 @@ The error occurs because creating and configuring a TUN interface on Linux requi
 
 ### Solutions
 
-#### 1. Run with Root Privileges
-Run **Freedom Guard** with administrator (root) privileges:
-```bash
-sudo ./freedom-guard-linux-x86_64.AppImage
-```
-Or, if installed:
-```bash
-sudo freedom-guard
-```
-This allows the TUN interface to be created properly.
-
-#### 2. Enable TUN Mode
+#### 1. Enable TUN Mode
 To run **Freedom Guard** in TUN mode, execute the following commands in sequence:
 
 ##### Step 1: Grant Display Access
@@ -89,7 +78,7 @@ After using the app, revoke root access to your display for security:
 xhost -SI:localuser:root
 ```
 
-#### 3. Verify TUN Mode
+#### 2. Verify TUN Mode
 - Close **Freedom Guard** completely.
 - Reopen the app using the commands above.
 - Select **TUN Mode** in the app.
