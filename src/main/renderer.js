@@ -38,7 +38,7 @@ window.toggleLog = (logId, fullLog, ac) => {
     const $logItem = $(`#${logId}`);
     const $button = $logItem.next(".btn");
     if ($logItem.hasClass("expanded")) {
-        $logItem.html(ac == "html" ? fullLog.substring(0, 200) + "..." : fullLog.substring(0, 200) + "...");
+        $logItem.html(ac == "html" ? decodeURIComponent(fullLog.substring(0, 200)) + "..." : decodeURIComponent(fullLog.substring(0, 200) + "..."));
         $logItem.removeClass("expanded");
         $button.text("View More");
     } else {
