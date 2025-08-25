@@ -8,6 +8,7 @@
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/sinabigo/Xray/main/@sinavm#VIBE FAST",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MTN",
+        "warp,;,scan=true#WARP | SCAN",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MCI",
         "vibe,;,https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub#FG | Freedom Link (best)",
         "vibe,;,https://raw.githubusercontent.com/hiddify/hiddify-next/main/test.configs/warp#%F0%9F%94%A5%20WARP%20%F0%9F%94%A5#VIBE | WARP SERVER",
@@ -20,25 +21,17 @@
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
         "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL"
     ],
-    "IRANCELL": [
-        "warp,;,gool=true&scan=true#WARP | GOOL"
-    ],
+    "IRANCELL": [],
     "RIGHTEL": [
-        "warp,;,gool=true&scan=true#WARP | GOOL",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL"
     ],
     "PISHGAMAN": [
-        "warp,;,gool=true&scan=true#WARP | GOOL",
-        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL",
-        "warp,;,scan=true#WARP | SCAN"
+        "vibe,;,https://raw.githubusercontent.com/barry-far/V2ray-config/main/All_Configs_base64_Sub.txt#VIBE | SERVER FULL"
     ],
-    "TCI": [
-        "warp,;,scan=true#WARP | SCAN"
-    ],
+    "TCI": [],
     "SHATEL": [],
     "PARSONLINE": [],
     "other": [
-        "warp,;,scan=true#WARP | SCAN",
         "vibe,;,https://github.com/Epodonios/v2ray-configs/raw/main/All_Configs_Sub.txt#RAND | FREEDOM"
     ],
     "MOBILE": [
