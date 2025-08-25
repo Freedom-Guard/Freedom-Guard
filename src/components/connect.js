@@ -623,14 +623,11 @@ class PublicSet {
         };
     }
     startINIT() {
-        const flagFilePath = path.join(getConfigPath(), "one.one");
-        try {
-            readFile("one.one", "cache");
-        } catch {
-            writeFile("one.one", "is not new user.", "cache");
-            if (typeof window !== 'undefined' && window.startNewUser) {
-                window.startNewUser();
-            }
+        this.reloadSettings();
+        if ((this.settingsALL.public.newUser ?? true)) {
+            window.startNewUser();
+            this.settingsALL.public.newUser = false;
+            this.saveSettings();
         }
     }
 }
