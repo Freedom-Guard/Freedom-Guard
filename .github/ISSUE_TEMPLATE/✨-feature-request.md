@@ -40,5 +40,5 @@ Any other context or considerations for the development team.
 ---
 
 ### 🕒 Response Policy
-If no additional details or discussion occur within **3 days**, this request may be ** closed**.  
+If no additional details or discussion occur within **3 days**, this request may be closed.  
 We appreciate your input and encourage detailed suggestions to help improve Freedom Guard. 🚀

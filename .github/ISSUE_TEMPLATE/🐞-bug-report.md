@@ -56,5 +56,5 @@ Add any other details about the problem that might help us diagnose it.
 ---
 
 ### 🕒 Response Policy
-If no additional information is provided within **3 days**, this issue will be **automatically closed**.  
+If no additional information is provided within **3 days**, this issue will be closed. 
 We kindly ask you to provide complete details so we can resolve the problem quickly. 🚀
