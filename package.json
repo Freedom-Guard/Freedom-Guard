@@ -1,10 +1,10 @@
 {
     "name": "freedom-guard",
     "productName": "Freedom Guard",
-    "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Link",
+    "description": "Freedom Guard +x Freedom Vibe, Freedom Browser, Freedom Warp",
     "keywords": [],
     "main": "./main.js",
-    "version": "9.4.0",
+    "version": "9.4.1",
     "author": "Freedom Guard <FreedomGuard@duck.com>",
     "scripts": {
         "start": "electron .",
@@ -162,6 +162,7 @@
     "dependencies": {
         "@aptabase/electron": "^0.3.1",
         "axios": "^1.8.2",
+        "dotenv": "^17.2.1",
         "geoip-lite": "^1.4.10",
         "jquery": "^3.7.1",
         "jquery.easing": "^1.4.1",

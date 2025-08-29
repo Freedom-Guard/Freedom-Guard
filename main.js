@@ -6,8 +6,18 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require("child_process");
 const ipc = require('electron').ipcMain;
+require('dotenv').config(); 
+
 const { initialize } = require('@aptabase/electron/main');
-initialize("A-EU-5072151346");
+
+const appKey = process.env.APTABASE_APP_KEY;
+if (appKey) {
+  initialize(appKey);
+  console.log("✅ Aptabase initialized");
+} else {
+  console.warn("⚠️ No Aptabase key found, analytics disabled");
+}
+
 __dirnameFile = __dirname;
 // #endregion
 // #region Vars
