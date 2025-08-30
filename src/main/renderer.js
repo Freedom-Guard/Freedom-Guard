@@ -752,9 +752,6 @@ class main {
                 if (settings.css) {
                     $el.css(settings.css);
                 }
-                if (settings.checked) {
-                    $el.prop("checked", settings.checked)
-                }
 
                 if (selector.includes("vibe")) {
                     $(`#vibe-settings`).addClass("active");
@@ -772,6 +769,7 @@ class main {
                         } else if (event === 'focus') {
                             $el.focus();
                         } else if (event === 'click') {
+                            if ($el.prop("checked") == settings.checked ?? false) return;
                             $el.click();
                         }
                     }, delay);
