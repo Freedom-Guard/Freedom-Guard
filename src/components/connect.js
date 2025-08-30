@@ -525,7 +525,7 @@ class PublicSet {
             const configGridPath = path.join(this.coresDir, "grid", "config.json");
             let configGrid = JSON.parse(readFile(configGridPath, "file"));
             this.log("grid started with:" + configGrid.toString());
-            configGrid["outbounds"][0]["server_port"] = parseInt(proxy.split(":")[1]);
+            configGrid["outbounds"][2]["server_port"] = parseInt(proxy.split(":")[1]);
             writeFile(configGridPath, JSON.stringify(configGrid), "file");
 
             this.Process.grid = spawn(corePath, ["run", "-c", configGridPath, "--tun"]);
