@@ -441,6 +441,10 @@ class main {
             this.setSettings();
             this.reloadServers();
         });
+        $("#add-warp-config").on("click", async () => {
+            this.publicSet.reloadSettings();
+            this.runActionsFromJSON("")
+        });
         $("#submit-config-clipboard").on("click", async () => {
             $("#config-value").val(clipboard.readText());
             await this.publicSet.importConfig($("#config-value").val());
@@ -724,6 +728,31 @@ class main {
         $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
         this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
     };
+    runActionsFromJSON(url, field) {
+        $.getJSON(url, function (data) {
+            const actions = data[field];
+            if (!actions) return;
+            $.each(actions, function (selector, eventsStr) {
+                const events = eventsStr.split(',').map(e => e.trim());
+                const $el = $(selector);
+                if (!$el.length) return;
+                let delay = 0;
+                events.forEach(event => {
+                    delay += 500;
+                    setTimeout(() => {
+                        if (event === 'scroll') {
+                            $el.animate({ scrollTop: $el[0].scrollHeight }, 500);
+                        } else if (event === 'focus') {
+                            $el.focus();
+                        } else if (event === 'click') {
+                            $el.click();
+                        }
+                    }, delay);
+                });
+            });
+        });
+    }
+
     showToolBox() {
         $("#tool-box").toggle();
         $("#tool-off-proxy").on("click", () => {
