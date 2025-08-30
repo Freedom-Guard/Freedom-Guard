@@ -732,7 +732,12 @@ class main {
     runActionsFromJSON(url, field) {
         $.getJSON(url, function (data) {
             const actions = data[field];
-            if (!actions) return;
+            if (!actions) {
+                window.showMessageUI("⚠️ داده‌ها در دسترس نیستند. لطفاً بعداً دوباره تلاش کنید.");
+                return;
+            }
+
+            window.showMessageUI("🚀 در حال آماده‌سازی تنظیمات اولیه شما... لطفاً کمی صبر کنید.");
 
             $.each(actions, function (selector, settings) {
                 const events = settings.actions.split(',').map(e => e.trim());
@@ -769,6 +774,8 @@ class main {
                     }, delay);
                 });
             });
+
+            window.showMessageUI("✅ تنظیمات اولیه با موفقیت انجام شد! آماده شروع هستید 😎");
         });
     };
     showToolBox() {
