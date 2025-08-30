@@ -571,19 +571,6 @@ class main {
             $("#Scan").on("click", () => {
                 this.publicSet.settingsALL["warp"]["scan"] = !this.publicSet.settingsALL["warp"]["scan"]; this.publicSet.saveSettings();
             });
-            $("#get-key-warp").on("click", async () => {
-                try {
-                    const response = await this.axios.get("https://raw.githubusercontent.com/ircfspace/warpkey/main/plus/full");
-                    const keys = response.data.split("\n").filter(key => key.trim() !== "");
-                    const randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    $("#warp-key-value").val(randomKey);
-                    this.publicSet.settingsALL["warp"]["key"] = randomKey;
-                    this.publicSet.saveSettings();
-                    window.showMessageUI(this.publicSet.settingsALL["lang"]["warp_key_applied"]);
-                } catch (error) {
-                    this.publicSet.log("Error fetching WARP keys:", error);
-                }
-            });
             $("#warp-key-value").on("input", () => {
                 this.publicSet.settingsALL["warp"]["key"] = $("#warp-key-value").val(); this.publicSet.saveSettings();
             });

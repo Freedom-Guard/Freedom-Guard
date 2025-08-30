@@ -475,6 +475,7 @@ img {
     align-items: center;
     transition: 0.3s;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .box-select-server>.header-box-select-server b:hover {
@@ -620,6 +621,7 @@ img {
     border: 1px solid var(--server-mini-border);
     display: flex;
     color: var(--switch-thumb-on);
+    cursor: pointer;
 }
 
 .box-select-server-mini:hover {
@@ -1327,6 +1329,7 @@ a {
     color: var(--text-light);
     border: none;
     border-radius: 7px;
+    cursor: pointer;
 }
 
 select {
