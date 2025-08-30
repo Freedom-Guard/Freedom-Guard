@@ -752,6 +752,9 @@ class main {
                 if (settings.css) {
                     $el.css(settings.css);
                 }
+                if (settings.checked) {
+                    $el.prop("checked", settings.checked)
+                }
 
                 if (selector.includes("vibe")) {
                     $(`#vibe-settings`).addClass("active");
