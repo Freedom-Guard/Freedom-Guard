@@ -392,7 +392,8 @@ class main {
         $("#core-guard-selected").on('change', () => {
             this.publicSet.settingsALL["public"]["core"] = $("#core-guard-selected").val(); this.publicSet.saveSettings();
             $("#warp, #vibe, #auto, #flex, #grid, #new".replace("#" + this.publicSet.settingsALL["public"]["core"] + ",", "")).slideUp();
-            $(`#${this.publicSet.settingsALL["public"]["core"]}-settings`).slideDown().addClass("active");
+            $(`#${this.publicSet.settingsALL["public"]["core"]}-settings`).addClass("active");
+            $(`#${this.publicSet.settingsALL["public"]["core"]}-settings`).addClass("active");
             $(`#${this.publicSet.settingsALL["public"]["core"]}`).slideDown();
             this.publicSet.settingsALL["public"]["core"] == "warp" ? $("#vpn-type-selected").val("system") : '';
             this.addEventSect(this.publicSet.settingsALL["public"]["core"]);
@@ -732,16 +733,34 @@ class main {
         $.getJSON(url, function (data) {
             const actions = data[field];
             if (!actions) return;
-            $.each(actions, function (selector, eventsStr) {
-                const events = eventsStr.split(',').map(e => e.trim());
+
+            $.each(actions, function (selector, settings) {
+                const events = settings.actions.split(',').map(e => e.trim());
                 const $el = $(selector);
+
+                if (settings.value) {
+                    $el.val(settings.value);
+                }
+                if (settings.text) {
+                    $el.text(settings.text);
+                }
+                if (settings.css) {
+                    $el.css(settings.css);
+                }
+
+                if (selector.includes("vibe")) {
+                    $(`#vibe-settings`).addClass("active");
+                    $(`#vibe`).slideDown();
+                }
+
                 if (!$el.length) return;
-                let delay = 0;
+
+                let delay = settings.delay || 500;
                 events.forEach(event => {
                     delay += 500;
                     setTimeout(() => {
                         if (event === 'scroll') {
-                            $el.animate({ scrollTop: $el[0].scrollHeight }, 500);
+                            $el.animate({ scrollTop: $el[0].scrollHeight }, delay);
                         } else if (event === 'focus') {
                             $el.focus();
                         } else if (event === 'click') {
@@ -751,8 +770,7 @@ class main {
                 });
             });
         });
-    }
-
+    };
     showToolBox() {
         $("#tool-box").toggle();
         $("#tool-off-proxy").on("click", () => {

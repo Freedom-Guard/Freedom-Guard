@@ -1,5 +1,20 @@
 {
     "other": {
-        "#fragment-state-vibe": "scroll, focus, click"
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "delay": 700
+        }
+    },
+    "TCI": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "delay": 700
+        }
+    },
+    "MCI": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "delay": 700
+        }
     }
 }
