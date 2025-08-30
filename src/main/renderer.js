@@ -5,7 +5,7 @@ const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
-const vesrionApp = "9.4.1";
+const vesrionApp = "9.5.0";
 let LOGS = [];
 // #endregion
 // #region components
@@ -441,9 +441,9 @@ class main {
             this.setSettings();
             this.reloadServers();
         });
-        $("#add-warp-config").on("click", async () => {
+        $("#apply-ISP-preset").on("click", async () => {
             this.publicSet.reloadSettings();
-            this.runActionsFromJSON("")
+            this.runActionsFromJSON("https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/desktop/settings.json", this.publicSet.settingsALL.public.isp);
         });
         $("#submit-config-clipboard").on("click", async () => {
             $("#config-value").val(clipboard.readText());

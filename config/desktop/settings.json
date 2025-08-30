@@ -1,5 +1,5 @@
 {
     "other": {
-        "#box-select-server-mini": "scroll,focus, click"
+        "#fragment-state-vibe": "scroll, focus, click"
     }
 }
