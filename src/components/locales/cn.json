@@ -33,7 +33,7 @@
     "logs": "日志",
     "freedom_browser": "Freedom 浏览器",
     "set_dns": "设置 DNS",
-    "about_app_html": "<p> Freedom Guard 9.5.0（最新版本）</p>\n    <p> 由 Freedom Guard 团队开发 👩‍💻</p>\n    <p>👇 鸣谢 👇</p>\n    <p> <a href=\"https://github.com/hiddify/hiddify-core/\">hiddify-core 3.2.0</a> 来自 Hiddify</p>\n    <p> <a href=\"https://github.com/bepass-org/warp-plus\">warp-plus 1.2.6</a> 来自 bepass-org</p>\n    <p> <a href=\"https://github.com/GFW-knocker/Xray-core\">Xray-core 25.1.30</a> 来自 GFW-knocker</p>\n    <p> <a href=\"https://github.com/ircfspace/endpoint/\">Endpoint warp+</a> 来自 IRCF</p>\n    <p> <a href=\"https://x.com/Freedom_Guard_N\">X Freedom Guard</a></p>\n",
+    "about_app_html": "<p> Freedom Guard 9.6.0（最新版本）</p>\n    <p> 由 Freedom Guard 团队开发 👩‍💻</p>\n    <p>👇 鸣谢 👇</p>\n    <p> <a href=\"https://github.com/hiddify/hiddify-core/\">hiddify-core 3.2.0</a> 来自 Hiddify</p>\n    <p> <a href=\"https://github.com/bepass-org/warp-plus\">warp-plus 1.2.6</a> 来自 bepass-org</p>\n    <p> <a href=\"https://github.com/GFW-knocker/Xray-core\">Xray-core 25.1.30</a> 来自 GFW-knocker</p>\n    <p> <a href=\"https://github.com/ircfspace/endpoint/\">Endpoint warp+</a> 来自 IRCF</p>\n    <p> <a href=\"https://x.com/Freedom_Guard_N\">X Freedom Guard</a></p>\n",
     "killed_services": "所有服务已终止。",
     "settings_saved": "✅ 设置已成功保存！",
     "tun_not_supported": "😕 哎呀！TUN 模式在 Warp 中不受支持。",

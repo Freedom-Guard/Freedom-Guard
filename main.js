@@ -6,11 +6,11 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require("child_process");
 const ipc = require('electron').ipcMain;
-require('dotenv').config(); 
+require('dotenv').config();
 
 const { initialize } = require('@aptabase/electron/main');
 
-const appKey = process.env.APTABASE_APP_KEY;
+const appKey = "A-US-5819027962";
 if (appKey) {
   initialize(appKey);
   console.log("✅ Aptabase initialized");
