@@ -469,8 +469,8 @@ class PublicSet {
         return process.platform === "win32" ? `${name}.exe` : name;
     }
 
-    killAllCores(core) {
-        const processName = `${core.toLowerCase()}-core`;
+    killAllCores(core, isCore = true) {
+        const processName = core.toLowerCase() + (isCore ? "-core" : '');
         this.log(`Killing ${processName}...`);
 
         if (process.platform === "win32") {
@@ -1041,7 +1041,7 @@ class Connect extends PublicSet {
 
         const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
         this.log(`Spawning Masque process: ${corePath} ${this.argsMasque.join(' ')}`);
-        
+
         this.processMasque = spawn(corePath, this.argsMasque, {
             cwd: path.dirname(corePath)
         });
@@ -1188,6 +1188,7 @@ class Connect extends PublicSet {
         else if (core === "masque") {
             this.argsMasque = [];
             this.argsMasque.push("--scan");
+            this.argsMasque.push("--renew");
         }
     }
 
@@ -1217,6 +1218,7 @@ class Connect extends PublicSet {
             } else if (core === "masque" && this.processMasque) {
                 this.processMasque.kill();
                 this.processMasque = null;
+                this.killAllCores("usque", false)
             }
         } catch (error) {
             this.log(`[VPN] Error in killVPN: ${error}`);
