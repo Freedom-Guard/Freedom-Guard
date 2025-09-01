@@ -644,6 +644,34 @@ class main {
         else if (core == "flex") {
 
         }
+        else if (core == "masque") {
+            $(".masque-option-state").on("click", function () {
+                let optionMasque = $(this).attr("optionMasque");
+                const keys = optionMasque.split(".");
+
+                keys.reduce((acc, key, index) => {
+                    if (index === keys.length - 1) {
+                        acc[key] = $(this).prop('checked');
+                    }
+                    return acc[key];
+                }, that.publicSet.settingsALL["masque"]);
+
+                that.publicSet.saveSettings();
+            });
+            $(".masque-option-value").on("change", function () {
+                let optionMasque = $(this).attr("optionMasque");
+                const keys = optionMasque.split(".");
+
+                keys.reduce((acc, key, index) => {
+                    if (index === keys.length - 1) {
+                        acc[key] = $(this).prop("type") == "number" ? parseInt($(this).prop("value")) : $(this).prop("value");
+                    }
+                    return acc[key];
+                }, that.publicSet.settingsALL["masque"]);
+
+                that.publicSet.saveSettings();
+            });
+        }
     };
     setSettings() {
         // Loads and applies saved  settings to the UI elements

@@ -50,7 +50,7 @@
     "ip_version": "نسخه IP",
     "gool_warp": "Gool Warp",
     "scan_warp": "Scan Warp",
-    "endpoint": "اندپوینت وارپ",
+    "endpoint": "اندپوینت ",
     "scan_rtt": "محدودیت RTT اسکنر",
     "advanced_settings_warp": "تنظیمات پیشرفته Warp",
     "verbose": "Verbose",
