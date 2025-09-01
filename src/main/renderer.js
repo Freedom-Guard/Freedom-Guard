@@ -658,7 +658,19 @@ class main {
         $("#lang-app-value").val(this.publicSet.settingsALL["public"]["lang"]);
         $("#theme-app-value").val(this.publicSet.settingsALL["public"]["theme"] ?? "Dark");
         this.publicSet.settingsALL["public"]["core"] == "vibe" ? $("#config-vibe-value").val(this.publicSet.settingsALL["public"]["configManual"]) : '';
-        let imgServer = ((s => { let p = s.split(",;,")[0], q = s.split("***")[1] ?? "", f = q.split("&").map(x => x.split("=")).find(x => x[0] === "flag")?.[1]; return (p.split("://")[0] === "warp" ? (f ? `${f}.svg` : "warp.webp") : (f ? `${f}.svg` : "vibe.png")).replaceAll("/", "").replaceAll("\\", ""); })(this.publicSet.settingsALL["public"]["configManual"]));
+        let imgServer = (() => {
+            let s = this.publicSet.settingsALL["public"]["configManual"];
+            let [p] = s.split(",;,");
+            let q = (s.split("***")[1] ?? "");
+            let f = q.split("&").map(x => x.split("=")).find(x => x[0] === "flag")?.[1];
+            let proto = p.split("://")[0];
+
+            let file = f
+                ? `${f}.svg`
+                : (proto === "warp" || proto === "masque" ? "warp.webp" : "vibe.png");
+
+            return file.replaceAll("/", "").replaceAll("\\", "");
+        })();
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (imgServer));
         window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim().split("***")[0] : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50)));
         $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
