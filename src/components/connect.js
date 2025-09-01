@@ -104,27 +104,28 @@ class PublicSet {
 
         if (process.platform === "linux" || process.platform === "darwin") {
             const destDir = getConfigPath();
-            const vibeDestPath = path.join(destDir, "vibe", 'vibe-core');
-            const warpDestPath = path.join(destDir, "warp", 'warp-core');
+            const cores = [
+                { dir: "vibe", file: "vibe-core" },
+                { dir: "warp", file: "warp-core" },
+                { dir: "masque", file: "masque-plus" },
+                { dir: "masque", file: "usque" }
+            ];
 
-            fs.mkdirSync(path.dirname(vibeDestPath), { recursive: true });
-            fs.mkdirSync(path.dirname(warpDestPath), { recursive: true });
-
-            const vibeSourcePath = path.join(baseCorePath, "vibe", "vibe-core");
-            const warpSourcePath = path.join(baseCorePath, "warp", "warp-core");
-
-            if (!fs.existsSync(vibeDestPath)) {
-                fs.copyFileSync(vibeSourcePath, vibeDestPath);
-                fs.chmodSync(vibeDestPath, 0o755);
+            for (const core of cores) {
+                const destPath = path.join(destDir, core.dir, core.file);
+                const sourcePath = path.join(baseCorePath, core.dir, core.file);
+                fs.mkdirSync(path.dirname(destPath), { recursive: true });
+                if (!fs.existsSync(destPath)) {
+                    fs.copyFileSync(sourcePath, destPath);
+                    fs.chmodSync(destPath, 0o755);
+                }
             }
-            if (!fs.existsSync(warpDestPath)) {
-                fs.copyFileSync(warpSourcePath, warpDestPath);
-                fs.chmodSync(warpDestPath, 0o755);
-            }
+
             this.coresPath = destDir;
         } else {
             this.coresPath = baseCorePath;
         }
+
     }
 
     saveSettings(settingsSave = this.settingsALL) {
