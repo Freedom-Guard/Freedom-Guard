@@ -81,6 +81,7 @@ class PublicSet {
             warp: ["warp"],
             grid: ["grid"],
             flex: ["flex"],
+            masque: ["masque"],
             other: ["freedom-guard://"]
         };
         this.Tools = new Tools();
@@ -354,6 +355,20 @@ class PublicSet {
             }
         } else if (this.supported.flex.some(protocol => config.startsWith(protocol))) {
         } else if (this.supported.grid.some(protocol => config.startsWith(protocol))) {
+        } else if (this.supported.masque.some(protocol => config.startsWith(protocol))) {
+            this.settingsALL.public.core = "masque";
+            typeConfig = "masque";
+            const optionsMasque = config.split("#")[0].replace("masque://", "").split("&");
+            optionsMasque.forEach(option => {
+                const [key, value] = option.split("=");
+                if (key && value !== undefined) {
+                    this.settingsALL.masque[key] = value;
+                }
+            });
+            this.saveSettings();
+            if (typeof window !== 'undefined' && window.setSettings) {
+                window.setSettings();
+            }
         } else if (this.supported.other.some(protocol => config.startsWith(protocol))) {
             const optionsFreedomGuard = config.replace("freedom-guard://", "").split("#")[0].split("&");
             typeConfig = "other";
@@ -1188,7 +1203,15 @@ class Connect extends PublicSet {
         }
         else if (core === "masque") {
             this.argsMasque = [];
-            this.argsMasque.push("--scan");
+            if (this.settingsALL.masque.endpoint) {
+                this.argsMasque.push("--endpoint");
+                this.argsMasque.push(this.settingsALL.masque.endpoint);
+            }
+            else {
+                this.argsMasque.push("--scan");
+            }
+            this.argsMasque.push("--bind");
+            this.argsMasque.push(this.settingsALL.public.proxy);
             this.argsMasque.push("--renew");
         }
     }

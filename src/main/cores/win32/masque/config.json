@@ -1,12 +1,12 @@
 {
-  "access_token": "7284dc7d-2aff-4a44-a62d-32a74f46853f",
+  "access_token": "a455007d-2db8-4823-8421-02480b3020d4",
   "endpoint_pub_key": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEIaU7MToJm9NKp8YfGxR6r+/h4mcG\n7SxI8tsW8OR1A5tv/zCzVbCRRh2t87/kxnP6lAy0lkr7qYwu+ox+k3dr6w==\n-----END PUBLIC KEY-----\n",
-  "endpoint_v4": "162.159.198.2",
+  "endpoint_v4": "162.159.198.1",
   "endpoint_v4_port": "443",
   "endpoint_v6": "2606:4700:103::1",
-  "id": "dbce1362-d579-4bb7-9647-075092cdd712",
+  "id": "cbbe925d-cdff-4837-a7fc-0d937adf788e",
   "ipv4": "172.16.0.2",
-  "ipv6": "2606:4700:110:8cdc:40ed:2ea7:4831:c9d2",
-  "license": "MoB2913y-H1gx87T3-471GZMx0",
-  "private_key": "MHcCAQEEIPHfkTA6nAwAccyqTKcvcBXZ/8ONPCXEySTlB/WOprbroAoGCCqGSM49AwEHoUQDQgAEHoGQ1jgRoDR6Ng66yYLRKef03dn0WXrkLloyCPv2iZ4lHlYUyV6ImZuD8javjnpTAMJ7iomWqrVkV+2SZs+QMA=="
+  "ipv6": "2606:4700:110:8a45:c386:3b9c:c53c:6329",
+  "license": "tH9N14i3-3z96pdP0-45MN7EG6",
+  "private_key": "MHcCAQEEICOfEYocG9h+qN3aIglI7lO+94FfdK2ZHblwnHIkdD71oAoGCCqGSM49AwEHoUQDQgAEjVqovG6Djewd5Ughsd7cFhmIX6GyP8gJSFj7iZSMds+3yj1a+H6DxHPl5U1rRsz3oC9vAhhffE+AjsoLUTjDqg=="
 }
