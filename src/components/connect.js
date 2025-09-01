@@ -519,7 +519,7 @@ class PublicSet {
             window.showMessageUI("Grid mode is now enabled 🔐🟢🛰️");
         }
     }
-    async setupGrid(proxy, type = 'proxy', typeProxy = "socks5") {
+    async setupGrid(proxy, type = 'proxy', typeTun = "tun", typeProxy = "socks5") {
         if (type === "tun") {
             const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
             const configGridPath = path.join(this.coresDir, "grid", "config.json");
@@ -528,7 +528,7 @@ class PublicSet {
             configGrid["outbounds"][2]["server_port"] = parseInt(proxy.split(":")[1]);
             writeFile(configGridPath, JSON.stringify(configGrid), "file");
 
-            this.Process.grid = spawn(corePath, ["run", "-c", configGridPath, "--tun"]);
+            this.Process.grid = spawn(corePath, ["run", "-c", configGridPath, typeTun == "tun" ? "--tun" : "--system-proxy"]);
             this.Process.grid.on("close", (code) => {
                 this.log(`GRID Tun exited with code ${code}.`);
                 this.killVPN("grid");
@@ -969,11 +969,13 @@ class Connect extends PublicSet {
     constructor() {
         super();
         this.processWarp = null;
+        this.processMasque = null;
         this.processVibe = null;
         this.processFlex = null;
         this.processGrid = null;
         this.processGridSetup = null;
         this.argsWarp = [];
+        this.argsMasque = [];
         this.argsVibe = [];
         this.argsFlex = [];
         this.argsGrid = [];
@@ -995,8 +997,8 @@ class Connect extends PublicSet {
             case 'flex':
                 await this.connectFlex();
                 break;
-            case 'grid':
-                await this.connectGrid();
+            case 'masque':
+                await this.connectMasque();
                 break;
             case 'vibe':
             default:
@@ -1033,6 +1035,36 @@ class Connect extends PublicSet {
         }
     }
 
+    async connectMasque() {
+        await this.resetArgs('masque');
+        await this.sleep(1000);
+
+        const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
+        this.log(`Spawning Masque process: ${corePath} ${this.argsMasque.join(' ')}`);
+        
+        this.processMasque = spawn(corePath, this.argsMasque, {
+            cwd: path.dirname(corePath)
+        });
+        this.Process.masque = this.processMasque;
+
+        this.processMasque.stderr.on("data", (data) => this.dataOutMasque(data.toString()));
+        this.processMasque.stdout.on("data", (data) => this.dataOutMasque(data.toString()));
+        this.processMasque.on("close", (code) => {
+            this.log(`Masque process exited with code ${code}.`);
+            this.killVPN("masque");
+            this.notConnected("masque");
+            this.offGrid();
+        });
+
+        await this.sleep(this.settingsALL.warp.timeout);
+        if (!this.connected) {
+            this.log("masque manual connection failed after timeout.");
+            this.killVPN("masque");
+            this.notConnected("masque");
+            this.offGrid();
+        }
+    }
+
     async connectVibe() {
         await this.resetArgs("vibe");
         await this.sleep(1000);
@@ -1066,6 +1098,7 @@ class Connect extends PublicSet {
             this.offProxy();
         }
     }
+
     async connectFlex() {
         return new Promise((resolve, reject) => {
             this.log("Flex connection initiated (not yet implemented).");
@@ -1152,6 +1185,10 @@ class Connect extends PublicSet {
                 this.argsVibe.push("--hiddify", hiddifyConfigPath);
             }
         }
+        else if (core === "masque") {
+            this.argsMasque = [];
+            this.argsMasque.push("--scan");
+        }
     }
 
     saveSettings() {
@@ -1177,6 +1214,9 @@ class Connect extends PublicSet {
             } else if (core === "flex" && this.processFlex) {
                 this.processFlex.kill();
                 this.processFlex = null;
+            } else if (core === "masque" && this.processMasque) {
+                this.processMasque.kill();
+                this.processMasque = null;
             }
         } catch (error) {
             this.log(`[VPN] Error in killVPN: ${error}`);
@@ -1196,6 +1236,16 @@ class Connect extends PublicSet {
             this.connectedVPN("warp");
             this.connected = true;
             this.setupGrid(this.settingsALL.public.proxy, this.settingsALL.public.type, "socks5");
+        }
+    }
+
+    dataOutMasque(data) {
+        this.log(`Masque Output: ${data}`);
+        if (data.includes("serving")) {
+            this.reloadSettings();
+            this.connectedVPN("masque");
+            this.connected = true;
+            this.setupGrid(this.settingsALL.public.proxy, "tun", this.settingsALL.public.type, "socks5");
         }
     }
 
