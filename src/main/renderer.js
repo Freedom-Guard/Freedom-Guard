@@ -645,10 +645,12 @@ class main {
 
         }
         else if (core == "masque") {
+            var that = this;
+
             $(".masque-option-state").on("click", function () {
                 let optionMasque = $(this).attr("optionMasque");
                 const keys = optionMasque.split(".");
-
+                that.publicSet.masque = that.publicSet.masque || {};
                 keys.reduce((acc, key, index) => {
                     if (index === keys.length - 1) {
                         acc[key] = $(this).prop('checked');
@@ -660,17 +662,28 @@ class main {
             });
             $(".masque-option-value").on("change", function () {
                 let optionMasque = $(this).attr("optionMasque");
+
+                that.publicSet = that.publicSet || {};
+                that.publicSet.settingsALL = that.publicSet.settingsALL || {};
+                that.publicSet.settingsALL.masque = that.publicSet.settingsALL.masque || {};
+
                 const keys = optionMasque.split(".");
+                const value = $(this).prop("type") === "number"
+                    ? parseInt($(this).prop("value"))
+                    : $(this).prop("value");
 
                 keys.reduce((acc, key, index) => {
                     if (index === keys.length - 1) {
-                        acc[key] = $(this).prop("type") == "number" ? parseInt($(this).prop("value")) : $(this).prop("value");
+                        acc[key] = value;
+                    } else {
+                        acc[key] = acc[key] || {};
                     }
                     return acc[key];
-                }, that.publicSet.settingsALL["masque"]);
+                }, that.publicSet.settingsALL.masque);
 
                 that.publicSet.saveSettings();
             });
+
         }
     };
     setSettings() {
@@ -742,6 +755,40 @@ class main {
             }
 
             let value = thatHi.publicSet.settingsALL["vibe"]["hiddifyConfigJSON"];
+            keysToSync.forEach((key) => {
+                value = value[key];
+            });
+
+            if (value !== undefined) {
+                element.prop('value', value);
+            }
+        });
+        $(".masque-option-state").each(function () {
+            const element = $(this);
+            const optionName = element.attr("optionMasque");
+            const keysToSync = optionName.split(".");
+            if (!thatHi.publicSet.settingsALL.masque) {
+                thatHi.publicSet.settingsALL.masque = {};
+            }
+
+            let value = thatHi.publicSet.settingsALL["masque"];
+            keysToSync.forEach((key) => {
+                value = value[key];
+            });
+
+            if (value !== undefined) {
+                element.prop('checked', value);
+            }
+        });
+        $(".masque-option-value").each(function () {
+            const element = $(this);
+            const optionName = element.attr("optionMasque");
+            const keysToSync = optionName.split(".");
+            if (!thatHi.publicSet.settingsALL.masque) {
+                thatHi.publicSet.settingsALL.masque = {};
+            }
+
+            let value = thatHi.publicSet.settingsALL["masque"];
             keysToSync.forEach((key) => {
                 value = value[key];
             });

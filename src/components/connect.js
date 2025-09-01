@@ -53,6 +53,9 @@ class PublicSet {
                 cfon: false,
                 testUrl: false,
             },
+            "masque": {
+                endpoint: undefined
+            },
             "setupGrid": {},
             "public": {
                 proxy: "127.0.0.1:8086",
@@ -251,6 +254,9 @@ class PublicSet {
                 timeout: 60000,
                 cfon: false,
                 testUrl: false,
+            },
+            "masque": {
+                endpoint: undefined
             },
             "setupGrid": {},
             "public": {
@@ -1203,6 +1209,9 @@ class Connect extends PublicSet {
         }
         else if (core === "masque") {
             this.argsMasque = [];
+            if (!this.settingsALL.masque) {
+                this.settingsALL.masque = {};
+            }
             if (this.settingsALL.masque.endpoint) {
                 this.argsMasque.push("--endpoint");
                 this.argsMasque.push(this.settingsALL.masque.endpoint);
