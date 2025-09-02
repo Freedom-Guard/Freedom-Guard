@@ -334,6 +334,9 @@ class main {
         });
         $("#open-drop-setting").on("click", () => {
             $("#more-options-content").toggleClass("active");
+            setTimeout(() => {
+                document.addEventListener("click", () => $("#more-options-content").toggleClass("active"), { once: true });
+            }, 100)
         });
         $("#close-about").on('click', () => {
             $("#about-app").hide();
