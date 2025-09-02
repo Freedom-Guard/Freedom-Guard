@@ -29,7 +29,7 @@
     --danger-hover: #E53935;
 
     /* Backgrounds */
-    --body-background: linear-gradient(145deg, #0d0d2b, #1a1a5e52, #4c008250, #ff006633, #00ffcc4f), black;
+    --body-background: linear-gradient(145deg, #050510, #1b0f3d, #000000, #ff006a);
     --connect-button-background: linear-gradient(135deg, #252836, #1b1e2f);
     --connected-button-background: linear-gradient(135deg, #00b894, #065f46);
     --connected-button-hover-background: linear-gradient(135deg, #00cec9, #065f46);
@@ -132,7 +132,22 @@ body {
     align-items: center;
     color: var(--text-light);
     background: var(--body-background);
-    background-size: 300% 300%;
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 h1 {
@@ -451,6 +466,7 @@ img {
     box-shadow: var(--box-shadow-medium);
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(5px);
+    animation: fadeIn 0.25s ease-in-out;
 }
 
 .box-select-server>.header-box-select-server {
@@ -682,6 +698,7 @@ img {
     border-radius: 10px 0 0 10px;
     padding: 20px 10px;
     box-sizing: border-box;
+    animation: fadeIn 0.25s ease-in-out;
 }
 
 #setting-app #nav-top {
@@ -1596,12 +1613,12 @@ select::after {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-6px);
+        transform: translateX(-6px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 

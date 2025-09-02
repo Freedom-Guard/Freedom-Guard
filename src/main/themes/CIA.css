@@ -27,7 +27,7 @@
     --danger-hover: #b71c1c;
 
     /* Backgrounds */
-    --body-background: linear-gradient(145deg, #101010, #202020, #303030, #404040, #505050), black;
+    --body-background: linear-gradient(145deg, #050510, var(--primary-brand-color), var(--background-dark), var(--accent-color));
     --connect-button-background: linear-gradient(135deg, #252836, #1b1e2f);
     --connected-button-background: linear-gradient(135deg, #00796b, #004d40);
     --connected-button-hover-background: linear-gradient(135deg, #009688, #004d40);
