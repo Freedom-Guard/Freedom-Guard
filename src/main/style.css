@@ -1095,16 +1095,18 @@ img {
     min-width: 250px;
     max-width: 400px;
     background: var(--modal-background);
+    backdrop-filter: blur(20px);
     position: fixed;
     bottom: 2%;
     right: 2%;
     border-radius: 10px 10px 0 10px;
     box-shadow: var(--message-shadow);
-    z-index: 100000;
+    z-index: 10000000;
     flex-direction: column;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.3s ease-in-out;
+    animation: fadeInUp 0.4s ease-in-out;
 }
 
 #message.show-message {

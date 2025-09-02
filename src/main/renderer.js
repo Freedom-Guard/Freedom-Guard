@@ -310,7 +310,7 @@ class main {
         $("#submit-donate-config").on("click", () => {
             const config = $("#donate-config-text").val();
             if (config) {
-                windows.donateCONFIG(config);
+                window.donateCONFIG(config);
                 window.showMessageUI("Config submitted successfully!");
             } else {
                 window.showMessageUI("Please enter a valid config.");
