@@ -44,13 +44,14 @@
     --log-text-color: #00ff9c;
     --log-button-hover: #00ff9c;
     --log-command-background: rgba(0, 255, 155, 0.05);
-    --modal-background: #16213e;
+    --modal-background: rgba(22, 33, 62, 0.5);
+    --modal-blur: 18px;
     --prompt-background: #1b1b1b;
     --prompt-content-background: #2c3e50;
-    --button-default-background: #1b1b1b;
+    --button-default-background: rgba(255, 255, 255, 0.05);
     --dropdown-background: #1b1b1b;
     --dropdown-hover-background: rgba(131, 56, 236, 0.5);
-    --select-background: #151025;
+    --select-background: rgba(255, 255, 255, 0.05);
     --select-hover-background: #1a132b;
     --select-focus-background: #21183e;
     --select-option-background: #1a132b;
@@ -139,11 +140,6 @@ h1 {
     font-size: 16px;
     text-align: center;
     flex: 0 1 100%;
-}
-
-h2 {
-    margin-top: 2rem;
-    font-size: 18px;
 }
 
 img {
@@ -792,7 +788,8 @@ img {
     transform: scale(1.1);
 }
 
-#setting-app input[type="text"] {
+#setting-app input[type="text"],
+.input {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 1.15em;
@@ -951,7 +948,7 @@ img {
     border-image: var(--content-image-border-image);
     border-radius: 8px;
     box-shadow: var(--content-image-shadow);
-    animation: fadeInScale 2.8s ease-in-out infinite alternate;
+    animation: fadeInZoom 2.8s ease-in-out infinite alternate;
     transform: scale(1.05);
     object-fit: cover;
     transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
@@ -1164,20 +1161,6 @@ img {
 
 /* #endregion */
 /* #region Components*/
-.input {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    background-color: transparent;
-    width: 100%;
-    box-sizing: border-box;
-    padding-inline: 0.5em;
-    padding-block: 0.7em;
-    border: none;
-    border-bottom: var(--border-height) solid var(--border-before-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    outline: none;
-}
-
 a {
     text-decoration: none;
 }
@@ -1194,27 +1177,84 @@ a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+:root {
+    --modal-background: rgba(22, 33, 62, 0.55);
+    --modal-blur: 20px;
+    --text-light: #f1f5ff;
+    --accent: #00f0ff;
+    --accent2: #ff6ec7;
+    --danger-color: #ff4d6d;
+}
+
 .box {
     color: var(--text-light);
     display: none;
     width: 80%;
     max-width: 600px;
     text-align: center;
-    height: auto;
     position: absolute;
     justify-content: center;
     align-items: center;
     background: var(--modal-background);
     flex-direction: column;
     z-index: 99999;
-    border-radius: 20px;
-    gap: 15px;
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    gap: 18px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    backdrop-filter: blur(var(--modal-blur));
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(0, 255, 255, 0.2);
+    animation: fadeInScale 0.4s ease forwards;
 }
+
+.box div {
+    border-radius: 16px;
+    padding: 0.9em 1.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.3em;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+    transition: 0.3s ease;
+}
+
+.box div:hover {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+}
+
+.box .close-btn {
+    font-size: 1.7em;
+    width: 1.7em;
+    height: 1.7em;
+    position: absolute;
+    color: var(--danger-color);
+    font-weight: bold;
+    padding: 0.35em 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 12px;
+    right: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.box .close-btn:hover {
+    background: var(--danger-color);
+    color: #fff;
+    transform: rotate(90deg) scale(1.1);
+}
+
 
 .box.flex-row,
 .flex-row {
@@ -1227,37 +1267,9 @@ a {
     display: flex;
 }
 
-.box .close-btn {
-    font-size: 1.5em;
-    position: absolute;
-    color: var(--danger-color);
-    font-weight: bolder;
-    height: fit-content;
-    padding: 0.3em 0.3em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 10px;
-    right: 10px;
-    width: fit-content;
-}
-
 .box[style="display: block;"] {
     display: flex !important;
     gap: 0.5em;
-}
-
-.box div {
-    border-radius: 12px;
-    padding: 1em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.1em;
-}
-
-.box div {
-    cursor: pointer;
 }
 
 .box.flex-col,
@@ -1593,36 +1605,13 @@ select::after {
 
 @keyframes fadeInScale {
     0% {
-        opacity: 0.7;
-        transform: scale(0.9) rotate(-5deg);
-        filter: blur(3px);
-    }
-
-    30% {
-        opacity: 0.9;
-        transform: scale(1) rotate(2deg);
-        filter: blur(1.5px);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.15) rotate(0deg);
-        filter: blur(0);
-    }
-
-    70% {
-        transform: scale(1.2) rotate(-2deg);
-    }
-
-    90% {
-        transform: scale(1.25) rotate(3deg);
-        filter: blur(1px);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
     }
 
     100% {
-        opacity: 0.8;
-        transform: scale(0.8) rotate(-5deg);
-        filter: blur(3px);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 }
 
