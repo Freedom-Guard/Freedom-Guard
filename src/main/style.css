@@ -1227,8 +1227,8 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     backdrop-filter: blur(var(--modal-blur));
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6),
-        0 0 20px rgba(0, 255, 255, 0.2);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(255, 0, 64, 0.02);
     animation: fadeInScale 0.4s ease forwards;
 }
 
