@@ -1,11 +1,11 @@
 {
     "PUBLIC": [
-        "vibe,;,https://raw.githubusercontent.com/davudsedft/purvpn/refs/heads/main/links/purkow.txt#VIBE | PUR ",
-        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
-        "vibe,;,https://raw.githubusercontent.com/Mahdi0024/ProxyCollector/master/sub/proxies.txt#Red Servers (PC) Beta",
-        "vibe,;,https://raw.githubusercontent.com/darkvpnapp/CloudflarePlus/refs/heads/main/proxy#Dark Servers (PC)",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
+        "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
+        "vibe,;,https://raw.githubusercontent.com/Mahdi0024/ProxyCollector/master/sub/proxies.txt#Red Servers (PC) Beta",
+        "vibe,;,https://raw.githubusercontent.com/davudsedft/purvpn/refs/heads/main/links/purkow.txt#VIBE | PUR ",
+        "vibe,;,https://raw.githubusercontent.com/darkvpnapp/CloudflarePlus/refs/heads/main/proxy#Dark Servers (PC)",
         "warp,;,gool=true&scan=true#WARP | GOOL+SCAN",
         "vibe,;,https://raw.githubusercontent.com/sinabigo/Xray/main/@sinavm#VIBE FAST",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_1.txt#MAHSANET | MTN",
@@ -64,23 +64,6 @@
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mtn/sub_2.txt#IRANCELL 2",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_2.txt#MCI 2",
         "vibe,;,vless://5c929ec5-5b1e-447a-950c-354c5d1ba1de@informed-location.seotoolsforyou.co.uk:80?encryption=none&security=none&type=ws&path=%2F#Server-198545",
-        "vibe,;,vless://5139af95-a453-46c6-831a-a532b6b51305@deep-radio.seotoolsforyou.co.uk:80?encryption=none&security=none&type=ws&path=%2F#Server-587541",
-        "vibe,;,vless://52adc6ba-b1c7-4541-a594-08fc698be640@grounded-brother.seotoolsforyou.co.uk:80?encryption=none&security=none&type=ws&path=%2F#Server-690169",
-        "vibe,;,vless://561623c8-4983-44d3-a6ef-92b803a74ee8@obedient-menu.seotoolsforyou.co.uk:80?encryption=none&security=none&type=ws&path=%2F#Server-774159",
-        "vibe,;,vless://d8dd94fd-540e-461d-b5d4-acebef02c22a@2.58.95.16:34045?encryption=none&security=reality&sni=visit-this-invitation-link-to-join-tg-enkelte-notif.ekt.me&fp=chrome&pbk=cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA&sid=e8ab71d0&type=tcp&headerType=none#Server-823299",
-        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@185.231.205.246:8880?encryption=none&security=none&type=grpc#Server-838243",
-        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo5UnZpTmE0dHNjamNtQ0I0MDh2TFNn@46.101.245.131:44354#Server-666372",
-        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@45.87.175.22:8080#Server-172014",
-        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@185.231.205.181:8880?encryption=none&security=none&type=grpc#Server-48040",
-        "vibe,;,vless://df0680ca-e43c-498d-ed86-8e196eedd012@185.231.205.239:8880?encryption=none&security=none&type=grpc#Server-393198",
-        "vibe,;,vless://a87bf8a2-17a4-3054-b51e-876b5f1d0f24@5.181.171.2:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=speed.cloudflare.com&fp=chrome&pbk=YNGotlyAx3ELUmi4lxOUjiEDmibqf1pPUTE9o3YYT2Y&type=tcp&headerType=none#Server-780821",
-        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpmOGY3YUN6Y1BLYnNGOHAz@185.213.23.226:990#Server-472677",
-        "vibe,;,vless://49ed01ad-3bb4-204f-b0ff-a58f658fd618@5.181.171.10:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=speed.cloudflare.com&fp=chrome&pbk=YNGotlyAx3ELUmi4lxOUjiEDmibqf1pPUTE9o3YYT2Y&spx=%2F%40Evay_vpn----%40Evay_vpn----%40Evay_vpn----%40Evay_vpn----%40Evay_vpn----%40Evay_vpn----%40Evay_vpn----%40Evay_vpn----%40Evay_vpn&type=tcp&headerType=none#Server-494426",
-        "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@185.236.232.243:8880?encryption=none&security=none&type=grpc#Server-946289",
-        "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.180:8880?encryption=none&security=none&type=grpc#Server-258127",
-        "vibe,;,ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTphNThmYTYyYjQ5NDRkZGJm@45.144.49.140:57456#Server-740611",
-        "vibe,;,vless://c7c922da-ab54-433c-8046-1f9bf9d95c23@185.236.232.136:1001?encryption=none&security=reality&sni=telewebion.com&fp=chrome&pbk=8Gunn8hjWbit5yLtTPcvLph0u2ovHLsGoXX4IJS1EQ0&sid=5fab0deb&type=tcp&headerType=none#Server-98540",
-        "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@public15v7.fastipsport.com:8880?encryption=none&security=none&type=grpc#Server-278762",
-        "vibe,;,vless://e4824193-4f54-453b-d037-88368e85ef0e@45.82.251.124:8880?encryption=none&security=none&type=grpc#Server-865099"
+        "vibe,;,vless://5139af95-a453-46c6-831a-a532b6b51305@deep-radio.seotoolsforyou.co.uk:80?encryption=none&security=none&type=ws&path=%2F#Server-587541"
     ]
 }
