@@ -524,6 +524,9 @@ img {
     overflow: hidden;
 }
 
+
+
+
 .box-select-server>.box-select-servers>div:hover {
     background: var(--secondary-brand-color);
     transform: translateY(-3px);
@@ -578,31 +581,41 @@ img {
 
 .server-menu {
     position: absolute;
-    background: rgba(30, 30, 30, 0.9);
-    border-radius: 8px;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
     display: flex;
-    gap: 1vw;
+    gap: 0.8vw;
     flex-direction: column;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    padding: 8px;
     z-index: 10000;
+    animation: fadeIn 0.25s ease-in-out;
 }
 
 .server-menu button {
-    background: none;
-    border: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+    border: 1px solid rgba(255, 255, 255, 0.08);
     color: white;
-    padding: 8px 12px;
+    padding: 10px 14px;
     cursor: pointer;
     text-align: left;
     width: 100%;
     display: flex;
-    gap: 1.5vw;
+    align-items: center;
+    gap: 1.2vw;
     border-radius: var(--border-radius-default);
+    transition: all 0.25s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .server-menu button:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(4px);
+    border-color: rgba(255, 255, 255, 0.2);
 }
+
 
 .box-select-server-mini {
     background: rgba(20, 20, 35, 0.75);
@@ -890,6 +903,7 @@ img {
 
 /*#endregion
 /* #region Loading */
+/* #region other div */
 #loading {
     position: absolute;
     left: 0;
@@ -949,48 +963,11 @@ img {
     box-shadow: var(--content-image-hover-shadow);
 }
 
-@keyframes fadeInScale {
-    0% {
-        opacity: 0.7;
-        transform: scale(0.9) rotate(-5deg);
-        filter: blur(3px);
-    }
-
-    30% {
-        opacity: 0.9;
-        transform: scale(1) rotate(2deg);
-        filter: blur(1.5px);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.15) rotate(0deg);
-        filter: blur(0);
-    }
-
-    70% {
-        transform: scale(1.2) rotate(-2deg);
-    }
-
-    90% {
-        transform: scale(1.25) rotate(3deg);
-        filter: blur(1px);
-    }
-
-    100% {
-        opacity: 0.8;
-        transform: scale(0.8) rotate(-5deg);
-        filter: blur(3px);
-    }
-}
-
 .content #text-hashtag {
     align-self: flex-end;
     justify-self: flex-end;
 }
 
-/*#endregion*/
-/* #region other div */
 #Logs {
     position: fixed;
     inset: 0;
@@ -1082,18 +1059,6 @@ img {
     transition: all 0.2s ease-in-out;
     resize: none;
     outline: none;
-}
-
-@keyframes fadeInZoom {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .modal-backdrop {
@@ -1596,6 +1561,82 @@ select::after {
 
     #setting-app {
         width: 100%;
+    }
+}
+
+/* #endregion */
+/* #region Animations */
+
+@keyframes fadeInZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.9) rotate(-5deg);
+        filter: blur(3px);
+    }
+
+    30% {
+        opacity: 0.9;
+        transform: scale(1) rotate(2deg);
+        filter: blur(1.5px);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.15) rotate(0deg);
+        filter: blur(0);
+    }
+
+    70% {
+        transform: scale(1.2) rotate(-2deg);
+    }
+
+    90% {
+        transform: scale(1.25) rotate(3deg);
+        filter: blur(1px);
+    }
+
+    100% {
+        opacity: 0.8;
+        transform: scale(0.8) rotate(-5deg);
+        filter: blur(3px);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
     }
 }
 
