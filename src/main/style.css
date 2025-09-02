@@ -3,10 +3,10 @@
 /* #region Main */
 :root {
     /* Primary Colors */
-    --primary-brand-color: #00cec9;
-    --primary-brand-hover: #43A047;
-    --secondary-brand-color: #16213e;
-    --accent-color: #6a11cb;
+    --primary-brand-color: #6a11cb;
+    --primary-brand-hover: #4b0a82;
+    --secondary-brand-color: #6b46a7;
+    --accent-color: #8247e5;
 
     /* Neutral Colors */
     --background-dark: #1b1b1b;
@@ -559,7 +559,7 @@ img {
 }
 
 .box-select-server #selected-server {
-    background-color: var(--accent-color);
+    background-color: var(--primary-brand-color);
     color: white;
 }
 
@@ -570,7 +570,7 @@ img {
     transition: width 0.5s, border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
     width: 6px;
     left: 0;
-    border-left: 5px solid var(--primary-brand-color);
+    border-left: 5px solid var(--accent);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -803,13 +803,14 @@ img {
     box-sizing: border-box;
 }
 
-#setting-app input[type="text"]:focus {
-    border-color: var(--primary-brand-color);
-    box-shadow: 0 0 10px var(--primary-brand-color);
+#setting-app input:focus,
+.input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 4px var(--accent-color);
 }
 
 #setting-app .btn {
-    background: var(--accent-color);
+    background: var(--primary-brand-color);
     color: var(--text-light);
     padding: 12px 22px;
     border-radius: 8px;
