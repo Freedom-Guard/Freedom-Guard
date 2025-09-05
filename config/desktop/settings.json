@@ -13,6 +13,41 @@
             "delay": 700
         }
     },
+    "IRANCELL": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "checked": true,
+            "delay": 700
+        }
+    },
+    "PISHGAMAN": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "checked": true,
+            "delay": 700
+        }
+    },
+    "SHATEL": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "checked": true,
+            "delay": 700
+        }
+    },
+    "RIGHTEL": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "checked": true,
+            "delay": 700
+        }
+    },
+    "PARSONLINE": {
+        "#fragment-state-vibe": {
+            "actions": "scroll, focus, click",
+            "checked": true,
+            "delay": 700
+        }
+    },
     "MCI": {
         "#fragment-state-vibe": {
             "actions": "scroll, focus, click",
