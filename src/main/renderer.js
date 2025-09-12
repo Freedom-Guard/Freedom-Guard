@@ -194,7 +194,7 @@ class main {
     async checkUPDATE() {
         // Checks for updates by fetching the latest version information from a remote JSON file.
         let response = await this.axios.get("https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/desktop.json");
-        if (response.data["version"] > vesrionApp) {
+        if (!(vesrionApp.localeCompare(response.data["version"], undefined, { numeric: true }) > 0)) {
             window.showModal(response.data["messText"], response.data["url"]);
         };
     };
