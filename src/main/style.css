@@ -536,13 +536,8 @@ img {
     overflow: hidden;
 }
 
-
-
-
 .box-select-server>.box-select-servers>div:hover {
     background: var(--primary-brand-hover);
-    padding: 5px;
-    padding-left: 14px;
     transform: translateY(-3px);
     box-shadow: var(--server-select-shadow);
     border-color: var(--server-select-border-hover);
