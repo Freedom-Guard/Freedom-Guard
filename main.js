@@ -6,7 +6,6 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require("child_process");
 const ipc = require('electron').ipcMain;
-require('dotenv').config();
 
 const { initialize } = require('@aptabase/electron/main');
 
