@@ -29,7 +29,7 @@
     --danger-hover: #E53935;
 
     /* Backgrounds */
-    --body-background: linear-gradient(145deg, #050510, #1b0f3d, #000000, #ff006a);
+    --body-background: linear-gradient(145deg, #7e7eff, #1b0f3d, #140214, #ff004c);
     --connect-button-background: linear-gradient(135deg, #252836, #1b1e2f);
     --connected-button-background: linear-gradient(135deg, #00b894, #065f46);
     --connected-button-hover-background: linear-gradient(135deg, #00cec9, #065f46);
