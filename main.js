@@ -4,7 +4,7 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, BrowserView } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { exec } = require("child_process");
+const { exec, execFile } = require("child_process");
 const ipc = require('electron').ipcMain;
 
 const { initialize } = require('@aptabase/electron/main');
@@ -390,6 +390,15 @@ ipcMain.handle('read-json', async (event, filePath) => {
       else resolve(JSON.parse(data));
     });
   });
+});
+ipc.on("run-core", (event, corePath) => {
+    execFile(corePath, [], (error) => {
+        if (error) {
+            event.sender.send("core-status", `Error: ${error.message}`);
+            return;
+        }
+        event.sender.send("core-status", "Freedom Core started successfully.");
+    });
 });
 // #endregion
 // End Code

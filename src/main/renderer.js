@@ -1,6 +1,7 @@
 // #region Libraries 
 const { ipcRenderer, dialog, shell, clipboard } = require('electron');
 const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
+const { FreedomCore } = require("../components/freedomCore");
 const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
@@ -138,6 +139,7 @@ class main {
         this.axios = require("axios");
         this.publicSet = new PublicSet();
         this.Tools = new Tools();
+        this.FreedomCore = new FreedomCore();
     };
     init = async () => {
         this.publicSet.log("App Started");
@@ -1476,7 +1478,7 @@ window.showTestResultUI = async () => {
 ipcRenderer.on("start-fg", (event) => {
     mainSTA.connectFG();
 })
-ipcRenderer.on("start-link", (event, link) => {
+ipcRenderer.on("start-link", async (event, link) => {
     function isBase64(str) {
         try {
             return btoa(atob(str)) === str;
@@ -1485,7 +1487,6 @@ ipcRenderer.on("start-link", (event, link) => {
         }
     }
     try {
-        mainSTA.publicSet.log("import config from deep link -> " + link.split("freedom-guard://")[1]);
 
         let rawLink = link.split("freedom-guard://")[1];
 
@@ -1494,11 +1495,18 @@ ipcRenderer.on("start-link", (event, link) => {
         } else {
             link = rawLink;
         }
-
-        mainSTA.publicSet.importConfig(link);
+        if (link.startsWith("plugin")) {
+            link = link.replace("plugin/", "");
+            if (link == "freedom-core") {
+                await mainSTA.FreedomCore.fetchAndInstall();
+            }
+        }
+        else {
+            window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["config_imported"] + link.split("://")[0]);
+            mainSTA.publicSet.importConfig(link);
+        }
     } catch (error) {
     }
-    window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["config_imported"] + link.split("://")[0]);
 });
 ipcRenderer.on("open-section", (event, section) => {
     if (section == "home") {
@@ -1514,5 +1522,8 @@ ipcRenderer.on("open-section", (event, section) => {
     else if (section == "servers") {
         $("#box-select-server").toggle();
     }
+});
+ipcRenderer.on("core-status", (event, msg) => {
+    window.showMessageUI(msg);
 });
 // #endregion
