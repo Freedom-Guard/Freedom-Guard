@@ -2,6 +2,7 @@
 const { ipcRenderer, dialog, shell, clipboard } = require('electron');
 const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 const { FreedomCore } = require("../components/freedomCore");
+const { FreedomPlugin } = require("../components/freedomPlugin");
 const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
@@ -140,6 +141,7 @@ class main {
         this.publicSet = new PublicSet();
         this.Tools = new Tools();
         this.FreedomCore = new FreedomCore();
+        this.FreedomPlugin = new FreedomPlugin();
     };
     init = async () => {
         this.publicSet.log("App Started");
@@ -1473,6 +1475,39 @@ window.showTestResultUI = async () => {
     $("#system-check-result-value").html(html);
     $("#system-check-result").toggle();
 };
+window.FP = (url) => {
+    window.showMessageUI(url)
+    const [PATH, queryString] = url.split("?");
+    const queryParams = {};
+    if (queryString) {
+        const params = new URLSearchParams(queryString);
+        for (const [key, value] of params.entries()) {
+            queryParams[key] = value;
+        }
+    }
+    if (PATH == "/vibe/start") {
+        if ("config" in queryParams) {
+            mainSTA.publicSet.settingsALL.vibe.config = queryParams["config"];
+            mainSTA.publicSet.saveSettings();
+            mainSTA.connect.connectVibe();
+        }
+    }
+    else if (PATH == "/masque/start") {
+        mainSTA.connect.connectMasque();
+    }
+    else if (PATH == "/warp/start") {
+        mainSTA.connect.connectWarp();
+    }
+    else if (PATH == "/fcore/start") {
+        mainSTA.FreedomCore.fetchAndInstall('');
+    }
+    else if (PATH == "/settings/set") {
+        if (("sect" in queryParams) && ("key" in queryParams) && ("value" in queryParams)) {
+            mainSTA.publicSet.settingsALL[queryParams["sect"]][queryParams["key"]] = queryParams["value"];
+            mainSTA.publicSet.saveSettings();
+        }
+    }
+}
 // #endregion
 // #region IPC 
 ipcRenderer.on("start-fg", (event) => {
@@ -1498,7 +1533,10 @@ ipcRenderer.on("start-link", async (event, link) => {
         if (link.startsWith("plugin")) {
             link = link.replace("plugin/", "");
             if (link == "freedom-core") {
-                await mainSTA.FreedomCore.fetchAndInstall();
+                await mainSTA.FreedomCore.fetchAndInstall(link.replace("freedom-core", ""));
+            }
+            else if (link == "freedom-plugin") {
+                await mainSTA.FreedomPlugin.setupFP(link.replace("freedom-plugin", ""))
             }
         }
         else {

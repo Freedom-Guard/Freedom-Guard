@@ -5,7 +5,7 @@ const https = require("https");
 const { getConfigPath } = require("./tools");
 
 class FreedomCore {
-    async fetchAndInstall() {
+    async fetchAndInstall(link) {
         const destDir = getConfigPath();
         const FcoreURL =
             "https://github.com/Freedom-Guard/Freedom-Core/releases/latest/download/" +
@@ -16,7 +16,7 @@ class FreedomCore {
 
         fs.mkdirSync(path.dirname(FcorePath), { recursive: true });
 
-        if (!fs.existsSync(FcorePath)) {
+        if ((!fs.existsSync(FcorePath)) || link == "/update") {
             window.showMessageUI("Starting download...");
             await this.downloadFile(FcoreURL, FcorePath);
             window.showMessageUI("Download finished. Installing...");
