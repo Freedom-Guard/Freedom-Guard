@@ -662,16 +662,19 @@ class ConnectAuto extends PublicSet {
         this.processFlex = null;
         this.processGrid = null;
         this.processGridSetup = null;
+        this.processMasque = null;
         this.argsWarp = [];
         this.argsVibe = [];
         this.argsFlex = [];
         this.argsGrid = [];
         this.argsGridSetup = [];
+        this.argsMasque = [];
         this.settings = {
             "flex": {},
             "grid": {},
             "vibe": {},
             "warp": {},
+            "masque": {},
             "public": { ...this.settingsALL.public }
         };
     }
@@ -740,6 +743,20 @@ class ConnectAuto extends PublicSet {
 
                 } catch { }
             }
+            else if (mode === "masque") {
+                const options = cleanConfigString.replace("masque://", "").split("&");
+                this.settings.masque = {};
+                options.forEach(option => {
+                    const [key, value] = option.split("=");
+                    if (key && value !== undefined) {
+                        this.settings.masque[key] = value;
+                    }
+                });
+                try {
+                    await this.connectMasque();
+                }
+                catch { }
+            }
         }
 
         if (!this.connected) {
@@ -789,6 +806,53 @@ class ConnectAuto extends PublicSet {
                     this.log(`Error in Warp Auto-connect: ${error.message}`);
                     this.killVPN("warpAuto");
                     this.offProxy();
+                    reject(false);
+                }
+            }, 1000);
+        });
+    }
+
+    connectMasque() {
+        return new Promise((resolve, reject) => {
+            this.log("Starting masque-plus for Auto-connect...");
+            this.resetArgs("masque");
+
+            setTimeout(async () => {
+                try {
+                    const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
+                    this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+
+                    this.processMasque = spawn(corePath, this.argsWarp);
+                    this.Process.masqueAuto = this.processMasque;
+
+                    this.processMasque.stderr.on("data", (data) => this.dataOutMasque(data.toString()));
+                    this.processMasque.stdout.on("data", (data) => this.dataOutMasque(data.toString()));
+                    this.processMasque.on("close", (code) => {
+                        this.log(`Masque Auto process exited with code ${code}.`);
+                        this.killVPN("masqueAuto");
+                        this.offGrid();
+                        reject(false);
+                    });
+
+                    await this.sleep(this.settingsALL.warp.timeout);
+                    for (let i = 0; i < 3 && !this.connected; i++) {
+                        this.connected = !(await this.getIP_Ping()).filternet;
+                        if (this.connected) break;
+                        await this.sleep(1000);
+                    }
+
+                    if (this.connected) {
+                        resolve(true);
+                    } else {
+                        this.log("Masque Auto-connect failed after multiple checks.");
+                        this.killVPN("masqueAuto");
+                        this.offGrid();
+                        reject(false);
+                    }
+                } catch (error) {
+                    this.log(`Error in Masque Auto-connect: ${error.message}`);
+                    this.killVPN("masqueAuto");
+                    this.offGrid();
                     reject(false);
                 }
             }, 1000);
@@ -881,7 +945,6 @@ class ConnectAuto extends PublicSet {
                 try { this.settingsALL.vibe.hiddifyConfigJSON["set-system-proxy"] = false; } catch { };
             }
 
-
             if (this.settingsALL.vibe.hiddifyConfigJSON && this.settingsALL.vibe.hiddifyConfigJSON != "null") {
                 const hiddifyConfigPath = path.join(this.coresPath, "vibe", "hiddify.json");
                 writeFile(hiddifyConfigPath, JSON.stringify(this.settingsALL.vibe.hiddifyConfigJSON));
@@ -931,6 +994,22 @@ class ConnectAuto extends PublicSet {
                 this.argsWarp.push("--test-url", this.settingsALL.public.testUrl);
             }
         }
+        else if (core === "masque") {
+            this.argsMasque = [];
+            if (!this.settings.masque) {
+                this.settings.masque = {};
+            }
+            if (this.settings.masque.endpoint) {
+                this.argsMasque.push("--endpoint");
+                this.argsMasque.push(this.settings.masque.endpoint);
+            }
+            else {
+                this.argsMasque.push("--scan");
+            }
+            this.argsMasque.push("--bind");
+            this.argsMasque.push(this.settingsALL.public.proxy);
+            this.argsMasque.push("--renew");
+        }
     }
 
     killVPN(core) {
@@ -948,6 +1027,10 @@ class ConnectAuto extends PublicSet {
             } else if (core === "flexAuto" && this.processFlex) {
                 this.processFlex.kill();
                 this.processFlex = null;
+            }
+            else if (core === "masqueAuto" && this.processMasque) {
+                this.processMasque.kill();
+                this.processMasque = null;
             }
             else if (core === "auto") {
                 try {
@@ -983,6 +1066,16 @@ class ConnectAuto extends PublicSet {
             this.connectedVPN("auto");
             this.connected = true;
             this.setupGrid(this.settingsALL.public.proxy, this.settingsALL.public.type, "socks5");
+        }
+    }
+
+    dataOutMasque(data) {
+        this.log(`Masque Output: ${data}`);
+        if (data.includes("serving")) {
+            this.reloadSettings();
+            this.connectedVPN("auto");
+            this.connected = true;
+            this.setupGrid(this.settingsALL.public.proxy, "tun", this.settingsALL.public.type, "socks5");
         }
     }
 }
