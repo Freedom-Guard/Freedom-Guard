@@ -301,7 +301,7 @@
                 <b data-lang="endpoint" id="endpoint-warp-label">Endpoint</b>
                 <div id="endpoint-warp" class="form-control-c">
                     <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
-                    <button class="btn btn-primary" id="get-endpoint-warp">Get Endpoint</button>
+                    <button class="btn" id="get-endpoint-warp">Get Endpoint</button>
                 </div>
                 <div class="divider"></div>
 
@@ -645,15 +645,14 @@
         </div>
     </div>
     <div class="tooltip-box"></div>
-    <div id="prompt" class="hidden" dir="auto">
-        <div id="prompt-box">
-            <h2 id="prompt-title">عنوان ورودی</h2>
-            <div id="prompt-content"></div>
-            <div id="prompt-actions" class="button-group">
-                <button id="confirm-prompt" class="btn" data-lang="submit">✅ تأیید</button>
-                <button id="cancel-prompt" class="btn" data-lang="cancel">❌ لغو</button>
-            </div>
+    <div id="prompt" class="box flex-col" dir="auto">
+        <h2 id="prompt-title">عنوان ورودی</h2>
+        <div id="prompt-content" class="flex-col not-style w-100 m-1"></div>
+        <div id="prompt-actions" class="button-group not-style">
+            <button id="confirm-prompt" class="btn" data-lang="submit">✅ تأیید</button>
+            <button id="cancel-prompt" class="btn" data-lang="cancel">❌ لغو</button>
         </div>
+        <button class="btn close-btn" targetclose="#prompt"><i class='bx bx-x'></i></button>
     </div>
     <div id="system-check-result" class="box" style="text-align:right;direction:rtl;">
         <div id="system-check-result-value" style="display: block;"></div>

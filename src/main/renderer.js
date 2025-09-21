@@ -251,8 +251,8 @@ class main {
     };
     async initCompo() {
         let that = this;
-        $(".close-btn").on("click", function (event) {
-            const targetClose = $(event.target).attr("targetclose");
+        $(".close-btn").on("click", function () {
+            const targetClose = $(this).attr("targetclose");
             if (targetClose) {
                 $(targetClose).hide();
             }
@@ -1394,7 +1394,7 @@ window.promptMulti = ({
         const $promptTitle = $("#prompt-title");
         const $promptContent = $("#prompt-content");
         const $confirmBtn = $("#confirm-prompt");
-        const $cancelBtn = $("#cancel-prompt");
+        const $cancelBtn = $("#cancel-prompt, #prompt>.close-btn");
         const $addFieldBtn = $("#add-field");
 
         $promptTitle.text(title);
@@ -1405,14 +1405,14 @@ window.promptMulti = ({
         fields.forEach(({ name, label, defaultValue }, index) => {
             const $wrapper = $("<div>").addClass("input-wrapper");
             const $inputLabel = $("<label>").attr("for", `input-${index}`).text(label);
-            const $inputField = $("<input>").attr({ type: "text", id: `input-${index}`, value: defaultValue, "data-name": name, class: "input input-alt" });
+            const $inputField = $("<input>").attr({ type: "text", id: `input-${index}`, value: defaultValue, "data-name": name, class: "input" });
 
             $wrapper.append($inputLabel, $inputField);
             $promptContent.append($wrapper);
             inputs.push($inputField);
         });
 
-        $promptBox.removeClass("hidden");
+        $promptBox.toggle();
         inputs[0].focus();
 
         $addFieldBtn.off().on("click", () => {
@@ -1431,7 +1431,7 @@ window.promptMulti = ({
 
         const closePrompt = (values) => {
             resolve(values);
-            $promptBox.addClass("hidden");
+            $promptBox.toggle();
         };
 
         $confirmBtn.off().on("click", () => {

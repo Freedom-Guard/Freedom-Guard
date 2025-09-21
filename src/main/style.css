@@ -1122,60 +1122,6 @@ img {
     border-radius: 15px;
 }
 
-#prompt {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--prompt-background);
-    padding: var(--default-padding);
-    border-radius: var(--border-radius-default);
-    box-shadow: var(--box-shadow-medium);
-    min-width: 380px;
-    max-width: 90%;
-    width: fit-content;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 10000;
-    transition: all 0.3s ease-in-out;
-}
-
-#prompt.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -50%) scale(0.9);
-}
-
-#prompt-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    margin: 0;
-}
-
-.prompt-container {
-    background: var(--prompt-content-background);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: var(--prompt-shadow);
-    text-align: center;
-}
-
-.prompt-buttons {
-    margin-top: 10px;
-}
-
-.prompt-buttons button {
-    padding: 8px 15px;
-    background-color: var(--secondary-brand-color);
-    color: white;
-    border: none;
-    border-radius: 15px;
-    margin: 5px;
-    cursor: pointer;
-}
 
 /* #endregion */
 /* #region Components*/
@@ -1229,7 +1175,7 @@ a {
     animation: fadeInScale 0.4s ease forwards;
 }
 
-.box div {
+.box>div:not(.not-style) {
     border-radius: 16px;
     padding: 0.9em 1.8em;
     display: flex;
@@ -1241,11 +1187,8 @@ a {
     transition: 0.3s ease;
 }
 
-.box div:hover {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff;
+.box>div:not(.not-style):hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
 }
 
 .box .close-btn {
@@ -1457,30 +1400,30 @@ select::after {
 .input-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    margin-bottom: 1em;
+    width: 100%;
 }
 
 .input-wrapper label {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    margin-top: 0.3em;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-top: 4px;
     text-align: left;
 }
 
-.input-wrapper input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid var(--input-border);
+.input-wrapper input,
+.input-wrapper textarea,
+.input-wrapper select {
+    padding: 0.5em 0.75em;
     border-radius: 6px;
-    transition: border 0.2s;
 }
 
-.input-wrapper input:focus {
-    border-color: var(--primary-brand-color);
+.input-wrapper input:focus,
+.input-wrapper textarea:focus,
+.input-wrapper select:focus {
     outline: none;
 }
+
 
 .button-group {
     display: flex;
@@ -1488,41 +1431,36 @@ select::after {
     gap: 10px;
 }
 
-#prompt button {
-    flex: 1;
-    margin-top: 1em;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.2s;
-}
-
-#prompt button:hover {
-    transform: scale(1.05);
-}
-
-#confirm-prompt {
+.btn-primary {
     background: var(--primary-brand-color);
 }
 
-#confirm-prompt:hover {
+.btn-primary:hover {
     background: var(--primary-brand-hover);
 }
 
-#cancel-prompt {
+.btn-cancel {
     background: var(--danger-color);
 }
 
-#cancel-prompt:hover {
+.btn-cancel:hover {
     background: var(--danger-hover);
 }
 
 .hidden {
     display: none !important;
+}
+
+.m-2 {
+    margin: 2em;
+}
+
+.m-1 {
+    margin: 1em;
+}
+
+.w-100 {
+    width: 100%;
 }
 
 .switch {
