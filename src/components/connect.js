@@ -820,7 +820,7 @@ class ConnectAuto extends PublicSet {
             setTimeout(async () => {
                 try {
                     const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
-                    this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+                    this.log(`Spawning Masque process: ${corePath} ${this.argsWarp.join(' ')}`);
 
                     this.processMasque = spawn(corePath, this.argsWarp);
                     this.Process.masqueAuto = this.processMasque;
