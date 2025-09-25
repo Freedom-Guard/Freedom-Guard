@@ -1,0 +1,162 @@
+:root {
+    --primary-brand-color: #1a1a1a;
+    --primary-brand-hover: #0f0f0f;
+    --secondary-brand-color: #2b2b2b;
+    --accent-color: #00e0ff;
+
+    --background-dark: #0d0d12;
+    --text-light: #ffffff;
+    --text-muted: #9ca3af;
+    --icon-color: #d1d5db;
+
+    --glass-background: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --glass-item-background: rgba(255, 255, 255, 0.06);
+    --glass-item-border: rgba(255, 255, 255, 0.1);
+    --glass-item-hover: rgba(255, 255, 255, 0.12);
+
+    --danger-color: #ff3b3b;
+    --danger-hover: #e02727;
+
+    --body-background: linear-gradient(160deg, #0d0d12, #1a1a1a, #2b2b2b);
+    --connect-button-background: linear-gradient(135deg, #2b2b2b, #0f0f0f);
+    --connected-button-background: linear-gradient(135deg, #00e0ff, #0066ff);
+    --connected-button-hover-background: linear-gradient(135deg, #33f0ff, #0077ff);
+
+    --switch-off-background: #333;
+    --switch-on-background: var(--accent-color);
+    --switch-thumb-off: linear-gradient(145deg, #bbb, #666);
+    --switch-thumb-on: #fff;
+
+    --box-shadow-medium: 0 4px 14px rgba(0, 0, 0, 0.25);
+    --border-radius-default: 12px;
+
+    --freedom-bg: #0d0d12;
+    --freedom-track: rgba(255, 255, 255, 0.08);
+    --freedom-track-border: rgba(255, 255, 255, 0.15);
+    --freedom-thumb: linear-gradient(135deg, #00e0ff, #0077ff);
+    --freedom-text-idle: #9ca3af;
+    --freedom-text-active: #ffffff;
+    --freedom-active-glow: #00e0ff;
+    --freedom-connecting-glow: #ffb300;
+    --freedom-fill-gradient: linear-gradient(90deg, #00e0ff, #7c4dff);
+}
+
+@keyframes freedom-charging {
+    0% { box-shadow: 0 0 8px 2px var(--freedom-connecting-glow); }
+    50% { box-shadow: 0 0 20px 6px var(--freedom-connecting-glow); }
+    100% { box-shadow: 0 0 8px 2px var(--freedom-connecting-glow); }
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--body-background);
+    font-family: 'Vazir', sans-serif;
+    color: var(--text-light);
+    height: 100vh;
+}
+
+.connection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.connection::after {
+    content: "Slide to Freedom";
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--freedom-text-idle);
+    transition: all 0.4s ease;
+    order: -1;
+    letter-spacing: 0.5px;
+}
+
+.connection:has(#ChangeStatus.connecting)::after {
+    content: "Securing Freedom...";
+    color: var(--freedom-connecting-glow);
+    letter-spacing: 1px;
+}
+
+.connection:has(#ChangeStatus.connected)::after {
+    content: "Freedom Secured";
+    color: var(--freedom-text-active);
+    text-shadow: 0 0 12px var(--freedom-active-glow);
+}
+
+#ChangeStatus {
+    width: 260px;
+    height: 90px;
+    background: var(--freedom-track);
+    border: 2px solid var(--freedom-track-border);
+    border-radius: 50px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: all 0.45s ease;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+#ChangeStatus:hover {
+    border-color: var(--freedom-active-glow);
+    box-shadow: 0 0 12px var(--freedom-active-glow);
+}
+
+#ChangeStatus svg {
+    display: none;
+}
+
+#ChangeStatus::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--freedom-fill-gradient);
+    border-radius: 50px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 1;
+}
+
+#ChangeStatus::before {
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: var(--freedom-thumb);
+    border-radius: 50%;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    transition: all 0.55s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.35);
+    z-index: 2;
+    opacity: 1;
+}
+
+#ChangeStatus.connecting {
+    animation: freedom-charging 1.5s infinite ease-in-out;
+}
+
+#ChangeStatus.connecting::after {
+    border-radius: 30px;
+    opacity: 0.2;
+}
+
+#ChangeStatus.connected {
+    border-color: var(--freedom-active-glow);
+    box-shadow: 0 0 20px var(--freedom-active-glow);
+}
+
+#ChangeStatus.connected::after {
+    opacity: 1;
+}
+
+#ChangeStatus.connected::before {
+    background: #fff;
+    transform: translate(168px, -50%);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.9);
+}

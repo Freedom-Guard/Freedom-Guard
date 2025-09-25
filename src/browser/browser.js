@@ -4,7 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const { trackEvent } = require('@aptabase/electron/renderer');
 const $ = require('jquery');
+const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 
+
+const ConnectST = new Connect();
+const ConnectAutoST = new ConnectAuto();
+const publicSetST = new PublicSet();
 let tabs = []; // [{id, url, title, icon, history, historyIndex}]
 let currentTabId = null;
 let tabCount = -1;
@@ -171,6 +176,39 @@ document.getElementById("add-tab").addEventListener("click", function () {
     ipc.send("show-browser");
 });
 
+document.getElementById("vpn-btn-header").addEventListener("click", async function () {
+    $("#vpn-btn-header").removeClass("active");
+    $("#vpn-btn-header").addClass("active");
+    await publicSetST.reloadSettings();
+    if (publicSetST.status == false) {
+        publicSetST.status = true;
+        if (publicSetST.settingsALL["public"]["core"] == "auto") {
+            await ConnectAutoST.connect();
+        }
+        else {
+            await ConnectST.connect();
+        }
+        $("#vpn-btn-header").removeClass("active");
+        $("#vpn-btn-header").addClass("connected");
+    }
+    else {
+        $("#vpn-btn-header").removeClass("active");
+        $("#vpn-btn-header").removeClass("connected");
+        publicSetST.status = false;
+        publicSetST.connected = false;
+        ConnectST.killVPN(this.publicSet.settingsALL["public"]["core"]);
+        ConnectAutoST.killVPN(this.publicSet.settingsALL["public"]["core"]);
+    }
+})
+window.disconnectedUI = () => {
+    $("#vpn-btn-header").removeClass("active");
+    publicSetST.status = false;
+    publicSetST.connected = false;
+};
+window.connectedUI = () => {
+    $("#vpn-btn-header").removeClass("active");
+    $("#vpn-btn-header").addClass("connected");
+}
 document.getElementById("search-btn-header").addEventListener("click", function () {
     let inputUrl = document.getElementById("url-input").value;
     inputUrl = isValidURL(inputUrl) ? inputUrl : `https://google.com/search?q=${encodeURIComponent(inputUrl)}`;
