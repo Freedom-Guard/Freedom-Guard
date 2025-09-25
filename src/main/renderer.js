@@ -251,6 +251,17 @@ class main {
     };
     async initCompo() {
         let that = this;
+        $(document).on('keydown', function (e) {
+            if (e.key === "Escape") {
+                $('.box:visible, #Logs:visible, #setting-app:visible, #box-select-server:visible').each(function () {
+                    $(this).hide("slow");
+                });
+            }
+            if (e.ctrlKey && e.key === "Enter") {
+                e.preventDefault();
+                $("#ChangeStatus").click();
+            }
+        });
         $(".close-btn").on("click", function () {
             const targetClose = $(this).attr("targetclose");
             if (targetClose) {
