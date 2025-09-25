@@ -36,8 +36,8 @@
     /* Backgrounds */
     --body-background: linear-gradient(145deg, #1a1a1a, #2a2a2a, #3a3a3a, #4a4a4a, #5a5a5a), black;
     --connect-button-background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-    --connected-button-background: linear-gradient(135deg, #424242, #212121);
-    --connected-button-hover-background: linear-gradient(135deg, #616161, #303030);
+    --connected-button-background: linear-gradient(135deg, #a8d5ba, #18dd63);
+    --connected-button-hover-background: linear-gradient(135deg, #c4e1d4, #2b8b4d);
     --connecting-button-shadow: rgba(255, 61, 0, 0.4);
     --ip-ping-background: rgba(26, 26, 26, 0.7);
     --setting-background: linear-gradient(135deg, #1a1a1a, #263238);
