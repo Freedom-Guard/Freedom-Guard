@@ -44,7 +44,7 @@
     --log-text-color: #00ff9c;
     --log-button-hover: #00ff9c;
     --log-command-background: rgba(0, 255, 155, 0.05);
-    --modal-background: rgba(22, 33, 62, 0.5);
+    --modal-background: rgba(22, 33, 62, 0.7);
     --modal-blur: 18px;
     --prompt-background: #1b1b1b;
     --prompt-content-background: #2c3e50;
@@ -711,8 +711,9 @@ img {
     min-height: 8vh;
     padding: 5px;
     z-index: 10;
-    border-radius: 999px;
-    box-shadow: 0px 0px 4px var(--accent-color);
+    border-radius: 8px;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 4px var(--accent-color);
 }
 
 #setting-app h3 {
