@@ -1142,13 +1142,49 @@ a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-:root {
-    --modal-background: rgba(22, 33, 62, 0.55);
-    --modal-blur: 20px;
-    --text-light: #f1f5ff;
-    --accent: #00f0ff;
-    --accent2: #ff6ec7;
-    --danger-color: #ff4d6d;
+#progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--modal-background, rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(3px);
+    overflow: hidden;
+    height: 30px;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    margin: 0;
+    padding: 0;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(45deg, #4caf50 25%, #66bb6a 25%, #66bb6a 50%, #4caf50 50%, #4caf50 75%, #66bb6a 75%, #66bb6a);
+    background-size: 40px 40px;
+    animation: stripes 2s linear infinite;
+    color: var(--text-light, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 5px;
+    transition: width 0.5s ease-in-out;
+    border-radius: 0 12px 12px 0;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes stripes {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 40px 0;
+    }
 }
 
 .box {

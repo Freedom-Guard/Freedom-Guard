@@ -140,7 +140,7 @@ jobs:
         with:
           files: dist/**/*.*
           tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body: |
             🎉 New release ${{ github.ref_name }} is available!
 

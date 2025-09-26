@@ -3,12 +3,14 @@ const { ipcRenderer, dialog, shell, clipboard } = require('electron');
 const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 const { FreedomCore } = require("../components/freedomCore");
 const { FreedomPlugin } = require("../components/freedomPlugin");
+const { checkForUpdate } = require('../components/update');
 const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
-const vesrionApp = "10.0.0";
+const versionApp = "0.0.0";
 let LOGS = [];
+
 // #endregion
 // #region components
 window.LogLOG = (log = "", type = "info", ac = "text") => {
@@ -196,11 +198,11 @@ class main {
         });
     };
     async checkUPDATE() {
-        // Checks for updates by fetching the latest version information from a remote JSON file.
-        let response = await this.axios.get("https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/desktop.json");
-        if (!(vesrionApp.localeCompare(response.data["version"], undefined, { numeric: true }) > 0)) {
-            window.showModal(response.data["messText"], response.data["url"]);
-        };
+        try {
+            checkForUpdate(versionApp);
+        } catch (err) {
+            console.error("خطا در بررسی آپدیت:", err);
+        }
     };
     connectVPN() { };
     killVPN() { };
@@ -1077,18 +1079,25 @@ class main {
             this.publicSet.settingsALL.public.core == "warp" ? $("#share-connection").hide() :
                 $("#share-connection").on("click", async () => {
                     await this.publicSet.reloadSettings();
-                    $("#text-box-notif").html(this.publicSet.settingsALL["lang"]["share-conn"] ?? "You can share your current connected config using the buttons below");
-                    $("#box-notif").css("display", "flex");
-                    $("#href-box-notif").on("click", () => {
-                        navigator.clipboard.writeText(this.publicSet.settingsALL["public"]["quickConnectC"].replace("vibe,;,", "").replace(",;,", "://"));
-                        window.showMessageUI(this.publicSet.settingsALL["lang"]["copied"])
-                    });
-                    $("#href-box-notif").html(this.publicSet.settingsALL["lang"]["copy"] ?? "Copy");
-                    $("#close-box-notif").html(this.publicSet.settingsALL["lang"]["cancel"]);
-
-                    $("#href-box-notif, #close-box-notif").on("click", () => {
-                        $("#box-notif").css("display", "none");
-                    });
+                    const message = this.publicSet.settingsALL["lang"]["share-conn"] ?? "You can share your current connected config using the buttons below";
+                    const buttons = [
+                        {
+                            text: this.publicSet.settingsALL["lang"]["copy"] ?? "Copy",
+                            action: () => {
+                                navigator.clipboard.writeText(
+                                    this.publicSet.settingsALL["public"]["quickConnectC"]
+                                        .replace("vibe,;,", "")
+                                        .replace(",;,", "://")
+                                );
+                                window.showMessageUI(this.publicSet.settingsALL["lang"]["copied"]);
+                            }
+                        },
+                        {
+                            text: this.publicSet.settingsALL["lang"]["cancel"] ?? "Cancel",
+                            action: () => $("#box-notif").hide()
+                        }
+                    ];
+                    window.showModal(message, buttons);
                 });
         } else {
             $("#ip-ping").attr("style", connectedInfo.ping > 1000 ? "color:red;" : "color:green;");
@@ -1378,16 +1387,23 @@ window.showMessageUI = (message, duration = 3000) => {
         }, duration);
     };
 };
-window.showModal = (mess = "", link = "", btnOpenLinkHTML = "بازش کن", btnCloseModalHTML = "الان حالش نیست") => {
+window.showModal = (mess = "", buttons = [{ text: "باشه", action: () => { } }]) => {
     $("#text-box-notif").html(mess.replaceAll("\n", "<br />"));
     $("#box-notif").css("display", "flex");
-    $("#href-box-notif").attr("href", link);
-    $("#href-box-notif").html(btnOpenLinkHTML);
-    $("#close-box-notif").html(btnCloseModalHTML);
-    $("#href-box-notif, #close-box-notif").on("click", () => {
-        $("#box-notif").css("display", "none");
+
+    $("#buttons-box-notif").html("");
+    $("#progress-container").hide();
+    $("#progress-bar").css("width", "0%").text("");
+
+    buttons.forEach(btn => {
+        const button = $(`<button class="btn">${btn.text}</button>`);
+        button.on("click", () => {
+            btn.action();
+        });
+        $("#buttons-box-notif").append(button);
     });
 };
+
 window.showBox = (text = "") => {
     $("#box").css("display", "flex");
     $("#text-box").html(text);
