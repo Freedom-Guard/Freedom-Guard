@@ -37,7 +37,11 @@
     ],
     "MOBILE": [
         "warp,;,scan=true#WARP | SCAN",
-        "vibe,;,#Auto Server",
+        "vibe,;,#Auto Server (Legacy)",
+        "vibe,;,mode=auto#Auto Server (Auto Mode)",
+        "vibe,;,mode=repo#Auto Server (Repository Mode)",
+        "vibe,;,mode=f-link#Auto Server (Freedom Link Mode)",
+        "vibe,;,mode=auto-my#Auto Server (Auto + My Configs)",
         "vibe,;,https://config-fl.freedomguard.workers.dev/ok#FG LINK",
         "vibe,;,https://raw.githubusercontent.com/mahsanet/MahsaFreeConfig/refs/heads/main/mci/sub_1.txt#MCI",
         "vibe,;,https://raw.githubusercontent.com/darkvpnapp/CloudflarePlus/refs/heads/main/proxy#Dark Servers (PC)",
