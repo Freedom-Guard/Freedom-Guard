@@ -88,6 +88,7 @@ window.disconnectedUI = () => {
     mainSTA.publicSet.killAllCores("vibe");
     mainSTA.publicSet.killAllCores("vibe");
     mainSTA.publicSet.killAllCores("warp");
+    mainSTA.publicSet.killAllCores("usque", false);
     mainSTA.connect.killVPN(mainSTA.publicSet.settingsALL["public"]["core"]);
     mainSTA.connectAuto.killVPN();
     ipcRenderer.send("set-off-fg");
@@ -393,6 +394,7 @@ class main {
             this.KILLALLCORES('flex');
             this.KILLALLCORES('grid');
             this.KILLALLCORES('vibe');
+            this.KILLALLCORES('usque', false);
             this.publicSet.offProxy();
             this.setPingBox();
             window.showMessageUI(this.publicSet.settingsALL["lang"]["killed_services"]);
@@ -1105,8 +1107,8 @@ class main {
             $(".connection, #ip-ping").removeClass("connected");
         }
     };
-    KILLALLCORES(core) { // Terminates a process with the given core name on both Windows and Unix-based systems.
-        core = core.toString().toLowerCase() + "-core";
+    KILLALLCORES(core, isCore = true) { // Terminates a process with the given core name on both Windows and Unix-based systems.
+        core = core.toLowerCase() + (isCore ? "-core" : '');
         this.publicSet.log(`Killing ${core}...`);
         if (process.platform == "win32") {
             if (!core || typeof core !== "string") {
@@ -1284,7 +1286,7 @@ class fgCLI extends main {
                 break;
             case "kill":
                 this.connect.killVPN(commandArgs[0]);
-                commandArgs[1] == "/f" ? this.KILLALLCORES(commandArgs[0]) : "";
+                commandArgs[1] == "/f" ? this.KILLALLCORES(commandArgs[0], false) : "";
                 window.LogLOG(`Killed ${commandArgs[0] + (commandArgs[1] == "/f" ? " with force" : "")}`);
                 break;
             case "proxy":
@@ -1317,7 +1319,7 @@ class fgCLI extends main {
         window.LogLOG("&nbsp;&nbsp;&nbsp;ping - Get IP information", "info", "html");
         window.LogLOG("&nbsp;&nbsp;&nbsp;set - settings->set public core warp", "info", "html");
         window.LogLOG("&nbsp;&nbsp;&nbsp;show - settings->show public core", "info", "html");
-        window.LogLOG("&nbsp;&nbsp;&nbsp;kill - only core selected mode->kill warp (/f)", "info", "html");
+        window.LogLOG("&nbsp;&nbsp;&nbsp;kill - only core selected mode->kill warp-core (/f)", "info", "html");
         window.LogLOG("&nbsp;&nbsp;&nbsp;refresh - refresh(isp servers, settings, ping, ...)", "info", "html");
         window.LogLOG("&nbsp;&nbsp;&nbsp;clear - Clear logs", "info", "html");
         window.LogLOG("&nbsp;&nbsp;&nbsp;exit - Exit application", "info", "html");
