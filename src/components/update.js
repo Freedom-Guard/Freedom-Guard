@@ -112,7 +112,7 @@ async function handleDownload(url) {
 
 async function checkForUpdate(currentVersion) {
     try {
-        const response = await fetch('https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/desktop.json', { timeout: 10000 });
+        const response = await fetch('https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/desktop.json', { timeout: 10000000 });
         if (!response.ok) {
             throw new Error(`خطا در دریافت داده: ${response.status}`);
         }

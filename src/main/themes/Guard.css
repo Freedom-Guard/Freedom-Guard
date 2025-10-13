@@ -142,6 +142,7 @@ body {
 }
 
 #ChangeStatus.connecting::after {
+    animation: none;
     border-radius: 30px;
     opacity: 0.2;
 }
