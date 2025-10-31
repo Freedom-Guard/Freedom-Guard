@@ -114,10 +114,14 @@
             <div id="config" class="form-control-c">
                 <input style="width: 95%;" type="text" class="input input-alt" placeholder="vless://, warp://, https://"
                     id="config-value">
-                <button id="submit-config" class="btn" data-lang="import">Import</button>
-                <button id="submit-config-clipboard" class="btn"><i class='bx bxs-paste'></i></button>
-                <button id="submit-config-file" class="btn"><i class='bx bxs-folder-open'></i></button>
-                <button id="add-warp-config" class="btn" data-lang="add_warp">Add Warp</button>
+                <button id="submit-config" class="btn has-tooltip" data-lang="import"
+                    data-tooltip="tr(import)">Import</button>
+                <button id="submit-config-clipboard" class="btn has-tooltip" data-tooltip="Paste from clipboard"><i
+                        class='bx bxs-paste'></i></button>
+                <button id="submit-config-file" class="btn has-tooltip" data-tooltip="Import from File"><i
+                        class='bx bxs-folder-open'></i></button>
+                <button id="add-warp-config" class="btn has-tooltip" data-lang="add_warp"
+                    data-tooltip="tr(add_warp)">Add Warp</button>
             </div>
             <div class="divider"></div>
 
@@ -510,7 +514,8 @@
             <b data-lang="endpoint">endpoint</b>
             <div id="endpoint-masque" class="form-control-c">
                 <input type="text" class="input input-alt masque-option-value" placeholder="162.159.198.2"
-                    id="endpoint-masque" optionMasque="endpoint">
+                    id="endpoint-masque-value" optionMasque="endpoint">
+                <button class="btn" id="get-endpoint-masque">Get Endpoint</button>
             </div>
             <div class="divider"></div>
         </section>

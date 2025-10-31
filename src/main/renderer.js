@@ -722,6 +722,24 @@ class main {
                 that.publicSet.saveSettings();
             });
 
+            $("#get-endpoint-masque").on("click", async () => {
+                try {
+                    const response = await this.axios.get("https://raw.githubusercontent.com/ircfspace/endpoint/refs/heads/main/v2.json");
+                    const ipData = (response.data);
+                    const ipList = ipData.masque.ipv4;
+                    if (ipList.length === 0) {
+                        this.publicSet.log("No available endpoints for the selected IP version.");
+                        return;
+                    }
+                    const randomIP = ipList[Math.floor(Math.random() * ipList.length)];
+                    $("#endpoint-masque-value").val(randomIP.toString());
+                    this.publicSet.settingsALL["masque"]["endpoint"] = randomIP;
+                    this.publicSet.saveSettings();
+                    window.showMessageUI(this.publicSet.settingsALL["lang"]["endpoint_retrieved"]);
+                } catch (error) {
+                    this.publicSet.log("Error fetching endpoint data:", error);
+                }
+            });
         }
     };
     setSettings() {
