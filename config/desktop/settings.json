@@ -53,6 +53,11 @@
             "actions": "scroll, focus, click",
             "checked": true,
             "delay": 700
+        },
+        "#quick-connect-status": {
+            "actions": "scroll, focus, click",
+            "checked": true,
+            "delay": 700
         }
     }
 }

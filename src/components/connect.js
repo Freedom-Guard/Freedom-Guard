@@ -195,6 +195,7 @@ class PublicSet {
         notify({
             title: 'Connected!',
             message: (this.settingsALL.lang.connected_mess_notif || "Connected to [core]").replace("[core]", core),
+            image: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             icon: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
@@ -481,6 +482,7 @@ class PublicSet {
         notify({
             title: this.connectedUI ? 'Freedom Guard Disconnected ❌' : 'Freedom Guard Connection Failed 🚫',
             message: this.connectedUI ? `Connection to ${core} was lost. Freedom Guard has been disconnected.` : `Unable to connect to ${core}. Freedom Guard is offline.`,
+            image: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             icon: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
