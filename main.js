@@ -363,9 +363,15 @@ ipcMain.handle("import-config", async () => {
 // #endregion
 // #region Quit
 app.on('before-quit', () => {
-  exec("taskkill /IM " + "vibe-core.exe" + " /F");
-  exec('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /F');
-  exec("taskkill /IM " + "warp-core.exe" + " /F");
+  if (mainWindow) {
+    mainWindow.webContents.send('app-will-quit');
+  }
+
+  exec("taskkill /IM " + "vibe-core.exe" + " /F", { windowsHide: true });
+  exec("taskkill /IM " + "masque-plus.exe" + " /F", { windowsHide: true });
+  exec("taskkill /IM " + "warp-core.exe" + " /F", { windowsHide: true });
+  exec('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /F', { windowsHide: true });
+
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -392,13 +398,13 @@ ipcMain.handle('read-json', async (event, filePath) => {
   });
 });
 ipc.on("run-core", (event, corePath) => {
-    execFile(corePath, [], (error) => {
-        if (error) {
-            event.sender.send("core-status", `Error: ${error.message}`);
-            return;
-        }
-        event.sender.send("core-status", "Freedom Core started successfully.");
-    });
+  execFile(corePath, [], (error) => {
+    if (error) {
+      event.sender.send("core-status", `Error: ${error.message}`);
+      return;
+    }
+    event.sender.send("core-status", "Freedom Core started successfully.");
+  });
 });
 // #endregion
 // End Code

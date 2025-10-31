@@ -1,10 +1,10 @@
 name: freedom-guard
-version: '10.1.0'
+version: '10.5.0'
 summary: Freedom Guard is a tool for bypassing internet censorship.
 description: |
   Freedom Warp+, Freedom Vibe+, Freedom Browser+
 
-base: core20
+base: core24
 confinement: strict
 
 parts:

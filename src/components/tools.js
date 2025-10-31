@@ -69,19 +69,19 @@ class Tools {
         if (osType === "win32") {
 
             const applyWindowsProxy = () => {
-                exec(`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f`, (err) => {
+                require('child_process').exec(`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f`, { windowsHide: true }, (err) => {
                     if (err) {
                         console.log(`❌ Error setting ProxyEnable: ${err.message}`);
                         return;
                     }
 
-                    exec(`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /t REG_SZ /d ${proxy} /f`, (err2) => {
+                    require('child_process').exec(`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /t REG_SZ /d ${proxy} /f`, { windowsHide: true }, (err2) => {
                         if (err2) {
                             console.log(`❌ Error setting ProxyServer: ${err2.message}`);
                             return;
                         }
 
-                        exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
+                        require('child_process').exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', { windowsHide: true }, (error) => {
                             if (error) {
                                 console.log(`❌ Error applying proxy settings: ${error.message}`);
                             } else {
@@ -89,7 +89,7 @@ class Tools {
                             }
                         });
 
-                        exec("taskkill /F /IM reg.exe", (killError) => {
+                        require('child_process').exec("taskkill /F /IM reg.exe", { windowsHide: true }, (killError) => {
                             if (killError) {
                                 console.log(`Error killing reg.exe: ${killError.message}`);
                             } else {
@@ -198,7 +198,7 @@ class Tools {
             const desktopCommands = commands[osType];
             if (desktopCommands) {
                 desktopCommands.forEach(cmd => {
-                    exec(cmd, (err) => {
+                    exec(cmd, { windowsHide: true }, (err) => {
                         if (err) {
                             this.log(`Error executing proxy command for ${osType}: ${cmd} - ${err.message}`);
                         } else {
@@ -220,19 +220,19 @@ class Tools {
 
         if (osType === "win32") {
             const disableWindowsProxy = () => {
-                exec('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f', (err) => {
+                require('child_process').exec('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f', { windowsHide: true }, (err) => {
                     if (err) {
                         console.log(`❌ Error disabling ProxyEnable: ${err.message}`);
                         return;
                     }
 
-                    exec('reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /f', (err2) => {
+                    require('child_process').exec('reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /f', { windowsHide: true }, (err2) => {
                         if (err2) {
                             console.log(`❌ Error deleting ProxyServer: ${err2.message}`);
                             return;
                         }
 
-                        exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', (error) => {
+                        require('child_process').exec('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters', { windowsHide: true }, (error) => {
                             if (error) {
                                 console.log(`❌ Error applying proxy settings (disable): ${error.message}`);
                             } else {
@@ -284,7 +284,7 @@ class Tools {
             const desktopCommands = disableCommands[osType];
             if (desktopCommands) {
                 desktopCommands.forEach(cmd => {
-                    exec(cmd, (err) => {
+                    exec(cmd, { windowsHide: true }, (err) => {
                         if (err) {
                             this.log(`Error executing proxy disable command for ${osType}: ${cmd} - ${err.message}`);
                         } else {
@@ -304,7 +304,7 @@ class Tools {
     setDNS(dns1, dns2, osType) {
         if (osType === "win32") {
             this.log(`[DNS] Setting DNS for Windows: Primary -> ${dns1}, Secondary -> ${dns2 || 'None'}`);
-            exec(`netsh interface show interface`, (err, stdout) => {
+            exec(`netsh interface show interface`, {windowsHide: true}, (err, stdout) => {
                 if (err) {
                     this.log(`Error retrieving interfaces on Windows: ${err.message}`);
                     return;
@@ -317,42 +317,42 @@ class Tools {
                     .map(match => match[1].replace(/\r$/, ''));
 
                 interfaces.forEach(iface => {
-                    exec(`netsh interface ip set dns "${iface}" static ${dns1} primary`, (err) => {
+                    exec(`netsh interface ip set dns "${iface}" static ${dns1} primary`, {windowsHide: true}, (err) => {
                         if (err) this.log(`Error setting primary DNS on ${iface}: ${err.message}`);
                         else this.log(`Primary DNS set on ${iface}`);
                     });
 
                     if (dns2) {
-                        exec(`netsh interface ip add dns "${iface}" ${dns2} index=2`, (err) => {
+                        exec(`netsh interface ip add dns "${iface}" ${dns2} index=2`, {windowsHide: true}, (err) => {
                             if (err) this.log(`Error setting secondary DNS on ${iface}: ${err.message}`);
                             else this.log(`Secondary DNS set on ${iface}`);
                         });
                     } else {
-                        exec(`netsh interface ip delete dns "${iface}" ${dns1} all`, (err) => {
+                        exec(`netsh interface ip delete dns "${iface}" ${dns1} all`, {windowsHide: true}, (err) => {
                             if (err) this.log(`Error clearing DNS on ${iface}: ${err.message}`);
                         });
-                        exec(`netsh interface ip set dns "${iface}" static ${dns1} primary`, (err) => {
+                        exec(`netsh interface ip set dns "${iface}" static ${dns1} primary`, {windowsHide: true}, (err) => {
                             if (err) this.log(`Error resetting primary DNS on ${iface}: ${err.message}`);
                         });
                     }
                 });
             });
         } else if (osType === "darwin") {
-            exec(`networksetup -listallnetworkservices`, (err, stdout) => {
+            exec(`networksetup -listallnetworkservices`, {windowsHide: true}, (err, stdout) => {
                 if (err) {
                     this.log(`Error retrieving interfaces on macOS: ${err.message}`);
                     return;
                 }
                 const services = stdout.split('\n').slice(1).filter(service => service.trim() && !service.includes('*'));
                 services.forEach(service => {
-                    exec(`networksetup -setdnsservers "${service}" ${dns1} ${dns2 || 'Empty'}`, (err) => {
+                    exec(`networksetup -setdnsservers "${service}" ${dns1} ${dns2 || 'Empty'}`, {windowsHide: true}, (err) => {
                         if (err) this.log(`Error setting DNS on ${service}: ${err.message}`);
                         else this.log(`DNS set on ${service}.`);
                     });
                 });
             });
         } else {
-            exec(`nmcli device status | awk '{print $1}' | tail -n +2`, (err, stdout) => {
+            exec(`nmcli device status | awk '{print $1}' | tail -n +2`, {windowsHide: true}, (err, stdout) => {
                 if (err) {
                     this.log(`Error retrieving interfaces on Linux: ${err.message}`);
                     return;
@@ -360,11 +360,11 @@ class Tools {
                 const interfaces = stdout.split('\n').filter(iface => iface.trim());
                 interfaces.forEach(iface => {
                     const dnsServers = [dns1, dns2].filter(Boolean).join(' ');
-                    exec(`nmcli con mod ${iface} ipv4.dns "${dnsServers}"`, (err) => {
+                    exec(`nmcli con mod ${iface} ipv4.dns "${dnsServers}"`, {windowsHide: true}, (err) => {
                         if (err) this.log(`Error setting DNS on ${iface}: ${err.message}`);
                         else this.log(`DNS set for ${iface}.`);
                     });
-                    exec(`nmcli con up ${iface}`, (err) => {
+                    exec(`nmcli con up ${iface}`, {windowsHide: true}, (err) => {
                         if (err) this.log(`Error applying DNS settings on ${iface}: ${err.message}`);
                     });
                 });

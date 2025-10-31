@@ -10,6 +10,7 @@ const { Tools, getConfigPath, writeFile, readFile } = require("./tools");
 
 class PublicSet {
     constructor() {
+        this.connectedUI = false;
         this.axios = axios;
         this.geoip = geoip;
         this.path = path;
@@ -188,6 +189,9 @@ class PublicSet {
 
     connectedVPN(core) {
         this.log(`Connected to ${core}.`);
+        if (this.connectedUI) {
+            return;
+        }
         notify({
             title: 'Connected!',
             message: (this.settingsALL.lang.connected_mess_notif || "Connected to [core]").replace("[core]", core),
@@ -203,6 +207,7 @@ class PublicSet {
         if (typeof window !== 'undefined' && window.connectedUI) {
             window.connectedUI();
         }
+        this.connectedUI = true;
     };
 
     setProxy(proxy, type = "socks5") {
@@ -439,7 +444,7 @@ class PublicSet {
 
             this.log(`ISP selected: ${isp}`);
             this.settingsALL.public.ispServers = [...ispServers, ...publicServers];
-            this.log(`ISP servers updated: ${JSON.stringify(this.settingsALL.public.ispServers)}`);
+            this.log(`ISP servers updated: ${this.settingsALL.public.ispServers.length} servers loaded`);
 
             if (this.settingsALL.public.ispServers.length === 0) {
                 if (typeof window !== 'undefined' && window.showMessageUI) {
@@ -449,13 +454,17 @@ class PublicSet {
                 return false;
             }
             this.saveSettings();
+
+            this.log("ISP servers updated successfully");
+
             return true;
         } catch (error) {
-            this.log(`Network or server error updating ISP servers: ${error}`);
+            this.log(`Network or server error updating ISP servers: ${error.message}`);
             if (typeof window !== 'undefined' && window.showMessageUI) {
                 window.showMessageUI(this.settingsALL.lang.message_repo_access_error);
             }
             if (this.settingsALL.public.ispServers && this.settingsALL.public.ispServers.length > 0) {
+                this.log("Using existing ISP servers due to network error");
                 return true;
             } else {
                 this.log("Backup ISP servers are empty!");
@@ -470,8 +479,8 @@ class PublicSet {
     notConnected(core = "") {
         this.log(`Failed to connect to ${core}.`);
         notify({
-            title: 'Connection Failed',
-            message: `Failed to connect to ${core}`,
+            title: this.connectedUI ? 'Freedom Guard Disconnected ❌' : 'Freedom Guard Connection Failed 🚫',
+            message: this.connectedUI ? `Connection to ${core} was lost. Freedom Guard has been disconnected.` : `Unable to connect to ${core}. Freedom Guard is offline.`,
             icon: path.join(this.mainDir, 'src/assets/icon/ico.png'),
             sound: true,
             wait: true,
@@ -485,6 +494,7 @@ class PublicSet {
             this.disconnectedUI();
         }
         this.offProxy();
+        this.connectedUI = false;
     }
 
     addExt(name) {
@@ -503,7 +513,7 @@ class PublicSet {
                     this.log(`${processName}.exe killed successfully.`);
                 }
             });
-            exec("taskkill /F /IM reg.exe", (error) => {
+            exec("taskkill /F /IM reg.exe", { windowsHide: true }, (error) => {
                 if (error) {
                     this.log(`Error killing reg.exe: ${error.message}`);
                 } else {
@@ -1149,70 +1159,100 @@ class Connect extends PublicSet {
             this.offProxy();
         }
     }
+    connectMasque() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                this.log("Starting masque for Manual-connect...");
+                this.resetArgs("masque");
 
-    async connectMasque() {
-        await this.resetArgs('masque');
-        await this.sleep(1000);
+                const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
+                this.log(`Spawning Masque process: ${corePath} ${this.argsMasque.join(" ")}`);
 
-        const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
-        this.log(`Spawning Masque process: ${corePath} ${this.argsMasque.join(' ')}`);
+                this.processMasque = spawn(corePath, this.argsMasque, {
+                    cwd: path.dirname(corePath)
+                });
+                this.Process.masque = this.processMasque;
 
-        this.processMasque = spawn(corePath, this.argsMasque, {
-            cwd: path.dirname(corePath)
+                this.processMasque.stderr.on("data", d => this.dataOutMasque(d.toString()));
+                this.processMasque.stdout.on("data", d => this.dataOutMasque(d.toString()));
+                this.processMasque.on("close", code => {
+                    this.log(`Masque Manual process exited with code ${code}.`);
+                    this.killVPN("masque");
+                    this.notConnected("masque");
+                    this.offGrid();
+                    reject(false);
+                });
+
+                await this.sleep(this.settingsALL.warp.timeout);
+                if (this.connected) {
+                    this.connectedVPN("masque");
+                    resolve(true);
+                } else {
+                    this.log("Masque manual connection failed after timeout.");
+                    this.killVPN("masque");
+                    this.notConnected("masque");
+                    this.offGrid();
+                    reject(false);
+                }
+            } catch (error) {
+                this.log(`Error in Masque Manual-connect: ${error.message}`);
+                this.killVPN("masque");
+                this.notConnected("masque");
+                this.offGrid();
+                reject(false);
+            }
         });
-        this.Process.masque = this.processMasque;
+    };
 
-        this.processMasque.stderr.on("data", (data) => this.dataOutMasque(data.toString()));
-        this.processMasque.stdout.on("data", (data) => this.dataOutMasque(data.toString()));
-        this.processMasque.on("close", (code) => {
-            this.log(`Masque process exited with code ${code}.`);
-            this.killVPN("masque");
-            this.notConnected("masque");
-            this.offGrid();
+    connectVibe() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                this.log("Starting vibe for connect...");
+                this.resetArgs("vibe");
+                this.settingsALL.public.quickConnectC = this.settingsALL.vibe.config;
+                this.saveSettings();
+
+                const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
+                const effectiveCorePath = process.platform === "darwin" && process.arch === "arm64"
+                    ? corePath.replace("/amd64/", "/arm64/")
+                    : corePath;
+
+                this.log(`Spawning Vibe process: ${effectiveCorePath} ${this.argsVibe.join(" ")}`);
+
+                this.processVibe = spawn(effectiveCorePath, this.argsVibe);
+                this.Process.vibe = this.processVibe;
+
+                this.processVibe.stderr.on("data", d => this.dataOutVibe(d.toString()));
+                this.processVibe.stdout.on("data", d => this.dataOutVibe(d.toString()));
+                this.processVibe.on("close", code => {
+                    this.log(`Vibe Core process exited with code ${code}.`);
+                    this.killVPN("vibe");
+                    this.notConnected("vibe");
+                    this.offProxy();
+                    reject(false);
+                });
+
+                await this.sleep(this.settingsALL.vibe.timeout);
+
+                if (this.connected) {
+                    this.connectedVPN("vibe");
+                    resolve(true);
+                } else {
+                    this.log("Vibe manual connection failed after timeout.");
+                    this.killVPN("vibe");
+                    this.notConnected("vibe");
+                    this.offProxy();
+                    reject(false);
+                }
+            } catch (error) {
+                this.log(`Error in Vibe manual connection: ${error.message}`);
+                this.killVPN("vibe");
+                this.notConnected("vibe");
+                this.offProxy();
+                reject(false);
+            }
         });
-
-        await this.sleep(this.settingsALL.warp.timeout);
-        if (!this.connected) {
-            this.log("masque manual connection failed after timeout.");
-            this.killVPN("masque");
-            this.notConnected("masque");
-            this.offGrid();
-        }
-    }
-
-    async connectVibe() {
-        await this.resetArgs("vibe");
-        await this.sleep(1000);
-        this.settingsALL.public.quickConnectC = this.settingsALL.vibe.config;
-        this.saveSettings();
-
-        const corePath = path.join(this.coresPath, "vibe", this.addExt("vibe-core"));
-        const effectiveCorePath = process.platform === 'darwin' && process.arch === 'arm64'
-            ? corePath.replace('/amd64/', '/arm64/')
-            : corePath;
-
-        this.log(`Spawning Vibe process: ${effectiveCorePath} ${this.argsVibe.join(' ')}`);
-
-        this.processVibe = spawn(effectiveCorePath, this.argsVibe);
-        this.Process.vibe = this.processVibe;
-
-        this.processVibe.stderr.on("data", (data) => this.dataOutVibe(data.toString()));
-        this.processVibe.stdout.on("data", (data) => this.dataOutVibe(data.toString()));
-        this.processVibe.on("close", (code) => {
-            this.log(`Vibe process exited with code ${code}.`);
-            this.killVPN("vibe");
-            this.notConnected("vibe");
-            this.offProxy();
-        });
-
-        await this.sleep(this.settingsALL.vibe.timeout);
-        if (!this.connected) {
-            this.log("Vibe manual connection failed after timeout.");
-            this.killVPN("vibe");
-            this.notConnected("vibe");
-            this.offProxy();
-        }
-    }
+    };
 
     async connectFlex() {
         return new Promise((resolve, reject) => {
@@ -1384,7 +1424,6 @@ class Connect extends PublicSet {
             if (this.settingsALL.public.freedomLink) {
                 this.Tools.donateCONFIG(this.settingsALL.vibe.config);
             }
-            this.connectedVPN("vibe");
             this.connected = true;
         }
     }

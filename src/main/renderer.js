@@ -306,7 +306,15 @@ class main {
         if (this.publicSet.settingsALL["public"]["auto_conn_after_runs"]) {
             this.connectFG();
         };
-    }
+    };
+    async cleanup() {
+        this.KILLALLCORES('warp');
+        this.KILLALLCORES('flex');
+        this.KILLALLCORES('grid');
+        this.KILLALLCORES('vibe');
+        this.KILLALLCORES('usque', false);
+        this.publicSet.offProxy();
+    };
     addEvents() {
         // Add Events for settings, menu, connect, ....
         $("a").on('click', (e) => {
@@ -366,7 +374,8 @@ class main {
         $("#box-select-server-mini, #close-box-select-server").on("click", async () => {
             $("#box-select-server").toggle();
         });
-        $("#menu-exit-app").on('click', () => {
+        $("#menu-exit-app").on('click', async () => {
+            await this.cleanup;
             ipcRenderer.send("exit-app");
         });
         $("#ip-ping, #reload-ping").on('click', async () => {
@@ -401,12 +410,19 @@ class main {
             window.disconnectedUI();
             location.reload();
         });
+
         $("#menu-tool-box, #tool-close-box").on("click", () => {
             this.showToolBox();
-        })
+        });
+
         $("#close-sys-check").on("click", () => {
             $("#system-check-result").toggle();
-        })
+        });
+
+        ipcRenderer.on('app-will-quit', async () => {
+            await this.cleanup();
+        });
+
         process.nextTick(() => this.addEventsSetting());
     };
     addEventsSetting() {
