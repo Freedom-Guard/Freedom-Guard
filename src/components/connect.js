@@ -1132,35 +1132,51 @@ class Connect extends PublicSet {
                 await this.connectVibe();
                 break;
         }
-    }
+    };
 
-    async connectWarp() {
-        await this.resetArgs('warp');
-        await this.sleep(1000);
+    connectWarp() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await this.resetArgs("warp");
+                await this.sleep(1000);
 
-        const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
-        this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+                const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
+                this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(" ")}`);
 
-        this.processWarp = spawn(corePath, this.argsWarp);
-        this.Process.warp = this.processWarp;
+                this.processWarp = spawn(corePath, this.argsWarp);
+                this.Process.warp = this.processWarp;
 
-        this.processWarp.stderr.on("data", (data) => this.dataOutWarp(data.toString()));
-        this.processWarp.stdout.on("data", (data) => this.dataOutWarp(data.toString()));
-        this.processWarp.on("close", (code) => {
-            this.log(`Warp process exited with code ${code}.`);
-            this.killVPN("warp");
-            this.notConnected("warp");
-            this.offProxy();
+                this.processWarp.stderr.on("data", d => this.dataOutWarp(d.toString()));
+                this.processWarp.stdout.on("data", d => this.dataOutWarp(d.toString()));
+                this.processWarp.on("close", code => {
+                    this.log(`Warp process exited with code ${code}.`);
+                    this.killVPN("warp");
+                    this.notConnected("warp");
+                    this.offProxy();
+                    reject(false);
+                });
+
+                await this.sleep(this.settingsALL.warp.timeout);
+                if (this.connected) {
+                    this.connectedVPN("warp");
+                    resolve(true);
+                } else {
+                    this.log("Warp manual connection failed after timeout.");
+                    this.killVPN("warp");
+                    this.notConnected("warp");
+                    this.offProxy();
+                    reject(false);
+                }
+            } catch (error) {
+                this.log(`Error in Warp Manual-connect: ${error.message}`);
+                this.killVPN("warp");
+                this.notConnected("warp");
+                this.offProxy();
+                reject(false);
+            }
         });
+    };
 
-        await this.sleep(this.settingsALL.warp.timeout);
-        if (!this.connected) {
-            this.log("Warp manual connection failed after timeout.");
-            this.killVPN("warp");
-            this.notConnected("warp");
-            this.offProxy();
-        }
-    }
     connectMasque() {
         return new Promise(async (resolve, reject) => {
             try {
@@ -1261,14 +1277,14 @@ class Connect extends PublicSet {
             this.log("Flex connection initiated (not yet implemented).");
             reject(new Error("Flex connection not implemented."));
         });
-    }
+    };
 
     async connectGrid() {
         return new Promise((resolve, reject) => {
             this.log("Grid connection initiated (not yet implemented).");
             reject(new Error("Grid connection not implemented."));
         });
-    }
+    };
 
     async resetArgs(core = "warp") {
         await this.reloadSettings();

@@ -26,3 +26,4 @@ src/main/cores/win32/vibe/hiddify.json
 cache.db
 .env
 src/main/cores/win32/masque/config.json
+.VSCodeCounter/
