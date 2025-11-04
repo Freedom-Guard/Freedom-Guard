@@ -1137,7 +1137,7 @@ class Connect extends PublicSet {
     connectWarp() {
         return new Promise(async (resolve, reject) => {
             try {
-                await this.resetArgs("warp");
+                this.argsWarp = await this.resetArgs("warp");
                 await this.sleep(1000);
 
                 const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
@@ -1181,7 +1181,7 @@ class Connect extends PublicSet {
         return new Promise(async (resolve, reject) => {
             try {
                 this.log("Starting masque for Manual-connect...");
-                this.resetArgs("masque");
+                this.argsMasque = await this.resetArgs("masque");
 
                 const corePath = path.join(this.coresPath, "masque", this.addExt("masque-plus"));
                 this.log(`Spawning Masque process: ${corePath} ${this.argsMasque.join(" ")}`);
@@ -1226,7 +1226,7 @@ class Connect extends PublicSet {
         return new Promise(async (resolve, reject) => {
             try {
                 this.log("Starting vibe for connect...");
-                this.resetArgs("vibe");
+                this.argsVibe = await this.resetArgs("vibe");
                 this.settingsALL.public.quickConnectC = this.settingsALL.vibe.config;
                 this.saveSettings();
 
@@ -1330,6 +1330,8 @@ class Connect extends PublicSet {
             if (warpSettings.testUrl) {
                 this.argsWarp.push("--test-url", this.settingsALL.public.testUrl);
             }
+            return this.argsWarp;
+
         }
         else if (core === "vibe") {
             this.argsVibe = ["run", "--config"];
@@ -1357,6 +1359,7 @@ class Connect extends PublicSet {
                 writeFile(hiddifyConfigPath, JSON.stringify(this.settingsALL.vibe.hiddifyConfigJSON));
                 this.argsVibe.push("--hiddify", hiddifyConfigPath);
             }
+            return this.argsVibe;
         }
         else if (core === "masque") {
             this.argsMasque = [];
@@ -1373,6 +1376,7 @@ class Connect extends PublicSet {
             this.argsMasque.push("--bind");
             this.argsMasque.push(this.settingsALL.public.proxy);
             this.argsMasque.push("--renew");
+            return this.argsMasque;
         }
     }
 
