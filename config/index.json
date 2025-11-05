@@ -1,6 +1,8 @@
 {
     "PUBLIC": [
         "masque,;,endpoint=162.159.198.2:443#MASQUE PLUS",
+        "vibe,;,https://raw.githubusercontent.com/Kwinshadow/TelegramV2rayCollector/main/sublinks/mix.txt#VIBE FAST TG",
+        "vibe,;,https://raw.githubusercontent.com/NiREvil/vless/refs/heads/main/sub/SSTime#VIBE MAX",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/Freedom-Finder/main/out/mixed_configs.txt#Freedom Finder (FG)",
         "vibe,;,https://raw.githubusercontent.com/Rayan-Config/C-Sub/refs/heads/main/configs/proxy.txt#RCL",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
