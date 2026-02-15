@@ -49,6 +49,8 @@
         "vibe,;,mode=auto-my#Auto Server (Auto + My Configs)",
         "vibe,;,https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt#MAHSA",
         "vibe,;,https://raw.githubusercontent.com/Freedom-Guard-Builder/FL/refs/heads/main/config/Fast.txt#FAST | FG",
+        "vibe,;,https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt#OPEN | V2",
+        "vibe,;,https://raw.githubusercontent.com/arshiacomplus/v2rayExtractor/refs/heads/main/mix/sub.html#v2rayExtractor | STB",
         "vibe,;,https://config-fl.freedomguard.workers.dev/ok#FG LINK",
         "vibe,;,https://raw.githubusercontent.com/parvinxs/Fssociety/refs/heads/main/Fssociety.sub#Fssociety | Sub",
         "vibe,;,https://raw.githubusercontent.com/yebekhe/vpn-fail/refs/heads/main/sub-link#VIBE | VPN FAIL",
