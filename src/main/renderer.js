@@ -8,7 +8,7 @@ const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
-const versionApp = "12.0.7";
+const versionApp = "13.0.1";
 let LOGS = [];
 
 // #endregion

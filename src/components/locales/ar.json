@@ -33,7 +33,7 @@
     "logs": "السجلات",
     "freedom_browser": "متصفح Freedom",
     "set_dns": "إعداد DNS",
-    "about_app_html": "<p> Freedom Guard 12.0.7 (الإصدار الأحدث)</p>\n    <p> تم تطويره بواسطة فريق Freedom Guard 👩‍💻</p>\n    <p>👇 الشكر والتقدير 👇</p>\n    <p> <a href=\"https://github.com/hiddify/hiddify-core/\">hiddify-core 3.2.0</a> من Hiddify</p>\n    <p> <a href=\"https://github.com/bepass-org/warp-plus\">warp-plus 1.2.6</a> من bepass-org</p>\n    <p> <a href=\"https://github.com/GFW-knocker/Xray-core\">Xray-core 25.1.30</a> من GFW-knocker</p>\n    <p> <a href=\"https://github.com/ircfspace/endpoint/\">Endpoint warp+</a> من IRCF</p>\n    <p> <a href=\"https://github.com/ircfspace/masque-plus\">masque-plus v2.8.0</a> من IRCF</p>\n    <p> <a href=\"https://x.com/Freedom_Guard_N\">X Freedom Guard</a></p>\n",
+    "about_app_html": "<p> Freedom Guard 13.0.1 (الإصدار الأحدث)</p>\n    <p> تم تطويره بواسطة فريق Freedom Guard 👩‍💻</p>\n    <p>👇 الشكر والتقدير 👇</p>\n    <p> <a href=\"https://github.com/hiddify/hiddify-core/\">hiddify-core 3.2.0</a> من Hiddify</p>\n    <p> <a href=\"https://github.com/bepass-org/warp-plus\">warp-plus 1.2.6</a> من bepass-org</p>\n    <p> <a href=\"https://github.com/GFW-knocker/Xray-core\">Xray-core 25.1.30</a> من GFW-knocker</p>\n    <p> <a href=\"https://github.com/ircfspace/endpoint/\">Endpoint warp+</a> من IRCF</p>\n    <p> <a href=\"https://github.com/ircfspace/masque-plus\">masque-plus v2.8.0</a> من IRCF</p>\n    <p> <a href=\"https://x.com/Freedom_Guard_N\">X Freedom Guard</a></p>\n",
     "killed_services": "تم إنهاء جميع الخدمات.",
     "settings_saved": "✅ تم حفظ الإعدادات بنجاح!",
     "tun_not_supported": "😕 عذرًا! وضع TUN غير مدعوم في Warp.",
