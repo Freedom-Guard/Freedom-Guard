@@ -1,9 +1,10 @@
 // #region Libraries 
-const { ipcRenderer, dialog, shell, clipboard } = require('electron');
+const { ipcRenderer, shell, clipboard } = require('electron');
 const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 const { FreedomCore } = require("../components/freedomCore");
 const { FreedomPlugin } = require("../components/freedomPlugin");
 const { checkForUpdate } = require('../components/update');
+const { loaderImages, loaderText } = require('../components/javid');
 const $ = require('jquery');
 require("jquery.easing");
 const { exec, execFile, spawn } = require('child_process');
@@ -182,11 +183,8 @@ class main {
         }
     };
     async loading(textloading = "", time = 3000) {
-        // Displays a random tribute message and image during loading, then hides the loader after a set time.
-        let loaderImages = ["yalda.png", "mahsa.jpg", "nika.jpg", "sarina.jpg", "kian.jpg", "mehrshad.jpg", "hadis.jpg", "hananeh.jpg", "hamidreza.jpg", "AylarH.jpg"];
-        let loaderText = ["به یاد یلدا آقافضلی", "به یاد مهسا امینی", "به یاد نیکا شاکرمی", "به یاد سارینا اسماعیل زاده", "به یاد کیان پیرفلک", "به یاد مهرشاد شهیدی", "به یاد حدیث نجفی", "به یاد حنانه کیا", "به یاد حمید رضا روحی", "به یاد آیلار حقی"];
         let random = Math.floor(Math.random() * loaderImages.length);
-        let loaderImage = "../assets/" + loaderImages[random];
+        let loaderImage = "../assets/javid/" + loaderImages[random];
         let loaderTxt = loaderText[random];
         $("#loader-text").html(loaderTxt);
         $('#loader-image').attr("src", loaderImage);
