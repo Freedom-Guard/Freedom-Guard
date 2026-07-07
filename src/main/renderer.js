@@ -96,7 +96,7 @@ window.disconnectedUI = () => {
 };
 window.connectedUI = () => {
     $("#ChangeStatus").addClass("connected");
-    $("#ip-ping").trigger("click");
+    $("#ip-ping-box").trigger("click");
     $("#ChangeStatus").removeClass("connecting");
     mainSTA.publicSet.status = true;
     mainSTA.publicSet.connected = true;
@@ -232,12 +232,12 @@ class main {
         });
         this.publicSet.settingsALL["lang"] = translations;
         if (lang == "fa" || lang == "ar") {
-            $("#setting-app>section").attr("dir", "rtl");
-            $("#setting-app h3").toggleClass("right");
+            $("#page-settings>section, .nav-top").attr("dir", "rtl");
+            $("#page-settings h3").toggleClass("right");
         }
         else {
-            $("#setting-app>section").attr("dir", "ltr");
-            $("#setting-app h3").toggleClass("right");
+            $("#page-settings>section").attr("dir", "ltr");
+            $("#page-settings h3").toggleClass("right");
         }
         this.publicSet.saveSettings();
         $("#about-app a").on('click', (e) => {
@@ -252,9 +252,13 @@ class main {
     };
     async initCompo() {
         let that = this;
+        $("[data-show-target]").on("click", function () {
+            const showTarget = $(this).attr("data-show-target");
+            showElem(showTarget);
+        });
         $(document).on('keydown', function (e) {
             if (e.key === "Escape") {
-                $('.box:visible, #Logs:visible, #setting-app:visible, #box-select-server:visible').each(function () {
+                $('.box:visible, #Logs:visible, #page-settings:visible, #box-select-server:visible').each(function () {
                     $(this).hide("slow");
                 });
             }
@@ -270,6 +274,9 @@ class main {
             }
         });
         const $tooltip = $('.tooltip-box');
+        $("[data-page]").on("click", function (e) {
+            showPage($(this).attr("data-page"));
+        })
         $('#menu div').on('mousemove', function (e) {
             if ($(this).parent().hasClass('show')) {
                 return;
@@ -292,7 +299,7 @@ class main {
         }).on('mouseleave', function () {
             $('.tooltip-box').hide(100);
         });
-        $('#setting-app h3:not(.not-sect)').on("click", function () {
+        $('#page-settings h3:not(.not-sect)').on("click", function () {
             var content = $(this).attr("openSection");
             that.addEventSect(content == "vibe" ? "vibe" : "warp")
             $("#" + content).slideToggle();
@@ -304,7 +311,34 @@ class main {
         if (this.publicSet.settingsALL["public"]["auto_conn_after_runs"]) {
             this.connectFG();
         };
+        this.initServerTabs();
+        this.initServerSearch();
     };
+    initServerTabs() {
+
+        $(".server-tab").on("click", function () {
+
+            $(".server-tab").removeClass("active");
+
+            $(this).addClass("active");
+
+            $(".server-tab-page").removeClass("active");
+
+            $("#" + $(this).data("tab") + "-tab").addClass("active");
+
+        });
+
+    }
+    initServerSearch() {
+        $("#server-search-input").on("input", function () {
+            let value = $(this).val().toLowerCase();
+            $(".server-card").each(function () {
+                $(this).toggle(
+                    $(this).text().toLowerCase().includes(value)
+                );
+            });
+        });
+    }
     async cleanup() {
         this.KILLALLCORES('warp');
         this.KILLALLCORES('flex');
@@ -322,9 +356,6 @@ class main {
         });
         $('#menu-expand').on('click', () => {
             $('#menu').toggleClass('show');
-        });
-        $('#menu-dns, #close-dns').on('click', () => {
-            $('#dns-set').toggle();
         });
         $("#selector-dns").on("change", () => {
             const dnsValues = $("#selector-dns").val().split(",");
@@ -354,7 +385,7 @@ class main {
             $("#about-app").attr("style", "display:flex;");
         });
         $("#setting-show, #close-setting").on('click', () => {
-            $("#setting-app").toggle();
+            $("#page-settings").toggle();
         });
         $("#open-drop-setting").on("click", () => {
             $("#more-options-content").toggleClass("active");
@@ -370,13 +401,14 @@ class main {
             window.showMessageUI(this.publicSet.settingsALL["lang"]["refreshed_isp_servers"]);
         });
         $("#box-select-server-mini, #close-box-select-server").on("click", async () => {
+            showPage("page-servers");
             $("#box-select-server").toggle();
         });
         $("#menu-exit-app").on('click', async () => {
             await this.cleanup;
             ipcRenderer.send("exit-app");
         });
-        $("#ip-ping, #reload-ping").on('click', async () => {
+        $("#ip-ping-box, #reload-ping").on('click', async () => {
             this.setPingBox();
         });
         $("#ChangeStatus").on("click", () => {
@@ -396,7 +428,7 @@ class main {
             navigator.clipboard.writeText(logs);
             window.showMessageUI(this.publicSet.settingsALL["lang"]["copied"])
         });
-        $("#menu-kill-all").on("click", () => {
+        $("#tool-kill-all").on("click", () => {
             this.KILLALLCORES('warp');
             this.KILLALLCORES('flex');
             this.KILLALLCORES('grid');
@@ -936,20 +968,17 @@ class main {
 
         let ispServers = [...this.publicSet.settingsALL["public"]["ispServers"]];
         let importedServers = [...this.publicSet.settingsALL["public"]["importedServers"]];
-
-        let box = document.getElementById("box-select-servers");
-        $("#box-select-servers").html("");
+        let box = $(".server-list");
+        box.html("");
 
         $("#add-server-btn").on("click", () => {
-            let settingApp = $("#setting-app");
-            settingApp.show().animate({ right: "0px" }, 0);
+            showPage("page-settings");
             $("#config-value").focus();
         });
-
-        await this.createServerList("Your Servers", importedServers, box, "imported");
-        await this.createServerList("ISP Servers", ispServers, box, "isp");
-        box.addEventListener("click", async (event) => {
-            let target = event.target.closest(".country-option");
+        await this.createServerList("My Servers", importedServers, document.getElementById("custom-server-list"), "imported");
+        await this.createServerList("ISP Servers", ispServers, document.getElementById("official-server-list"), "isp");
+        box.on("click", async (event) => {
+            let target = event.target.closest(".server-card");
             if (!target) return;
 
             let serverType = target.getAttribute("data-type");
@@ -960,23 +989,24 @@ class main {
 
             event.preventDefault();
 
-            document.querySelectorAll(".country-option").forEach(el => {
+            document.querySelectorAll(".server-card").forEach(el => {
                 el.style.backgroundColor = "";
                 el.id = "";
             });
 
-            target.id = "selected-server";
+            target.className = "server-card selected";
 
             this.publicSet.log(`🔵 Clicked on server: ${server} | Type: ${serverType}`);
 
             await this.publicSet.importConfig(server);
+            $(".server-tab[data-tab='custom']").trigger("click");
             this.setSettings();
             this.reloadServers();
         });
 
 
-        box.addEventListener("contextmenu", (event) => {
-            let target = event.target.closest(".country-option");
+        box.on("contextmenu", (event) => {
+            let target = event.target.closest(".server-card");
             if (!target) return;
 
             let serverType = target.getAttribute("data-type");
@@ -990,7 +1020,7 @@ class main {
         });
     };
     async createServerList(title, servers, container, type) { // Generates and appends a list of servers to the provided container.
-        container.innerHTML += `<h2 style='margin:0.7em;'>${title}</h2>`;
+        container.innerHTML += `<section id="${type}">`;
 
         servers.forEach((server, index) => {
             let pre = server.split(",;,")[0];
@@ -1005,17 +1035,18 @@ class main {
             let name = server.includes("#") ? server.split("#").pop().trim().split("***")[0] : server.substring(0, 50);
 
             let div = document.createElement("div");
-            div.className = "country-option";
+            div.className = "server-card";
             div.title = server;
             div.setAttribute("data-type", type);
             div.setAttribute("data-index", index);
             div.setAttribute("data-server", server);
             div.innerHTML = `<img src="../svgs/${imgServer}" alt="${name}"><p>${name}</p>`;
-            if (server == this.publicSet.settingsALL["public"]["configManual"] && $("#selected-server").html() == undefined) {
-                div.id = "selected-server";
+            if (server == this.publicSet.settingsALL["public"]["configManual"] && $(".selected").html() == undefined) {
+                div.className = "server-card selected";
             }
             container.appendChild(div);
         });
+        container.html += "</section>"
     };
     showContextMenuServer(event, server, type, index) {//  Displays a custom right-click context menu for server options.
         let existingMenu = document.getElementById("server-context-menu");
@@ -1099,17 +1130,17 @@ class main {
     };
     async setPingBox() {// Update UI connected-info
         $("#connected-ping").html(`Pinging...`);
-        $("#ip-ping").html(`Pinging...`);
+        $("#ping-ms").html(`Pinging...`);
         const connectedInfo = await this.connect.getIP_Ping();
         const countryEmoji = connectedInfo.country ? ` ${this.getEmojiCountry(connectedInfo.country)}` : "🌍 Unknown";
         const isConnected = !connectedInfo.filternet;
 
         if (this.publicSet.connected) {
-            $(".connection, #ip-ping").addClass("connected");
-            $("#connected-country").html(`Country: <b style="display:flex;gap:8px;">${countryEmoji}</b>`);
-            $("#connected-ping").html(`Ping: <b>${connectedInfo.ping || "N/A"} ms</b>`);
-            $("#connected-status").html(`Status: <b>${connectedInfo.ping ? "Connected" : "Disconnected"}</b>`);
-            $("#connected-bypass").html(`Bypass: <b>${isConnected ? "On" : "Off"}</b>`);
+            $(".connection, #ip-ping-box").addClass("connected");
+            $("#connected-country").html(`Country: <br/> <b style="display:flex;gap:8px;">${countryEmoji}</b>`);
+            $("#connected-ping").html(`Ping: <br/>  <b>${connectedInfo.ping || "N/A"} ms</b>`);
+            $("#connected-status").html(`Status: <br/>  <b>${connectedInfo.ping ? "Connected" : "Disconnected"}</b>`);
+            $("#connected-bypass").html(`Bypass: <br/>  <b>${isConnected ? "On" : "Off"}</b>`);
             this.publicSet.settingsALL.public.core == "warp" ? $("#share-connection").hide() :
                 $("#share-connection").on("click", async () => {
                     await this.publicSet.reloadSettings();
@@ -1134,9 +1165,9 @@ class main {
                     window.showModal(message, buttons);
                 });
         } else {
-            $("#ip-ping").attr("style", connectedInfo.ping > 1000 ? "color:red;" : "color:green;");
-            $("#ip-ping").html(`${connectedInfo.ping}ms`);
-            $(".connection, #ip-ping").removeClass("connected");
+            $("#ping-ms").attr("style", connectedInfo.ping > 1000 ? "color:red;" : "color:green;");
+            $("#ping-ms").html(`${connectedInfo.ping}ms`);
+            $(".connection, #ip-ping-box").removeClass("connected");
         }
     };
     KILLALLCORES(core, isCore = true) { // Terminates a process with the given core name on both Windows and Unix-based systems.
@@ -1369,6 +1400,18 @@ window.isMessageShowing = false;
 window.reloadPing = () => {
     mainSTA.setPingBox();
 };
+function showPage(id) {
+    if (!id) return;
+    document.querySelectorAll(".page")
+        .forEach(p => p.style.display = "none");
+
+    document.getElementById(id).style.display = "flex";
+
+}
+showPage("page-home");
+function showElem(id) {
+    document.getElementById(id).style.display = "flex";
+}
 window.setSettings = () => {
     mainSTA.setSettings();
 };
@@ -1435,14 +1478,6 @@ window.showModal = (mess = "", buttons = [{ text: "باشه", action: () => { } 
             btn.action();
         });
         $("#buttons-box-notif").append(button);
-    });
-};
-
-window.showBox = (text = "") => {
-    $("#box").css("display", "flex");
-    $("#text-box").html(text);
-    $("#close-box").on("click", () => {
-        $("#box").css("display", "none");
     });
 };
 window.promptMulti = ({
@@ -1610,10 +1645,10 @@ ipcRenderer.on("start-link", async (event, link) => {
 ipcRenderer.on("open-section", (event, section) => {
     if (section == "home") {
         $("#box-select-server").hide();
-        $("#setting-app").hide();
+        $("#page-settings").hide();
     }
     if (section == "settings") {
-        $("#setting-app").toggle();
+        $("#page-settings").toggle();
     }
     else if (section == "browser") {
         ipcRenderer.send("load-browser");

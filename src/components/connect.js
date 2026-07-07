@@ -332,7 +332,7 @@ class PublicSet {
 
         this.settingsALL.public.configManual = config;
         if (!this.settingsALL.public.importedServers.includes(config)) {
-            this.settingsALL.public.importedServers.push(config);
+            this.settingsALL.public.importedServers.splice(1, 0, config);
         }
 
         if (this.isValidJSON(config)) {
