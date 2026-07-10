@@ -30,12 +30,12 @@
     <!-- #endregion Loading -->
     <!-- #region Menu & Options -->
     <div id="menu">
-        <div id="menu-expand" data-page="page-home"
+        <div id="menu-expand"
             style="width: fit-content;margin-left: auto;height: fit-content;padding: 0.5em;">
-            <i class='bx bx-menu'></i>
+            <i data-bx="menu"></i>
         </div>
         <div id="menu-home" data-page="page-home">
-            <i class='bx bx-home-alt'></i> <span data-lang="home">Home</span>
+            <i data-bx="homealt2"></i> <span data-lang="home">Home</span>
         </div>
         <div id="menu-servers" data-page="page-servers">
             <i class='bx bx-server'></i> <span data-lang="servers-section">Servers</span>
@@ -77,13 +77,45 @@
                 <div class="connected-box">
                     <div class="flex-center floating">
                         <i class="bx bx-share" id="share-connection" style="margin-left: auto;"></i>
-                        <i class=" bx bx-refresh bx-spin-hover" id="reload-ping"></i>
+                        <i class="bx bx-refresh" id="reload-ping"></i>
                     </div>
                     <div class="stats-grid">
-                        <div class="stat" id="connected-country"></div>
-                        <div class="stat" id="connected-ping"></div>
-                        <div class="stat" id="connected-status"></div>
-                        <div class="stat" id="connected-bypass"></div>
+                        <div class="stat" id="connected-country">
+                            <div class="stat-icon">
+                                <img src="">
+                            </div>
+                            <div class="stat-content">
+                                <h4>Country</h4>
+                                <b></b>
+                            </div>
+                        </div>
+                        <div class="stat" id="connected-ping">
+                            <div class="stat-icon">
+                                <i class='bx bx-pulse'></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Ping</h4>
+                                <b></b>
+                            </div>
+                        </div>
+                        <div class="stat" id="connected-status">
+                            <div class="stat-icon">
+                                <i class='bx bx-check'></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Status</h4>
+                                <b></b>
+                            </div>
+                        </div>
+                        <div class="stat" id="connected-bypass">
+                            <div class="stat-icon">
+                                <i class='bx bx-shield-quarter'></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Bypass</h4>
+                                <b></b>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,7 +147,7 @@
             <div class="nav-top">
                 <h2 data-lang="servers-section">Servers</h2>
                 <div class="servers-actions">
-                    <button class="btn">
+                    <button id="reload-servers-btn" class="btn">
                         <i class="bx bx-refresh"></i>
                     </button>
                 </div>
@@ -144,7 +176,7 @@
 
             </div>
 
-            <button id="add-server-btn" class="floating-add">
+            <button id="add-server-btn" class="floating-add flex-center">
                 <i class="bx bx-plus"></i>
             </button>
 
@@ -152,9 +184,6 @@
         <section id="page-logs" class="page">
             <div id="LogsContent" style="margin-top: 10vh;"></div>
             <div id="OptionsLogs">
-                <button id="CloseLogs">
-                    <i class="bx bx-x"></i>
-                </button>
                 <button id="ClearLogs">
                     <i class="bx bx-trash"></i>
                 </button>
@@ -178,18 +207,42 @@
         <section id="page-tools" class="flex-row page">
             <div class="nav-top">
                 <h2>Tool Box</h2>
-            </div>z
-            <button id="tool-off-proxy" class="btn">OFF GRID</button>
-            <button id="tool-set-grid" class="btn">ON GRID</button>
-            <button id="tool-kill-all" class="btn">
-                <i class="bx bxs-pear"></i> <span data-lang="kill_all_services">Kill All services</span>
+            </div>
+            <button id="tool-off-proxy" class="btn-box-i">
+                <i class='bx bx-power-off'></i>
+                <h3>OFF GRID (OFF PROXY)</h3>
+                <span>Off Proxy or Tun</span>
             </button>
-            <button id="tool-auto-mode" class="btn">Turn on Auto Mode</button>
-            <button id="tool-update-cores" class="btn">
-                🔁 Update Cores
+            <button id="tool-set-grid" class="btn-box-i">
+                <i class='bx bxs-shield-alt-2'></i>
+                <h3>ON GRID (SET PROXY)</h3>
+                <span>Start System Proxy Or Tun</span>
             </button>
-            <button id="run-system-check" class="btn">🧪 Run Diagnostics</button>
-            <button class="btn" data-show-target="dns-set">Set DNS</button>
+            <button id="tool-kill-all" class="btn-box-i">
+                <i class='bx bx-stop-circle'></i>
+                <h3>Stop All Services</h3>
+                <span data-lang="kill_all_services">Stop all running services</span>
+            </button>
+            <button id="tool-update-cores" class="btn-box-i">
+                <i class="bx bx-refresh"></i>
+                <h3>Update Cores</h3>
+                <span>Check for updates</span>
+            </button>
+            <button class="btn-box-i" data-show-target="dns-set">
+                <i class="bx bx-planet"></i>
+                <h3>Set DNS</h3>
+                <span>Configure DNS</span>
+            </button>
+            <button id="tool-auto-mode" class="btn-box-i">
+                <i class='bx bx-rocket'></i>
+                <h3>Turn on Auto Mode</h3>
+                <span>Auto Connect (FG)</span>
+            </button>
+            <button id="run-system-check" class="btn-box-i">
+                <i class='bx bx-pulse'></i>
+                <h3>Run Diagnostics</h3>
+                <span>Check FG Status</span>
+            </button>
             <div id="dns-set" class="box flex-col">
                 <select id="selector-dns">
                     <option value="1.1.1.1,1.0.0.1">Cloudflare DNS</option>
@@ -238,23 +291,21 @@
                 <div style="margin: 0;padding: 5px;"></div>
 
                 <b data-lang="config_freedom_guard">Config Freedom Guard</b>
-                <div id="config" class="form-control-c">
-                    <input style="width: 95%;" type="text" class="input input-alt"
+                <div id="config" class="form-control-c non-sw">
+                    <input style="width: 55%;" type="text" class="input input-alt"
                         placeholder="vless://, warp://, https://" id="config-value">
-                    <button id="submit-config" class="btn has-tooltip" data-lang="import"
-                        data-tooltip="tr(import)">Import</button>
                     <button id="submit-config-clipboard" class="btn has-tooltip" data-tooltip="Paste from clipboard"><i
                             class='bx bxs-paste'></i></button>
                     <button id="submit-config-file" class="btn has-tooltip" data-tooltip="Import from File"><i
                             class='bx bxs-folder-open'></i></button>
-                    <button id="add-warp-config" class="btn has-tooltip" data-lang="add_warp"
-                        data-tooltip="tr(add_warp)">Add Warp</button>
+                    <button id="submit-config" class="btn has-tooltip" data-lang="import"
+                        data-tooltip="tr(import)">Import</button>
                 </div>
                 <div class="divider"></div>
 
                 <b data-lang="config_fg_auto">Config Freedom Guard for auto mode</b>
-                <div id="config-fg" class="form-control-c">
-                    <input style="width: 95%;" type="text" class="input input-alt" placeholder="https://links.json"
+                <div id="config-fg" class="form-control-c non-sw">
+                    <input style="width: 85%;" type="text" class="input input-alt" placeholder="https://links.json"
                         id="config-fg-value">
                     <button id="config-fg-file" class="btn"><i class='bx bxs-folder-open'></i></button>
                 </div>
@@ -262,8 +313,8 @@
 
                 <h3 data-lang="vpn-settings" class="active" openSection="vpn-settings">VPN Settings</h3>
                 <section id="vpn-settings">
-                    <b data-lang="vpn-core">VPN Core</b>
                     <div id="core-guard" class="form-control-c">
+                        <b data-lang="vpn-core">VPN Core</b>
                         <select value="auto" id="core-guard-selected">
                             <option value="auto" data-lang="auto-core-select">Automatic</option>
                             <option value="vibe">Freedom Vibe</option>
@@ -273,8 +324,8 @@
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="vpn-type">VPN Type</b>
-                    <div id="vpn-type">
+                    <div id="vpn-type" class="form-control-c">
+                        <b data-lang="vpn-type">VPN Type</b>
                         <select value="system" id="vpn-type-selected">
                             <option value="none" data-lang="none-proxy">None</option>
                             <option value="system" data-lang="system-proxy">System Proxy</option>
@@ -283,22 +334,22 @@
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="bind-address">Bind Address</b>
                     <div id="bind-address" class="form-control-c">
+                        <b data-lang="bind-address">Bind Address</b>
                         <input type="text" class="input input-alt" placeholder="127.0.0.1:8086" id="bind-address-text">
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="connection_test_url">Connection Test URL</b>
                     <div id="conn-test" class="form-control-c">
+                        <b data-lang="connection_test_url">Connection Test URL</b>
                         <input type="text" class="input input-alt" value="https://one.one.one.one/cdn-cgi/trace"
                             id="conn-test-text">
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="freedom_link">Freedom Link (Support others by sharing your config after
-                        connection)</b>
-                    <div id="freedom-link">
+                    <div id="freedom-link" class="form-control-c">
+                        <b data-lang="freedom_link">Freedom Link (Support others by sharing your config after
+                            connection)</b>
                         <label class="switch">
                             <input type="checkbox" id="freedom-link-status" />
                             <span class="slider"></span>
@@ -306,8 +357,8 @@
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="auto_conn_after_runs">Auto Connect After Runs</b>
-                    <div id="auto-conn">
+                    <div id="auto-conn" class="form-control-c">
+                        <b data-lang="auto_conn_after_runs">Auto Connect After Runs</b>
                         <label class="switch">
                             <input type="checkbox" id="auto-conn-status" />
                             <span class="slider"></span>
@@ -315,8 +366,8 @@
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="lang-selection">Language Selection</b>
-                    <div id="lang-app">
+                    <div id="lang-app" class="form-control-c">
+                        <b data-lang="lang-selection">Language Selection</b>
                         <select id="lang-app-value" value="en">
                             <option value="en">English</option>
                             <option value="fa">فارسی</option>
@@ -327,8 +378,8 @@
                     </div>
                     <div class="divider"></div>
 
-                    <b data-lang="theme-selection">Theme Selection</b>
-                    <div id="theme-app">
+                    <div id="theme-app" class="form-control-c">
+                        <b data-lang="theme-selection">Theme Selection</b>
                         <select id="theme-app-value" value="Dark">
                             <option value="Dark">Dark mode</option>
                             <option value="Light">Light mode</option>
@@ -354,8 +405,8 @@
 
             <h3 data-lang="auto-mode" id="auto-settings" openSection="auto">Auto mode</h3>
             <section id="auto">
-                <b data-lang="your_isp">Your ISP</b>
                 <div id="isp-guard" class="form-control-c">
+                    <b data-lang="your_isp">Your ISP</b>
                     <select value="other" id="isp-guard-selected">
                         <option value="other">All ISP</option>
                         <option value="MCI">MCI (HamrahAval)</option>
@@ -366,8 +417,8 @@
                         <option value="SHATEL">Shatel</option>
                         <option value="TCI">TCI</option>
                     </select>
-                    <button class="btn" id="apply-ISP-preset" data-lang="apply-ISP-preset">Apply ISP Preset</button>
                 </div>
+                <button class="btn" id="apply-ISP-preset" data-lang="apply-ISP-preset">Apply ISP Preset</button>
                 <div class="divider"></div>
 
                 <b data-lang="quick_connect">Quick Connect</b>

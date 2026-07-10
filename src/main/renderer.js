@@ -11,7 +11,15 @@ const { exec, execFile, spawn } = require('child_process');
 window.$ = $;
 const versionApp = "13.0.1";
 let LOGS = [];
+const { getIcons, Menu, HomeAlt2, Globe } = require('@boxicons/js');
 
+getIcons({
+    icons: {
+        Menu,
+        HomeAlt2,
+        Globe
+    }
+});
 // #endregion
 // #region components
 window.LogLOG = (log = "", type = "info", ac = "text") => {
@@ -26,14 +34,14 @@ window.LogLOG = (log = "", type = "info", ac = "text") => {
         second: "2-digit",
         hour12: false,
     });
-    log = timestamp + (type != "null" ? " --" + type + "--> " : "") + log;
+    // log = timestamp + (type != "null" ? " --" + type + "--> " : "") + log;
     const logLength = log.length;
     const logId = `log-item-${LOGS.length}`;
     const isLongLog = logLength > 200;
     const shortLog = isLongLog ? log.substring(0, 200) + "..." : log;
     const htmlContent = isLongLog
-        ? `<p class="log-item" id="${logId}">${ac == "html" ? shortLog : shortLog}</p><button class="btn" onclick="window.toggleLog('${logId}', \`${encodeURIComponent(log)}\`, '${ac}')" style="font-size: 0.7em;">View More</button>`
-        : `<p class="log-item" id="${logId}">${ac == "html" ? log : log}</p>`;
+        ? `<div class="log-item" id="${logId}"><p class="time">${timestamp}</p><span class="type">${type}</span>${ac == "html" ? shortLog : shortLog}</div><button class="btn" onclick="window.toggleLog('${logId}', \`${encodeURIComponent(log)}\`, '${ac}')" style="font-size: 0.7em;">View More</button>`
+        : `<div class="log-item" id="${logId}"><p class="time">${timestamp}</p><span class="type ${type}">${type}</span>${ac == "html" ? shortLog : shortLog}</div>`;
     $("#LogsContent").append(htmlContent);
     if (type == "clear") { $("#LogsContent").html("Logs Cleared!"); LOGS = []; }
     (window.scrollLogs ?? false) == true ? $("#LogsContent").scrollTop($("#LogsContent")[0].scrollHeight) : '';
@@ -198,7 +206,7 @@ class main {
     };
     async checkUPDATE() {
         try {
-            checkForUpdate(versionApp);
+            checkForUpdate(versionApp, "auto");
         } catch (err) {
             console.error("خطا در بررسی آپدیت:", err);
         }
@@ -218,6 +226,7 @@ class main {
         let lang = this.publicSet.settingsALL["public"]["lang"];
         const response = await fetch(`../components/locales/${lang}.json`);
         const translations = await response.json();
+        if (lang == "fa") $("body").attr('dir', "rtl");
         $('[data-lang]').each(function () {
             try {
                 let key = $(this).attr('data-lang');
@@ -240,11 +249,6 @@ class main {
             $("#page-settings h3").toggleClass("right");
         }
         this.publicSet.saveSettings();
-        $("#about-app a").on('click', (e) => {
-            e.preventDefault();
-            let href = $(e.target).attr("href");
-            this.openLink(href);
-        });
     };
     async isAdmin() { };
     openLink(href) {
@@ -277,7 +281,7 @@ class main {
         $("[data-page]").on("click", function (e) {
             showPage($(this).attr("data-page"));
         })
-        $('#menu div').on('mousemove', function (e) {
+        $('#menu div:not(#menu-expand)').on('mousemove', function (e) {
             if ($(this).parent().hasClass('show')) {
                 return;
             };
@@ -349,13 +353,8 @@ class main {
     };
     addEvents() {
         // Add Events for settings, menu, connect, ....
-        $("a").on('click', (e) => {
-            e.preventDefault();
-            let href = $(e.target).attr("href");
-            this.openLink(href);
-        });
         $('#menu-expand').on('click', () => {
-            $('#menu').toggleClass('show');
+            $('#menu').toggleClass('active');
         });
         $("#selector-dns").on("change", () => {
             const dnsValues = $("#selector-dns").val().split(",");
@@ -381,9 +380,6 @@ class main {
         $('#menu-freedom-browser').on('click', () => {
             ipcRenderer.send("load-browser");
         });
-        $("#menu-about, #about").on('click', () => {
-            $("#about-app").attr("style", "display:flex;");
-        });
         $("#setting-show, #close-setting").on('click', () => {
             $("#page-settings").toggle();
         });
@@ -396,7 +392,7 @@ class main {
         $("#close-about").on('click', () => {
             $("#about-app").hide();
         });
-        $("#reload-server-btn").on("click", async () => {
+        $("#reload-servers-btn").on("click", async () => {
             await this.reloadServers();
             window.showMessageUI(this.publicSet.settingsALL["lang"]["refreshed_isp_servers"]);
         });
@@ -455,6 +451,13 @@ class main {
 
         process.nextTick(() => this.addEventsSetting());
     };
+    addEventForPage() {
+        $("a").on('click', (e) => {
+            e.preventDefault();
+            let href = $(e.target).attr("href");
+            this.openLink(href);
+        });
+    }
     addEventsSetting() {
         // Add Event for settings
         $("#core-guard-selected").on('change', () => {
@@ -1126,10 +1129,10 @@ class main {
         }, 100);
     };
     getEmojiCountry(country) {
-        return `<img src="../svgs/${country.toLowerCase()}.svg" style="width: 20px; height: 20px;border-radius:0px;"> ${country}`;
+        return `../svgs/${country.toLowerCase()}.svg`;
     };
     async setPingBox() {// Update UI connected-info
-        $("#connected-ping").html(`Pinging...`);
+        $("#connected-ping b").html(`Pinging...`);
         $("#ping-ms").html(`Pinging...`);
         const connectedInfo = await this.connect.getIP_Ping();
         const countryEmoji = connectedInfo.country ? ` ${this.getEmojiCountry(connectedInfo.country)}` : "🌍 Unknown";
@@ -1137,10 +1140,11 @@ class main {
 
         if (this.publicSet.connected) {
             $(".connection, #ip-ping-box").addClass("connected");
-            $("#connected-country").html(`Country: <br/> <b style="display:flex;gap:8px;">${countryEmoji}</b>`);
-            $("#connected-ping").html(`Ping: <br/>  <b>${connectedInfo.ping || "N/A"} ms</b>`);
-            $("#connected-status").html(`Status: <br/>  <b>${connectedInfo.ping ? "Connected" : "Disconnected"}</b>`);
-            $("#connected-bypass").html(`Bypass: <br/>  <b>${isConnected ? "On" : "Off"}</b>`);
+            $("#connected-country img").attr("src", `${countryEmoji}`);
+            $("#connected-country b").html(`${connectedInfo.country}`);
+            $("#connected-ping b").html(`${connectedInfo.ping || "N/A"} ms`);
+            $("#connected-status b").html(`${connectedInfo.ping ? "Connected" : "Disconnected"}`);
+            $("#connected-bypass b").html(`${isConnected ? "On" : "Off"}`);
             this.publicSet.settingsALL.public.core == "warp" ? $("#share-connection").hide() :
                 $("#share-connection").on("click", async () => {
                     await this.publicSet.reloadSettings();
@@ -1405,7 +1409,14 @@ function showPage(id) {
     document.querySelectorAll(".page")
         .forEach(p => p.style.display = "none");
 
+    document.querySelectorAll("[data-page]")
+        .forEach(menu => menu.classList = "");
+
+    document.querySelectorAll("[data-page='" + id + "']")
+        .forEach(menu => menu.classList = "active");
+
     document.getElementById(id).style.display = "flex";
+    mainSTA.addEventForPage();
 
 }
 showPage("page-home");
@@ -1431,8 +1442,6 @@ window.startNewUser = () => {
         $("#start-box").hide();
         window.setSettings();
         window.showMessageUI(mainSTA.publicSet.settingsALL["lang"]["start_mess"])
-        trackEvent("new_user", { isp: mainSTA.publicSet.settingsALL["public"]["isp"] });
-
     });
 };
 window.showMessageUI = (message, duration = 3000) => {

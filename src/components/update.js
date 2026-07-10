@@ -110,7 +110,7 @@ async function handleDownload(url) {
     }
 }
 
-async function checkForUpdate(currentVersion) {
+async function checkForUpdate(currentVersion, mode) {
     try {
         const response = await fetch('https://raw.githubusercontent.com/Freedom-Guard/Freedom-Guard/main/config/desktop.json', { timeout: 10000000 });
         if (!response.ok) {
@@ -121,7 +121,7 @@ async function checkForUpdate(currentVersion) {
         const isUpdateAvailable = currentVersion.localeCompare(remoteVersion, undefined, { numeric: true }) < 0;
 
         if (!isUpdateAvailable) {
-            window.showMessageUI('نسخه شما به‌روز است.');
+            mode != "auto" ? window.showMessageUI('نسخه شما به‌روز است.') : "";
             return;
         }
 

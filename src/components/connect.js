@@ -5,7 +5,6 @@ const path = require('path');
 const { notify } = require('node-notifier');
 const axios = require('axios');
 const geoip = require('geoip-lite');
-const { trackEvent } = require("@aptabase/electron/renderer");
 const { Tools, getConfigPath, writeFile, readFile } = require("./tools");
 
 class PublicSet {
@@ -111,6 +110,7 @@ class PublicSet {
             const destDir = getConfigPath();
             const cores = [
                 { dir: "vibe", file: "vibe-core" },
+                { dir: "vibe", file: process.platform == "linux" ? "libcronet.so": "" },
                 { dir: "warp", file: "warp-core" },
                 { dir: "masque", file: "masque-plus" },
                 { dir: "masque", file: "usque" }
@@ -188,7 +188,7 @@ class PublicSet {
     }
 
     connectedVPN(core) {
-        this.log(`Connected to ${core}.`);
+        this.log(`Connected to ${core}.`, "success");
         if (this.connectedUI) {
             return;
         }
@@ -200,10 +200,6 @@ class PublicSet {
             sound: true,
             wait: true,
             appID: 'Freedom Guard'
-        });
-        trackEvent("connected", {
-            core: this.settingsALL.public.core,
-            isp: this.settingsALL.public.isp
         });
         if (typeof window !== 'undefined' && window.connectedUI) {
             window.connectedUI();
@@ -489,9 +485,6 @@ class PublicSet {
             appID: 'Freedom Guard'
         });
         if (core === "Auto") {
-            trackEvent("not_connected_auto", {
-                isp: this.settingsALL.public.isp
-            });
         } else {
             this.disconnectedUI();
         }

@@ -2,7 +2,6 @@ const { ipcRenderer: ipc } = require('electron');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const { trackEvent } = require('@aptabase/electron/renderer');
 const $ = require('jquery');
 const { Connect, ConnectAuto, Test, PublicSet, Tools } = require('../components/connect');
 
@@ -317,4 +316,3 @@ ipc.on("open-new-tab", (event, url) => {
     ipc.send("show-browser");
 });
 
-trackEvent("start-browser");

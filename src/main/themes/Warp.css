@@ -52,7 +52,7 @@ h1 {
     display: none !important;
 }
 
-#menu>div:nth-child(-n+5):not(#menu-exit) {
+#menu>div:nth-child(-n+5):not(#menu-exit, #menu-home) {
     display: none !important;
 }
 

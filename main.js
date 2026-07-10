@@ -1,21 +1,11 @@
 // Start Code
 // #region Libraries
-;
+
 const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, dialog, BrowserView } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec, execFile } = require("child_process");
 const ipc = require('electron').ipcMain;
-
-const { initialize } = require('@aptabase/electron/main');
-
-const appKey = "A-US-5819027962";
-if (appKey) {
-  initialize(appKey);
-  console.log("✅ Aptabase initialized");
-} else {
-  console.warn("⚠️ No Aptabase key found, analytics disabled");
-}
 
 __dirnameFile = __dirname;
 // #endregion
