@@ -27,3 +27,4 @@ cache.db
 .env
 src/main/cores/win32/masque/config.json
 .VSCodeCounter/
+src/main/cores/win32/aether/aether-masque.toml

@@ -436,52 +436,6 @@ img {
     transform: scale(.96);
 }
 
-#ChangeStatus::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
-    transform: translate(-50%, -50%);
-    border-radius: 999px;
-    border: 1.5px solid rgba(59, 130, 246, .35);
-    transform: translate(-50%, -50%);
-    animation: pulse 1.2s ease-in-out infinite;
-    pointer-events: none;
-    z-index: -1;
-}
-
-#ChangeStatus:hover::before {
-    animation-duration: .8s;
-}
-
-
-#ChangeStatus:hover {
-    background: linear-gradient(135deg, var(--primary-brand-color, #00c6ff), var(--secondary-brand-color, #0072ff));
-    color: white;
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-#ChangeStatus.connecting::before {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    padding: 10px;
-    background: conic-gradient(transparent 0deg,
-            #8B5CF6 120deg,
-            #00E5FF 240deg,
-            transparent 250deg);
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: rotateRing 1s linear infinite;
-    inset: -3px;
-}
-
 #ChangeStatus.connecting {
     box-shadow:
         0 0 40px rgba(139, 92, 246, .45),

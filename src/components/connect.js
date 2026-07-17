@@ -17,14 +17,15 @@ class PublicSet {
         this.status = false;
         this.connected = false;
         this.Process = {
-            "vibe": null, "flex": null, "grid": null, "warp": null,
-            "vibeAuto": null, "flexAuto": null, "gridAuto": null, "warpAuto": null,
+            "vibe": null, "flex": null, "grid": null,
+            "aether": null, "aetherAuto": null,
+            "vibeAuto": null, "flexAuto": null, "gridAuto": null,
             "setupAuto": null, "setup": null
         };
         this.mainDir = path.join(__dirname, "/../../");
         this.coresDir = path.join(__dirname, "/../../", "src", "main", "cores").replace("app.asar", "");
         this.coresPath = '';
-        this.settingsALL = {
+        this.settingsALLDefault = {
             "flex": {},
             "grid": {},
             "vibe": {
@@ -39,19 +40,15 @@ class PublicSet {
                 timeout: 60000,
                 hiddifyConfigJSON: null
             },
-            "warp": {
-                gool: false,
-                scan: false,
-                endpoint: "",
-                reserved: false,
-                dns: "",
-                verbose: false,
-                scanrtt: "",
-                ipv: "IPV4",
-                key: "",
-                timeout: 60000,
-                cfon: false,
-                testUrl: false,
+            "aether": {
+                protocol: "masque",
+                noise: "firewall",
+                scan: "balanced",
+                ip: "IPv4",
+                socks: "127.0.0.1:1819",
+                http2: false,
+                peer: "",
+                timeout: 60000
             },
             "masque": {
                 endpoint: undefined
@@ -81,12 +78,13 @@ class PublicSet {
         };
         this.supported = {
             vibe: ["ss", "http", "vless", "vmess", "trojan", "hysteria", "shadowtls", "tuic", "socks", "wireguard", "hy2"],
-            warp: ["warp"],
+            aether: ["aether"],
             grid: ["grid"],
             flex: ["flex"],
             masque: ["masque"],
             other: ["freedom-guard://"]
         };
+        this.settingsALL = this.settingsALLDefault;
         this.Tools = new Tools();
         this.init();
     }
@@ -95,7 +93,10 @@ class PublicSet {
         this.prepareCores();
         await this.reloadSettings();
     }
-
+    resetSectSet(nameSect) {
+        this.settingsALL[nameSect] = this.settingsALLDefault[nameSect];
+        this.saveSettings(this.settingsALL);
+    }
     prepareCores() {
         const platformDir = process.platform === 'darwin'
             ? (process.arch === 'arm64' ? '/mac/arm64/' : '/mac/amd64/')
@@ -110,8 +111,8 @@ class PublicSet {
             const destDir = getConfigPath();
             const cores = [
                 { dir: "vibe", file: "vibe-core" },
-                { dir: "vibe", file: process.platform == "linux" ? "libcronet.so": "" },
-                { dir: "warp", file: "warp-core" },
+                { dir: "aether", file: "aether-core" },
+                { dir: "vibe", file: process.platform == "linux" ? "libcronet.so" : "" },
                 { dir: "masque", file: "masque-plus" },
                 { dir: "masque", file: "usque" }
             ];
@@ -179,7 +180,7 @@ class PublicSet {
                 window.LogLOG(text);
                 console.log(text);
             } else {
-                window.LogLOG(text);
+                window.LogLOG(text, type);
                 console.log(text);
             }
         } else {
@@ -210,7 +211,7 @@ class PublicSet {
     setProxy(proxy, type = "socks5") {
         this.log(`[Proxy] Setting proxy: Type: ${type}, Address: ${proxy}`);
         this.Tools.setProxy(this.Tools.returnOS(), proxy);
-        this.log("[Proxy] Proxy set successfully.");
+        this.log("[Proxy] Proxy set successfully.", "success");
     };
 
     offProxy() {
@@ -259,6 +260,16 @@ class PublicSet {
             },
             "masque": {
                 endpoint: undefined
+            },
+            "aether": {
+                protocol: "masque",
+                noise: "firewall",
+                scan: "balanced",
+                ip: "IPv4",
+                socks: "127.0.0.1:1819",
+                http2: false,
+                peer: "",
+                timeout: 60000
             },
             "setupGrid": {},
             "public": {
@@ -347,14 +358,17 @@ class PublicSet {
                 writeFile(vibeTxtConfigPath, config);
                 this.settingsALL.vibe.config = vibeTxtConfigPath;
             }
-        } else if (this.supported.warp.some(protocol => config.startsWith(protocol))) {
-            this.settingsALL.public.core = "warp";
-            typeConfig = "warp";
-            const optionsWarp = config.split("#")[0].replace("warp://", "").split("&");
-            optionsWarp.forEach(option => {
+        }
+        else if (this.supported.aether.some(protocol => config.startsWith(protocol))) {
+            this.settingsALL.public.core = "aether";
+            this.resetSectSet("aether");
+            typeConfig = "aether";
+            if (!this.settingsALL.aether) this.settingsALL.aether = {};
+            const optionsAether = config.split("#")[0].replace("aether://", "").split("&");
+            optionsAether.forEach(option => {
                 const [key, value] = option.split("=");
                 if (key && value !== undefined) {
-                    this.settingsALL.warp[key] = value;
+                    this.settingsALL.aether[key] = value;
                 }
             });
             this.saveSettings();
@@ -399,7 +413,7 @@ class PublicSet {
         }
 
         if (typeof window !== 'undefined' && window.setATTR && window.setHTML) {
-            window.setATTR("#imgServerSelected", "src", `../svgs/${typeConfig === "warp" ? "warp.webp" : typeConfig === "vibe" ? "vibe.png" : "ir.svg"}`);
+            window.setATTR("#imgServerSelected", "src", `../svgs/${typeConfig === "aether" ? "warp.webp" : typeConfig === "vibe" ? "vibe.png" : "ir.svg"}`);
             window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim().split("***")[0] : config.substring(0, 50));
         }
         this.saveSettings();
@@ -529,7 +543,7 @@ class PublicSet {
     killGrid() {
         this.killAllCores("grid");
     }
-    offGrid(type) {
+    offGrid(type = "tun") {
         if (type == "tun") {
             try {
                 this.Process.grid.kill();
@@ -668,18 +682,19 @@ class ConnectAuto extends PublicSet {
         this.processGrid = null;
         this.processGridSetup = null;
         this.processMasque = null;
-        this.argsWarp = [];
         this.argsVibe = [];
         this.argsFlex = [];
         this.argsGrid = [];
         this.argsGridSetup = [];
         this.argsMasque = [];
+        this.argsAether = [];
         this.settings = {
             "flex": {},
             "grid": {},
             "vibe": {},
             "warp": {},
             "masque": {},
+            "aether": {},
             "public": { ...this.settingsALL.public }
         };
     }
@@ -762,6 +777,19 @@ class ConnectAuto extends PublicSet {
                 }
                 catch { }
             }
+            else if (mode === "aether") {
+                const options = cleanConfigString.replace("aether://", "").split("&");
+                this.settings.aether = {};
+                options.forEach(option => {
+                    const [key, value] = option.split("=");
+                    if (key && value !== undefined) {
+                        this.settings.aether[key] = value;
+                    }
+                });
+                try {
+                    await this.connectAether();
+                } catch { }
+            }
         }
 
         if (!this.connected) {
@@ -769,54 +797,56 @@ class ConnectAuto extends PublicSet {
             this.notConnected("Auto");
         }
     }
+    connectAether() {
+        return new Promise(async (resolve, reject) => {
+            try {
 
-    connectWarp() {
-        return new Promise((resolve, reject) => {
-            this.log("Starting warp for Auto-connect...");
-            this.resetArgs("warp");
+                this.log("Starting Aether for Auto-connect...");
+                const corePath = path.join(this.coresPath, "aether", this.addExt("aether-core"));
+                this.resetArgs("aether");
 
-            setTimeout(async () => {
-                try {
-                    const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
-                    this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(' ')}`);
+                this.processAether = spawn(corePath, this.argsAether, { cwd: path.dirname(corePath) });
+                this.Process.aetherAuto = this.processAether;
 
-                    this.processWarp = spawn(corePath, this.argsWarp);
-                    this.Process.warpAuto = this.processWarp;
+                this.processAether.stderr.on("data", d => this.dataOutAether(d.toString()));
+                this.processAether.stdout.on("data", d => this.dataOutAether(d.toString()));
 
-                    this.processWarp.stderr.on("data", (data) => this.dataOutWarp(data.toString()));
-                    this.processWarp.stdout.on("data", (data) => this.dataOutWarp(data.toString()));
-                    this.processWarp.on("close", (code) => {
-                        this.log(`Warp Auto process exited with code ${code}.`);
-                        this.killVPN("warpAuto");
-                        this.offProxy();
-                        reject(false);
-                    });
+                this.processAether.on("close", code => {
+                    this.log(`Aether Auto process exited with code ${code}.`);
+                    this.killVPN("aether");
+                    this.notConnected("aether");
+                    reject(false);
+                });
 
-                    await this.sleep(this.settingsALL.warp.timeout);
-                    for (let i = 0; i < 3 && !this.connected; i++) {
-                        this.connected = !(await this.getIP_Ping()).filternet;
-                        if (this.connected) break;
-                        await this.sleep(1000);
-                    }
+                await this.sleep(this.settingsALL.aether.timeout || 60000);
 
-                    if (this.connected) {
-                        resolve(true);
-                    } else {
-                        this.log("Warp Auto-connect failed after multiple checks.");
-                        this.killVPN("warpAuto");
-                        this.offProxy();
-                        reject(false);
-                    }
-                } catch (error) {
-                    this.log(`Error in Warp Auto-connect: ${error.message}`);
-                    this.killVPN("warpAuto");
-                    this.offProxy();
+                for (let i = 0; i < 3 && !this.connected; i++) {
+                    this.connected = !(await this.getIP_Ping()).filternet;
+                    if (this.connected) break;
+                    await this.sleep(1000);
+                }
+
+                if (this.connected) {
+                    resolve(true);
+                } else {
+                    this.killVPN("aether");
+                    this.notConnected("aether");
                     reject(false);
                 }
-            }, 1000);
+            } catch (error) {
+                this.log(`Error in Aether Auto-connect: ${error.message}`);
+                this.killVPN("aether");
+                this.notConnected("aether");
+                reject(false);
+            }
         });
     }
-
+    connectWarp() {
+        return new Promise(async (resolve, reject) => {
+            window.showMessageUI("هسته وارپ حذف شده است | Warp Core is deleted");
+            reject(false);
+        });
+    }
     connectMasque() {
         return new Promise((resolve, reject) => {
             this.log("Starting masque-plus for Auto-connect...");
@@ -863,7 +893,6 @@ class ConnectAuto extends PublicSet {
             }, 1000);
         });
     }
-
     connectVibe() {
         return new Promise((resolve, reject) => {
             this.log("Starting vibe for Auto-connect...");
@@ -914,14 +943,10 @@ class ConnectAuto extends PublicSet {
             }, 1000);
         });
     }
-
-
     connectFlex() {
     }
-
     connectGrid() {
     }
-
     resetArgs(core) {
         if (core === "vibe") {
             this.argsVibe = ["run", "--config"];
@@ -955,49 +980,16 @@ class ConnectAuto extends PublicSet {
                 writeFile(hiddifyConfigPath, JSON.stringify(this.settingsALL.vibe.hiddifyConfigJSON));
                 this.argsVibe.push("--hiddify", hiddifyConfigPath);
             }
-
-        } else if (core === "warp") {
-            this.argsWarp = [];
-            const warpSettings = this.settings.warp;
-
-            if (this.settingsALL.public.proxy !== "127.0.0.1:8086") {
-                this.argsWarp.push("--bind", this.settingsALL.public.proxy);
+        }
+        else if (core === "aether") {
+            this.argsAether = [];
+            const aetherSettings = this.settings.aether;
+            this.argsAether.push("--bind", this.settingsALL.public.proxy);
+            this.argsAether.push("--scan", aetherSettings.scan || "balanced");
+            if (aetherSettings.ip === "IPV6") {
+                this.argsAether.push("-6");
             }
-            if (warpSettings.ipv === "IPV6") {
-                this.argsWarp.push("-6");
-            }
-            if (warpSettings.gool) {
-                this.argsWarp.push("--gool");
-            }
-            if (warpSettings.scan) {
-                this.argsWarp.push("--scan");
-                if (warpSettings.scanrtt) {
-                    this.argsWarp.push("--rtt", warpSettings.scanrtt || "1s");
-                }
-            }
-            if (warpSettings.endpoint) {
-                this.argsWarp.push("--endpoint", warpSettings.endpoint);
-            }
-            if (warpSettings.key) {
-                this.argsWarp.push("--key", warpSettings.key);
-            }
-            if (warpSettings.dns) {
-                this.argsWarp.push("--dns", warpSettings.dns);
-            }
-            if (warpSettings.cfon) {
-                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === true ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
-            }
-            if (this.settingsALL.public.type === "tun") {
-            }
-            if (warpSettings.reserved) {
-                this.argsWarp.push("--reserved", "0,0,0");
-            }
-            if (warpSettings.verbose) {
-                this.argsWarp.push("--verbose");
-            }
-            if (warpSettings.testUrl) {
-                this.argsWarp.push("--test-url", this.settingsALL.public.testUrl);
-            }
+            this.argsAether.push("--" + aetherSettings.protocol || "masque");
         }
         else if (core === "masque") {
             this.argsMasque = [];
@@ -1037,6 +1029,10 @@ class ConnectAuto extends PublicSet {
                 this.processMasque.kill();
                 this.processMasque = null;
             }
+            else if (core === "aether" && this.processAether) {
+                this.processAether.kill();
+                this.processAether = null;
+            }
             else if (core === "auto") {
                 try {
                     this.processVibe.kill();
@@ -1063,7 +1059,15 @@ class ConnectAuto extends PublicSet {
             this.connected = true;
         }
     }
-
+    dataOutAether(data) {
+        this.log(`Aether Output: ${data}`);
+        if (data.includes("socks5 listening") || data.includes("SOCKS5") || data.includes("serving") || data.includes("listening on") || data.includes("proxy is ready")) {
+            this.reloadSettings();
+            this.connectedVPN("aether");
+            this.connected = true;
+            this.setupGrid(this.settings.aether.socks || this.settingsALL.public.proxy, this.settingsALL.public.type);
+        }
+    }
     dataOutWarp(data) {
         this.log(`Warp Output: ${data}`);
         if (data.includes("serving")) {
@@ -1097,6 +1101,7 @@ class Connect extends PublicSet {
         this.argsWarp = [];
         this.argsMasque = [];
         this.argsVibe = [];
+        this.argsAether = [];
         this.argsFlex = [];
         this.argsGrid = [];
         this.argsGridSetup = [];
@@ -1121,52 +1126,70 @@ class Connect extends PublicSet {
                 await this.connectMasque();
                 break;
             case 'vibe':
+                await this.connectVibe();
+                break;
+            case 'aether':
+                await this.connectAether();
+                break;
             default:
                 await this.connectVibe();
                 break;
         }
     };
-
-    connectWarp() {
+    connectAether() {
         return new Promise(async (resolve, reject) => {
             try {
-                this.argsWarp = await this.resetArgs("warp");
-                await this.sleep(1000);
+                this.log("Starting Aether for Manual-connect...");
 
-                const corePath = path.join(this.coresPath, "warp", this.addExt("warp-core"));
-                this.log(`Spawning Warp process: ${corePath} ${this.argsWarp.join(" ")}`);
+                const corePath = path.join(this.coresPath, "aether", this.addExt("aether-core"));
+                this.resetArgs("aether");
+                this.log("Starting Aether with: " + this.argsAether);
 
-                this.processWarp = spawn(corePath, this.argsWarp);
-                this.Process.warp = this.processWarp;
+                this.processAether = spawn(corePath, this.argsAether, {
+                    cwd: path.dirname(corePath),
+                    stdio: ['ignore', 'pipe', 'pipe']
+                });
+                this.Process.aether = this.processAether;
 
-                this.processWarp.stderr.on("data", d => this.dataOutWarp(d.toString()));
-                this.processWarp.stdout.on("data", d => this.dataOutWarp(d.toString()));
-                this.processWarp.on("close", code => {
+                this.processAether.on('error', (err) => { this.log(`Aether spawn error: ${err.message}`); });
+                this.processAether.stderr.on("data", d => this.dataOutAether(d.toString()));
+                this.processAether.stdout.on("data", d => this.dataOutAether(d.toString()));
+                this.processAether.on("close", code => {
                     this.log(`Warp process exited with code ${code}.`);
-                    this.killVPN("warp");
-                    this.notConnected("warp");
-                    this.offProxy();
+                    this.killVPN("aether");
+                    this.notConnected("aether");
                     reject(false);
                 });
 
-                await this.sleep(this.settingsALL.warp.timeout);
+                this.setupGrid(this.settingsALL.aether.socks || this.settingsALL.public.proxy, this.settingsALL.public.type);
+                await this.sleep(this.settingsALL.aether.timeout ?? 60000);
+
+                for (let i = 0; i < 3 && !this.connected; i++) {
+                    this.connected = !(await this.getIP_Ping()).filternet;
+                    if (this.connected) break;
+                    await this.sleep(1000);
+                }
+
                 if (this.connected) {
-                    this.connectedVPN("warp");
+                    this.connectedVPN("aether");
                     resolve(true);
                 } else {
-                    this.log("Warp manual connection failed after timeout.");
-                    this.killVPN("warp");
-                    this.notConnected("warp");
-                    this.offProxy();
+                    this.killVPN("aether");
+                    this.notConnected("aether");
+                    this.offGrid(this.settingsALL.public.type);
                     reject(false);
                 }
             } catch (error) {
-                this.log(`Error in Warp Manual-connect: ${error.message}`);
-                this.killVPN("warp");
-                this.notConnected("warp");
-                this.offProxy();
+                this.killVPN("aether");
+                this.notConnected("aether");
                 reject(false);
             }
+        });
+    }
+    connectWarp() {
+        return new Promise(async (resolve, reject) => {
+            window.showMessageUI("هسته وارپ حذف شده است | Warp Core is deleted");
+            reject(false);
         });
     };
 
@@ -1281,50 +1304,15 @@ class Connect extends PublicSet {
 
     async resetArgs(core = "warp") {
         await this.reloadSettings();
-        if (core === "warp") {
-            this.argsWarp = [];
-            const warpSettings = this.settingsALL.warp;
-
-            if (this.settingsALL.public.proxy !== "127.0.0.1:8086") {
-                this.argsWarp.push("--bind", this.settingsALL.public.proxy);
+        if (core === "aether") {
+            this.argsAether = [];
+            const aetherSettings = this.settings.aether;
+            this.argsAether.push("--bind", this.settingsALL.public.proxy);
+            this.argsAether.push("--scan", aetherSettings.scan || "balanced");
+            if (aetherSettings.ip === "IPV6") {
+                this.argsAether.push("-6");
             }
-            if (warpSettings.ipv === "IPV6") {
-                this.argsWarp.push("-6");
-            }
-            if (warpSettings.gool) {
-                this.argsWarp.push("--gool");
-            }
-            if (warpSettings.scan) {
-                this.argsWarp.push("--scan");
-                if (warpSettings.scanrtt) {
-                    this.argsWarp.push("--rtt", warpSettings.scanrtt || "1s");
-                }
-            }
-            if (warpSettings.endpoint) {
-                this.argsWarp.push("--endpoint", warpSettings.endpoint);
-            }
-            if (warpSettings.key) {
-                this.argsWarp.push("--key", warpSettings.key);
-            }
-            if (warpSettings.dns) {
-                this.argsWarp.push("--dns", warpSettings.dns);
-            }
-            if (warpSettings.cfon) {
-                this.argsWarp.push("--cfon", "--country", warpSettings.cfon === true ? this.Tools.getRandomCountryCode() : warpSettings.cfon);
-            }
-            if (this.settingsALL.public.type === "tun") {
-            }
-            if (warpSettings.reserved) {
-                this.argsWarp.push("--reserved", "0,0,0");
-            }
-            if (warpSettings.verbose) {
-                this.argsWarp.push("--verbose");
-            }
-            if (warpSettings.testUrl) {
-                this.argsWarp.push("--test-url", this.settingsALL.public.testUrl);
-            }
-            return this.argsWarp;
-
+            this.argsAether.push("--" + aetherSettings.protocol || "masque");
         }
         else if (core === "vibe") {
             this.argsVibe = ["run", "--config"];
@@ -1401,6 +1389,11 @@ class Connect extends PublicSet {
                 this.processMasque = null;
                 this.killAllCores("usque", false)
             }
+            else if (core === "aether" && this.processAether) {
+                this.processAether.kill();
+                this.processAether = null;
+                this.killAllCores("aether", false)
+            }
         } catch (error) {
             this.log(`[VPN] Error in killVPN: ${error}`);
         }
@@ -1421,7 +1414,15 @@ class Connect extends PublicSet {
             this.setupGrid(this.settingsALL.public.proxy, this.settingsALL.public.type, "socks5");
         }
     }
-
+    dataOutAether(data) {
+        this.log(`Aether Output: ${data}`);
+        if (data.includes("socks5 listening") || data.includes("SOCKS5") || data.includes("serving")) {
+            this.reloadSettings();
+            this.connectedVPN("aether");
+            this.connected = true;
+            this.setupGrid(this.settingsALL.aether.socks || this.settingsALL.public.proxy, this.settingsALL.public.type);
+        }
+    }
     dataOutMasque(data) {
         this.log(`Masque Output: ${data}`);
         if (data.includes("serving")) {
@@ -1452,6 +1453,7 @@ class Test extends PublicSet {
             "grid": {},
             "vibe": {},
             "warp": {},
+            "aether": {},
             "public": { ...this.settingsALL.public }
         };
     }

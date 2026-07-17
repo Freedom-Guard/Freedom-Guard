@@ -319,19 +319,12 @@ class main {
         this.initServerSearch();
     };
     initServerTabs() {
-
         $(".server-tab").on("click", function () {
-
             $(".server-tab").removeClass("active");
-
             $(this).addClass("active");
-
             $(".server-tab-page").removeClass("active");
-
             $("#" + $(this).data("tab") + "-tab").addClass("active");
-
         });
-
     }
     initServerSearch() {
         $("#server-search-input").on("input", function () {
@@ -601,67 +594,12 @@ class main {
     };
     addEventSect(core) {
         // Add Event for sect settings
-        if (core == "warp") {
-            $("#endpoint-warp-value").on("input", () => {
-                this.publicSet.settingsALL["warp"]["endpoint"] = $("#endpoint-warp-value").val(); this.publicSet.saveSettings();
-            });
-            $("#get-endpoint-warp").on("click", async () => {
-                try {
-                    const response = await this.axios.get("https://raw.githubusercontent.com/ircfspace/endpoint/refs/heads/main/ip.json");
-                    const ipData = (response.data);
-                    const version = this.publicSet.settingsALL["warp"]["ipv"].toLowerCase() ?? "ipv4";
-                    const ipList = version === "ipv6" ? ipData.ipv6 : ipData.ipv4;
-                    if (ipList.length === 0) {
-                        this.publicSet.log("No available endpoints for the selected IP version.");
-                        return;
-                    }
-                    const randomIP = ipList[Math.floor(Math.random() * ipList.length)];
-                    $("#endpoint-warp-value").val(randomIP);
-                    this.publicSet.settingsALL["warp"]["endpoint"] = randomIP;
-                    this.publicSet.saveSettings();
-                    window.showMessageUI(this.publicSet.settingsALL["lang"]["endpoint_retrieved"]);
-                } catch (error) {
-                    this.publicSet.log("Error fetching endpoint data:", error);
-                }
-            });
-            $("#Gool").on("click", () => {
-                if (!this.publicSet.settingsALL["warp"]["gool"]) {
-                    this.publicSet.settingsALL["warp"]["cfon"] = false;
-                    $("#cfon").prop("checked", this.publicSet.settingsALL["warp"]["cfon"]);
-                };
-                this.publicSet.settingsALL["warp"]["gool"] = !this.publicSet.settingsALL["warp"]["gool"]; this.publicSet.saveSettings();
-            });
-
-            $("#cfon").on("click", () => {
-                if (!this.publicSet.settingsALL["warp"]["cfon"]) {
-                    this.publicSet.settingsALL["warp"]["gool"] = false;
-                    $("#Gool").prop("checked", this.publicSet.settingsALL["warp"]["gool"]);
-                };
-                this.publicSet.settingsALL["warp"]["cfon"] = !this.publicSet.settingsALL["warp"]["cfon"]; this.publicSet.saveSettings();
-            });
-            $("#Scan").on("click", () => {
-                this.publicSet.settingsALL["warp"]["scan"] = !this.publicSet.settingsALL["warp"]["scan"]; this.publicSet.saveSettings();
-            });
-            $("#warp-key-value").on("input", () => {
-                this.publicSet.settingsALL["warp"]["key"] = $("#warp-key-value").val(); this.publicSet.saveSettings();
-            });
-            $("#selector-ip-version-warp").on("change", () => {
-                this.publicSet.settingsALL["warp"]["ipv"] = $("#selector-ip-version-warp").val(); this.publicSet.saveSettings();
-            });
-            $("#scan-rtt-value").on("input", () => {
-                this.publicSet.settingsALL["warp"]["scanrtt"] = $("#scan-rtt-value").val(); this.publicSet.saveSettings();
-            });
-            $("#verbose-status").on("click", () => {
-                this.publicSet.settingsALL["warp"]["verbose"] = !this.publicSet.settingsALL["warp"]["verbose"]; this.publicSet.saveSettings();
-            });
-            $("#reserved-status").on("click", () => {
-                this.publicSet.settingsALL["warp"]["reserved"] = !this.publicSet.settingsALL["warp"]["reserved"]; this.publicSet.saveSettings();
-            });
-            $("#test-url-warp-status").on("click", () => {
-                this.publicSet.settingsALL["warp"]["testUrl"] = !this.publicSet.settingsALL["warp"]["testUrl"]; this.publicSet.saveSettings();
-            });
-            $("#dns-warp-value").on("input", () => {
-                this.publicSet.settingsALL["warp"]["dns"] = $("#dns-warp-value").val(); this.publicSet.saveSettings();
+        var that = this;
+        if (core == "aether") {
+            $(".aether-option-st").on("change", function () {
+                let optionAether = $(this).attr("optionAether");
+                that.publicSet.settingsALL["aether"][optionAether] = $(this).val();
+                that.publicSet.saveSettings();
             });
         }
         else if (core == "vibe") {
@@ -803,19 +741,7 @@ class main {
         })();
         window.setATTR("#imgServerSelected", "src", "../svgs/" + (imgServer));
         window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["configManual"].includes("#") ? this.publicSet.settingsALL["public"]["configManual"].split("#").pop().trim().split("***")[0] : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50) == "" ? this.publicSet.settingsALL["public"]["core"] + " Server" : this.publicSet.settingsALL["public"]["configManual"].substring(0, 50)));
-        $("#conn-test-text").val(this.publicSet.settingsALL["public"]["testUrl"]);
-        $("#endpoint-warp-value").val(this.publicSet.settingsALL["warp"]["endpoint"]);
-        $("#selector-ip-version-warp").val(this.publicSet.settingsALL["warp"]["ipv"] ?? "IPV4");
-        $("#scan-rtt-value").val(this.publicSet.settingsALL["warp"]["scanrtt"]);
-        $("#warp-key-value").val(this.publicSet.settingsALL["warp"]["key"]);
-        $("#Gool").prop("checked", this.publicSet.settingsALL["warp"]["gool"]);
-        $("#cfon").prop("checked", this.publicSet.settingsALL["warp"]["cfon"]);
-        $("#Scan").prop("checked", this.publicSet.settingsALL["warp"]["scan"]);
-        $("#freedom-link-status").prop("checked", this.publicSet.settingsALL["public"]["freedomLink"]);
         $("#quick-connect-status").prop("checked", this.publicSet.settingsALL["public"]["quickConnect"] ?? false);
-        $("#reserved-status").prop("checked", this.publicSet.settingsALL["warp"]["reserved"]);
-        $("#verbose-status").prop("checked", this.publicSet.settingsALL["warp"]["verbose"]);
-        $("#test-url-warp-status").prop("checked", this.publicSet.settingsALL["warp"]["testUrl"]);
         let thatHi = this;
 
         $(".vibe-option-state").each(function () {
@@ -833,6 +759,14 @@ class main {
 
             if (value !== undefined) {
                 element.prop('checked', value);
+            }
+        });
+        $(".aether-option-st").each(function () {
+            const element = $(this);
+            const optionName = element.attr("optionAether");
+            let value = thatHi.publicSet.settingsALL.aether[optionName];
+            if (value !== undefined) {
+                element.val(value);
             }
         });
         $(".vibe-option-value").each(function () {
@@ -1446,7 +1380,7 @@ window.startNewUser = () => {
 };
 window.showMessageUI = (message, duration = 3000) => {
     window.messageQueue.push({ message, duration });
-    if (typeof window.LogLOG === "function") window.LogLOG(message.toString());
+    if (typeof window.LogLOG === "function") window.LogLOG(message.toString(), "message");
     processMessageQueue();
     function processMessageQueue() {
         if (window.isMessageShowing || window.messageQueue.length === 0) return;

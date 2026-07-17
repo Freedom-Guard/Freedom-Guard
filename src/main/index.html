@@ -30,8 +30,7 @@
     <!-- #endregion Loading -->
     <!-- #region Menu & Options -->
     <div id="menu">
-        <div id="menu-expand"
-            style="width: fit-content;margin-left: auto;height: fit-content;padding: 0.5em;">
+        <div id="menu-expand" style="width: fit-content;margin-left: auto;height: fit-content;padding: 0.5em;">
             <i data-bx="menu"></i>
         </div>
         <div id="menu-home" data-page="page-home">
@@ -153,10 +152,10 @@
                 </div>
             </div>
             <div class="server-tabs">
-                <button class="server-tab active" data-tab="official">
+                <button class="server-tab" data-tab="official">
                     Official
                 </button>
-                <button class="server-tab" data-tab="custom">
+                <button class="server-tab active" data-tab="custom">
                     My Servers
                 </button>
             </div>
@@ -165,12 +164,12 @@
                 <input id="server-search-input" type="text" placeholder="Search server...">
             </div>
 
-            <div class="server-tab-page active" id="official-tab">
+            <div class="server-tab-page" id="official-tab">
                 <div id="official-server-list" class="server-list">
                 </div>
             </div>
 
-            <div class="server-tab-page" id="custom-tab">
+            <div class="server-tab-page active" id="custom-tab">
                 <div id="custom-server-list" class="server-list">
                 </div>
 
@@ -293,7 +292,7 @@
                 <b data-lang="config_freedom_guard">Config Freedom Guard</b>
                 <div id="config" class="form-control-c non-sw">
                     <input style="width: 55%;" type="text" class="input input-alt"
-                        placeholder="vless://, warp://, https://" id="config-value">
+                        placeholder="vless://, aether://, https://" id="config-value">
                     <button id="submit-config-clipboard" class="btn has-tooltip" data-tooltip="Paste from clipboard"><i
                             class='bx bxs-paste'></i></button>
                     <button id="submit-config-file" class="btn has-tooltip" data-tooltip="Import from File"><i
@@ -318,7 +317,7 @@
                         <select value="auto" id="core-guard-selected">
                             <option value="auto" data-lang="auto-core-select">Automatic</option>
                             <option value="vibe">Freedom Vibe</option>
-                            <option value="warp">Freedom Warp</option>
+                            <option value="aether">Freedom Aether</option>
                             <option value="masque">Masque Plus</option>
                         </select>
                     </div>
@@ -386,7 +385,7 @@
                             <option value="Guard">Guard mode</option>
                             <option value="ZEN">Zen mode</option>
                             <option value="Ahura">Ahura mode</option>
-                            <option value="Warp">Warp mode</option>
+                            <option value="aether">Aether mode</option>
                             <option value="NeoFlux">NeoFlux mode</option>
                             <option value="Matrix">Matrix mode</option>
                             <option value="Neon">Neon mode</option>
@@ -431,104 +430,46 @@
                 <div class="divider"></div>
             </section>
 
-            <h3 data-lang="warp_mode" openSection="warp" id="warp-settings">Warp mode</h3>
-            <section id="warp">
-                <b data-lang="warp_key">Warp Key</b>
-                <div id="warp-key" class="form-control-c">
-                    <input type="text" class="input input-alt" placeholder="key: xxxxxxxxxxxxx" id="warp-key-value">
+            <h3 data-lang="aether_mode" openSection="aether" id="aether-settings">aether mode</h3>
+            <section id="aether">
+                <div id="protocol-aether" class="form-control-c">
+                    <b>Protocol Aether</b>
+                    <select id="selector-protocol-aether" class="aether-option-st" optionAether="protocol">
+                        <option value="masque">Masque</option>
+                        <option value="wg">Wireguard</option>
+                        <option value="gool">GOOL</option>
+                    </select>
                 </div>
                 <div class="divider"></div>
 
-                <b data-lang="dns_warp">DNS Warp</b>
-                <div id="dns-warp" class="form-control-c">
-                    <input type="text" class="input input-alt" placeholder="dns: 8.8.8.8" id="dns-warp-value">
-                </div>
-                <div class="divider"></div>
-
-                <h3 data-lang="network_settings_warp" openSection="network-settings-warp">
+                <h3 data-lang="network_settings_aether" openSection="network-settings-aether">
                     Network Settings
-                    Warp</h3>
-                <section id="network-settings-warp">
-                    <b data-lang="ip_version" id="ip-version-label">IP Version</b>
-                    <div id="ip-version">
-                        <select id="selector-ip-version-warp">
-                            <option value="IPV4">IP Version 4</option>
-                            <option value="IPV6">IP Version 6</option>
+                    aether</h3>
+                <section id="network-settings-aether">
+                    <div id="ip-aether" class="form-control-c">
+                        <b data-lang="ip-version">IP Version</b>
+                        <select id="selector-ip-aether" class="aether-option-st" optionAether="ip">
+                            <option value="IPV4">IPV4</option>
+                            <option value="IPV6">IPV6</option>
                         </select>
                     </div>
                     <div class="divider"></div>
 
-                    <b>CFON Mode</b>
-                    <div id="cfon-mode">
-                        <label class="switch">
-                            <input type="checkbox" id="cfon" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="divider"></div>
-
-                    <b data-lang="gool_warp">Gool Warp</b>
-                    <div id="gool-mode">
-                        <label class="switch">
-                            <input type="checkbox" id="Gool" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="divider"></div>
-
-                    <b data-lang="scan_warp">Scan Warp</b>
-                    <div id="scan-mode">
-                        <label class="switch">
-                            <input type="checkbox" id="Scan" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="divider"></div>
-
-                    <b data-lang="endpoint" id="endpoint-warp-label">Endpoint</b>
-                    <div id="endpoint-warp" class="form-control-c">
-                        <input placeholder="IP: 192.x.x.x" class="input input-alt" type="text" id="endpoint-warp-value">
-                        <button class="btn" id="get-endpoint-warp">Get Endpoint</button>
-                    </div>
-                    <div class="divider"></div>
-
-                    <b data-lang="scan_rtt" id="scan-rtt-label">Scanner RTT Limit</b>
-                    <div id="scan-rtt" class="form-control-c">
-                        <input type="text" class="input input-alt" placeholder="default 1s" id="scan-rtt-value">
+                    <div id="scan-mode" class="form-control-c">
+                        <b data-lang="scan_aether">Scan Mode</b>
+                        <select id="selector-scan-aether" class="aether-option-st" optionAether="scan">
+                            <option value="balanced">balanced</option>
+                            <option value="turbo">turbo</option>
+                            <option value="thorough">thorough</option>
+                            <option value="stealth">stealth</option>
+                        </select>
                     </div>
                     <div class="divider"></div>
                 </section>
-                <h3 data-lang="advanced_settings_warp" openSection="advanced-settings-warp">Advanced Settings
-                    Warp</h3>
-                <section id="advanced-settings-warp">
-                    <b data-lang="verbose">Verbose</b>
-                    <div id="verbose">
-                        <br>
-                        <label class="switch">
-                            <input type="checkbox" id="verbose-status" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="divider"></div>
-
-                    <b data-lang="reserved">Reserved</b>
-                    <div id="reserved">
-                        <label class="switch">
-                            <input type="checkbox" id="reserved-status" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="divider"></div>
-
-                    <b data-lang="test_url_warp">Test URL Warp</b>
-                    <div id="test-url-warp">
-                        <label class="switch">
-                            <input type="checkbox" id="test-url-warp-status" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="divider"></div>
-                </section>
+                <!-- <h3 data-lang="advanced_settings_aether" openSection="advanced-settings-aether">Advanced Settings
+                    aether</h3>
+                <section id="advanced-settings-aether">
+                </section> -->
             </section>
 
             <h3 data-lang="vibe_mode" id="vibe-settings" openSection="vibe">Vibe Mode</h3>
@@ -710,8 +651,8 @@
                 <div class="divider"></div>
             </section>
 
-            <h3 data-lang="options" class="active" openSection="options-setting-warp">Options</h3>
-            <div id="options-setting-warp" style="display: flex;gap: 10px;padding: 1em 2em;box-sizing: border-box;">
+            <h3 data-lang="options" class="active" openSection="options-setting-aether">Options</h3>
+            <div id="options-setting-aether" style="display: flex;gap: 10px;padding: 1em 2em;box-sizing: border-box;">
                 <button id="change-background-btn" class="btn" data-lang="change_background">Change Background</button>
                 <button id="refresh-servers-btn" class="btn" data-lang="refresh_isp">Refresh ISP Servers</button>
                 <div style="width: 100%;"></div>
