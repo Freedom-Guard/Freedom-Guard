@@ -464,7 +464,7 @@ class main {
             $("#config-value").val("");
             this.publicSet.importConfig("");
 
-            window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "warp" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.png" : "ir.svg"));
+            window.setATTR("#imgServerSelected", "src", "../svgs/" + (this.publicSet.settingsALL["public"]["core"] == "aether" ? "warp.webp" : this.publicSet.settingsALL["public"]["core"] == "vibe" ? "vibe.webp" : "ir.svg"));
             window.setHTML("#textOfServer", decodeURIComponent(this.publicSet.settingsALL["public"]["core"] + " Server + Customized"));
         });
         $("#auto-conn-status").on("change", () => {
@@ -735,7 +735,7 @@ class main {
 
             let file = f
                 ? `${f}.svg`
-                : (proto === "warp" || proto === "masque" ? "warp.webp" : "vibe.png");
+                : (proto === "aether" || proto === "masque" ? "warp.webp" : "vibe.webp");
 
             return file.replaceAll("/", "").replaceAll("\\", "");
         })();
@@ -964,9 +964,9 @@ class main {
             let query = server.split("***")[1] ?? "";
             let flag = query.split("&").map(p => p.split("=")).find(p => p[0] === "flag")?.[1];
             let imgServer =
-                pre.split("://")[0] === "warp" ? (flag ? `${flag}.svg` : "warp.webp") :
-                    true ? (flag ? `${flag}.svg` : "vibe.png") :
-                        "vibe.png";
+                pre.split("://")[0] === "aether" ? (flag ? `${flag}.svg` : "warp.webp") :
+                    true ? (flag ? `${flag}.svg` : "vibe.webp") :
+                        "vibe.webp";
             imgServer = imgServer.replaceAll("/", "").replaceAll("\\", "");
             server = decodeURIComponent(server.replace("vibe,;,", "").replace(",;,", "://"));
             let name = server.includes("#") ? server.split("#").pop().trim().split("***")[0] : server.substring(0, 50);

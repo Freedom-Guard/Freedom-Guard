@@ -413,7 +413,7 @@ class PublicSet {
         }
 
         if (typeof window !== 'undefined' && window.setATTR && window.setHTML) {
-            window.setATTR("#imgServerSelected", "src", `../svgs/${typeConfig === "aether" ? "warp.webp" : typeConfig === "vibe" ? "vibe.png" : "ir.svg"}`);
+            window.setATTR("#imgServerSelected", "src", `../svgs/${typeConfig === "aether" ? "warp.webp" : typeConfig === "vibe" ? "vibe.webp" : "ir.svg"}`);
             window.setHTML("#textOfServer", config.includes("#") ? config.split("#").pop().trim().split("***")[0] : config.substring(0, 50));
         }
         this.saveSettings();
