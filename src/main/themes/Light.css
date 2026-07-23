@@ -28,7 +28,7 @@
 
     /* Backgrounds */
     --body-background: linear-gradient(145deg, #e0f2f7, #bbdefb, #90caf9, #64b5f6, #42a5f5);
-    --connect-button-background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    --connect-button-background: linear-gradient(135deg, #90caf9, #64b5f6);
     --connected-button-background: linear-gradient(135deg, #a5d6a7, #66bb6a);
     --connected-button-hover-background: linear-gradient(135deg, #81c784, #4caf50);
     --connecting-button-shadow: rgba(0, 0, 0, 0.2);
@@ -106,4 +106,7 @@
 
     /* Spacing */
     --default-padding: 20px;
+}
+#ChangeStatus {
+    background: var(--connect-button-background);
 }

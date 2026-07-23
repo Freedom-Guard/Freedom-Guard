@@ -510,6 +510,7 @@ img {
 .page {
     box-sizing: border-box;
     overflow-y: auto;
+    position: relative;
     width: 100%;
     height: 100%;
     padding: 22px;
